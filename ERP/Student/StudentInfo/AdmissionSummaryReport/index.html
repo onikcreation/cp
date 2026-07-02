@@ -17394,11 +17394,21 @@ span.hide-native-select{position:relative}span.hide-native-select select{border:
         line-height: normal;
     }
                   </style>
+                  <style>
+                    #pageChangesBtn {
+                        animation: pageChangesPulse 1.6s infinite;
+                    }
+                    @keyframes pageChangesPulse {
+                        0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, .7); }
+                        70% { box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); }
+                        100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+                    }
+                  </style>
                   <div class="panel panel-primary">
                     <div class="panel-heading">
                       <h4 class="panel-title">
                         Admission Summary Report
-                        <button type="button" class="btn btn-xs" data-toggle="modal" data-target="#pageChangesModal" title="এই পেইজে যা যা পরিবর্তন/আপডেট করা হয়েছে" style="float:right; background:transparent; border:1px solid rgba(255,255,255,.7); color:#fff; border-radius:50%; width:26px; height:26px; padding:0; line-height:1;">
+                        <button type="button" id="pageChangesBtn" class="btn btn-xs" data-toggle="modal" data-target="#pageChangesModal" title="এই পেইজে যা যা পরিবর্তন/আপডেট করা হয়েছে" style="float:right; background:#F59E0B; border:2px solid #fff; color:#fff; border-radius:50%; width:28px; height:28px; padding:0; line-height:1; font-size:14px; font-weight:bold;">
                           <i class="fa fa-info"></i>
                         </button>
                       </h4>
