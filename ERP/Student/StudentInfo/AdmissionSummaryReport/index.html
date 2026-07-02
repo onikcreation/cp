@@ -59416,20 +59416,19 @@ function DeselectSelectedOptionAdd(elem) {
                                             <h4 class="modal-title" id="pageChangesModalLabel">এই পেইজে যা যা পরিবর্তন/আপডেট করা হয়েছে</h4>
                                           </div>
                                           <div class="modal-body">
-                                            <ol style="padding-left:20px; margin:0;">
+                                            <p style="font-weight:bold; margin-bottom:12px;">নতুন আপডেট:</p>
+                                            <ol style="padding-left:20px; margin:0 0 20px;">
                                               <li style="margin-bottom:16px;">
-                                                <strong>Branch Mentor ফিল্টারে "MentorWise" অপশন যোগ</strong>
-                                                <p style="margin:4px 0 0; color:#555;">"Branch Mentor" ড্রপডাউনে "MentorWise" অপশন সিলেক্ট করলে সব ব্রাঞ্চের ডাটা দেখাবে, কিন্তু ফ্ল্যাট লিস্ট না দেখিয়ে প্রতিটা মেন্টরের নামে গ্রুপ করে দেখাবে। Summary Report ও Cross Branch — দুই ধরনের রিপোর্টেই কাজ করে।</p>
-                                              </li>
-                                              <li style="margin-bottom:16px;">
-                                                <strong>"Previous Session Compare" ফিচার যোগ</strong>
-                                                <p style="margin:4px 0 0; color:#555;">Generation Type-এর পাশে নতুন চেকবক্স — অন করলে রিপোর্টে প্রতিটা প্রোগ্রাম কলাম তিনটা সাব-কলামে ভাগ হয়ে দেখাবে: আগের বছর | এই বছর | পার্থক্য। তুলনা সবসময় ঠিক আগের বছরের একই সেশনের সাথে, সেশন শুরু থেকে সমান দিন-সংখ্যা ভিত্তিতে। শুধু একটামাত্র সেশন সিলেক্ট থাকলে ও Generation Type: Summary Report থাকলেই অপশনটা দেখা যাবে।</p>
+                                                <strong>Branch Mentor ফিল্টারে MentorWise অপশন যোগ করা হয়েছে।</strong>
+                                                <p style="margin:4px 0 0; color:#555;"><em>যেভাবে কাজ করবে:</em> Branch Mentor ড্রপডাউনে MentorWise অপশন সিলেক্ট করে ভিউ করা হলে সব ব্রাঞ্চের ডাটা দেখাবে, কিন্তু ফ্ল্যাট লিস্ট না দেখিয়ে প্রতিটা মেন্টরের নামে গ্রুপ করে দেখাবে।</p>
                                               </li>
                                               <li>
-                                                <strong>শূন্য (0) মানের সেল সবসময় হাইফেন (-) দিয়ে দেখানো</strong>
-                                                <p style="margin:4px 0 0; color:#555;">টেবিলের যেকোনো সেলে (প্রোগ্রাম কলাম, Total, বা Previous Session Compare-এর Diff কলাম) মান শূন্য (0) হলে সবজায়গায় সামঞ্জস্যপূর্ণভাবে "-" দেখাবে, আলাদা করে "0" সংখ্যা দেখাবে না।</p>
+                                                <strong>আগের বছরের একই সেশনের সাথে তুলনা করার জন্য Previous Session Compare অপশন যোগ করা হয়েছে।</strong>
+                                                <p style="margin:4px 0 0; color:#555;"><em>যেভাবে কাজ করবে:</em> শুধু একটি Session সিলেক্ট করলে এবং Generation Type: Summary Report থাকলেই Generation Type-এর পাশে নতুন চেকবক্স অপশনটা দেখা যাবে। এই চেকবক্স অন করে ডাটা ভিউ করা হলে, রিপোর্টের প্রতিটা প্রোগ্রাম কলাম তিনটা সাব-কলামে ভাগ হয়ে দেখাবে: আগের বছর, এই বছর, পার্থক্য। এই ডাটা Till Date অথবা, Date From - Date To অনুযায়ি ঠিক আগের বছরের একই দিনের সাথে তুলনা করে দেখতে হবে।</p>
                                               </li>
                                             </ol>
+                                            <p style="font-weight:bold; margin-bottom:6px; color:#B42318;">Bug:</p>
+                                            <p style="margin:0; color:#555;">এই মেনুতে Generation Type-এ All Branch to My Branch ও My Branch to All Branch ফিল্টার করে সঠিক ডাটা দেখা যাচ্ছে না।</p>
                                           </div>
                                           <div class="modal-footer">
                                             <button type="button" class="btn btn-default" data-dismiss="modal">বন্ধ করুন</button>
