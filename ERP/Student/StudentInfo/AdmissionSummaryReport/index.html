@@ -57689,6 +57689,14 @@ function DeselectSelectedOptionAdd(elem) {
             if ($('#isLastSessionStr').val() == 'Last Session')
                 oldSessionList.push('-1');
 
+            // Cache the real captured Program/Session option lists so they can be
+            // restored if the reload AJAX (LoadProgram/LoadSession) fails — there's
+            // no backend here, so it always fails, and without this the dropdowns
+            // get emptied by sessionLoadOperation()/the organizationId handler and
+            // never get filled back in.
+            window.ORIGINAL_PROGRAM_OPTIONS_HTML = $('#programIds').html();
+            window.ORIGINAL_SESSION_OPTIONS_HTML = $('#sessionIds').html();
+
             muliselectfnc($('#programIds'), "All Program");
             muliselectfnc($('#sessionIds'), "All Session");
             $('#sessionIds').multiselect({ includeSelectAllOption: true });
@@ -57864,11 +57872,9 @@ function DeselectSelectedOptionAdd(elem) {
                         },
                         complete: function () { $.unblockUI(); },
                         error: function (data) {
-                            $.fn.customMessage({
-                                displayMessage: window.AJAX_ERROR,
-                                displayMessageType: "error",
-                                displayTime: 5000
-                            });
+                            $('#programIds').html(window.ORIGINAL_PROGRAM_OPTIONS_HTML);
+                            $('#programIds').multiselect({ includeSelectAllOption: true });
+                            $('#programIds').multiselect('rebuild');
                         }
                     });
                     sessionLoadOperation(organizationId, null);
@@ -57962,11 +57968,9 @@ function DeselectSelectedOptionAdd(elem) {
                     },
                     complete: function () { $.unblockUI(); },
                     error: function (data) {
-                        $.fn.customMessage({
-                            displayMessage: window.AJAX_ERROR,
-                            displayMessageType: "error",
-                            displayTime: 5000
-                        });
+                        $('#sessionIds').html(window.ORIGINAL_SESSION_OPTIONS_HTML);
+                        $('#sessionIds').multiselect({ includeSelectAllOption: true });
+                        $('#sessionIds').multiselect('rebuild');
                     }
                 });
 
