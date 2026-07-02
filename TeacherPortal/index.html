@@ -10,7 +10,6 @@
   body { margin:0; font-family:-apple-system,"Segoe UI","Noto Sans Bengali",Arial,sans-serif; color:var(--ink); background:var(--bg); }
   .topbar { background:#fff; border-bottom:1px solid var(--border); padding:14px 28px; display:flex; align-items:center; gap:10px; }
   .topbar .logo { width:26px; height:26px; border-radius:7px; background:var(--indigo); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:13px; flex-shrink:0; }
-  .topbar .brand { font-weight:700; font-size:14px; margin-right:6px; }
   .crumb { display:flex; align-items:center; gap:6px; font-size:13px; color:var(--muted); flex-wrap:wrap; }
   .crumb a { color:var(--muted); text-decoration:none; display:flex; align-items:center; gap:4px; }
   .crumb a:hover { color:var(--indigo); }
@@ -18,15 +17,12 @@
   .crumb .current { color:var(--ink); font-weight:600; }
   main { max-width:1040px; margin:0 auto; padding:34px 28px 70px; }
   .page-head { margin-bottom:22px; }
-  .page-head h1 { margin:0 0 4px; font-size:24px; font-weight:800; }
-  .page-head p { margin:0; color:var(--muted); font-size:14px; }
-  .count-pill { display:inline-block; background:#fff; border:1px solid var(--border); border-radius:999px; padding:3px 12px; font-size:12px; color:var(--muted); font-weight:600; margin-left:8px; vertical-align:middle; }
+  .page-head h1 { margin:0; font-size:24px; font-weight:800; }
   .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:16px; }
   a.card { display:block; background:#fff; border:1px solid var(--border); border-radius:16px; padding:20px; text-decoration:none; color:inherit; position:relative; box-shadow:0 1px 2px rgba(16,24,40,.04); transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease; }
   a.card:hover { transform:translateY(-4px); box-shadow:0 14px 28px rgba(31,36,48,.12); border-color:transparent; }
   .card .thumb { width:56px; height:56px; border-radius:14px; display:flex; align-items:center; justify-content:center; margin-bottom:16px; }
-  .card h2 { margin:0 0 5px; font-size:15.5px; font-weight:700; }
-  .card p { margin:0; font-size:12.5px; color:var(--muted); line-height:1.55; min-height:32px; }
+  .card h2 { margin:0; font-size:15.5px; font-weight:700; }
   .card .foot { display:flex; align-items:center; justify-content:space-between; margin-top:16px; }
   .card .foot .arrow { width:26px; height:26px; border-radius:8px; background:var(--bg); display:flex; align-items:center; justify-content:center; color:var(--muted); transition:background .15s ease,color .15s ease; }
   a.card:hover .foot .arrow { background:var(--indigo); color:#fff; }
@@ -46,10 +42,7 @@
     <div class="crumb"><a href="/"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7"></path><path d="M5 9v10a1 1 0 0 0 1 1h3v-6h6v6h3a1 1 0 0 0 1-1V9"></path></svg></a><span class="sep"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span><span class="current">Teacher Portal</span></div>
   </div>
   <main>
-    <div class="page-head">
-      <h1>Teacher Portal</h1>
-      <p>Teacher Portal-এর পেইজসমূহ</p>
-    </div>
+    <div class="page-head"><h1>Teacher Portal</h1></div>
     <div class="empty-wrap">
       <div class="thumb"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path></svg></div>
       <p>এখনো কোনো ডেমো যোগ করা হয়নি।</p>
