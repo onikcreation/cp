@@ -57695,7 +57695,11 @@ function DeselectSelectedOptionAdd(elem) {
             // get emptied by sessionLoadOperation()/the organizationId handler and
             // never get filled back in.
             window.ORIGINAL_PROGRAM_OPTIONS_HTML = $('#programIds').html();
-            window.ORIGINAL_SESSION_OPTIONS_HTML = $('#sessionIds').html();
+            // "Last Session" is baked into the cached list itself (rather than relying
+            // on the conditional programId-only insert further down, which is fragile
+            // once this cached list gets restored/appended after a failed reload) so it
+            // always shows up whenever the Session dropdown gets rebuilt.
+            window.ORIGINAL_SESSION_OPTIONS_HTML = "<option value=\"-1\">Last Session</option>" + $('#sessionIds').html();
 
             muliselectfnc($('#programIds'), "All Program");
             muliselectfnc($('#sessionIds'), "All Session");
@@ -57930,8 +57934,10 @@ function DeselectSelectedOptionAdd(elem) {
             }
             function sessionLoadOperation(organizationid, programId) {
                 $("#sessionIds").empty();
+                // "Last Session" is now baked into window.ORIGINAL_SESSION_OPTIONS_HTML
+                // (see document ready), which the error handler below appends — so it's
+                // not added separately here, which would otherwise duplicate it.
                 if (programId != null) {
-                    $('#sessionIds').append($('<option selected>').text('Last Session').attr('value', -1));
                     if (!chkLastSessionInOldArray(oldSessionList))
                         oldSessionList.push('-1');
                 }
