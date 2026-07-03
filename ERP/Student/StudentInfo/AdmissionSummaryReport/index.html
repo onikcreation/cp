@@ -15820,6 +15820,10 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                 <style>
                     #pageChangesBtn {
                         display: inline-block;
+                        position: absolute;
+                        left: 50%;
+                        top: 11px;
+                        transform: translateX(-50%);
                         padding: 6px 12px;
                         line-height: 1.2;
                         text-align: center;
@@ -15830,6 +15834,7 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                         font-size: 12.5px;
                         font-weight: bold;
                         white-space: nowrap;
+                        z-index: 1031;
                         animation: pageChangesPulse 1.6s infinite;
                     }
                     @keyframes pageChangesPulse {
@@ -15838,13 +15843,11 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                         100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
                     }
                 </style>
+                <a href="javascript:void(0)" id="pageChangesBtn" data-toggle="modal" data-target="#pageChangesModal" title="এই পেইজে যা যা পরিবর্তন/আপডেট করা হয়েছে">
+                  New Updates
+                </a>
                 <form action="javascript:void(0)" onsubmit="return false;" class="navbar-right" id="logoutForm" method="post">
                   <ul class="nav navbar-nav navbar-right">
-                    <li style="padding-top:11px;">
-                      <a href="javascript:void(0)" id="pageChangesBtn" data-toggle="modal" data-target="#pageChangesModal" title="এই পেইজে যা যা পরিবর্তন/আপডেট করা হয়েছে">
-                        New Updates
-                      </a>
-                    </li>
                     <li class="blink">
                       <a class="UnreadNotice" href="/Hr/Notice/MyNotice" id="UnreadNotice" title="notice">
                       </a>
