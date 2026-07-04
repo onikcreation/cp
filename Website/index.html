@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Website — ChangeProposal</title>
+<style>
+  :root { --indigo:#4338CA; --ink:#1F2430; --muted:#667085; --border:#E4E7EC; --bg:#F7F8FA; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:-apple-system,"Segoe UI","Noto Sans Bengali",Arial,sans-serif; color:var(--ink); background:var(--bg); }
+  .topbar { background:#fff; border-bottom:1px solid var(--border); padding:14px 28px; display:flex; align-items:center; gap:10px; }
+  .topbar .logo { width:26px; height:26px; border-radius:7px; background:var(--indigo); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:13px; flex-shrink:0; }
+  .crumb { display:flex; align-items:center; gap:6px; font-size:13px; color:var(--muted); flex-wrap:wrap; }
+  .crumb a { color:var(--muted); text-decoration:none; display:flex; align-items:center; gap:4px; }
+  .crumb a:hover { color:var(--indigo); }
+  .crumb .sep { color:#C0C4CC; }
+  .crumb .current { color:var(--ink); font-weight:600; }
+  main { max-width:1040px; margin:0 auto; padding:34px 28px 70px; }
+  .page-head { margin-bottom:22px; }
+  .page-head h1 { margin:0; font-size:24px; font-weight:800; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:16px; }
+  a.card { display:block; background:#fff; border:1px solid var(--border); border-radius:16px; padding:20px; text-decoration:none; color:inherit; position:relative; box-shadow:0 1px 2px rgba(16,24,40,.04); transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease; }
+  a.card:hover { transform:translateY(-4px); box-shadow:0 14px 28px rgba(31,36,48,.12); border-color:transparent; }
+  .card .thumb { width:56px; height:56px; border-radius:14px; display:flex; align-items:center; justify-content:center; margin-bottom:16px; }
+  .card h2 { margin:0; font-size:15.5px; font-weight:700; }
+  .card .foot { display:flex; align-items:center; justify-content:space-between; margin-top:16px; }
+  .card .foot .arrow { width:26px; height:26px; border-radius:8px; background:var(--bg); display:flex; align-items:center; justify-content:center; color:var(--muted); transition:background .15s ease,color .15s ease; }
+  a.card:hover .foot .arrow { background:var(--indigo); color:#fff; }
+  .live-badge { position:absolute; top:16px; right:16px; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:.05em; color:#12B76A; background:#ECFDF3; padding:3px 9px; border-radius:999px; display:flex; align-items:center; gap:4px; }
+  .live-dot { width:6px; height:6px; border-radius:50%; background:#12B76A; }
+  .empty-wrap { background:#fff; border:1px solid var(--border); border-radius:16px; padding:64px 20px; text-align:center; }
+  .empty-wrap .thumb { width:64px; height:64px; border-radius:16px; background:var(--bg); color:var(--muted); display:flex; align-items:center; justify-content:center; margin:0 auto 18px; }
+  .empty-wrap p { margin:0 0 18px; color:var(--muted); font-size:14px; }
+  .back-btn { display:inline-flex; align-items:center; gap:6px; background:var(--indigo); color:#fff; text-decoration:none; padding:9px 18px; border-radius:10px; font-size:13px; font-weight:600; }
+  .back-btn:hover { background:#342AA0; }
+  footer { text-align:center; padding:24px; color:var(--muted); font-size:12px; }
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="logo">CP</div>
+    <div class="crumb"><a href="/"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7"></path><path d="M5 9v10a1 1 0 0 0 1 1h3v-6h6v6h3a1 1 0 0 0 1-1V9"></path></svg></a><span class="sep"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span><span class="current">Website</span></div>
+  </div>
+  <main>
+    <div class="page-head"><h1>Website</h1></div>
+    <div class="grid">
+<a class="card" href="TeacherRegistrationForm/">
+      <span class="live-badge"><span class="live-dot"></span>Live</span>
+      <div class="thumb" style="background:#EEF0FF;color:#4338CA;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"></rect><path d="M8 21h8"></path><path d="M12 18v3"></path><path d="m10 9 3 2-3 2V9Z" fill="currentColor" stroke="none"></path></svg></div>
+      <h2>TeacherRegistrationForm</h2>
+      <div class="foot"><span></span><span class="arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span></div>
+    </a>
+</div>
+  </main>
+  <footer>ChangeProposal &middot; ERP/Portal Change Proposal</footer>
+</body>
+</html>
