@@ -12617,11 +12617,46 @@ function DeselectSelectedOptionAdd(elem) {
                     <h4 class="modal-title" id="pageChangesModalLabel">এই পেইজে যা যা পরিবর্তন/আপডেট করা হয়েছে</h4>
                   </div>
                   <div class="modal-body">
-                    <p style="font-weight:bold; margin-bottom:12px;">নতুন আপডেট:</p>
-                    <ol style="padding-left:20px; margin:0;">
+                    <p style="font-weight:bold; margin-bottom:4px;">ফিল্টার বার:</p>
+                    <ol style="padding-left:20px; margin:0 0 20px;">
+                      <li style="margin-bottom:14px;">
+                        <strong>তিনটি নতুন ফিল্টার যোগ করা হয়েছে</strong>
+                        <p style="margin:4px 0 0; color:#555;">Mentor ও Branch ফিল্টারের পর নতুন করে তিনটি ফিল্টার যোগ করা হয়েছে — Program (মাল্টি-সিলেক্ট), View By (একটাই সিলেক্ট করা যাবে: Programwise / Pinwise), এবং Date (একটাই সিলেক্ট করা যাবে: Today / Yesterday)। সবশেষে Search বাটন।</p>
+                      </li>
                       <li>
-                        <strong>Mentor ও Branch ফিল্টারের সাথে আরও তিনটি ফিল্টার অপশন যোগ করা হয়েছে: Program, View By ও Date।</strong>
-                        <p style="margin:4px 0 0; color:#555;"><em>যেভাবে কাজ করবে:</em> Program - মাল্টি-সিলেক্ট (AdmissionSummaryReport মেনুর প্রোগ্রাম লিস্টের মতোই)। View By - Programwise অথবা Pinwise, যেকোনো একটি সিলেক্ট করা যাবে। Date - Today অথবা Yesterday, যেকোনো একটি সিলেক্ট করা যাবে। সবশেষে Search বাটন অপরিবর্তিত।</p>
+                        <strong>Mentor অনুযায়ী Branch অটো-ফিল্টার</strong>
+                        <p style="margin:4px 0 0; color:#555;">Mentor ড্রপডাউনে কোনো মেন্টর সিলেক্ট করলে Branch ড্রপডাউন স্বয়ংক্রিয়ভাবে শুধু সেই মেন্টরের ব্রাঞ্চগুলো দেখাবে (বাকি ব্রাঞ্চ সাময়িকভাবে তালিকা থেকে সরে যাবে)। Mentor সিলেকশন ক্লিয়ার করলে আবার সব ব্রাঞ্চ ফিরে আসবে। (Program-এর তালিকা এই নিয়মের বাইরে — Mentor/Branch যাই সিলেক্ট করা হোক, Program-এর তালিকা সবসময় অপরিবর্তিত থাকবে।)</p>
+                      </li>
+                    </ol>
+                    <p style="font-weight:bold; margin-bottom:4px;">ডাটা টেবিল:</p>
+                    <ol style="padding-left:20px; margin:0;">
+                      <li style="margin-bottom:14px;">
+                        <strong>কলাম বাদ ও নাম পরিবর্তন</strong>
+                        <p style="margin:4px 0 0; color:#555;">"Created By" ও "Initiated By" কলাম দুটি সম্পূর্ণ বাদ দেওয়া হয়েছে। "Executed By" কলামের নাম পরিবর্তন করে "Entry By" করা হয়েছে (ডাটা অপরিবর্তিত)।</p>
+                      </li>
+                      <li style="margin-bottom:14px;">
+                        <strong>তিনটি নতুন কলাম যোগ</strong>
+                        <p style="margin:4px 0 0; color:#555;">"Today/Yesterday Entry" (নির্দিষ্ট দিনে কতগুলো এন্ট্রি হয়েছে), "Avg. Call Time" (গড় কল-সময়), এবং "Entry Till Today/Yesterday" (আজ/গতকাল পর্যন্ত মোট এন্ট্রি) — এই তিনটি কলাম যোগ করা হয়েছে।</p>
+                      </li>
+                      <li style="margin-bottom:14px;">
+                        <strong>Date ফিল্টার অনুযায়ী কলামের নাম বদল</strong>
+                        <p style="margin:4px 0 0; color:#555;">Date ফিল্টারে "Today" সিলেক্ট থাকলে কলাম দুটির নাম হবে "Today Entry" ও "Entry Till Today"। "Yesterday" সিলেক্ট করলে একই কলাম দুটির নাম বদলে "Yesterday Entry" ও "Entry Till Yesterday" হয়ে যাবে।</p>
+                      </li>
+                      <li style="margin-bottom:14px;">
+                        <strong>এন্ট্রি সংখ্যা ক্লিক করে সরাসরি ডিটেইলস দেখা</strong>
+                        <p style="margin:4px 0 0; color:#555;">"Today/Yesterday Entry" ও "Entry Till Today/Yesterday" কলামের সংখ্যাগুলো ক্লিকযোগ্য (লিংকের মতো) — ক্লিক করলে সরাসরি Details Report পেইজে সেই নির্দিষ্ট সংখ্যক রেকর্ডের বিস্তারিত তালিকা দেখাবে, আলাদাভাবে কোনো ফিল্টার/সার্চ করার প্রয়োজন হবে না।</p>
+                      </li>
+                      <li style="margin-bottom:14px;">
+                        <strong>একই Tracking ID-তে একাধিক টিম মেম্বারের এন্ট্রি</strong>
+                        <p style="margin:4px 0 0; color:#555;">কোনো Tracking ID-তে একাধিক টিম মেম্বার এন্ট্রি করে থাকলে প্রতিটা টিম মেম্বারের জন্য আলাদা সারি দেখাবে (নিজস্ব Entry By, Today/Yesterday Entry, Avg. Call Time সহ), কিন্তু বাকি তথ্য (Program, Total Student, Pending, Tracking ID ইত্যাদি) সব সারির উপর একসাথে মার্জ করে দেখাবে যেহেতু সেগুলো ব্যক্তি-ভিত্তিক না, পুরো Tracking ID-ভিত্তিক তথ্য।</p>
+                      </li>
+                      <li style="margin-bottom:14px;">
+                        <strong>Pending শেষ হলে Entry বাটন লুকানো</strong>
+                        <p style="margin:4px 0 0; color:#555;">কোনো Tracking ID-এর Pending সংখ্যা ০ হয়ে গেলে (অর্থাৎ আর কোনো এন্ট্রি বাকি নেই), সেই সারির Action কলামে Entry বাটন আর দেখাবে না।</p>
+                      </li>
+                      <li>
+                        <strong>View By: Pinwise ভিউ</strong>
+                        <p style="margin:4px 0 0; color:#555;">View By-তে "Pinwise" সিলেক্ট করলে একই ডাটা Program-এর বদলে Entry By (টিম মেম্বার) অনুযায়ী গ্রুপ করে দেখাবে — একজন টিম মেম্বারের সব এন্ট্রি একসাথে দেখা যাবে, তিনি একাধিক ভিন্ন প্রোগ্রামে কাজ করলেও।</p>
                       </li>
                     </ol>
                   </div>
