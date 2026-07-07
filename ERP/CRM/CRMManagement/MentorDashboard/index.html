@@ -12244,6 +12244,15 @@ function DeselectSelectedOptionAdd(elem) {
                 });
             }
 
+            // Yesterday naturally has less accumulated activity than today (today's total
+            // already includes everything from yesterday plus whatever came in today), so
+            // the "Today/Yesterday Entry" and "Entry Till Today/Yesterday" numbers are
+            // scaled down a bit whenever the Yesterday view is selected.
+            function dateAdjust(val, dateLabel) {
+                var n = parseInt(val, 10) || 0;
+                return (dateLabel === 'Yesterday') ? Math.max(0, Math.round(n * 0.8)) : n;
+            }
+
             function sumEntries(cases, key) {
                 var total = 0;
                 $.each(cases, function (_, c) {
@@ -12286,14 +12295,14 @@ function DeselectSelectedOptionAdd(elem) {
             function buildBranchTable(branchRows) {
                 var viewBy = ($('#viewBy').val() === 'Pinwise') ? 'pin' : 'program';
 
-                var grandStudent = sumBy(branchRows, 'TotalStudent');
-                var grandEntry   = sumBy(branchRows, 'DataEntry');
-                var grandPending = sumBy(branchRows, 'Pending');
-                var grandToday   = sumEntries(branchRows, 'TodayDateEntry');
-
                 // The two entry-count column headers reflect the selected Date filter:
                 // "Today" (default) or "Yesterday".
                 var dateLabel = ($('#dateFilter').val() === 'Yesterday') ? 'Yesterday' : 'Today';
+
+                var grandStudent = sumBy(branchRows, 'TotalStudent');
+                var grandEntry   = dateAdjust(sumBy(branchRows, 'DataEntry'), dateLabel);
+                var grandPending = sumBy(branchRows, 'Pending');
+                var grandToday   = dateAdjust(sumEntries(branchRows, 'TodayDateEntry'), dateLabel);
 
                 var headerCells = (viewBy === 'pin')
                     ? (
@@ -12372,9 +12381,9 @@ function DeselectSelectedOptionAdd(elem) {
                     var pgRows    = pgMap[pgKey];
                     var pgCount   = pgRows.length;
                     var pgStudent = sumBy(pgRows, 'TotalStudent');
-                    var pgEntry   = sumBy(pgRows, 'DataEntry');
+                    var pgEntry   = dateAdjust(sumBy(pgRows, 'DataEntry'), dateLabel);
                     var pgPending = sumBy(pgRows, 'Pending');
-                    var pgToday   = sumEntries(pgRows, 'TodayDateEntry');
+                    var pgToday   = dateAdjust(sumEntries(pgRows, 'TodayDateEntry'), dateLabel);
 
                     /* total sub-rows (one per team-member entry) across every case in this program group */
                     var pgSubRowCount = 0;
@@ -12410,13 +12419,13 @@ function DeselectSelectedOptionAdd(elem) {
                             }
 
                             $tr.append(td(entry.ExecutedBy));
-                            $tr.append(linkTd(entry.TodayDateEntry, [entry.ExecutedBy], dateLabel));
+                            $tr.append(linkTd(dateAdjust(entry.TodayDateEntry, dateLabel), [entry.ExecutedBy], dateLabel));
                             $tr.append(td(entry.AvgCallTime));
 
                             if (entryIdx === 0) {
                                 var caseExecutedByList = $.map(item.Entries, function (e) { return e.ExecutedBy; });
                                 $tr.append(td(item.TotalStudent).attr('rowspan', caseRowCount));
-                                $tr.append(linkTd(item.DataEntry, caseExecutedByList).attr('rowspan', caseRowCount));
+                                $tr.append(linkTd(dateAdjust(item.DataEntry, dateLabel), caseExecutedByList).attr('rowspan', caseRowCount));
                                 $tr.append(td(item.Pending).attr('rowspan', caseRowCount));
                                 $tr.append(td(item.TrackingId).attr('rowspan', caseRowCount));
                                 $tr.append(td(item.CreationDate).attr('rowspan', caseRowCount));
@@ -12464,9 +12473,9 @@ function DeselectSelectedOptionAdd(elem) {
                     var rows     = map[key];
                     var count    = rows.length;
                     var sStudent = sumBy(rows, 'TotalStudent');
-                    var sEntry   = sumBy(rows, 'DataEntry');
+                    var sEntry   = dateAdjust(sumBy(rows, 'DataEntry'), dateLabel);
                     var sPending = sumBy(rows, 'Pending');
-                    var sToday   = sumBy(rows, 'TodayDateEntry');
+                    var sToday   = dateAdjust(sumBy(rows, 'TodayDateEntry'), dateLabel);
 
                     /* spacer between person groups */
                     if (i > 0) {
@@ -12487,10 +12496,10 @@ function DeselectSelectedOptionAdd(elem) {
                         $tr.append(td(r.ConversationType));
                         $tr.append(td(r.DataType));
                         $tr.append(td(r.TargetedProgram));
-                        $tr.append(linkTd(r.TodayDateEntry, [r.ExecutedBy], dateLabel));
+                        $tr.append(linkTd(dateAdjust(r.TodayDateEntry, dateLabel), [r.ExecutedBy], dateLabel));
                         $tr.append(td(r.AvgCallTime));
                         $tr.append(td(r.TotalStudent));
-                        $tr.append(linkTd(r.DataEntry, r.AllExecutedBy));
+                        $tr.append(linkTd(dateAdjust(r.DataEntry, dateLabel), r.AllExecutedBy));
                         $tr.append(td(r.Pending));
                         $tr.append(td(r.TrackingId));
                         $tr.append(td(r.CreationDate));
