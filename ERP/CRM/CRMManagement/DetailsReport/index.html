@@ -28874,12 +28874,12 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
         var demoEntryByParam = new URLSearchParams(window.location.search).get('entryBy');
         var demoEntryByList = demoEntryByParam ? demoEntryByParam.split('|').filter(Boolean) : null;
 
-        // Demo: "Today Entry"/"Yesterday Entry" links pass ?sameDay=Today|Yesterday since
-        // every row they represent was entered on that one specific real calendar date —
-        // all fabricated rows below then share that same date (only the time varies).
-        // "Entry Till Today/Yesterday" links omit this param since those entries built up
-        // over multiple different days, so the existing varying-date fake generator is used.
-        var demoSameDayParam = new URLSearchParams(window.location.search).get('sameDay');
+        // Demo: "Today/Entry on (date)" links pass ?onDate=Today or ?onDate=YYYY-MM-DD
+        // since every row they represent was entered on that one specific real calendar
+        // date — all fabricated rows below then share that same date (only the time
+        // varies). "Entry Till" links omit this param since those entries built up over
+        // multiple different days, so the existing varying-date fake generator is used.
+        var demoOnDateParam = new URLSearchParams(window.location.search).get('onDate');
 
         // Demo: tracking id used to drive the fabricated header/table on auto-run — not a real record.
         const demoTrackingNo = '100000';
@@ -28921,11 +28921,11 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
 
         var fullMonthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-        // Real "DD Mon, YYYY" date string for today (daysAgo=0) or yesterday (daysAgo=1),
-        // using the browser's actual current date — not a fabricated one.
-        function demoRealDateOnly(daysAgo) {
-            var d = new Date();
-            d.setDate(d.getDate() - daysAgo);
+        // Real "DD Mon, YYYY" string for today's actual date (isoDateStr omitted) or for
+        // a specific ISO date string ("2026-07-01") passed from Mentor Dashboard's
+        // ?onDate= link — never a fabricated one.
+        function demoRealDateOnly(isoDateStr) {
+            var d = isoDateStr ? new Date(isoDateStr + 'T00:00:00') : new Date();
             var day = d.getDate();
             return (day < 10 ? '0' + day : day) + ' ' + fullMonthNames[d.getMonth()] + ', ' + d.getFullYear();
         }
@@ -28960,9 +28960,9 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
         function demoFakeMobileOrDash() { return Math.random() < 0.28 ? '-' : demoFakeMobile(); }
 
         function generateFakeReportRows(total) {
-            var fixedDateOnly = (demoSameDayParam === 'Today') ? demoRealDateOnly(0)
-                : (demoSameDayParam === 'Yesterday') ? demoRealDateOnly(1)
-                : null;
+            var fixedDateOnly = !demoOnDateParam ? null
+                : (demoOnDateParam === 'Today') ? demoRealDateOnly()
+                : demoRealDateOnly(demoOnDateParam);
             var rows = [];
             for (var i = 1; i <= total; i++) {
                 rows.push({

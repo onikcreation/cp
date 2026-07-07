@@ -8193,7 +8193,7 @@ span.hide-native-select{position:relative}span.hide-native-select select{border:
                       <tr>
                         <td style="padding-right: 8px; width: 400px;">
                           <select class="form-control" id="mentorIds" multiple="multiple" name="mentorIds">
-                              <option value="6">[6] Md. Asaduzzaman (Lebu)</option>
+                              <option value="6" selected="selected">[6] Md. Asaduzzaman (Lebu)</option>
                               <option value="25">[25] Uzzal Kumar Haldar (Shuvro)</option>
                               <option value="41">[41] Md. Jewel Mia (Jewel)</option>
                               <option value="53">[53] Muhammad Nazmul Hoque (Nazmul)</option>
@@ -8455,10 +8455,13 @@ span.hide-native-select{position:relative}span.hide-native-select select{border:
                               <option value="Pinwise">Pinwise</option>
                             </select>
                         </td>
-                        <td style="padding-right: 8px; width: 140px;">
-                          <select class="form-control" id="dateFilter" name="dateFilter">
-                              <option value="Today" selected="selected">Today</option>
-                              <option value="Yesterday">Yesterday</option>
+                        <td style="padding-right: 8px; width: 150px;">
+                          <input type="date" class="form-control" id="dateFilter" name="dateFilter">
+                        </td>
+                        <td style="padding-right: 8px; width: 150px;">
+                          <select class="form-control" id="trIdStatus" name="trIdStatus">
+                              <option value="Working" selected="selected">Working TrID</option>
+                              <option value="Active">Active TrID</option>
                             </select>
                         </td>
                         <td>
@@ -12117,8 +12120,8 @@ function DeselectSelectedOptionAdd(elem) {
             // do the same narrowing client-side against the fabricated dataset below.
             var $originalBranchOptions = $('#branchIds option').clone();
 
-            $('#mentorIds').on('change', function () {
-                var selectedMentors = $(this).val();
+            function narrowBranchesByMentor() {
+                var selectedMentors = $('#mentorIds').val();
                 var $branchIds = $('#branchIds');
 
                 if (!selectedMentors || selectedMentors.length === 0) {
@@ -12137,7 +12140,9 @@ function DeselectSelectedOptionAdd(elem) {
                 }
 
                 $branchIds.multiselect('rebuild');
-            });
+            }
+
+            $('#mentorIds').on('change', narrowBranchesByMentor);
 
             // Demo: no live backend — fabricate a plausible mentor-dashboard dataset instead
             // of posting to LoadMentorDashboardData. Same shape as the real response
@@ -12179,6 +12184,18 @@ function DeselectSelectedOptionAdd(elem) {
 
             ];
 
+            // Demo: default the date-picker to today, narrow the Branch list to the
+            // pre-selected mentor [6], and auto-run Search once on page load — matching
+            // the new requirement that Mentor Dashboard opens with a mentor already
+            // selected and its data already loaded, instead of an empty page waiting
+            // for the user to search.
+            (function () {
+                var todayIso = new Date().toISOString().slice(0, 10);
+                $('#dateFilter').val(todayIso);
+            })();
+            narrowBranchesByMentor();
+            loadDashboard();
+
             function loadDashboard() {
                 $('#dashboardContainer').empty();
 
@@ -12208,9 +12225,6 @@ function DeselectSelectedOptionAdd(elem) {
                     renderDashboard(filtered);
                 }, 500);
             }
-
-            // Demo: no data is shown until the user clicks Search, matching the
-            // requirement that this page should not auto-load data on open.
 
             function renderDashboard(data) {
                 var $container = $('#dashboardContainer');
@@ -12244,13 +12258,39 @@ function DeselectSelectedOptionAdd(elem) {
                 });
             }
 
-            // Yesterday naturally has less accumulated activity than today (today's total
-            // already includes everything from yesterday plus whatever came in today), so
-            // the "Today/Yesterday Entry" and "Entry Till Today/Yesterday" numbers are
-            // scaled down a bit whenever the Yesterday view is selected.
+            var monthNamesFull = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+            function todayIsoDate() {
+                return new Date().toISOString().slice(0, 10);
+            }
+
+            // "2026-07-01" -> "01-July-2026"
+            function formatDisplayDate(isoStr) {
+                var parts = isoStr.split('-');
+                var y = parts[0], m = parseInt(parts[1], 10) - 1, d = parts[2];
+                return d + '-' + monthNamesFull[m] + '-' + y;
+            }
+
+            function daysBetween(isoA, isoB) {
+                var a = new Date(isoA + 'T00:00:00');
+                var b = new Date(isoB + 'T00:00:00');
+                return Math.round((a - b) / 86400000);
+            }
+
+            // A day further in the past naturally has less accumulated activity than today
+            // (today's cumulative total already includes everything from every earlier day
+            // plus whatever came in today), so the entry-count numbers are scaled down more
+            // the further back the selected calendar date is — matching how far "Yesterday"
+            // used to scale things down (~20% less), just extended to any past date instead
+            // of only yesterday. Floors out at 30% of the original so old dates don't look
+            // unrealistically empty.
             function dateAdjust(val, dateLabel) {
                 var n = parseInt(val, 10) || 0;
-                return (dateLabel === 'Yesterday') ? Math.max(0, Math.round(n * 0.8)) : n;
+                if (!dateLabel || dateLabel === 'Today') { return n; }
+                var daysAgo = daysBetween(todayIsoDate(), dateLabel);
+                if (daysAgo <= 0) { return n; }
+                var factor = Math.max(0.3, 1 - daysAgo * 0.2);
+                return Math.max(0, Math.round(n * factor));
             }
 
             function sumEntries(cases, key) {
@@ -12295,14 +12335,26 @@ function DeselectSelectedOptionAdd(elem) {
             function buildBranchTable(branchRows) {
                 var viewBy = ($('#viewBy').val() === 'Pinwise') ? 'pin' : 'program';
 
-                // The two entry-count column headers reflect the selected Date filter:
-                // "Today" (default) or "Yesterday".
-                var dateLabel = ($('#dateFilter').val() === 'Yesterday') ? 'Yesterday' : 'Today';
+                // dateLabel is either the literal 'Today' or the selected calendar date's
+                // ISO string (e.g. '2026-07-01') — drives both the two entry-count column
+                // headers below and how much the numbers get scaled down (see dateAdjust).
+                var selectedDateVal = $('#dateFilter').val();
+                var dateLabel = (!selectedDateVal || selectedDateVal === todayIsoDate()) ? 'Today' : selectedDateVal;
+
+                var entryColLabel = (dateLabel === 'Today')
+                    ? 'Today<br>Entry'
+                    : 'Entry on<br>(' + formatDisplayDate(dateLabel) + ')';
+                var entryTillColLabel = (dateLabel === 'Today')
+                    ? 'Entry Till<br>Today'
+                    : 'Entry Till<br>(' + formatDisplayDate(dateLabel) + ')';
 
                 var grandStudent = sumBy(branchRows, 'TotalStudent');
                 var grandEntry   = dateAdjust(sumBy(branchRows, 'DataEntry'), dateLabel);
                 var grandPending = sumBy(branchRows, 'Pending');
                 var grandToday   = dateAdjust(sumEntries(branchRows, 'TodayDateEntry'), dateLabel);
+                var grandExecutedBy = $.map(branchRows, function (c) {
+                    return $.map(c.Entries, function (e) { return e.ExecutedBy; });
+                });
 
                 var headerCells = (viewBy === 'pin')
                     ? (
@@ -12310,10 +12362,10 @@ function DeselectSelectedOptionAdd(elem) {
                         '<th style="width:90px;">Conversation<br>Type</th>' +
                         '<th style="width:150px;">Data Type</th>' +
                         '<th style="width:180px;">Targeted Program</th>' +
-                        '<th style="width:70px;">' + dateLabel + '<br>Entry</th>' +
+                        '<th style="width:110px;">' + entryColLabel + '</th>' +
                         '<th style="width:80px;">Avg. Call<br>Time</th>' +
                         '<th style="width:60px;">Total<br>Student</th>' +
-                        '<th style="width:70px;">Entry Till<br>' + dateLabel + '</th>' +
+                        '<th style="width:110px;">' + entryTillColLabel + '</th>' +
                         '<th style="width:60px;">Pending</th>' +
                         '<th style="width:90px;">Tracking ID</th>' +
                         '<th style="width:90px;">Creation Date</th>' +
@@ -12325,10 +12377,10 @@ function DeselectSelectedOptionAdd(elem) {
                         '<th style="width:90px;">Conversation<br>Type</th>' +
                         '<th style="width:150px;">Data Type</th>' +
                         '<th style="width:120px;">Entry By</th>' +
-                        '<th style="width:70px;">' + dateLabel + '<br>Entry</th>' +
+                        '<th style="width:110px;">' + entryColLabel + '</th>' +
                         '<th style="width:80px;">Avg. Call<br>Time</th>' +
                         '<th style="width:60px;">Total<br>Student</th>' +
-                        '<th style="width:70px;">Entry Till<br>' + dateLabel + '</th>' +
+                        '<th style="width:110px;">' + entryTillColLabel + '</th>' +
                         '<th style="width:60px;">Pending</th>' +
                         '<th style="width:90px;">Tracking ID</th>' +
                         '<th style="width:90px;">Creation Date</th>' +
@@ -12354,10 +12406,10 @@ function DeselectSelectedOptionAdd(elem) {
                 $tfoot.append(
                     '<tr>' +
                     '<td colspan="4" style="text-align:right;"><strong>Grand Total</strong></td>' +
-                    '<td><strong>' + grandToday + '</strong></td>' +
+                    '<td>' + linkCellHtml(grandToday, grandExecutedBy, dateLabel) + '</td>' +
                     '<td></td>' +
                     '<td><strong>' + grandStudent + '</strong></td>' +
-                    '<td><strong>' + grandEntry + '</strong></td>' +
+                    '<td>' + linkCellHtml(grandEntry, grandExecutedBy) + '</td>' +
                     '<td><strong>' + grandPending + '</strong></td>' +
                     '<td colspan="4"></td>' +
                     '</tr>'
@@ -12447,11 +12499,12 @@ function DeselectSelectedOptionAdd(elem) {
                            this Tracking ID. The Targeted Program column isn't repeated
                            here since it's still covered by the program group's rowspan. */
                         if (caseRowCount > 1) {
+                            var caseExecutedBy = $.map(item.Entries, function (e) { return e.ExecutedBy; });
                             var caseToday = dateAdjust(sumBy(item.Entries, 'TodayDateEntry'), dateLabel);
                             $tbody.append(
                                 '<tr>' +
                                 '<td colspan="3" style="text-align:right;"><strong>Total</strong></td>' +
-                                '<td><strong>' + caseToday + '</strong></td>' +
+                                '<td>' + linkCellHtml(caseToday, caseExecutedBy, dateLabel) + '</td>' +
                                 '<td colspan="8"></td>' +
                                 '</tr>'
                             );
@@ -12460,13 +12513,16 @@ function DeselectSelectedOptionAdd(elem) {
 
                     /* Total row — only for multi-case program groups */
                     if (pgCount > 1) {
+                        var pgExecutedBy = $.map(pgRows, function (c) {
+                            return $.map(c.Entries, function (e) { return e.ExecutedBy; });
+                        });
                         $tbody.append(
                             '<tr>' +
                             '<td colspan="4" style="text-align:right;"><strong>Total</strong></td>' +
-                            '<td><strong>' + pgToday + '</strong></td>' +
+                            '<td>' + linkCellHtml(pgToday, pgExecutedBy, dateLabel) + '</td>' +
                             '<td></td>' +
                             '<td><strong>' + pgStudent + '</strong></td>' +
-                            '<td><strong>' + pgEntry + '</strong></td>' +
+                            '<td>' + linkCellHtml(pgEntry, pgExecutedBy) + '</td>' +
                             '<td><strong>' + pgPending + '</strong></td>' +
                             '<td colspan="4"></td>' +
                             '</tr>'
@@ -12532,10 +12588,10 @@ function DeselectSelectedOptionAdd(elem) {
                         $tbody.append(
                             '<tr>' +
                             '<td colspan="4" style="text-align:right;"><strong>Total</strong></td>' +
-                            '<td><strong>' + sToday + '</strong></td>' +
+                            '<td>' + linkCellHtml(sToday, [key], dateLabel) + '</td>' +
                             '<td></td>' +
                             '<td><strong>' + sStudent + '</strong></td>' +
-                            '<td><strong>' + sEntry + '</strong></td>' +
+                            '<td>' + linkCellHtml(sEntry, [key]) + '</td>' +
                             '<td><strong>' + sPending + '</strong></td>' +
                             '<td colspan="4"></td>' +
                             '</tr>'
@@ -12567,23 +12623,39 @@ function DeselectSelectedOptionAdd(elem) {
             // sameDayLabel: pass 'Today'/'Yesterday' for the per-entry columns (all those
             // rows happened on that one real date); omit for "Entry Till Today/Yesterday"
             // since that total built up across multiple different days.
-            function linkTd(val, entryByNames, sameDayLabel) {
-                var display = (val === null || val === undefined || val === '') ? '-' : val;
+            // onDateLabel: either 'Today' or the selected calendar date's ISO string —
+            // passed through as ?onDate= so Details Report can fabricate every row on
+            // that one specific real date (only the time varies) instead of spreading
+            // them across random dates, since this number represents one day's activity.
+            function buildDrillHref(val, entryByNames, onDateLabel) {
                 var count = parseInt(val, 10) || 0;
                 var href = '../DetailsReport/index.html?count=' + count;
                 if (entryByNames && entryByNames.length) {
                     href += '&entryBy=' + encodeURIComponent(entryByNames.join('|'));
                 }
-                if (sameDayLabel) {
-                    href += '&sameDay=' + encodeURIComponent(sameDayLabel);
+                if (onDateLabel) {
+                    href += '&onDate=' + encodeURIComponent(onDateLabel);
                 }
+                return href;
+            }
+
+            function linkTd(val, entryByNames, onDateLabel) {
+                var display = (val === null || val === undefined || val === '') ? '-' : val;
                 return $('<td></td>').append(
                     $('<a></a>')
-                        .attr('href', href)
+                        .attr('href', buildDrillHref(val, entryByNames, onDateLabel))
                         .attr('target', '_blank')
                         .addClass('dashboard-drill-link')
                         .text(display)
                 );
+            }
+
+            // String-built equivalent of linkTd, for the Total/Grand Total rows which are
+            // assembled as raw HTML strings rather than jQuery objects.
+            function linkCellHtml(val, entryByNames, onDateLabel) {
+                var display = (val === null || val === undefined || val === '') ? '-' : val;
+                return '<strong><a href="' + buildDrillHref(val, entryByNames, onDateLabel) +
+                    '" target="_blank" class="dashboard-drill-link">' + display + '</a></strong>';
             }
 
             // No Pending data left for this Tracking ID means there's nothing left to
