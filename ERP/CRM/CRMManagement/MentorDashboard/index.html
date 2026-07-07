@@ -12191,7 +12191,9 @@ function DeselectSelectedOptionAdd(elem) {
             // for the user to search.
             (function () {
                 var todayIso = new Date().toISOString().slice(0, 10);
-                $('#dateFilter').val(todayIso);
+                // Future dates aren't allowed — there's no "entry" data for a day that
+                // hasn't happened yet.
+                $('#dateFilter').attr('max', todayIso).val(todayIso);
             })();
             narrowBranchesByMentor();
             loadDashboard();
