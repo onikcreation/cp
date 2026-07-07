@@ -12181,7 +12181,7 @@ function DeselectSelectedOptionAdd(elem) {
                 { BranchId: 194, BranchName: 'Chapainawabganj Udvash', MentorId: 581, TargetedProgram: 'College Admission Program 2025 [UDVASH]', ProgramId: 67, TrackingId: 310310, CreatedBy: '2008@demo.local', CreationDate: '29 Jun, 2026 01:46 PM', DataType: 'SSC FRC & SSC MT-2027', ConversationType: 'Information Update', Entries: [{ ExecutedBy: '[2007] Rakibul Hasan', TodayDateEntry: 5, AvgCallTime: '4m 33s' }, { ExecutedBy: '[2008] Sabbir Ahmed', TodayDateEntry: 12, AvgCallTime: '5m 46s' }], TotalStudent: 107, DataEntry: 35, Pending: 72, Deadline: '09 Jul, 2026 07:30 PM', ConversationId: 510310 },
                 { BranchId: 194, BranchName: 'Chapainawabganj Udvash', MentorId: 581, TargetedProgram: 'HSC Model Test 2026 [UDVASH]', ProgramId: 66, TrackingId: 310320, CreatedBy: '2001@demo.local', CreationDate: '03 Jul, 2026 10:56 AM', DataType: 'NDC+HCC ONLINE/COMBO Batch', ConversationType: 'New Admission', Entries: [{ ExecutedBy: '[2008] Sabbir Ahmed', TodayDateEntry: 6, AvgCallTime: '5m 40s' }, { ExecutedBy: '[2001] Shakil Ahmed', TodayDateEntry: 6, AvgCallTime: '2m 53s' }, { ExecutedBy: '[2002] Md. Tariful Islam', TodayDateEntry: 12, AvgCallTime: '3m 7s' }], TotalStudent: 144, DataEntry: 66, Pending: 78, Deadline: '10 Jul, 2026 08:30 PM', ConversationId: 510320 },
                 { BranchId: 611, BranchName: 'Charfasson Udvash', MentorId: 6, TargetedProgram: 'Class 12 Academic Program 2026 [UDVASH]', ProgramId: 63, TrackingId: 310330, CreatedBy: '2005@demo.local', CreationDate: '05 Jul, 2026 05:18 PM', DataType: 'Chemistar', ConversationType: 'Relation Call', Entries: [{ ExecutedBy: '[2005] Tushar Imran', TodayDateEntry: 9, AvgCallTime: '3m 45s' }, { ExecutedBy: '[2006] Nayeem Hasan', TodayDateEntry: 14, AvgCallTime: '4m 12s' }], TotalStudent: 118, DataEntry: 72, Pending: 46, Deadline: '11 Jul, 2026 09:30 PM', ConversationId: 510330 },
-                { BranchId: 88, BranchName: 'Azimpur Udvash', MentorId: 6, TargetedProgram: 'Class 9 Bangla-English Program (Online) 2026 [ONLINE CARE]', ProgramId: 267, TrackingId: 310340, CreatedBy: '2007@demo.local', CreationDate: '06 Jul, 2026 02:43 PM', DataType: 'SSC FRC & SSC MT-2027', ConversationType: 'New Admission', Entries: [{ ExecutedBy: '[2007] Rakibul Hasan', TodayDateEntry: 12, AvgCallTime: '3m 28s' }, { ExecutedBy: '[2008] Sabbir Ahmed', TodayDateEntry: 6, AvgCallTime: '4m 51s' }], TotalStudent: 96, DataEntry: 41, Pending: 55, Deadline: '12 Jul, 2026 08:00 PM', ConversationId: 510340 },
+                { BranchId: 88, BranchName: 'Azimpur Udvash', MentorId: 6, TargetedProgram: 'Class 9 Bangla-English Program (Online) 2026 [ONLINE CARE]', ProgramId: 267, TrackingId: 310340, CreatedBy: '2007@demo.local', CreationDate: '06 Jul, 2026 02:43 PM', DataType: 'SSC FRC & SSC MT-2027', ConversationType: 'New Admission', Entries: [{ ExecutedBy: '-', TodayDateEntry: null, AvgCallTime: '-' }], TotalStudent: 96, DataEntry: 41, Pending: 55, Deadline: '-', ConversationId: 510340 },
 
             ];
 
@@ -12293,6 +12293,9 @@ function DeselectSelectedOptionAdd(elem) {
             // of only yesterday. Floors out at 30% of the original so old dates don't look
             // unrealistically empty.
             function dateAdjust(val, dateLabel) {
+                // No entry recorded at all (null/undefined) stays that way — don't turn
+                // a "nothing happened yet" case into a literal 0.
+                if (val === null || val === undefined || val === '') { return val; }
                 var n = parseInt(val, 10) || 0;
                 if (!dateLabel || dateLabel === 'Today') { return n; }
                 var daysAgo = daysBetween(todayIsoDate(), dateLabel);
