@@ -12320,6 +12320,21 @@ function DeselectSelectedOptionAdd(elem) {
                 return Math.max(0, Math.round(n * factor));
             }
 
+            // Toggle to bring back the previous behavior later: "Entry Till Today" used
+            // to rename itself to "Entry Till (DD-Month-YYYY)" and scale its number down
+            // via dateAdjust() the further back the selected calendar date was — exactly
+            // like "Today/Yesterday Entry" still does. Per the user's 2026-07-07 request,
+            // that's now OFF: "Entry Till Today" always shows today's real running total,
+            // label and number both fixed, no matter what date is picked. Flip this back
+            // to true (and nothing else needs to change) to restore the old behavior.
+            var entryTillFollowsSelectedDate = false;
+
+            // Wraps dateAdjust() specifically for the "Entry Till Today" column/sums so
+            // the behavior above can be toggled in one place.
+            function dateAdjustEntryTill(val, dateLabel) {
+                return entryTillFollowsSelectedDate ? dateAdjust(val, dateLabel) : dateAdjust(val, 'Today');
+            }
+
             function sumEntries(cases, key) {
                 var total = 0;
                 $.each(cases, function (_, c) {
@@ -12371,12 +12386,12 @@ function DeselectSelectedOptionAdd(elem) {
                 var entryColLabel = (dateLabel === 'Today')
                     ? 'Today<br>Entry'
                     : 'Entry on<br>(' + formatDisplayDate(dateLabel) + ')';
-                var entryTillColLabel = (dateLabel === 'Today')
-                    ? 'Entry Till<br>Today'
-                    : 'Entry Till<br>(' + formatDisplayDate(dateLabel) + ')';
+                var entryTillColLabel = (entryTillFollowsSelectedDate && dateLabel !== 'Today')
+                    ? 'Entry Till<br>(' + formatDisplayDate(dateLabel) + ')'
+                    : 'Entry Till<br>Today';
 
                 var grandStudent = sumBy(branchRows, 'TotalStudent');
-                var grandEntry   = dateAdjust(sumBy(branchRows, 'DataEntry'), dateLabel);
+                var grandEntry   = dateAdjustEntryTill(sumBy(branchRows, 'DataEntry'), dateLabel);
                 var grandPending = sumBy(branchRows, 'Pending');
                 var grandToday   = dateAdjust(sumEntries(branchRows, 'TodayDateEntry'), dateLabel);
                 var grandExecutedBy = $.map(branchRows, function (c) {
@@ -12460,7 +12475,7 @@ function DeselectSelectedOptionAdd(elem) {
                     var pgRows    = pgMap[pgKey];
                     var pgCount   = pgRows.length;
                     var pgStudent = sumBy(pgRows, 'TotalStudent');
-                    var pgEntry   = dateAdjust(sumBy(pgRows, 'DataEntry'), dateLabel);
+                    var pgEntry   = dateAdjustEntryTill(sumBy(pgRows, 'DataEntry'), dateLabel);
                     var pgPending = sumBy(pgRows, 'Pending');
                     var pgToday   = dateAdjust(sumEntries(pgRows, 'TodayDateEntry'), dateLabel);
 
@@ -12508,7 +12523,7 @@ function DeselectSelectedOptionAdd(elem) {
                             if (entryIdx === 0) {
                                 var caseExecutedByList = $.map(item.Entries, function (e) { return e.ExecutedBy; });
                                 $tr.append(td(item.TotalStudent).attr('rowspan', caseRowCount));
-                                $tr.append(linkTd(dateAdjust(item.DataEntry, dateLabel), caseExecutedByList).attr('rowspan', caseRowCount));
+                                $tr.append(linkTd(dateAdjustEntryTill(item.DataEntry, dateLabel), caseExecutedByList).attr('rowspan', caseRowCount));
                                 $tr.append(td(item.Pending).attr('rowspan', caseRowCount));
                                 $tr.append(td(item.TrackingId).attr('rowspan', caseRowCount));
                                 $tr.append(td(item.CreationDate).attr('rowspan', caseRowCount));
@@ -12574,7 +12589,7 @@ function DeselectSelectedOptionAdd(elem) {
                     var rows     = map[key];
                     var count    = rows.length;
                     var sStudent = sumBy(rows, 'TotalStudent');
-                    var sEntry   = dateAdjust(sumBy(rows, 'DataEntry'), dateLabel);
+                    var sEntry   = dateAdjustEntryTill(sumBy(rows, 'DataEntry'), dateLabel);
                     var sPending = sumBy(rows, 'Pending');
                     var sToday   = dateAdjust(sumBy(rows, 'TodayDateEntry'), dateLabel);
 
@@ -12600,7 +12615,7 @@ function DeselectSelectedOptionAdd(elem) {
                         $tr.append(linkTd(dateAdjust(r.TodayDateEntry, dateLabel), [r.ExecutedBy], dateLabel));
                         $tr.append(td(r.AvgCallTime));
                         $tr.append(td(r.TotalStudent));
-                        $tr.append(linkTd(dateAdjust(r.DataEntry, dateLabel), r.AllExecutedBy));
+                        $tr.append(linkTd(dateAdjustEntryTill(r.DataEntry, dateLabel), r.AllExecutedBy));
                         $tr.append(td(r.Pending));
                         $tr.append(td(r.TrackingId));
                         $tr.append(td(r.CreationDate));
