@@ -9079,55 +9079,55 @@ table.DTFC_Cloned thead,table.DTFC_Cloned tfoot{background-color:white}div.DTFC_
                         <div class="row" style="padding-left: 80px; margin-bottom:20px; margin-top:5px;">
                           <div class="col-md-12">
                             <select class="form-control valid" id="InformationViewList" multiple="multiple" name="InformationViewList" style="display: none;">
-                              <option value="Registration Number" selected="selected">
+                              <option value="Registration Number">
                                 Registration Number
                               </option>
-                              <option value="Student's Name" selected="selected">
+                              <option value="Student's Name">
                                 Student's Name
                               </option>
-                              <option value="Nick Name" selected="selected">
+                              <option value="Nick Name">
                                 Nick Name
                               </option>
-                              <option value="Mobile Number (Student)" selected="selected">
+                              <option value="Mobile Number (Student)">
                                 Mobile Number (Student)
                               </option>
-                              <option value="Mobile Number (Father)" selected="selected">
+                              <option value="Mobile Number (Father)">
                                 Mobile Number (Father)
                               </option>
-                              <option value="Mobile Number (Mother)" selected="selected">
+                              <option value="Mobile Number (Mother)">
                                 Mobile Number (Mother)
                               </option>
-                              <option value="Institute Name" selected="selected">
+                              <option value="Institute Name">
                                 Institute Name
                               </option>
-                              <option value="Admission Target" selected="selected">
+                              <option value="Admission Target">
                                 Admission Target
                               </option>
-                              <option value="Custom View Field" selected="selected">
+                              <option value="Custom View Field">
                                 Custom View Field
                               </option>
-                              <option value="Status" selected="selected">
+                              <option value="Status">
                                 Status
                               </option>
-                              <option value="Student Feedback" selected="selected">
+                              <option value="Student Feedback">
                                 Student Feedback
                               </option>
-                              <option value="Conversation Duration" selected="selected">
+                              <option value="Conversation Duration">
                                 Conversation Duration
                               </option>
-                              <option value="Custom Entry Field" selected="selected">
+                              <option value="Custom Entry Field">
                                 Custom Entry Field
                               </option>
-                              <option value="Remarks" selected="selected">
+                              <option value="Remarks">
                                 Remarks
                               </option>
-                              <option value="Entry By" selected="selected">
+                              <option value="Entry By">
                                 Entry By
                               </option>
-                              <option value="Entry Date" selected="selected">
+                              <option value="Entry Date">
                                 Entry Date &amp; Time
                               </option>
-                              <option value="Mobile Number" selected="selected">
+                              <option value="Mobile Number">
                                 Mobile Number
                               </option>
                             </select>
@@ -29004,6 +29004,13 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                 $(pageSizeId).val(PageSize);
             }
 
+            // Demo: Serial, Reg. No, Nick Name, Status, Student Feedback, Conversation
+            // Duration and Remarks always show. Every other column only shows if its
+            // matching field has been moved to the "Selected" side of the "Select
+            // Information To View" dual-listbox.
+            var selectedInfo = $(informationViewListIdName).val() || [];
+            function infoSelected(v) { return $.inArray(v, selectedInfo) !== -1; }
+
             $('#DataGrid').DataTable({
                 destroy: true,
                 searching: false,
@@ -29019,19 +29026,19 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                     { data: 'serial' },
                     { data: 'regNo' },
                     { data: 'nickName' },
-                    { data: 'mobileStudent' },
-                    { data: 'mobileFather' },
-                    { data: 'mobileMother' },
-                    { data: 'institute' },
-                    { data: 'target' },
+                    { data: 'mobileStudent', visible: infoSelected('Mobile Number (Student)') },
+                    { data: 'mobileFather', visible: infoSelected('Mobile Number (Father)') },
+                    { data: 'mobileMother', visible: infoSelected('Mobile Number (Mother)') },
+                    { data: 'institute', visible: infoSelected('Institute Name') },
+                    { data: 'target', visible: infoSelected('Admission Target') },
                     { data: 'status' },
                     { data: 'studentFeedback' },
                     { data: 'conversationDuration' },
-                    { data: 'feedback' },
+                    { data: 'feedback', visible: infoSelected('Custom Entry Field') },
                     { data: 'remarks' },
-                    { data: 'entryBy' },
-                    { data: 'entryDateTime' },
-                    { data: 'mobileNumber' }
+                    { data: 'entryBy', visible: infoSelected('Entry By') },
+                    { data: 'entryDateTime', visible: infoSelected('Entry Date') },
+                    { data: 'mobileNumber', visible: infoSelected('Mobile Number') }
                 ]
             });
         }
