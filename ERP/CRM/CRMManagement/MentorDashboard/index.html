@@ -12258,9 +12258,11 @@ function DeselectSelectedOptionAdd(elem) {
             function flattenEntries(cases) {
                 var out = [];
                 $.each(cases, function (_, item) {
+                    var allExecutedBy = $.map(item.Entries, function (e) { return e.ExecutedBy; });
                     $.each(item.Entries, function (_, entry) {
                         out.push({
                             ExecutedBy: entry.ExecutedBy,
+                            AllExecutedBy: allExecutedBy,
                             TodayDateEntry: entry.TodayDateEntry,
                             AvgCallTime: entry.AvgCallTime,
                             TargetedProgram: item.TargetedProgram,
@@ -12406,12 +12408,13 @@ function DeselectSelectedOptionAdd(elem) {
                             }
 
                             $tr.append(td(entry.ExecutedBy));
-                            $tr.append(linkTd(entry.TodayDateEntry));
+                            $tr.append(linkTd(entry.TodayDateEntry, [entry.ExecutedBy]));
                             $tr.append(td(entry.AvgCallTime));
 
                             if (entryIdx === 0) {
+                                var caseExecutedByList = $.map(item.Entries, function (e) { return e.ExecutedBy; });
                                 $tr.append(td(item.TotalStudent).attr('rowspan', caseRowCount));
-                                $tr.append(linkTd(item.DataEntry).attr('rowspan', caseRowCount));
+                                $tr.append(linkTd(item.DataEntry, caseExecutedByList).attr('rowspan', caseRowCount));
                                 $tr.append(td(item.Pending).attr('rowspan', caseRowCount));
                                 $tr.append(td(item.TrackingId).attr('rowspan', caseRowCount));
                                 $tr.append(td(item.CreationDate).attr('rowspan', caseRowCount));
@@ -12482,10 +12485,10 @@ function DeselectSelectedOptionAdd(elem) {
                         $tr.append(td(r.ConversationType));
                         $tr.append(td(r.DataType));
                         $tr.append(td(r.TargetedProgram));
-                        $tr.append(linkTd(r.TodayDateEntry));
+                        $tr.append(linkTd(r.TodayDateEntry, [r.ExecutedBy]));
                         $tr.append(td(r.AvgCallTime));
                         $tr.append(td(r.TotalStudent));
-                        $tr.append(linkTd(r.DataEntry));
+                        $tr.append(linkTd(r.DataEntry, r.AllExecutedBy));
                         $tr.append(td(r.Pending));
                         $tr.append(td(r.TrackingId));
                         $tr.append(td(r.CreationDate));
@@ -12532,12 +12535,20 @@ function DeselectSelectedOptionAdd(elem) {
             // passing the clicked number as ?count= so that page fabricates exactly that
             // many fake rows (real live page opens its own Details Report the same way,
             // drilling into the specific count that was clicked).
-            function linkTd(val) {
+            // entryByNames: which team member(s) the Details Report page should attribute
+            // its fabricated rows to. "Today Entry" passes just the one person who made
+            // that entry; "Entry Till Today" passes every team member who has entered
+            // against that Tracking ID, so the drilled-down page reflects everyone's work.
+            function linkTd(val, entryByNames) {
                 var display = (val === null || val === undefined || val === '') ? '-' : val;
                 var count = parseInt(val, 10) || 0;
+                var href = '../DetailsReport/index.html?count=' + count;
+                if (entryByNames && entryByNames.length) {
+                    href += '&entryBy=' + encodeURIComponent(entryByNames.join('|'));
+                }
                 return $('<td></td>').append(
                     $('<a></a>')
-                        .attr('href', '../DetailsReport/index.html?count=' + count)
+                        .attr('href', href)
                         .attr('target', '_blank')
                         .addClass('dashboard-drill-link')
                         .text(display)

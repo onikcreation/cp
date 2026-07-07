@@ -28865,6 +28865,15 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
         if (!demoTotalCount || demoTotalCount < 1) { demoTotalCount = 25; }
         window.demoTotalCount = demoTotalCount;
 
+        // Demo: which team member(s) to attribute the fabricated rows' "Entry By" to —
+        // passed from Mentor Dashboard's clickable numbers. "Today Entry" passes just the
+        // one team member who made that entry; "Entry Till Today" passes every team member
+        // who has ever entered data against that Tracking ID (pipe-separated), and the
+        // rows below are spread across all of them. Falls back to the generic fake agent
+        // pool when the page is opened without this param (e.g. directly, not via a link).
+        var demoEntryByParam = new URLSearchParams(window.location.search).get('entryBy');
+        var demoEntryByList = demoEntryByParam ? demoEntryByParam.split('|').filter(Boolean) : null;
+
         // Demo: tracking id used to drive the fabricated header/table on auto-run — not a real record.
         const demoTrackingNo = '100000';
 
@@ -28942,7 +28951,9 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                     conversationDuration: demoFakeCallDuration(),
                     feedback: fakeFeedbacks[demoRandInt(0, fakeFeedbacks.length - 1)],
                     remarks: fakeRemarks[demoRandInt(0, fakeRemarks.length - 1)],
-                    entryBy: fakeAgents[demoRandInt(0, fakeAgents.length - 1)],
+                    entryBy: demoEntryByList
+                        ? demoEntryByList[(i - 1) % demoEntryByList.length]
+                        : fakeAgents[demoRandInt(0, fakeAgents.length - 1)],
                     entryDateTime: demoFakeEntryDateTime(),
                     mobileNumber: demoFakeMobile()
                 });
