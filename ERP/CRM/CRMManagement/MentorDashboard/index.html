@@ -12397,6 +12397,14 @@ function DeselectSelectedOptionAdd(elem) {
                 var grandExecutedBy = $.map(branchRows, function (c) {
                     return $.map(c.Entries, function (e) { return e.ExecutedBy; });
                 });
+                // Per-Tracking-ID breakdown of the Grand Total, for the multi-Tracking-ID
+                // Details Report view (see buildDrillHref).
+                var grandTodayBreakdown = $.map(branchRows, function (c) {
+                    return { trackingId: c.TrackingId, count: dateAdjust(sumBy(c.Entries, 'TodayDateEntry'), dateLabel) };
+                });
+                var grandEntryBreakdown = $.map(branchRows, function (c) {
+                    return { trackingId: c.TrackingId, count: dateAdjustEntryTill(c.DataEntry, dateLabel) };
+                });
 
                 var headerCells = (viewBy === 'pin')
                     ? (
@@ -12448,10 +12456,10 @@ function DeselectSelectedOptionAdd(elem) {
                 $tfoot.append(
                     '<tr>' +
                     '<td colspan="4" style="text-align:right;"><strong>Grand Total</strong></td>' +
-                    '<td>' + linkCellHtml(grandToday, grandExecutedBy, dateLabel) + '</td>' +
+                    '<td>' + linkCellHtml(grandToday, grandExecutedBy, dateLabel, grandTodayBreakdown) + '</td>' +
                     '<td></td>' +
                     '<td><strong>' + grandStudent + '</strong></td>' +
-                    '<td>' + linkCellHtml(grandEntry, grandExecutedBy) + '</td>' +
+                    '<td>' + linkCellHtml(grandEntry, grandExecutedBy, null, grandEntryBreakdown) + '</td>' +
                     '<td><strong>' + grandPending + '</strong></td>' +
                     '<td colspan="4"></td>' +
                     '</tr>'
@@ -12558,13 +12566,19 @@ function DeselectSelectedOptionAdd(elem) {
                         var pgExecutedBy = $.map(pgRows, function (c) {
                             return $.map(c.Entries, function (e) { return e.ExecutedBy; });
                         });
+                        var pgTodayBreakdown = $.map(pgRows, function (c) {
+                            return { trackingId: c.TrackingId, count: dateAdjust(sumBy(c.Entries, 'TodayDateEntry'), dateLabel) };
+                        });
+                        var pgEntryBreakdown = $.map(pgRows, function (c) {
+                            return { trackingId: c.TrackingId, count: dateAdjustEntryTill(c.DataEntry, dateLabel) };
+                        });
                         $tbody.append(
                             '<tr>' +
                             '<td colspan="4" style="text-align:right;"><strong>Total</strong></td>' +
-                            '<td>' + linkCellHtml(pgToday, pgExecutedBy, dateLabel) + '</td>' +
+                            '<td>' + linkCellHtml(pgToday, pgExecutedBy, dateLabel, pgTodayBreakdown) + '</td>' +
                             '<td></td>' +
                             '<td><strong>' + pgStudent + '</strong></td>' +
-                            '<td>' + linkCellHtml(pgEntry, pgExecutedBy) + '</td>' +
+                            '<td>' + linkCellHtml(pgEntry, pgExecutedBy, null, pgEntryBreakdown) + '</td>' +
                             '<td><strong>' + pgPending + '</strong></td>' +
                             '<td colspan="4"></td>' +
                             '</tr>'
@@ -12592,6 +12606,12 @@ function DeselectSelectedOptionAdd(elem) {
                     var sEntry   = dateAdjustEntryTill(sumBy(rows, 'DataEntry'), dateLabel);
                     var sPending = sumBy(rows, 'Pending');
                     var sToday   = dateAdjust(sumBy(rows, 'TodayDateEntry'), dateLabel);
+                    var sTodayBreakdown = $.map(rows, function (r) {
+                        return { trackingId: r.TrackingId, count: dateAdjust(r.TodayDateEntry, dateLabel) };
+                    });
+                    var sEntryBreakdown = $.map(rows, function (r) {
+                        return { trackingId: r.TrackingId, count: dateAdjustEntryTill(r.DataEntry, dateLabel) };
+                    });
 
                     /* spacer between person groups */
                     if (i > 0) {
@@ -12630,10 +12650,10 @@ function DeselectSelectedOptionAdd(elem) {
                         $tbody.append(
                             '<tr>' +
                             '<td colspan="4" style="text-align:right;"><strong>Total</strong></td>' +
-                            '<td>' + linkCellHtml(sToday, [key], dateLabel) + '</td>' +
+                            '<td>' + linkCellHtml(sToday, [key], dateLabel, sTodayBreakdown) + '</td>' +
                             '<td></td>' +
                             '<td><strong>' + sStudent + '</strong></td>' +
-                            '<td>' + linkCellHtml(sEntry, [key]) + '</td>' +
+                            '<td>' + linkCellHtml(sEntry, [key], null, sEntryBreakdown) + '</td>' +
                             '<td><strong>' + sPending + '</strong></td>' +
                             '<td colspan="4"></td>' +
                             '</tr>'
@@ -12669,7 +12689,13 @@ function DeselectSelectedOptionAdd(elem) {
             // passed through as ?onDate= so Details Report can fabricate every row on
             // that one specific real date (only the time varies) instead of spreading
             // them across random dates, since this number represents one day's activity.
-            function buildDrillHref(val, entryByNames, onDateLabel) {
+            // trIdBreakdown: only relevant for Total/Grand Total cells that combine more
+            // than one Tracking ID — an array of { trackingId, count } for each case that
+            // contributed to this sum. When it has more than one entry, Details Report
+            // shows every one of those Tracking IDs and renders a separate table per
+            // Tracking ID instead of a single merged table. A single-case link (or one
+            // omitting this argument entirely) keeps the existing single-table behavior.
+            function buildDrillHref(val, entryByNames, onDateLabel, trIdBreakdown) {
                 var count = parseInt(val, 10) || 0;
                 var href = '../DetailsReport/index.html?count=' + count;
                 if (entryByNames && entryByNames.length) {
@@ -12677,6 +12703,10 @@ function DeselectSelectedOptionAdd(elem) {
                 }
                 if (onDateLabel) {
                     href += '&onDate=' + encodeURIComponent(onDateLabel);
+                }
+                if (trIdBreakdown && trIdBreakdown.length > 1) {
+                    var pairs = $.map(trIdBreakdown, function (p) { return p.trackingId + ':' + p.count; }).join(',');
+                    href += '&trIds=' + encodeURIComponent(pairs);
                 }
                 return href;
             }
@@ -12694,9 +12724,9 @@ function DeselectSelectedOptionAdd(elem) {
 
             // String-built equivalent of linkTd, for the Total/Grand Total rows which are
             // assembled as raw HTML strings rather than jQuery objects.
-            function linkCellHtml(val, entryByNames, onDateLabel) {
+            function linkCellHtml(val, entryByNames, onDateLabel, trIdBreakdown) {
                 var display = (val === null || val === undefined || val === '') ? '-' : val;
-                return '<strong><a href="' + buildDrillHref(val, entryByNames, onDateLabel) +
+                return '<strong><a href="' + buildDrillHref(val, entryByNames, onDateLabel, trIdBreakdown) +
                     '" target="_blank" class="dashboard-drill-link">' + display + '</a></strong>';
             }
 

@@ -9221,6 +9221,10 @@ table.DTFC_Cloned thead,table.DTFC_Cloned tfoot{background-color:white}div.DTFC_
                               <tbody></tbody>
                             </table>
                           </div>
+                          <!-- Demo: shown instead of the single #DataGrid_wrapper above when
+                               ?trIds= names more than one Tracking ID — one heading + table
+                               per Tracking ID, stacked. See renderMultiTrackingTables(). -->
+                          <div id="multiTrackingContainer" style="display:none;"></div>
                         </div>
                       </div>
                     </div>
@@ -28881,6 +28885,21 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
         // multiple different days, so the existing varying-date fake generator is used.
         var demoOnDateParam = new URLSearchParams(window.location.search).get('onDate');
 
+        // Demo: when a Mentor Dashboard Total/Grand Total number (spanning more than one
+        // Tracking ID) is clicked, it passes ?trIds=<id>:<count>,<id>:<count>,... — one
+        // entry per contributing Tracking ID. When this has more than one entry, the page
+        // shows every one of those Tracking IDs (comma-separated) and renders a separate
+        // fake table per Tracking ID instead of one merged table. A single-entry or
+        // missing ?trIds= param means "just one Tracking ID", so the existing single-table
+        // behavior below is unaffected.
+        var demoTrIdsParam = new URLSearchParams(window.location.search).get('trIds');
+        var demoTrIdsBreakdown = demoTrIdsParam
+            ? demoTrIdsParam.split(',').map(function (pair) {
+                var parts = pair.split(':');
+                return { trackingId: parts[0], count: parseInt(parts[1], 10) || 0 };
+            }).filter(function (p) { return p.count > 0; })
+            : [];
+
         // Demo: tracking id used to drive the fabricated header/table on auto-run — not a real record.
         const demoTrackingNo = '100000';
 
@@ -28989,28 +29008,49 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
             return rows;
         }
 
+        // Demo: Serial, Reg. No, Nick Name, Status, Student Feedback, Conversation
+        // Duration and Remarks always show. Every other column only shows if its
+        // matching field has been moved to the "Selected" side of the "Select
+        // Information To View" dual-listbox. Shared by both the single-Tracking-ID
+        // table and the per-Tracking-ID tables (multi Tracking ID view).
+        function buildResultColumns() {
+            var selectedInfo = $(informationViewListIdName).val() || [];
+            function infoSelected(v) { return $.inArray(v, selectedInfo) !== -1; }
+            return [
+                { data: 'serial' },
+                { data: 'regNo' },
+                { data: 'nickName' },
+                { data: 'mobileStudent', visible: infoSelected('Mobile Number (Student)') },
+                { data: 'mobileFather', visible: infoSelected('Mobile Number (Father)') },
+                { data: 'mobileMother', visible: infoSelected('Mobile Number (Mother)') },
+                { data: 'institute', visible: infoSelected('Institute Name') },
+                { data: 'target', visible: infoSelected('Admission Target') },
+                { data: 'status' },
+                { data: 'studentFeedback' },
+                { data: 'conversationDuration' },
+                { data: 'feedback', visible: infoSelected('Custom Entry Field') },
+                { data: 'remarks' },
+                { data: 'entryBy', visible: infoSelected('Entry By') },
+                { data: 'entryDateTime', visible: infoSelected('Entry Date') },
+                { data: 'mobileNumber', visible: infoSelected('Mobile Number') }
+            ];
+        }
+
+        function resolvedPageSize() {
+            let PageSize = 100;
+            if ($(pageSizeId).val() != "" && /^\d+$/.test($(pageSizeId).val()) && Number.parseInt($(pageSizeId).val()) > 0) {
+                PageSize = parseInt($(pageSizeId).val());
+            } else {
+                $(pageSizeId).val(PageSize);
+            }
+            return PageSize;
+        }
+
         // data Table — demo: no live backend. Plain client-side DataTable (serverSide:
         // false) fed by fabricated rows, replacing the real serverSide:true /
         // CrmDetailsReportDatatable ajax init. Pagination/paging controls still work
         // normally since DataTables itself paginates the in-memory `rows` array.
         function dataTableRender(rows) {
-
-            let PageSize = 100;
-
-            if ($(pageSizeId).val() != "" && /^\d+$/.test($(pageSizeId).val()) && Number.parseInt($(pageSizeId).val()) > 0) {
-                PageSize = parseInt($(pageSizeId).val());
-            }
-            else {
-                $(pageSizeId).val(PageSize);
-            }
-
-            // Demo: Serial, Reg. No, Nick Name, Status, Student Feedback, Conversation
-            // Duration and Remarks always show. Every other column only shows if its
-            // matching field has been moved to the "Selected" side of the "Select
-            // Information To View" dual-listbox.
-            var selectedInfo = $(informationViewListIdName).val() || [];
-            function infoSelected(v) { return $.inArray(v, selectedInfo) !== -1; }
-
             $('#DataGrid').DataTable({
                 destroy: true,
                 searching: false,
@@ -29018,31 +29058,56 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                 data: rows,
                 scrollX: true,
                 bLengthChange: false,
-                iDisplayLength: PageSize,
+                iDisplayLength: resolvedPageSize(),
                 scrollCollapse: true,
                 scrollY: "60vh",
                 bSort: false,
-                columns: [
-                    { data: 'serial' },
-                    { data: 'regNo' },
-                    { data: 'nickName' },
-                    { data: 'mobileStudent', visible: infoSelected('Mobile Number (Student)') },
-                    { data: 'mobileFather', visible: infoSelected('Mobile Number (Father)') },
-                    { data: 'mobileMother', visible: infoSelected('Mobile Number (Mother)') },
-                    { data: 'institute', visible: infoSelected('Institute Name') },
-                    { data: 'target', visible: infoSelected('Admission Target') },
-                    { data: 'status' },
-                    { data: 'studentFeedback' },
-                    { data: 'conversationDuration' },
-                    { data: 'feedback', visible: infoSelected('Custom Entry Field') },
-                    { data: 'remarks' },
-                    { data: 'entryBy', visible: infoSelected('Entry By') },
-                    { data: 'entryDateTime', visible: infoSelected('Entry Date') },
-                    { data: 'mobileNumber', visible: infoSelected('Mobile Number') }
-                ]
+                columns: buildResultColumns()
             });
         }
         // data Table
+
+        // Demo: one heading + table per contributing Tracking ID, used when a Mentor
+        // Dashboard Total/Grand Total number (spanning more than one Tracking ID) is
+        // clicked. Each table gets its own fabricated rows sized to that Tracking ID's
+        // own share of the total, and its own independent DataTable instance/paging.
+        function renderMultiTrackingTables(breakdown) {
+            var $container = $('#multiTrackingContainer').empty();
+
+            $.each(breakdown, function (i, entry) {
+                var tableId = 'DataGrid_multi_' + i;
+                var $block = $(
+                    '<div style="margin-bottom:24px;">' +
+                    '<div style="font-size:15px; font-weight:bold; margin-bottom:8px;">Tracking ID: ' + entry.trackingId + '</div>' +
+                    '<table id="' + tableId + '" class="display table table-striped table-bordered table-condensed table-hover table-responsive text-wrap" cellspacing="0" width="100%">' +
+                    '<thead><tr role="row">' +
+                    '<th>Serial</th><th>Reg. No</th><th>Nick Name</th><th>Mobile Number(Student)</th>' +
+                    '<th>Mobile Number(Father)</th><th>Mobile Number(Mother)</th><th>Institute</th>' +
+                    '<th>Admission Target</th><th>Status</th><th>Student Feedback</th>' +
+                    '<th>Conversation Duration</th><th>Feedback</th><th>Remarks</th><th>Entry By</th>' +
+                    '<th>Entry Date &amp; Time</th><th>Mobile Number</th>' +
+                    '</tr></thead><tbody></tbody></table>' +
+                    '</div>'
+                );
+                $container.append($block);
+
+                var rows = generateFakeReportRows(entry.count);
+
+                $('#' + tableId).DataTable({
+                    destroy: true,
+                    searching: false,
+                    serverSide: false,
+                    data: rows,
+                    scrollX: true,
+                    bLengthChange: false,
+                    iDisplayLength: resolvedPageSize(),
+                    scrollCollapse: true,
+                    scrollY: "60vh",
+                    bSort: false,
+                    columns: buildResultColumns()
+                });
+            });
+        }
 
         function NextOperation() {
 
@@ -29069,9 +29134,21 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                 // simulate the round trip and fabricate `demoTotalCount` rows instead
                 // (see the ?count= query-param handling above).
                 setTimeout(function () {
-                    $(trackingShowId).text(trackingNo);
-                    var rows = generateFakeReportRows(window.demoTotalCount);
-                    dataTableRender(rows);
+                    if (demoTrIdsBreakdown.length > 1) {
+                        // Multiple Tracking IDs contributed to the clicked Total/Grand
+                        // Total number — show them all, one table per Tracking ID.
+                        var allTrackingIds = $.map(demoTrIdsBreakdown, function (p) { return p.trackingId; }).join(', ');
+                        $(trackingShowId).text(allTrackingIds);
+                        $('#DataGrid_wrapper').hide();
+                        $('#multiTrackingContainer').show();
+                        renderMultiTrackingTables(demoTrIdsBreakdown);
+                    } else {
+                        $(trackingShowId).text(trackingNo);
+                        $('#multiTrackingContainer').hide().empty();
+                        $('#DataGrid_wrapper').show();
+                        var rows = generateFakeReportRows(window.demoTotalCount);
+                        dataTableRender(rows);
+                    }
                     $.unblockUI();
                     ShowHide();
                 }, 400);
