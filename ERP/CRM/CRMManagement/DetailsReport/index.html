@@ -29076,9 +29076,16 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
 
             $.each(breakdown, function (i, entry) {
                 var tableId = 'DataGrid_multi_' + i;
+                var collapseId = 'collapse_trid_' + i;
                 var $block = $(
-                    '<div style="margin-bottom:24px;">' +
-                    '<div style="font-size:15px; font-weight:bold; margin-bottom:8px;">Tracking ID: ' + entry.trackingId + '</div>' +
+                    '<div class="panel panel-primary" style="margin-bottom:15px;">' +
+                    '<div class="panel-heading" data-toggle="collapse" href="#' + collapseId + '" style="cursor:pointer;">' +
+                    '<h4 class="panel-title">Tracking ID: ' + entry.trackingId +
+                    '<span style="float:right;"><i class="fa fa-minus" aria-hidden="true"></i></span>' +
+                    '</h4>' +
+                    '</div>' +
+                    '<div id="' + collapseId + '" class="panel-collapse collapse in">' +
+                    '<div class="panel-body">' +
                     '<table id="' + tableId + '" class="display table table-striped table-bordered table-condensed table-hover table-responsive text-wrap" cellspacing="0" width="100%">' +
                     '<thead><tr role="row">' +
                     '<th>Serial</th><th>Reg. No</th><th>Nick Name</th><th>Mobile Number(Student)</th>' +
@@ -29087,6 +29094,8 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                     '<th>Conversation Duration</th><th>Feedback</th><th>Remarks</th><th>Entry By</th>' +
                     '<th>Entry Date &amp; Time</th><th>Mobile Number</th>' +
                     '</tr></thead><tbody></tbody></table>' +
+                    '</div>' +
+                    '</div>' +
                     '</div>'
                 );
                 $container.append($block);
@@ -29108,6 +29117,16 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                 });
             });
         }
+
+        /* Each per-Tracking-ID panel above expands/collapses independently via
+           Bootstrap's own [data-toggle=collapse] handling — this just keeps the
+           plus/minus icon in sync with that state. */
+        $(document).on('show.bs.collapse hide.bs.collapse', '#multiTrackingContainer .panel-collapse', function (e) {
+            var isShowing = e.type === 'show';
+            $(this).siblings('.panel-heading').find('.fa')
+                .toggleClass('fa-minus', isShowing)
+                .toggleClass('fa-plus', !isShowing);
+        });
 
         function NextOperation() {
 
