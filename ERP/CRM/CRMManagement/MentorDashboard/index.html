@@ -12516,13 +12516,9 @@ function DeselectSelectedOptionAdd(elem) {
             }
 
             $(document).on('click', '.entry', function () {
-                // Demo: no live backend — the real page opens a new tab to RedirectEntry
-                // for the clicked row. Not available in this offline preview.
-                $.fn.customMessage && $.fn.customMessage({
-                    displayTime: 3000,
-                    displayMessage: 'এই ডেমোতে এন্ট্রি পেইজে যাওয়া সম্ভব নয়।',
-                    displayMessageType: 'info',
-                });
+                // Demo: the real page opens a new tab to RedirectEntry for the clicked
+                // row — here that's simulated by opening the Conversation Entry demo page.
+                window.open('../ConversationEntry/index.html', '_blank');
             });
 
             function td(val) {
