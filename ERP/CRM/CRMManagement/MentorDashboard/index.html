@@ -12334,9 +12334,9 @@ function DeselectSelectedOptionAdd(elem) {
                 var $tfoot = $table.find('tfoot');
 
                 if (viewBy === 'pin') {
-                    renderPinwiseBody($tbody, flattenEntries(branchRows));
+                    renderPinwiseBody($tbody, flattenEntries(branchRows), dateLabel);
                 } else {
-                    renderProgramwiseBody($tbody, branchRows);
+                    renderProgramwiseBody($tbody, branchRows, dateLabel);
                 }
 
                 /* Grand Total */
@@ -12357,7 +12357,7 @@ function DeselectSelectedOptionAdd(elem) {
 
             /* Programwise (default): group by Targeted Program, then by Tracking ID case,
                with one sub-row per team-member entry on each case. */
-            function renderProgramwiseBody($tbody, branchRows) {
+            function renderProgramwiseBody($tbody, branchRows, dateLabel) {
                 var pgOrder = [];
                 var pgMap   = {};
                 $.each(branchRows, function (_, row) {
@@ -12408,7 +12408,7 @@ function DeselectSelectedOptionAdd(elem) {
                             }
 
                             $tr.append(td(entry.ExecutedBy));
-                            $tr.append(linkTd(entry.TodayDateEntry, [entry.ExecutedBy]));
+                            $tr.append(linkTd(entry.TodayDateEntry, [entry.ExecutedBy], dateLabel));
                             $tr.append(td(entry.AvgCallTime));
 
                             if (entryIdx === 0) {
@@ -12449,7 +12449,7 @@ function DeselectSelectedOptionAdd(elem) {
             /* Pinwise: group the same underlying data by Entry By (team member / pin)
                instead of by program — Targeted Program becomes a regular per-row column
                since one person can have entries against several different programs. */
-            function renderPinwiseBody($tbody, flatRecords) {
+            function renderPinwiseBody($tbody, flatRecords, dateLabel) {
                 var order = [];
                 var map   = {};
                 $.each(flatRecords, function (_, r) {
@@ -12485,7 +12485,7 @@ function DeselectSelectedOptionAdd(elem) {
                         $tr.append(td(r.ConversationType));
                         $tr.append(td(r.DataType));
                         $tr.append(td(r.TargetedProgram));
-                        $tr.append(linkTd(r.TodayDateEntry, [r.ExecutedBy]));
+                        $tr.append(linkTd(r.TodayDateEntry, [r.ExecutedBy], dateLabel));
                         $tr.append(td(r.AvgCallTime));
                         $tr.append(td(r.TotalStudent));
                         $tr.append(linkTd(r.DataEntry, r.AllExecutedBy));
@@ -12539,12 +12539,18 @@ function DeselectSelectedOptionAdd(elem) {
             // its fabricated rows to. "Today Entry" passes just the one person who made
             // that entry; "Entry Till Today" passes every team member who has entered
             // against that Tracking ID, so the drilled-down page reflects everyone's work.
-            function linkTd(val, entryByNames) {
+            // sameDayLabel: pass 'Today'/'Yesterday' for the per-entry columns (all those
+            // rows happened on that one real date); omit for "Entry Till Today/Yesterday"
+            // since that total built up across multiple different days.
+            function linkTd(val, entryByNames, sameDayLabel) {
                 var display = (val === null || val === undefined || val === '') ? '-' : val;
                 var count = parseInt(val, 10) || 0;
                 var href = '../DetailsReport/index.html?count=' + count;
                 if (entryByNames && entryByNames.length) {
                     href += '&entryBy=' + encodeURIComponent(entryByNames.join('|'));
+                }
+                if (sameDayLabel) {
+                    href += '&sameDay=' + encodeURIComponent(sameDayLabel);
                 }
                 return $('<td></td>').append(
                     $('<a></a>')
