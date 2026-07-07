@@ -12736,7 +12736,7 @@ table tfoot th::after {
                                                   <div id="contacted-number-error" class="text-danger" style="margin-top: 4px;">
                                                   </div>
                                                 </div>
-                                                <div class="form-horizontal mb-2">
+                                                <div class="form-horizontal mb-2 conversation-points-section">
                                                   <h5 style="margin-top: 0px;">
                                                     <strong>
                                                       Conversation Points:
@@ -15804,13 +15804,16 @@ $(document).ready(function () {
             function toggleReceivedContent() {
                 const selectedValue = $('.comments-section input[name="CallStatus"]:checked').val();
 
-                // Contacted Number + Conversation Duration: only for Call Received.
-                // Fully hidden (not just disabled) when Call Not Received is selected.
+                // Contacted Number + Conversation Duration + Conversation Points: only for
+                // Call Received. Fully hidden (not just disabled) when Call Not Received is
+                // selected.
                 if (selectedValue == 20) {
                     $('.comments-section .received-wise-content').show().removeClass('block-overlay');
+                    $('.comments-section .conversation-points-section').show();
                 }
                 else if (selectedValue == 30) {
                     $('.comments-section .received-wise-content').hide();
+                    $('.comments-section .conversation-points-section').hide();
 
                     $('.comments-section .received-wise-content').find('input[type="radio"][name="ContactedNumber"]').prop('checked', false);
                     $('.comments-section .received-wise-content').find('input[type="text"]').val('');
@@ -15820,6 +15823,7 @@ $(document).ready(function () {
                 }
                 else {
                     $('.comments-section .received-wise-content').show().addClass('block-overlay');
+                    $('.comments-section .conversation-points-section').show();
 
                     $('.comments-section .received-wise-content').find('input[type="radio"][name="ContactedNumber"]').prop('checked', false);
                     $('.comments-section .received-wise-content').find('input[type="text"]').val('');
@@ -16521,8 +16525,8 @@ $(document).ready(function () {
                                                                                 <p style="margin:4px 0 0; color:#555;"><em>যেভাবে কাজ করবে:</em> Call Received সিলেক্ট করলে যে নম্বরে কথা হয়েছে, Student Feedback, Conversation Duration একটিভ হবে ও দেওয়া বাধ্যতামূলক। Remarks লজিক আগের মতোই থাকবে। Call Not Received সিলেক্ট করলে শুধু Student Feedback একটিভ হবে ও দেওয়া বাধ্যতামূলক। Remarks লজিক আগের মতোই থাকবে।</p>
                                                                               </li>
                                                                               <li>
-                                                                                <strong>Student Feedback অপশনগুলো Call Stats Type অনুযায়ী ফিল্টার হবে, এবং Call Not Received সিলেক্ট করলে "যে নম্বরে কথা হয়েছে" ও "Conversation Duration" সেকশন হাইড হয়ে যাবে।</strong>
-                                                                                <p style="margin:4px 0 0; color:#555;"><em>যেভাবে কাজ করবে:</em> Manage Student Feedback পেইজে প্রতিটি Student Feedback-এর জন্য যে "Call Stats Type" (Call Receive / Call Not Receive) সিলেক্ট করা আছে, সেই অনুযায়ী এই পেইজের Student Feedback চেকবক্সগুলো ফিল্টার হয়ে দেখাবে — "Call Received" ক্লিক করলে শুধু Call Receive টাইপের অপশন, "Call Not Received" ক্লিক করলে শুধু Call Not Receive টাইপের অপশন দেখাবে। পেইজ লোড হওয়ার সময় (কোনো রেডিও বাটন ক্লিক করার আগ পর্যন্ত) সবগুলো অপশনই দেখাবে। ফিল্টার হয়ে হাইড হওয়া কোনো অপশন আগে টিক দেওয়া থাকলে সেটা অটোমেটিক আনটিক হয়ে যাবে। এছাড়া "Call Not Received" সিলেক্ট করলে "যে নম্বরে কথা হয়েছে:" ও "Conversation Duration" সেকশন দুটো এখন সম্পূর্ণ হাইড হয়ে যাবে (আগে শুধু ডিসেবল/আবছা দেখাতো)।</p>
+                                                                                <strong>Student Feedback অপশনগুলো Call Stats Type অনুযায়ী ফিল্টার হবে, এবং Call Not Received সিলেক্ট করলে "যে নম্বরে কথা হয়েছে", "Conversation Duration" ও "Conversation Points" সেকশন হাইড হয়ে যাবে।</strong>
+                                                                                <p style="margin:4px 0 0; color:#555;"><em>যেভাবে কাজ করবে:</em> Manage Student Feedback পেইজে প্রতিটি Student Feedback-এর জন্য যে "Call Stats Type" (Call Receive / Call Not Receive) সিলেক্ট করা আছে, সেই অনুযায়ী এই পেইজের Student Feedback চেকবক্সগুলো ফিল্টার হয়ে দেখাবে — "Call Received" ক্লিক করলে শুধু Call Receive টাইপের অপশন, "Call Not Received" ক্লিক করলে শুধু Call Not Receive টাইপের অপশন দেখাবে। পেইজ লোড হওয়ার সময় (কোনো রেডিও বাটন ক্লিক করার আগ পর্যন্ত) সবগুলো অপশনই দেখাবে। ফিল্টার হয়ে হাইড হওয়া কোনো অপশন আগে টিক দেওয়া থাকলে সেটা অটোমেটিক আনটিক হয়ে যাবে। এছাড়া "Call Not Received" সিলেক্ট করলে "যে নম্বরে কথা হয়েছে:", "Conversation Duration" ও "Conversation Points" — তিনটা সেকশনই এখন সম্পূর্ণ হাইড হয়ে যাবে (আগে শুধু প্রথম দুইটা ডিসেবল/আবছা দেখাতো)।</p>
                                                                               </li>
                                                                             </ol>
                                                                           </div>
