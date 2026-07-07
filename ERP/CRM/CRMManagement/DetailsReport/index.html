@@ -29293,7 +29293,11 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
             // clickable total on another already-converted page) immediately shows a
             // populated report, matching the "already submitted" state the original
             // capture was taken in.
-            $(trackingNoId).val(demoTrackingNo);
+            $(trackingNoId).val(
+                demoTrIdsBreakdown.length > 1
+                    ? $.map(demoTrIdsBreakdown, function (p) { return p.trackingId; }).join(', ')
+                    : demoTrackingNo
+            );
             NextOperation();
         })
 
