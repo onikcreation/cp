@@ -29206,6 +29206,17 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
             }
         });
 
+        // Keep the left sidebar's "CRM Management" panel always expanded — block any
+        // collapse, whether from its own header being clicked or from the Bootstrap
+        // accordion auto-closing it when another sidebar panel opens. The page's own
+        // active-menu-highlighting script strips "in" from every sidebar panel that
+        // doesn't match this page's business ID, then re-adds it only to the matching
+        // one — this page isn't under CRM Management's business IDs, so force it open.
+        $('#collapse_962').addClass('in');
+        $('#collapse_962').on('hide.bs.collapse', function (e) {
+            e.preventDefault();
+        });
+
         $(informationViewListIdName).bootstrapDualListbox({
             nonselectedlistlabel: 'Non-selected',
             selectedlistlabel: 'Selected',
