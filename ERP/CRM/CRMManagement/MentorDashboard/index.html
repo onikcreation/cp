@@ -12719,10 +12719,21 @@ function DeselectSelectedOptionAdd(elem) {
                 });
             }
 
+            // Sibling demo pages are named "<Name>_Offline.html" when viewed locally
+            // (file://) but get renamed to "index.html" when published to GitHub Pages
+            // (http/https) — this resolves to whichever one actually exists so links
+            // between demo pages don't 404 after publishing.
+            function siblingPageUrl(folder, offlineFileName) {
+                if (location.protocol === 'file:') {
+                    return '../' + folder + '/' + offlineFileName;
+                }
+                return '../' + folder + '/';
+            }
+
             $(document).on('click', '.entry', function () {
                 // Demo: the real page opens a new tab to RedirectEntry for the clicked
                 // row — here that's simulated by opening the Conversation Entry demo page.
-                window.open('../ConversationEntry/CrmConversationEntry_Offline.html', '_blank');
+                window.open(siblingPageUrl('ConversationEntry', 'CrmConversationEntry_Offline.html'), '_blank');
             });
 
             function td(val) {
@@ -12754,7 +12765,7 @@ function DeselectSelectedOptionAdd(elem) {
             // omitting this argument entirely) keeps the existing single-table behavior.
             function buildDrillHref(val, entryByNames, onDateLabel, trIdBreakdown) {
                 var count = parseInt(val, 10) || 0;
-                var href = '../DetailsReport/DetailsReport_Offline.html?count=' + count;
+                var href = siblingPageUrl('DetailsReport', 'DetailsReport_Offline.html') + '?count=' + count;
                 if (entryByNames && entryByNames.length) {
                     href += '&entryBy=' + encodeURIComponent(entryByNames.join('|'));
                 }
