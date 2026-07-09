@@ -13237,12 +13237,12 @@ function DeselectSelectedOptionAdd(elem) {
                     <h4 class="modal-title" id="pageChangesModalLabel">এই মেনু সম্পর্কে বিস্তারিত</h4>
                   </div>
                   <div class="modal-body" style="height:65vh; overflow-y:auto;">
-                    <p style="font-weight:bold; margin-bottom:4px; color:#B42318;">এটা একটা সম্পূর্ণ নতুন মেনু — লাইভ সাইটে এখনো নেই।</p>
-                    <p style="margin:4px 0 16px; color:#555;">"Conversation Call Report" CRM Management সাবমেনুতে নতুন যোগ করার জন্য প্রস্তাব করা হয়েছে (Mentor Dashboard-এর পরে)। Conversation Entry পেইজে সেভ হওয়া "যে নম্বরে কথা হয়েছে" ও "যে মাধ্যমে কথা হয়েছে" ডাটা বিভিন্নভাবে ফিল্টার করে অ্যানালাইসিস করার জন্য এই রিপোর্টটা।</p>
-                    <p style="font-weight:bold; margin-bottom:4px;">ফিল্টার বার (ক্রম অনুযায়ী):</p>
+                    <p style="font-weight:bold; margin-bottom:4px; color:#B42318;">এই মেনুটি সম্পূর্ণ নতুন — লাইভ সাইটে এখনো তৈরি করা হয়নি।</p>
+                    <p style="margin:4px 0 16px; color:#555;">নাম হবে "Conversation Call Report" এবং এটি CRM Management মেনুর সাবমেনুতে Mentor Dashboard-এর পরে যোগ করতে হবে। Conversation Entry পেইজে থেকে সেভ হওয়া "যে নম্বরে কথা হয়েছে" এবং "যে মাধ্যমে কথা হয়েছে" ফিল্ডগুলোর ডাটা বিভিন্নভাবে ফিল্টার ও অ্যানালাইসিস করার জন্য এই মেনুটি তৈরি করা হচ্ছে।</p>
+                    <p style="font-weight:bold; margin-bottom:4px;">ফিল্টার বার:</p>
                     <ol style="padding-left:20px; margin:0 0 20px;">
                       <li style="margin-bottom:10px;">
-                        <strong>GroupBy</strong> — Branch Wise / Mentor Branch Wise / Program Wise / Contacted Person Wise / Contact Medium Wise / Date Wise / User Wise, ডিফল্ট Contact Medium Wise। Summary টেবিল কোন ডাইমেনশনে গ্রুপ হবে তা ঠিক করে — একা নিজের সারিতে থাকে।
+                        <strong>GroupBy:</strong> Branch Wise / Mentor Branch Wise / Program Wise / Contacted Person Wise / Contact Medium Wise / Date Wise / User Wise, ডিফল্টভাবে Contact Medium Wise সিলেক্ট থাকবে।
                       </li>
                       <li style="margin-bottom:10px;">
                         <strong>Organization, Program, Session, Branch</strong> — Organization একটাই সিলেক্ট করা যাবে, বাকি সবগুলো মাল্টি-সিলেক্ট, ডিফল্টে সবগুলোই।
@@ -13251,46 +13251,46 @@ function DeselectSelectedOptionAdd(elem) {
                         <strong>যে নম্বরে কথা হয়েছে</strong> (Student/Father/Mother) ও <strong>যে মাধ্যমে কথা হয়েছে</strong> (Mobile Call/WhatsApp/Telegram) — দুটোই সিঙ্গেল-সিলেক্ট, ডিফল্ট All।
                       </li>
                       <li style="margin-bottom:10px;">
-                        <strong>Date From / Date To</strong> — Entry Date অনুযায়ী রেঞ্জ, ডিফল্টে দুটোতেই আজকের তারিখ (পেইজ খোলার সাথে সাথে ডিফল্টে শুধু আজকের ডাটা দেখাবে)।
+                        <strong>Date From / Date To</strong>, ডিফল্টভাবে দুটোতেই আজকের তারিখ থাকবে।
                       </li>
                       <li style="margin-bottom:10px;">
-                        <strong>Report Type</strong> (Summary / Details, ডিফল্ট Summary) ও <strong>Branch Mentor</strong> (AdmissionSummaryReport-এর মতোই একই ১৩ জন মেন্টরের লিস্ট — নির্দিষ্ট মেন্টর সিলেক্ট করলে শুধু তার ব্রাঞ্চের ডাটা দেখাবে)।
+                        <strong>Report Type</strong> (Summary / Details, ডিফল্টভাবে Summary সিলেক্ট থাকবে)।
+                      </li>
+                      <li style="margin-bottom:10px;">
+                        <strong>Branch Mentor</strong> (নির্দিষ্ট মেন্টর সিলেক্ট করলে শুধু তার ব্রাঞ্চের ডাটা দেখাবে)।
                       </li>
                       <li>
-                        <strong>Display Per Page</strong> (ডিফল্ট 10, টেবিলের পেইজ-সাইজ, একা নিজের সারিতে)।
+                        <strong>Display Per Page</strong> (ডিফল্টভাবে 10 থাকবে)।
                       </li>
                     </ol>
-                    <p style="font-weight:bold; margin-bottom:4px;">রেজাল্ট (Report Type অনুযায়ী, প্যানেল-শিরোনামও পাল্টায় — "Summary Report" / "Details Report"):</p>
+                    <p style="font-weight:bold; margin-bottom:4px;">রেজাল্ট ভিউ (Report Type অনুযায়ী, টেবিলের হেডারের শিরোনামও পাল্টাবে — "Summary Report" / "Details Report"):</p>
+                    <p style="font-weight:bold; margin-bottom:4px;">Summary টেবিল:</p>
                     <ol style="padding-left:20px; margin:0 0 20px;">
                       <li style="margin-bottom:10px;">
-                        <strong>Summary (ডিফল্ট)</strong> — ক্রস-ট্যাব টেবিল।
-                        <ul style="padding-left:20px; margin:6px 0 0;">
-                          <li style="margin-bottom:6px;"><strong>কাঠামো:</strong> Sl./GroupBy ডাইমেনশন-এর ঠিক পরেই <strong>Grand Total</strong> (Call Count, Duration) কলাম দুটো, তারপর "Details" শিরোনামে আরেকটা ডাইমেনশন দিয়ে কলাম-ভাগ (সাধারণত যে মাধ্যমে কথা হয়েছে: Mobile Call/WhatsApp/Telegram, প্রতিটায় Total Call + Duration সাব-কলাম)।</li>
-                          <li style="margin-bottom:6px;"><strong>ব্যতিক্রম:</strong> GroupBy Contact Medium Wise হলে কলাম-ভাগ যে মাধ্যমে না হয়ে <strong>যে নম্বরে কথা হয়েছে</strong> দিয়ে হয় — রো ও কলাম একই ডাইমেনশন (মাধ্যম) হলে টেবিলটা অর্থহীন (কর্ণ বরাবর শুধু ডাটা) হয়ে যেত বলে।</li>
-                          <li style="margin-bottom:6px;"><strong>ক্লিক করলে:</strong> Grand Total বা Details ব্লকের যেকোনো সংখ্যায় ক্লিক করলে পুরো ভিউ Details-এ পাল্টে যায়, শুধু সেই নির্দিষ্ট রো+কলাম মিলে যাওয়া রেকর্ড দেখিয়ে — "← Summary-তে ফিরে যান" বাটন দিয়ে আবার ফেরা যাবে।</li>
-                          <li style="margin-bottom:6px;"><strong>ডিফল্ট সর্ট:</strong> Grand Total-এর Call Count অনুযায়ী বেশি-থেকে-কম (descending) — সবচেয়ে ব্যস্ত রো প্রথমে। Sl. বাদে প্রায় সব কলামই ক্লিক করে সর্ট করা যায়।</li>
-                          <li><strong>Mentor Branch Wise:</strong> ব্রাঞ্চগুলো মেন্টর অনুযায়ী সেকশনে ভাগ করে দেখায় (AdmissionSummaryReport-এর "Branch Mentor" ফিল্টারে Mentor Wise বেছে নিলে যেমন হয়, ঠিক সেভাবে) — মেন্টরের নাম হালকা সবুজ (#f3fff4) হেডার-রো হিসেবে সেই মেন্টরের ব্রাঞ্চগুলোর উপরে বসে, প্রতিটা মেন্টরের শেষে সেই মেন্টরের যোগফল নিয়ে হালকা নীল (#effaff) "Mentor Total" রো, আর সবশেষে সব মেন্টর মিলিয়ে একটা Grand Total রো। এই ভিউতে Display Per Page উপেক্ষা করে সব ব্রাঞ্চ একই পেইজে দেখায়, যাতে কোনো মেন্টরের সেকশন দুই পেইজে ভাগ না হয়ে যায়।</li>
-                        </ul>
+                        Sl., GroupBy ডাইমেনশন-এর ঠিক পরেই Grand Total (Call Count, Duration) কলাম দুটো, তারপর "Details" শিরোনামে আরেকটা ডাইমেনশন দিয়ে কলাম-ভাগ হবে (যে মাধ্যমে কথা হয়েছে: Mobile Call/WhatsApp/Telegram, প্রতিটায় Total Call + Duration সাব-কলাম)।
+                      </li>
+                      <li style="margin-bottom:10px;">
+                        <strong>ব্যতিক্রম:</strong> GroupBy তে Contact Medium Wise হলে কলাম-ভাগ "যে মাধ্যমে কথা হয়েছে" না হয়ে "যে নম্বরে কথা হয়েছে" দিয়ে হবে।
+                      </li>
+                      <li style="margin-bottom:10px;">
+                        Grand Total বা Details ব্লকের যেকোনো সংখ্যায় ক্লিক করলে পুরো ভিউ Details-এ পাল্টে যাবে, শুধু সেই নির্দিষ্ট রো ও কলামে মিলে যাওয়া রেকর্ড দেখাবে। "← Summary-তে ফিরে যান" বাটনে ক্লিক করে আবার Summary টেবিলে ফেরা যাবে।
+                      </li>
+                      <li style="margin-bottom:10px;">
+                        কলামগুলোতে সর্ট ফিচার থাকবে, ডিফল্টভাবে বেশি থেকে কম এই ক্রম অনুসারে থাকবে।
+                      </li>
+                      <li style="margin-bottom:10px;">
+                        GroupBy তে <strong>Mentor Branch Wise</strong> দেখলে ব্রাঞ্চগুলো মেন্টর অনুযায়ী সেকশনে ভাগ করে দেখাবে। মেন্টরের নাম হালকা সবুজ (#f3fff4) হেডার-রো হিসেবে সেই মেন্টরের ব্রাঞ্চগুলোর উপরে থাকবে, প্রতিটা মেন্টরের শেষে সেই মেন্টরের যোগফল নিয়ে হালকা নীল (#effaff) "Mentor Total" Row দেখাবে, আর সবশেষে সব মেন্টর মিলিয়ে একটা Grand Total Row থাকবে। এই ভিউতে Display Per Page উপেক্ষা করে সব ব্রাঞ্চ একই পেইজে দেখাতে হবে, যাতে কোনো মেন্টরের সেকশন দুই পেইজে ভাগ না হয়ে যায়।
                       </li>
                       <li>
-                        <strong>Details</strong> — প্রতিটা ফিল্টার-মিলে যাওয়া রেকর্ড এক-এক সারিতে (কোনো গ্রুপিং ছাড়া): Sl., Registration No, Student Name, Mobile Number, Program, Branch, Tracking ID, যে নম্বরে কথা হয়েছে, যে মাধ্যমে কথা হয়েছে, <strong>Call Duration</strong> (সেই নির্দিষ্ট কলের সময়কাল, মিনিট:সেকেন্ড), <strong>User Name</strong> (এন্ট্রিকারী টিম মেম্বারের লগইন ইউজারনেম, যেমন rahim.2201@udvash.net), Entry Date-Time।
+                        <strong>বর্ডার:</strong> Sl./GroupBy ডাইমেনশন/Grand Total ব্লকটা হালকা সবুজ বর্ডারে, আর Details ব্লকটা হালকা নীল বর্ডারে ফ্রেম করা থাকবে।
                       </li>
                     </ol>
+                    <p style="font-weight:bold; margin-bottom:4px;">Details টেবিল:</p>
+                    <p style="margin:0 0 20px;">Sl., Registration No, Student Name, Mobile Number, Program, Branch, Tracking ID, যে নম্বরে কথা হয়েছে, যে মাধ্যমে কথা হয়েছে, Call Duration (সেই নির্দিষ্ট কলের সময়কাল, মিনিট:সেকেন্ড), User Name (এন্ট্রিকারী টিম মেম্বারের লগইন ইউজারনেম), Entry Date-Time।</p>
                     <p style="font-weight:bold; margin-bottom:4px;">টেবিল ফিচার:</p>
-                    <ol style="padding-left:20px; margin:0;">
-                      <li style="margin-bottom:10px;">
-                        <strong>Sl. কলাম</strong> ও <strong>পেজিনেশন</strong> (দুটো টেবিলেই) — Display Per Page অনুযায়ী পেইজ-সাইজ, স্টাইল Details Report পেইজের ("Showing X to Y of Z entries" + Previous/Next) মতোই (Mentor Branch Wise GroupBy বাদে — সেটা সব ব্রাঞ্চ একই পেইজে দেখায়)।
-                      </li>
-                      <li style="margin-bottom:10px;">
-                        <strong>কলাম সর্ট</strong> (দুটো টেবিলেই) — Sl. বাদে বাকি সব কলামের হেডারে ক্লিক করে ascending/descending সর্ট করা যাবে (↕/↑/↓ আইকন)।
-                      </li>
-                      <li style="margin-bottom:10px;">
-                        <strong>রঙে আলাদাকরণ (Summary টেবিল):</strong> Sl./GroupBy ডাইমেনশন/Grand Total ব্লকটা হালকা সবুজ বর্ডারে, আর Details ব্লকটা হালকা নীল বর্ডারে ফ্রেম করা — কোনো ব্যাকগ্রাউন্ড কালার নেই, শুধু বোল্ড কালো টেক্সট ও বর্ডার দিয়ে দুই ব্লক আলাদা বোঝানো হয়। ক্লিকযোগ্য সংখ্যাগুলো (Call Count, Total Call) সবসময় সাধারণ লিংক-নীল কালারে দেখায়, যাতে বাকি বোল্ড কালো টেক্সট থেকে স্পষ্ট বোঝা যায় এগুলো ক্লিক করা যাবে।
-                      </li>
-                      <li>
-                        <strong>Export বাটন</strong> — বর্তমানে দেখানো টেবিলের (Summary বা Details, যেটাই খোলা থাকুক) একটা CSV ফাইল বানিয়ে ডাউনলোড করায়।
-                      </li>
-                    </ol>
+                    <p style="margin:0 0 12px;">কলাম সর্ট করা যাবে — Sl. বাদে বাকি সব কলামের হেডারে ক্লিক করে ascending/descending সর্ট করা যাবে (↕/↑/↓ আইকন)।</p>
+                    <p style="font-weight:bold; margin-bottom:4px;">Export বাটন:</p>
+                    <p style="margin:0;">Summary বা Details যেভাবে সিলেক্ট করা থাকবে সেই অনুযায়ী বর্তমানে দেখানো টেবিলের একটা CSV ফাইল ডাউনলোড হবে (যেটা Excel-এ সরাসরি খোলা যায়)।</p>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">বন্ধ করুন</button>
