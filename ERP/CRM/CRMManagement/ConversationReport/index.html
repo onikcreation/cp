@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <!--
   ╔══════════════════════════════════════════════════════════╗
-  ║           HTML Inspector & Saver — Captured Page         ║
+  ║              New Design Mockup — Not a Live Page          ║
   ╠══════════════════════════════════════════════════════════╣
-  ║  Source URL  : https://umsbd.net/Student/CrmConversation/MentorDash ║
-  ║  Page Title  : UMS - Mentor Dashboard [16:43:19] - Al Amin Anik     ║
-  ║  Captured At : 2026-07-06T10:44:18.078Z                             ║
-  ║  Elements    : 38608                                                ║
+  ║  Page Title  : UMS - Conversation Call Report - Al Amin Anik   ║
+  ║  Note        : This menu does not exist on the live umsbd.net
+  ║                site yet — it's a new page proposed for the
+  ║                developer to build, assembled from the same
+  ║                chrome/CSS/JS as the other CRM Management demo
+  ║                pages (base template: MentorDashboard) so it
+  ║                matches the site's look and feel exactly.
   ╚══════════════════════════════════════════════════════════╝
 -->
 <html>
@@ -16,7 +19,7 @@
     <!-- <meta http-equiv="refresh" content="0;URL='http://dev.umsbd.net/'" />
     -->
     <title>
-      UMS - Mentor Dashboard [16:43:19] - Al Amin Anik (Demo Copy)
+      UMS - Conversation Call Report - Al Amin Anik (Demo Copy)
     </title>
     <style>
 /* NUGET: BEGIN LICENSE TEXT
@@ -7928,8 +7931,8 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                         100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
                     }
                 </style>
-                <a href="javascript:void(0)" id="pageChangesBtn" data-toggle="modal" data-target="#pageChangesModal" title="এই পেইজে যা যা পরিবর্তন/আপডেট করা হয়েছে">
-                  New Updates
+                <a href="javascript:void(0)" id="pageChangesBtn" data-toggle="modal" data-target="#pageChangesModal" title="এই মেনু সম্পর্কে বিস্তারিত">
+                  New Menu
                 </a>
                 <form action="javascript:void(0)" onsubmit="return false;" class="navbar-right" id="logoutForm" method="post">
                   <ul class="nav navbar-nav navbar-right">
@@ -8054,12 +8057,12 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                             </a>
                           </li>
                           <li data-parent-id="962">
-                            <a href="/Student/CrmConversation/MentorDashboard" data-businessid="CrmConversation-MentorDashboard|" class="submenuitem" style="font-weight: bold;">
+                            <a href="/Student/CrmConversation/MentorDashboard" data-businessid="CrmConversation-MentorDashboard|" class="submenuitem">
                               Mentor Dashboard
                             </a>
                           </li>
                           <li data-parent-id="962">
-                            <a href="/Student/CrmReport/ConversationReport" data-businessid="CrmReport-ConversationReport|CrmReport-CrmConversationReportExport|" class="submenuitem">
+                            <a href="/Student/CrmReport/ConversationReport" data-businessid="CrmReport-ConversationReport|CrmReport-CrmConversationReportExport|" class="submenuitem" style="font-weight: bold;">
                               Conversation Call Report
                             </a>
                           </li>
@@ -8190,55 +8193,158 @@ span.hide-native-select{position:relative}span.hide-native-select select{border:
         color: #23527c;
         text-decoration: none;
     }
+    .dt-info-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        padding: 8px 4px 4px;
+    }
+    .dt-paginate {
+        display: flex;
+        gap: 2px;
+    }
+    .dt-paginate .paginate_button {
+        padding: 5px 12px;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        color: #337ab7;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    .dt-paginate .paginate_button:hover:not(.disabled):not(.current) {
+        background: #eee;
+        text-decoration: none;
+    }
+    .dt-paginate .paginate_button.current {
+        background: #337ab7;
+        border-color: #337ab7;
+        color: #fff;
+        cursor: default;
+    }
+    .dt-paginate .paginate_button.disabled {
+        color: #999;
+        cursor: default;
+    }
+    .conv-sortable {
+        cursor: pointer;
+        user-select: none;
+    }
+    .conv-sortable:after {
+        content: '\2195';
+        color: #bbb;
+        margin-left: 4px;
+    }
+    .conv-sortable.sort-asc:after {
+        content: '\2191';
+        color: #333;
+    }
+    .conv-sortable.sort-desc:after {
+        content: '\2193';
+        color: #333;
+    }
+    #convSummaryTable th,
+    #convSummaryTable td {
+        text-align: center;
+        vertical-align: middle;
+    }
+    #convSummaryTable td.conv-dim-cell {
+        text-align: left;
+    }
+    #convSummaryTable th.conv-id-col,
+    #convSummaryTable td.conv-id-col {
+        font-weight: bold;
+        color: #000;
+    }
+    #convSummaryTable th.conv-id-first,
+    #convSummaryTable td.conv-id-first {
+        border-left: 2px solid #85c99a;
+    }
+    #convSummaryTable th.conv-id-last,
+    #convSummaryTable td.conv-id-last {
+        border-right: 2px solid #85c99a;
+    }
+    #convSummaryTable thead tr:first-child th.conv-id-col {
+        border-top: 2px solid #85c99a;
+    }
+    #convSummaryTable tbody tr:last-child td.conv-id-col {
+        border-bottom: 2px solid #85c99a;
+    }
+    #convSummaryTable th.conv-detail-col,
+    #convSummaryTable td.conv-detail-col {
+        font-weight: bold;
+        color: #000;
+    }
+    #convSummaryTable th.conv-detail-first,
+    #convSummaryTable td.conv-detail-first {
+        border-left: 2px solid #7fa0d6;
+    }
+    #convSummaryTable th.conv-detail-last,
+    #convSummaryTable td.conv-detail-last {
+        border-right: 2px solid #7fa0d6;
+    }
+    #convSummaryTable thead tr:first-child th.conv-detail-col {
+        border-top: 2px solid #7fa0d6;
+    }
+    #convSummaryTable tbody tr:last-child td.conv-detail-col {
+        border-bottom: 2px solid #7fa0d6;
+    }
                   </style>
                   <input name="__RequestVerificationToken" type="hidden" value="demo-anti-forgery-token-not-real">
-                  <table style="margin-bottom: 20px;">
-                    <tbody>
-                      <tr>
-                        <td style="padding-right: 8px; width: 230px;">
-                          <select class="form-control" id="mentorIds" multiple="multiple" name="mentorIds">
-                              <option value="6" selected="selected">[6] Md. Asaduzzaman (Lebu)</option>
-                              <option value="25">[25] Uzzal Kumar Haldar (Shuvro)</option>
-                              <option value="41">[41] Md. Jewel Mia (Jewel)</option>
-                              <option value="53">[53] Muhammad Nazmul Hoque (Nazmul)</option>
-                              <option value="65">[65] Md. Rafiqul Islam (Robi)</option>
-                              <option value="68">[68] Md. Masudur Rahman (Masud)</option>
-                              <option value="77">[77] Md Samiul Islam (Samiul)</option>
-                              <option value="83">[83] Sakhawat Hossen (Sakhawat)</option>
-                              <option value="103">[103] Nur Mohammad (Nur Mohammad)</option>
-                              <option value="449">[449] Md. Asaduzzaman (Rontu)</option>
-                              <option value="499">[499] Md. Anayetul Islam (Anayet)</option>
-                              <option value="572">[572] Mohammad Ali Khan (Mohammad Ali)</option>
-                              <option value="581">[581] Sana Ullah (Sanaullah)</option>
-                            </select>
-                        </td>
-                        <td style="padding-right: 8px; width: 230px;">
-                          <select class="form-control" id="branchIds" multiple="multiple" name="branchIds">
-                              <option value="88">Azimpur Udvash</option>
-                              <option value="541">Badda Udvash</option>
-                              <option value="380">Bagerhat Udvash</option>
-                              <option value="271">Bakshibazar Udvash</option>
-                              <option value="87">Banasree Udvash</option>
-                              <option value="368">Bandarban Udvash</option>
-                              <option value="376">Barguna Udvash</option>
-                              <option value="136">Barishal Udvash</option>
-                              <option value="94">Basabo Udvash</option>
-                              <option value="507">Bhairab Udvash</option>
-                              <option value="590">Bhaluka Udvash</option>
-                              <option value="372">Bhola Udvash</option>
-                              <option value="602">Birganj Udvash</option>
-                              <option value="570">Bogura College Road Udvash</option>
-                              <option value="484">Bogura Sherpur Udvash</option>
-                              <option value="131">Bogura Udvash</option>
-                              <option value="552">Bosila Udvash</option>
-                              <option value="167">Brahmanbaria Udvash</option>
-                              <option value="93">Cantonment Udvash</option>
-                              <option value="385">Chandpur Udvash</option>
-                              <option value="194">Chapainawabganj Udvash</option>
-                              <option value="611">Charfasson Udvash</option>
-                            </select>
-                        </td>
-                        <td style="padding-right: 8px; width: 230px;">
+                  <div class="panel panel-primary">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        Conversation Call Report
+                      </h4>
+                    </div>
+                    <div class="panel-body">
+                  <div class="form-horizontal">
+                    <div class="form-group">
+                      <label class="control-label col-md-2" for="GroupBy:">
+                        GroupBy:
+                      </label>
+                      <div class="col-md-4">
+                        <select class="form-control" id="groupBy" name="groupBy" style="min-width:100%">
+                          <option value="branch">Branch Wise</option>
+                          <option value="program">Program Wise</option>
+                          <option value="person">Contacted Person Wise</option>
+                          <option value="medium" selected="selected">Contact Medium Wise</option>
+                          <option value="date">Date Wise</option>
+                          <option value="user">User Wise</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="control-label col-md-2" for="Organization:">
+                        Organization:
+                      </label>
+                      <div class="col-md-4">
+                        <select class="form-control" id="organizationId" name="organizationId" style="min-width:100%">
+                          <option selected="selected" value="0">All Organization</option>
+                          <option value="1">UDVASH</option>
+                          <option value="2">UNMESH</option>
+                          <option value="13">ONLINE CARE</option>
+                          <option value="12">UTTORON</option>
+                          <option value="14">UTKORSHO</option>
+                          <option value="11">Shikkha Poribar</option>
+                          <option value="3">OSL</option>
+                          <option value="4">Pi Labs</option>
+                          <option value="5">ORELCO</option>
+                          <option value="6">OWSL</option>
+                          <option value="7">TSB</option>
+                          <option value="8">OG</option>
+                          <option value="9">OP</option>
+                          <option value="10">ORP</option>
+                          <option value="15">OPL</option>
+                          <option value="16">OE</option>
+                          <option value="17">OU</option>
+                          <option value="18">OI</option>
+                        </select>
+                      </div>
+                      <label class="control-label col-md-2" for="Program:">
+                        Program:
+                      </label>
+                      <div class="col-md-4">
                           <select class="form-control" id="programIds" multiple="multiple" name="programIds">
                               <option value="74">Medical Admission Program</option>
                               <option value="164">Medical Admission Program (Online)</option>
@@ -8452,31 +8558,152 @@ span.hide-native-select{position:relative}span.hide-native-select select{border:
                               <option value="85">Employee Training Program (ETP)</option>
                               <option value="278">Employee Training Program</option>
                             </select>
-                        </td>
-                        <td style="padding-right: 8px; width: 130px;">
-                          <select class="form-control" id="viewBy" name="viewBy">
-                              <option value="Programwise" selected="selected">Programwise</option>
-                              <option value="Pinwise">Pinwise</option>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="control-label col-md-2" for="Session:">
+                        Session:
+                      </label>
+                      <div class="col-md-4">
+                        <select class="form-control" id="sessionIds" multiple="multiple" name="sessionIds">
+                          <option value="0">All Session</option>
+                          <option value="70">2027</option>
+                          <option value="66">2026</option>
+                          <option value="65">2025</option>
+                          <option value="63">2024</option>
+                          <option value="61">2023</option>
+                          <option value="58">2022</option>
+                          <option value="54">2021</option>
+                          <option value="53">2020</option>
+                          <option value="52">2019</option>
+                          <option value="46">2017</option>
+                          <option value="51">2018</option>
+                          <option value="45">2016</option>
+                          <option value="44">2015</option>
+                          <option value="43">2014</option>
+                          <option value="50">2013</option>
+                          <option value="49">2012</option>
+                          <option value="47">2010</option>
+                          <option value="48">2011</option>
+                          <option value="55">41st</option>
+                          <option value="56">42nd</option>
+                          <option value="57">43rd</option>
+                          <option value="59">44th</option>
+                          <option value="60">45th</option>
+                          <option value="62">46th</option>
+                          <option value="64">47th</option>
+                          <option value="67">48th</option>
+                          <option value="68">49th</option>
+                          <option value="69">50th</option>
+                          <option value="71">51st</option>
+                        </select>
+                      </div>
+                      <label class="control-label col-md-2" for="Branch:">
+                        Branch:
+                      </label>
+                      <div class="col-md-4">
+                          <select class="form-control" id="branchIds" multiple="multiple" name="branchIds">
+                              <option value="88">Azimpur Udvash</option>
+                              <option value="541">Badda Udvash</option>
+                              <option value="380">Bagerhat Udvash</option>
+                              <option value="271">Bakshibazar Udvash</option>
+                              <option value="87">Banasree Udvash</option>
+                              <option value="368">Bandarban Udvash</option>
+                              <option value="376">Barguna Udvash</option>
+                              <option value="136">Barishal Udvash</option>
+                              <option value="94">Basabo Udvash</option>
+                              <option value="507">Bhairab Udvash</option>
+                              <option value="590">Bhaluka Udvash</option>
+                              <option value="372">Bhola Udvash</option>
+                              <option value="602">Birganj Udvash</option>
+                              <option value="570">Bogura College Road Udvash</option>
+                              <option value="484">Bogura Sherpur Udvash</option>
+                              <option value="131">Bogura Udvash</option>
+                              <option value="552">Bosila Udvash</option>
+                              <option value="167">Brahmanbaria Udvash</option>
+                              <option value="93">Cantonment Udvash</option>
+                              <option value="385">Chandpur Udvash</option>
+                              <option value="194">Chapainawabganj Udvash</option>
+                              <option value="611">Charfasson Udvash</option>
                             </select>
-                        </td>
-                        <td style="padding-right: 8px; width: 130px;">
-                          <select class="form-control" id="trIdStatus" name="trIdStatus">
-                              <option value="Working" selected="selected">Working Tr ID</option>
-                              <option value="Active">Active Tr ID</option>
-                            </select>
-                        </td>
-                        <td style="padding-right: 8px; width: 130px;">
-                          <input type="date" class="form-control" id="dateFilter" name="dateFilter">
-                        </td>
-                        <td>
-                          <button id="btnSearch" class="btn btn-primary">
-                            Search
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="control-label col-md-2" for="Contacted Person:">
+                        যে নম্বরে কথা হয়েছে:
+                      </label>
+                      <div class="col-md-4">
+                        <select class="form-control" id="contactedPerson" multiple="multiple" name="contactedPerson">
+                          <option value="Student">Student</option>
+                          <option value="Father">Father</option>
+                          <option value="Mother">Mother</option>
+                        </select>
+                      </div>
+                      <label class="control-label col-md-2" for="Contact Medium:">
+                        যে মাধ্যমে কথা হয়েছে:
+                      </label>
+                      <div class="col-md-4">
+                        <select class="form-control" id="contactMedium" multiple="multiple" name="contactMedium">
+                          <option value="Mobile">Mobile Call</option>
+                          <option value="WhatsApp">WhatsApp</option>
+                          <option value="Telegram">Telegram</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="control-label col-md-2" for="Date From:">
+                        Date From:
+                      </label>
+                      <div class="col-md-4">
+                        <input type="date" class="form-control" id="dateFrom" name="dateFrom">
+                      </div>
+                      <label class="control-label col-md-2" for="Date To:">
+                        Date To:
+                      </label>
+                      <div class="col-md-4">
+                        <input type="date" class="form-control" id="dateTo" name="dateTo">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="control-label col-md-2" for="Report Type:">
+                        Report Type:
+                      </label>
+                      <div class="col-md-4">
+                        <select class="form-control" id="reportType" name="reportType" style="min-width:100%">
+                          <option value="summary" selected="selected">Summary</option>
+                          <option value="details">Details</option>
+                        </select>
+                      </div>
+                      <label class="control-label col-md-2" for="Display Per Page:">
+                        Display Per Page:
+                      </label>
+                      <div class="col-md-4">
+                        <input type="number" class="form-control" id="displayPerPage" name="displayPerPage" value="10" min="10" step="10">
+                      </div>
+                    </div>
+                  <div class="form-group">
+                    <div class="col-md-12 text-center">
+                      <button id="btnSearch" class="btn btn-primary">
+                        View
+                      </button>
+                      <button id="btnExport" class="btn btn-info" style="margin-left:6px;">
+                        Export
+                      </button>
+                    </div>
+                  </div>
+                  </div>
+                  </div>
+                  </div>
+                  <div class="panel panel-primary">
+                    <div class="panel-heading">
+                      <h4 class="panel-title" id="convReportPanelTitle">
+                        Summary Report
+                      </h4>
+                    </div>
+                    <div class="panel-body">
                   <div id="dashboardContainer"></div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -12101,731 +12328,693 @@ function DeselectSelectedOptionAdd(elem) {
                 });
             }
 
-            initMultiselect('#mentorIds', 'All Mentor');
             initMultiselect('#branchIds', 'All Branch');
             initMultiselect('#programIds', 'All Program');
+            initMultiselect('#sessionIds', 'All Session');
+            initMultiselect('#contactedPerson', 'All');
+            initMultiselect('#contactMedium', 'All');
 
             // Keep the left sidebar's "CRM Management" panel always expanded — block
             // any collapse, whether from its own header being clicked or from the
             // Bootstrap accordion auto-closing it when another sidebar panel opens.
-            // Force it back open in case the page's own active-menu-highlighting script
-            // (which strips "in" from every sidebar panel that doesn't match the current
-            // page's business ID, then re-adds it only to the matching one) already ran
-            // and collapsed it — this page isn't under CRM Management's business IDs.
             $('#collapse_962').addClass('in');
             $('#collapse_962').on('hide.bs.collapse', function (e) {
                 e.preventDefault();
             });
 
-            $('#btnSearch').on('click', loadDashboard);
+            var today = new Date();
+            var todayIso = today.toISOString().slice(0, 10);
+            $('#dateTo').attr('max', todayIso).val(todayIso);
+            $('#dateFrom').attr('max', todayIso).val(todayIso);
 
-            // Demo: no live backend — the real page calls LoadBranchListByMentor here to
-            // narrow the branch list down to the selected mentor's own branches. Here we
-            // do the same narrowing client-side against the fabricated dataset below.
-            var $originalBranchOptions = $('#branchIds option').clone();
-
-            function narrowBranchesByMentor() {
-                var selectedMentors = $('#mentorIds').val();
-                var $branchIds = $('#branchIds');
-
-                if (!selectedMentors || selectedMentors.length === 0) {
-                    $branchIds.empty().append($originalBranchOptions.clone());
-                } else {
-                    var allowedBranchIds = {};
-                    $.each(fakeDashboardData, function (_, row) {
-                        if ($.inArray(String(row.MentorId), selectedMentors) !== -1) {
-                            allowedBranchIds[String(row.BranchId)] = true;
-                        }
-                    });
-                    var $filtered = $originalBranchOptions.filter(function () {
-                        return allowedBranchIds[this.value];
-                    }).clone();
-                    $branchIds.empty().append($filtered);
-                }
-
-                $branchIds.multiselect('rebuild');
-            }
-
-            $('#mentorIds').on('change', narrowBranchesByMentor);
-
-            // Demo: no live backend — fabricate a plausible mentor-dashboard dataset instead
-            // of posting to LoadMentorDashboardData. Same shape as the real response
-            // (grouped by branch, then by targeted program, with totals/grand totals).
-            var fakeDashboardData = [
-                { BranchId: 88, BranchName: 'Azimpur Udvash', MentorId: 6, TargetedProgram: 'Medical Admission Program 2025 [UNMESH]', ProgramId: 74, TrackingId: 310010, CreatedBy: '2002@demo.local', CreationDate: '29 Jun, 2026 01:46 PM', DataType: 'New Admission', ConversationType: 'Relation Call', Entries: [{ ExecutedBy: '-', TodayDateEntry: null, AvgCallTime: '-' }], TotalStudent: 47, DataEntry: 35, Pending: 12, Deadline: '09 Jul, 2026 07:30 PM', ConversationId: 510010 },
-                { BranchId: 88, BranchName: 'Azimpur Udvash', MentorId: 6, TargetedProgram: "Varsity 'KHA' Admission Program 2026 [UDVASH]", ProgramId: 198, TrackingId: 310020, CreatedBy: '2003@demo.local', CreationDate: '03 Jul, 2026 10:56 AM', DataType: 'CAP+HSC 1st Year Advanced Program-2027', ConversationType: 'Due Collection', Entries: [{ ExecutedBy: '[2002] Md. Tariful Islam', TodayDateEntry: 3, AvgCallTime: '3m 7s' }, { ExecutedBy: '[2003] Abdullah Al Mamun', TodayDateEntry: 4, AvgCallTime: '4m 20s' }, { ExecutedBy: '[2004] Md. Shamsul Alam', TodayDateEntry: 7, AvgCallTime: '5m 33s' }], TotalStudent: 84, DataEntry: 47, Pending: 37, Deadline: '08 Jul, 2026 09:00 PM', ConversationId: 510020 },
-                { BranchId: 541, BranchName: 'Badda Udvash', MentorId: 25, TargetedProgram: '2nd Time Medical Admission Program (Online) 2026 [ONLINE CARE]', ProgramId: 258, TrackingId: 310030, CreatedBy: '2004@demo.local', CreationDate: '04 Jul, 2026 02:54 PM', DataType: 'HSC 2nd Year Progressive Batch-2026+Admission-27 DP Batch', ConversationType: 'Information Update', Entries: [{ ExecutedBy: '-', TodayDateEntry: null, AvgCallTime: '-' }], TotalStudent: 121, DataEntry: 83, Pending: 38, Deadline: '09 Jul, 2026 07:30 PM', ConversationId: 510030 },
-                { BranchId: 380, BranchName: 'Bagerhat Udvash', MentorId: 25, TargetedProgram: 'Engineering Admission Program 2025 [UDVASH]', ProgramId: 68, TrackingId: 310040, CreatedBy: '2005@demo.local', CreationDate: '05 Jul, 2026 05:18 PM', DataType: 'AHC Humanities 2027 Data Telemarketing For DP Batch VAP kHA-2027', ConversationType: 'New Admission', Entries: [{ ExecutedBy: '[2004] Md. Shamsul Alam', TodayDateEntry: 1, AvgCallTime: '5m 21s' }, { ExecutedBy: '[2005] Tushar Imran', TodayDateEntry: 2, AvgCallTime: '2m 34s' }], TotalStudent: 158, DataEntry: 51, Pending: 107, Deadline: '10 Jul, 2026 08:30 PM', ConversationId: 510040 },
-                { BranchId: 380, BranchName: 'Bagerhat Udvash', MentorId: 25, TargetedProgram: 'Engineering Admission Program (Online) 2026 [ONLINE CARE]', ProgramId: 161, TrackingId: 310050, CreatedBy: '2006@demo.local', CreationDate: '06 Jul, 2026 02:43 PM', DataType: 'Progressive Batch অফলাইন', ConversationType: 'Relation Call', Entries: [{ ExecutedBy: '-', TodayDateEntry: null, AvgCallTime: '-' }], TotalStudent: 195, DataEntry: 88, Pending: 107, Deadline: '11 Jul, 2026 09:30 PM', ConversationId: 510050 },
-                { BranchId: 271, BranchName: 'Bakshibazar Udvash', MentorId: 41, TargetedProgram: 'Varsity \'KA\' Admission Program 2026 [UDVASH]', ProgramId: 82, TrackingId: 310060, CreatedBy: '2007@demo.local', CreationDate: '28 Mar, 2026 09:56 AM', DataType: 'Class-10 Academic Programme Service Feedback', ConversationType: 'Due Collection', Entries: [{ ExecutedBy: '[2006] Nayeem Hasan', TodayDateEntry: 3, AvgCallTime: '3m 35s' }, { ExecutedBy: '[2007] Rakibul Hasan', TodayDateEntry: 3, AvgCallTime: '4m 48s' }, { ExecutedBy: '[2008] Sabbir Ahmed', TodayDateEntry: 3, AvgCallTime: '5m 2s' }, { ExecutedBy: '[2001] Shakil Ahmed', TodayDateEntry: 8, AvgCallTime: '2m 15s' }], TotalStudent: 232, DataEntry: 135, Pending: 97, Deadline: '-', ConversationId: 510060 },
-                { BranchId: 271, BranchName: 'Bakshibazar Udvash', MentorId: 41, TargetedProgram: 'Varsity \'KA\' Admission Program (Online) 2025 [ONLINE CARE]', ProgramId: 162, TrackingId: 310070, CreatedBy: '2008@demo.local', CreationDate: '29 Jun, 2026 01:46 PM', DataType: 'SSC FRC & SSC MT-2027', ConversationType: 'Information Update', Entries: [{ ExecutedBy: '-', TodayDateEntry: null, AvgCallTime: '-' }], TotalStudent: 269, DataEntry: 191, Pending: 78, Deadline: '06 Jul, 2026 07:00 PM', ConversationId: 510070 },
-                { BranchId: 87, BranchName: 'Banasree Udvash', MentorId: 41, TargetedProgram: '2nd Time Varsity \'KA\' Admission Program (Online) 2026 [ONLINE CARE]', ProgramId: 274, TrackingId: 310080, CreatedBy: '2001@demo.local', CreationDate: '03 Jul, 2026 10:56 AM', DataType: 'NDC+HCC ONLINE/COMBO Batch', ConversationType: 'New Admission', Entries: [{ ExecutedBy: '[2001] Shakil Ahmed', TodayDateEntry: 6, AvgCallTime: '2m 29s' }], TotalStudent: 306, DataEntry: 104, Pending: 202, Deadline: '07 Jul, 2026 08:00 PM', ConversationId: 510080 },
-                { BranchId: 368, BranchName: 'Bandarban Udvash', MentorId: 53, TargetedProgram: 'Varsity \'KHA\' Admission Program 2026 [UDVASH]', ProgramId: 198, TrackingId: 310090, CreatedBy: '2002@demo.local', CreationDate: '04 Jul, 2026 02:54 PM', DataType: 'Chemistar', ConversationType: 'Relation Call', Entries: [{ ExecutedBy: '-', TodayDateEntry: null, AvgCallTime: '-' }], TotalStudent: 343, DataEntry: 161, Pending: 182, Deadline: '08 Jul, 2026 09:00 PM', ConversationId: 510090 },
-                { BranchId: 376, BranchName: 'Barguna Udvash', MentorId: 65, TargetedProgram: 'Varsity \'KHA\' Admission Program (Online) 2025 [ONLINE CARE]', ProgramId: 199, TrackingId: 310100, CreatedBy: '2003@demo.local', CreationDate: '05 Jul, 2026 05:18 PM', DataType: 'CAP+HSC 1st Year Advanced Program-2027', ConversationType: 'Due Collection', Entries: [{ ExecutedBy: '[2002] Md. Tariful Islam', TodayDateEntry: 9, AvgCallTime: '3m 4s' }, { ExecutedBy: '[2003] Abdullah Al Mamun', TodayDateEntry: 9, AvgCallTime: '4m 17s' }], TotalStudent: 30, DataEntry: 18, Pending: 12, Deadline: '09 Jul, 2026 07:30 PM', ConversationId: 510100 },
-                { BranchId: 376, BranchName: 'Barguna Udvash', MentorId: 65, TargetedProgram: '2nd Time Varsity \'KHA\' Admission Program (Online) 2026 [ONLINE CARE]', ProgramId: 275, TrackingId: 310110, CreatedBy: '2004@demo.local', CreationDate: '06 Jul, 2026 02:43 PM', DataType: 'HSC 2nd Year Progressive Batch-2026+Admission-27 DP Batch', ConversationType: 'Information Update', Entries: [{ ExecutedBy: '-', TodayDateEntry: null, AvgCallTime: '-' }], TotalStudent: 67, DataEntry: 49, Pending: 18, Deadline: '10 Jul, 2026 08:30 PM', ConversationId: 510110 },
-                { BranchId: 136, BranchName: 'Barishal Udvash', MentorId: 65, TargetedProgram: 'College Admission Program 2026 [UDVASH]', ProgramId: 67, TrackingId: 310120, CreatedBy: '2005@demo.local', CreationDate: '28 Mar, 2026 09:56 AM', DataType: 'AHC Humanities 2027 Data Telemarketing For DP Batch VAP kHA-2027', ConversationType: 'New Admission', Entries: [{ ExecutedBy: '[2004] Md. Shamsul Alam', TodayDateEntry: 2, AvgCallTime: '5m 18s' }, { ExecutedBy: '[2005] Tushar Imran', TodayDateEntry: 2, AvgCallTime: '2m 31s' }, { ExecutedBy: '[2006] Nayeem Hasan', TodayDateEntry: 2, AvgCallTime: '3m 44s' }, { ExecutedBy: '[2007] Rakibul Hasan', TodayDateEntry: 3, AvgCallTime: '4m 57s' }], TotalStudent: 104, DataEntry: 37, Pending: 67, Deadline: '11 Jul, 2026 09:30 PM', ConversationId: 510120 },
-                { BranchId: 94, BranchName: 'Basabo Udvash', MentorId: 68, TargetedProgram: 'HSC Model Test 2025 [UDVASH]', ProgramId: 66, TrackingId: 310130, CreatedBy: '2006@demo.local', CreationDate: '29 Jun, 2026 01:46 PM', DataType: 'Progressive Batch অফলাইন', ConversationType: 'Relation Call', Entries: [{ ExecutedBy: '-', TodayDateEntry: null, AvgCallTime: '-' }], TotalStudent: 141, DataEntry: 69, Pending: 72, Deadline: '-', ConversationId: 510130 },
-                { BranchId: 507, BranchName: 'Bhairab Udvash', MentorId: 68, TargetedProgram: 'SSC Model Test 2026 [UDVASH]', ProgramId: 65, TrackingId: 310140, CreatedBy: '2007@demo.local', CreationDate: '03 Jul, 2026 10:56 AM', DataType: 'Class-10 Academic Programme Service Feedback', ConversationType: 'Due Collection', Entries: [{ ExecutedBy: '[2006] Nayeem Hasan', TodayDateEntry: 7, AvgCallTime: '3m 32s' }, { ExecutedBy: '[2007] Rakibul Hasan', TodayDateEntry: 8, AvgCallTime: '4m 45s' }, { ExecutedBy: '[2008] Sabbir Ahmed', TodayDateEntry: 8, AvgCallTime: '5m 58s' }], TotalStudent: 178, DataEntry: 110, Pending: 68, Deadline: '06 Jul, 2026 07:00 PM', ConversationId: 510140 },
-                { BranchId: 507, BranchName: 'Bhairab Udvash', MentorId: 68, TargetedProgram: 'Class 11 Academic Program 2026 [UDVASH]', ProgramId: 62, TrackingId: 310150, CreatedBy: '2008@demo.local', CreationDate: '04 Jul, 2026 02:54 PM', DataType: 'SSC FRC & SSC MT-2027', ConversationType: 'Information Update', Entries: [{ ExecutedBy: '-', TodayDateEntry: null, AvgCallTime: '-' }], TotalStudent: 215, DataEntry: 161, Pending: 54, Deadline: '07 Jul, 2026 08:00 PM', ConversationId: 510150 },
-                { BranchId: 590, BranchName: 'Bhaluka Udvash', MentorId: 77, TargetedProgram: 'Class 12 Academic Program 2025 [UDVASH]', ProgramId: 63, TrackingId: 310160, CreatedBy: '2001@demo.local', CreationDate: '05 Jul, 2026 05:18 PM', DataType: 'NDC+HCC ONLINE/COMBO Batch', ConversationType: 'New Admission', Entries: [{ ExecutedBy: '[2008] Sabbir Ahmed', TodayDateEntry: 4, AvgCallTime: '5m 46s' }, { ExecutedBy: '[2001] Shakil Ahmed', TodayDateEntry: 8, AvgCallTime: '2m 0s' }], TotalStudent: 252, DataEntry: 96, Pending: 156, Deadline: '08 Jul, 2026 09:00 PM', ConversationId: 510160 },
-                { BranchId: 590, BranchName: 'Bhaluka Udvash', MentorId: 77, TargetedProgram: 'Class 9 Bangla-English Program (Online) 2026 [ONLINE CARE]', ProgramId: 267, TrackingId: 310170, CreatedBy: '2002@demo.local', CreationDate: '06 Jul, 2026 02:43 PM', DataType: 'Chemistar', ConversationType: 'Relation Call', Entries: [{ ExecutedBy: '-', TodayDateEntry: null, AvgCallTime: '-' }], TotalStudent: 289, DataEntry: 147, Pending: 142, Deadline: '09 Jul, 2026 07:30 PM', ConversationId: 510170 },
-                { BranchId: 372, BranchName: 'Bhola Udvash', MentorId: 83, TargetedProgram: 'Class 10 Bangla-English Program (Online) 2026 [ONLINE CARE]', ProgramId: 270, TrackingId: 310180, CreatedBy: '2003@demo.local', CreationDate: '28 Mar, 2026 09:56 AM', DataType: 'CAP+HSC 1st Year Advanced Program-2027', ConversationType: 'Due Collection', Entries: [{ ExecutedBy: '[2002] Md. Tariful Islam', TodayDateEntry: 0, AvgCallTime: '3m 1s' }, { ExecutedBy: '[2003] Abdullah Al Mamun', TodayDateEntry: 0, AvgCallTime: '4m 14s' }, { ExecutedBy: '[2004] Md. Shamsul Alam', TodayDateEntry: 0, AvgCallTime: '5m 27s' }, { ExecutedBy: '[2005] Tushar Imran', TodayDateEntry: 1, AvgCallTime: '2m 40s' }], TotalStudent: 326, DataEntry: 209, Pending: 117, Deadline: '10 Jul, 2026 08:30 PM', ConversationId: 510180 },
-                { BranchId: 602, BranchName: 'Birganj Udvash', MentorId: 83, TargetedProgram: 'Class 7 Academic Program (Online) 2025 [ONLINE CARE]', ProgramId: 217, TrackingId: 310190, CreatedBy: '2004@demo.local', CreationDate: '29 Jun, 2026 01:46 PM', DataType: 'HSC 2nd Year Progressive Batch-2026+Admission-27 DP Batch', ConversationType: 'Information Update', Entries: [{ ExecutedBy: '-', TodayDateEntry: null, AvgCallTime: '-' }], TotalStudent: 13, DataEntry: 10, Pending: 3, Deadline: '11 Jul, 2026 09:30 PM', ConversationId: 510190 },
-                { BranchId: 602, BranchName: 'Birganj Udvash', MentorId: 83, TargetedProgram: 'Medical Admission Program 2026 [UNMESH]', ProgramId: 74, TrackingId: 310200, CreatedBy: '2005@demo.local', CreationDate: '03 Jul, 2026 10:56 AM', DataType: 'AHC Humanities 2027 Data Telemarketing For DP Batch VAP kHA-2027', ConversationType: 'New Admission', Entries: [{ ExecutedBy: '[2004] Md. Shamsul Alam', TodayDateEntry: 5, AvgCallTime: '5m 15s' }, { ExecutedBy: '[2005] Tushar Imran', TodayDateEntry: 3, AvgCallTime: '2m 28s' }, { ExecutedBy: '[2006] Nayeem Hasan', TodayDateEntry: 7, AvgCallTime: '3m 41s' }], TotalStudent: 50, DataEntry: 20, Pending: 30, Deadline: '-', ConversationId: 510200 },
-                { BranchId: 570, BranchName: 'Bogura College Road Udvash', MentorId: 103, TargetedProgram: 'Medical Admission Program (Online) 2026 [ONLINE CARE]', ProgramId: 164, TrackingId: 310210, CreatedBy: '2006@demo.local', CreationDate: '04 Jul, 2026 02:54 PM', DataType: 'Progressive Batch অফলাইন', ConversationType: 'Relation Call', Entries: [{ ExecutedBy: '-', TodayDateEntry: null, AvgCallTime: '-' }], TotalStudent: 87, DataEntry: 46, Pending: 41, Deadline: '06 Jul, 2026 07:00 PM', ConversationId: 510210 },
-                { BranchId: 570, BranchName: 'Bogura College Road Udvash', MentorId: 103, TargetedProgram: '2nd Time Medical Admission Program (Online) 2025 [ONLINE CARE]', ProgramId: 258, TrackingId: 310220, CreatedBy: '2007@demo.local', CreationDate: '05 Jul, 2026 05:18 PM', DataType: 'Class-10 Academic Programme Service Feedback', ConversationType: 'Due Collection', Entries: [{ ExecutedBy: '[2006] Nayeem Hasan', TodayDateEntry: 1, AvgCallTime: '3m 29s' }, { ExecutedBy: '[2007] Rakibul Hasan', TodayDateEntry: 3, AvgCallTime: '4m 42s' }], TotalStudent: 124, DataEntry: 82, Pending: 42, Deadline: '07 Jul, 2026 08:00 PM', ConversationId: 510220 },
-                { BranchId: 484, BranchName: 'Bogura Sherpur Udvash', MentorId: 103, TargetedProgram: 'Engineering Admission Program 2026 [UDVASH]', ProgramId: 68, TrackingId: 310230, CreatedBy: '2008@demo.local', CreationDate: '06 Jul, 2026 02:43 PM', DataType: 'SSC FRC & SSC MT-2027', ConversationType: 'Information Update', Entries: [{ ExecutedBy: '-', TodayDateEntry: null, AvgCallTime: '-' }], TotalStudent: 161, DataEntry: 127, Pending: 34, Deadline: '08 Jul, 2026 09:00 PM', ConversationId: 510230 },
-                { BranchId: 131, BranchName: 'Bogura Udvash', MentorId: 449, TargetedProgram: 'Engineering Admission Program (Online) 2026 [ONLINE CARE]', ProgramId: 161, TrackingId: 310240, CreatedBy: '2001@demo.local', CreationDate: '28 Mar, 2026 09:56 AM', DataType: 'NDC+HCC ONLINE/COMBO Batch', ConversationType: 'New Admission', Entries: [{ ExecutedBy: '[2008] Sabbir Ahmed', TodayDateEntry: 4, AvgCallTime: '5m 43s' }, { ExecutedBy: '[2001] Shakil Ahmed', TodayDateEntry: 5, AvgCallTime: '2m 56s' }, { ExecutedBy: '[2002] Md. Tariful Islam', TodayDateEntry: 3, AvgCallTime: '3m 10s' }, { ExecutedBy: '[2003] Abdullah Al Mamun', TodayDateEntry: 6, AvgCallTime: '4m 23s' }], TotalStudent: 198, DataEntry: 83, Pending: 115, Deadline: '09 Jul, 2026 07:30 PM', ConversationId: 510240 },
-                { BranchId: 552, BranchName: 'Bosila Udvash', MentorId: 499, TargetedProgram: 'Varsity \'KA\' Admission Program 2025 [UDVASH]', ProgramId: 82, TrackingId: 310250, CreatedBy: '2002@demo.local', CreationDate: '29 Jun, 2026 01:46 PM', DataType: 'Chemistar', ConversationType: 'Relation Call', Entries: [{ ExecutedBy: '-', TodayDateEntry: null, AvgCallTime: '-' }], TotalStudent: 235, DataEntry: 129, Pending: 106, Deadline: '10 Jul, 2026 08:30 PM', ConversationId: 510250 },
-                { BranchId: 552, BranchName: 'Bosila Udvash', MentorId: 499, TargetedProgram: 'Varsity \'KA\' Admission Program (Online) 2026 [ONLINE CARE]', ProgramId: 162, TrackingId: 310260, CreatedBy: '2003@demo.local', CreationDate: '03 Jul, 2026 10:56 AM', DataType: 'CAP+HSC 1st Year Advanced Program-2027', ConversationType: 'Due Collection', Entries: [{ ExecutedBy: '[2003] Abdullah Al Mamun', TodayDateEntry: 7, AvgCallTime: '4m 50s' }], TotalStudent: 272, DataEntry: 185, Pending: 87, Deadline: '11 Jul, 2026 09:30 PM', ConversationId: 510260 },
-                { BranchId: 167, BranchName: 'Brahmanbaria Udvash', MentorId: 499, TargetedProgram: '2nd Time Varsity \'KA\' Admission Program (Online) 2026 [ONLINE CARE]', ProgramId: 274, TrackingId: 310270, CreatedBy: '2004@demo.local', CreationDate: '04 Jul, 2026 02:54 PM', DataType: 'HSC 2nd Year Progressive Batch-2026+Admission-27 DP Batch', ConversationType: 'Information Update', Entries: [{ ExecutedBy: '-', TodayDateEntry: null, AvgCallTime: '-' }], TotalStudent: 309, DataEntry: 96, Pending: 213, Deadline: '-', ConversationId: 510270 },
-                { BranchId: 93, BranchName: 'Cantonment Udvash', MentorId: 572, TargetedProgram: 'Varsity \'KHA\' Admission Program 2025 [UDVASH]', ProgramId: 198, TrackingId: 310280, CreatedBy: '2005@demo.local', CreationDate: '05 Jul, 2026 05:18 PM', DataType: 'AHC Humanities 2027 Data Telemarketing For DP Batch VAP kHA-2027', ConversationType: 'New Admission', Entries: [{ ExecutedBy: '[2004] Md. Shamsul Alam', TodayDateEntry: 8, AvgCallTime: '5m 12s' }, { ExecutedBy: '[2005] Tushar Imran', TodayDateEntry: 13, AvgCallTime: '2m 25s' }], TotalStudent: 346, DataEntry: 152, Pending: 194, Deadline: '06 Jul, 2026 07:00 PM', ConversationId: 510280 },
-                { BranchId: 385, BranchName: 'Chandpur Udvash', MentorId: 572, TargetedProgram: 'Varsity \'KHA\' Admission Program (Online) 2026 [ONLINE CARE]', ProgramId: 199, TrackingId: 310290, CreatedBy: '2006@demo.local', CreationDate: '06 Jul, 2026 02:43 PM', DataType: 'Progressive Batch অফলাইন', ConversationType: 'Relation Call', Entries: [{ ExecutedBy: '-', TodayDateEntry: null, AvgCallTime: '-' }], TotalStudent: 33, DataEntry: 19, Pending: 14, Deadline: '07 Jul, 2026 08:00 PM', ConversationId: 510290 },
-                { BranchId: 385, BranchName: 'Chandpur Udvash', MentorId: 572, TargetedProgram: '2nd Time Varsity \'KHA\' Admission Program (Online) 2026 [ONLINE CARE]', ProgramId: 275, TrackingId: 310300, CreatedBy: '2007@demo.local', CreationDate: '28 Mar, 2026 09:56 AM', DataType: 'Class-10 Academic Programme Service Feedback', ConversationType: 'Due Collection', Entries: [{ ExecutedBy: '[2006] Nayeem Hasan', TodayDateEntry: 3, AvgCallTime: '3m 26s' }, { ExecutedBy: '[2007] Rakibul Hasan', TodayDateEntry: 2, AvgCallTime: '4m 39s' }, { ExecutedBy: '[2008] Sabbir Ahmed', TodayDateEntry: 2, AvgCallTime: '5m 52s' }, { ExecutedBy: '[2001] Shakil Ahmed', TodayDateEntry: 3, AvgCallTime: '2m 6s' }], TotalStudent: 70, DataEntry: 49, Pending: 21, Deadline: '08 Jul, 2026 09:00 PM', ConversationId: 510300 },
-                { BranchId: 194, BranchName: 'Chapainawabganj Udvash', MentorId: 581, TargetedProgram: 'College Admission Program 2025 [UDVASH]', ProgramId: 67, TrackingId: 310310, CreatedBy: '2008@demo.local', CreationDate: '29 Jun, 2026 01:46 PM', DataType: 'SSC FRC & SSC MT-2027', ConversationType: 'Information Update', Entries: [{ ExecutedBy: '-', TodayDateEntry: null, AvgCallTime: '-' }], TotalStudent: 107, DataEntry: 35, Pending: 72, Deadline: '09 Jul, 2026 07:30 PM', ConversationId: 510310 },
-                { BranchId: 194, BranchName: 'Chapainawabganj Udvash', MentorId: 581, TargetedProgram: 'HSC Model Test 2026 [UDVASH]', ProgramId: 66, TrackingId: 310320, CreatedBy: '2001@demo.local', CreationDate: '03 Jul, 2026 10:56 AM', DataType: 'NDC+HCC ONLINE/COMBO Batch', ConversationType: 'New Admission', Entries: [{ ExecutedBy: '[2008] Sabbir Ahmed', TodayDateEntry: 6, AvgCallTime: '5m 40s' }, { ExecutedBy: '[2001] Shakil Ahmed', TodayDateEntry: 6, AvgCallTime: '2m 53s' }, { ExecutedBy: '[2002] Md. Tariful Islam', TodayDateEntry: 12, AvgCallTime: '3m 7s' }], TotalStudent: 144, DataEntry: 66, Pending: 78, Deadline: '10 Jul, 2026 08:30 PM', ConversationId: 510320 },
-                { BranchId: 611, BranchName: 'Charfasson Udvash', MentorId: 6, TargetedProgram: 'Class 12 Academic Program 2026 [UDVASH]', ProgramId: 63, TrackingId: 310330, CreatedBy: '2005@demo.local', CreationDate: '05 Jul, 2026 05:18 PM', DataType: 'Chemistar', ConversationType: 'Relation Call', Entries: [{ ExecutedBy: '-', TodayDateEntry: null, AvgCallTime: '-' }], TotalStudent: 118, DataEntry: 72, Pending: 46, Deadline: '11 Jul, 2026 09:30 PM', ConversationId: 510330 },
-                { BranchId: 88, BranchName: 'Azimpur Udvash', MentorId: 6, TargetedProgram: 'Class 9 Bangla-English Program (Online) 2026 [ONLINE CARE]', ProgramId: 267, TrackingId: 310340, CreatedBy: '2007@demo.local', CreationDate: '06 Jul, 2026 02:43 PM', DataType: 'SSC FRC & SSC MT-2027', ConversationType: 'New Admission', Entries: [{ ExecutedBy: '[2007] Rakibul Hasan', TodayDateEntry: 12, AvgCallTime: '3m 28s' }, { ExecutedBy: '[2008] Sabbir Ahmed', TodayDateEntry: 6, AvgCallTime: '4m 51s' }], TotalStudent: 96, DataEntry: 41, Pending: 55, Deadline: '12 Jul, 2026 08:00 PM', ConversationId: 510340 },
-                { BranchId: 611, BranchName: 'Charfasson Udvash', MentorId: 6, TargetedProgram: 'Class 10 Bangla-English Program (Online) 2026 [ONLINE CARE]', ProgramId: 270, TrackingId: 310350, CreatedBy: '2008@demo.local', CreationDate: '08 Jun, 2026 08:00 PM', DataType: 'CAP+HSC 1st Year Advanced Program-2027', ConversationType: 'New Admission', Entries: [{ ExecutedBy: '-', TodayDateEntry: null, AvgCallTime: '-' }], TotalStudent: 132, DataEntry: 63, Pending: 69, Deadline: '12 Jul, 2026 09:00 PM', ConversationId: 510350 },
-                { BranchId: 87, BranchName: 'Banasree Udvash', MentorId: 41, TargetedProgram: 'Engineering Admission Program (Online) 2025 [ONLINE CARE]', ProgramId: 161, TrackingId: 310360, CreatedBy: '2001@demo.local', CreationDate: '29 Jun, 2026 01:46 PM', DataType: 'New Admission', ConversationType: 'Relation Call', Entries: [{ ExecutedBy: '-', TodayDateEntry: null, AvgCallTime: '-' }], TotalStudent: 40, DataEntry: 35, Pending: 5, Deadline: '08 Jul, 2026 09:00 PM', ConversationId: 510360 },
-                { BranchId: 93, BranchName: 'Cantonment Udvash', MentorId: 572, TargetedProgram: 'Varsity \'KA\' Admission Program (Online) 2026 [ONLINE CARE]', ProgramId: 162, TrackingId: 310370, CreatedBy: '2002@demo.local', CreationDate: '03 Jul, 2026 10:56 AM', DataType: 'CAP+HSC 1st Year Advanced Program-2027', ConversationType: 'Due Collection', Entries: [{ ExecutedBy: '-', TodayDateEntry: null, AvgCallTime: '-' }], TotalStudent: 57, DataEntry: 41, Pending: 16, Deadline: '09 Jul, 2026 07:30 PM', ConversationId: 510370 },
-                { BranchId: 94, BranchName: 'Basabo Udvash', MentorId: 68, TargetedProgram: 'Varsity \'KHA\' Admission Program (Online) 2025 [ONLINE CARE]', ProgramId: 199, TrackingId: 310380, CreatedBy: '2003@demo.local', CreationDate: '04 Jul, 2026 02:54 PM', DataType: 'HSC 2nd Year Progressive Batch-2026+Admission-27 DP Batch', ConversationType: 'Information Update', Entries: [{ ExecutedBy: '-', TodayDateEntry: null, AvgCallTime: '-' }], TotalStudent: 74, DataEntry: 47, Pending: 27, Deadline: '10 Jul, 2026 08:30 PM', ConversationId: 510380 },
-                { BranchId: 131, BranchName: 'Bogura Udvash', MentorId: 449, TargetedProgram: 'College Admission Program (Online) 2026 [ONLINE CARE]', ProgramId: 169, TrackingId: 310390, CreatedBy: '2004@demo.local', CreationDate: '05 Jul, 2026 05:18 PM', DataType: 'AHC Humanities 2027 Data Telemarketing For DP Batch VAP kHA-2027', ConversationType: 'New Admission', Entries: [{ ExecutedBy: '-', TodayDateEntry: null, AvgCallTime: '-' }], TotalStudent: 91, DataEntry: 53, Pending: 38, Deadline: '11 Jul, 2026 09:30 PM', ConversationId: 510390 },
-                { BranchId: 136, BranchName: 'Barishal Udvash', MentorId: 65, TargetedProgram: 'SSC Model Test (Online) 2025 [ONLINE CARE]', ProgramId: 148, TrackingId: 310400, CreatedBy: '2005@demo.local', CreationDate: '06 Jul, 2026 02:43 PM', DataType: 'Progressive Batch অফলাইন', ConversationType: 'Relation Call', Entries: [{ ExecutedBy: '-', TodayDateEntry: null, AvgCallTime: '-' }], TotalStudent: 108, DataEntry: 59, Pending: 49, Deadline: '12 Jul, 2026 08:00 PM', ConversationId: 510400 },
-                { BranchId: 167, BranchName: 'Brahmanbaria Udvash', MentorId: 499, TargetedProgram: 'HSC Model Test (Online) 2026 [ONLINE CARE]', ProgramId: 149, TrackingId: 310410, CreatedBy: '2006@demo.local', CreationDate: '28 Mar, 2026 09:56 AM', DataType: 'Class-10 Academic Programme Service Feedback', ConversationType: 'Due Collection', Entries: [{ ExecutedBy: '-', TodayDateEntry: null, AvgCallTime: '-' }], TotalStudent: 125, DataEntry: 65, Pending: 60, Deadline: '08 Jul, 2026 09:00 PM', ConversationId: 510410 },
-                { BranchId: 194, BranchName: 'Chapainawabganj Udvash', MentorId: 581, TargetedProgram: 'Class 6 Academic Program (Online) 2025 [ONLINE CARE]', ProgramId: 216, TrackingId: 310420, CreatedBy: '2007@demo.local', CreationDate: '29 Jun, 2026 01:46 PM', DataType: 'SSC FRC & SSC MT-2027', ConversationType: 'Information Update', Entries: [{ ExecutedBy: '-', TodayDateEntry: null, AvgCallTime: '-' }], TotalStudent: 142, DataEntry: 71, Pending: 71, Deadline: '09 Jul, 2026 07:30 PM', ConversationId: 510420 },
-                { BranchId: 271, BranchName: 'Bakshibazar Udvash', MentorId: 41, TargetedProgram: 'Class 7 Academic Program (Online) 2026 [ONLINE CARE]', ProgramId: 217, TrackingId: 310430, CreatedBy: '2008@demo.local', CreationDate: '03 Jul, 2026 10:56 AM', DataType: 'NDC+HCC ONLINE/COMBO Batch', ConversationType: 'New Admission', Entries: [{ ExecutedBy: '-', TodayDateEntry: null, AvgCallTime: '-' }], TotalStudent: 159, DataEntry: 77, Pending: 82, Deadline: '10 Jul, 2026 08:30 PM', ConversationId: 510430 },
-                { BranchId: 368, BranchName: 'Bandarban Udvash', MentorId: 53, TargetedProgram: 'HSC Bangla-English Full Program (Online) 2025 [ONLINE CARE]', ProgramId: 173, TrackingId: 310440, CreatedBy: '2001@demo.local', CreationDate: '04 Jul, 2026 02:54 PM', DataType: 'Chemistar', ConversationType: 'Relation Call', Entries: [{ ExecutedBy: '-', TodayDateEntry: null, AvgCallTime: '-' }], TotalStudent: 176, DataEntry: 83, Pending: 93, Deadline: '11 Jul, 2026 09:30 PM', ConversationId: 510440 },
-                { BranchId: 372, BranchName: 'Bhola Udvash', MentorId: 83, TargetedProgram: 'Class 11 Academic Program (Online) 2026 [ONLINE CARE]', ProgramId: 142, TrackingId: 310450, CreatedBy: '2002@demo.local', CreationDate: '05 Jul, 2026 05:18 PM', DataType: 'New Admission', ConversationType: 'Due Collection', Entries: [{ ExecutedBy: '-', TodayDateEntry: null, AvgCallTime: '-' }], TotalStudent: 193, DataEntry: 89, Pending: 104, Deadline: '12 Jul, 2026 08:00 PM', ConversationId: 510450 },
-                { BranchId: 376, BranchName: 'Barguna Udvash', MentorId: 65, TargetedProgram: 'HSC Science Foundation Program (Online) 2025 [ONLINE CARE]', ProgramId: 175, TrackingId: 310460, CreatedBy: '2003@demo.local', CreationDate: '06 Jul, 2026 02:43 PM', DataType: 'CAP+HSC 1st Year Advanced Program-2027', ConversationType: 'Information Update', Entries: [{ ExecutedBy: '-', TodayDateEntry: null, AvgCallTime: '-' }], TotalStudent: 210, DataEntry: 95, Pending: 115, Deadline: '08 Jul, 2026 09:00 PM', ConversationId: 510460 },
-                { BranchId: 380, BranchName: 'Bagerhat Udvash', MentorId: 25, TargetedProgram: 'Class 8 Bangla-English Full Course (Online) 2026 [ONLINE CARE]', ProgramId: 133, TrackingId: 310470, CreatedBy: '2004@demo.local', CreationDate: '28 Mar, 2026 09:56 AM', DataType: 'HSC 2nd Year Progressive Batch-2026+Admission-27 DP Batch', ConversationType: 'New Admission', Entries: [{ ExecutedBy: '-', TodayDateEntry: null, AvgCallTime: '-' }], TotalStudent: 227, DataEntry: 101, Pending: 126, Deadline: '09 Jul, 2026 07:30 PM', ConversationId: 510470 },
-                { BranchId: 385, BranchName: 'Chandpur Udvash', MentorId: 572, TargetedProgram: 'Class 9-10 Bangla-English Full Course (Online) 2025 [ONLINE CARE]', ProgramId: 158, TrackingId: 310480, CreatedBy: '2005@demo.local', CreationDate: '29 Jun, 2026 01:46 PM', DataType: 'AHC Humanities 2027 Data Telemarketing For DP Batch VAP kHA-2027', ConversationType: 'Relation Call', Entries: [{ ExecutedBy: '-', TodayDateEntry: null, AvgCallTime: '-' }], TotalStudent: 244, DataEntry: 107, Pending: 137, Deadline: '10 Jul, 2026 08:30 PM', ConversationId: 510480 },
-                { BranchId: 484, BranchName: 'Bogura Sherpur Udvash', MentorId: 103, TargetedProgram: 'SSC A to Z Final Revision Course (Online) 2026 [ONLINE CARE]', ProgramId: 240, TrackingId: 310490, CreatedBy: '2006@demo.local', CreationDate: '03 Jul, 2026 10:56 AM', DataType: 'Progressive Batch অফলাইন', ConversationType: 'Due Collection', Entries: [{ ExecutedBy: '-', TodayDateEntry: null, AvgCallTime: '-' }], TotalStudent: 261, DataEntry: 253, Pending: 8, Deadline: '11 Jul, 2026 09:30 PM', ConversationId: 510490 },
-                { BranchId: 507, BranchName: 'Bhairab Udvash', MentorId: 68, TargetedProgram: 'HSC A to Z Final Revision Course (Online) 2025 [ONLINE CARE]', ProgramId: 265, TrackingId: 310500, CreatedBy: '2007@demo.local', CreationDate: '04 Jul, 2026 02:54 PM', DataType: 'Class-10 Academic Programme Service Feedback', ConversationType: 'Information Update', Entries: [{ ExecutedBy: '-', TodayDateEntry: null, AvgCallTime: '-' }], TotalStudent: 278, DataEntry: 259, Pending: 19, Deadline: '12 Jul, 2026 08:00 PM', ConversationId: 510500 },
-                { BranchId: 541, BranchName: 'Badda Udvash', MentorId: 25, TargetedProgram: 'Cadet College Vorti Prostuti (Online) 2026 [ONLINE CARE]', ProgramId: 263, TrackingId: 310510, CreatedBy: '2008@demo.local', CreationDate: '05 Jul, 2026 05:18 PM', DataType: 'SSC FRC & SSC MT-2027', ConversationType: 'New Admission', Entries: [{ ExecutedBy: '-', TodayDateEntry: null, AvgCallTime: '-' }], TotalStudent: 295, DataEntry: 265, Pending: 30, Deadline: '08 Jul, 2026 09:00 PM', ConversationId: 510510 },
-                { BranchId: 552, BranchName: 'Bosila Udvash', MentorId: 499, TargetedProgram: '2nd Time Varsity \'KA\' Admission Program (Online) 2025 [ONLINE CARE]', ProgramId: 274, TrackingId: 310520, CreatedBy: '2001@demo.local', CreationDate: '06 Jul, 2026 02:43 PM', DataType: 'NDC+HCC ONLINE/COMBO Batch', ConversationType: 'Relation Call', Entries: [{ ExecutedBy: '-', TodayDateEntry: null, AvgCallTime: '-' }], TotalStudent: 312, DataEntry: 271, Pending: 41, Deadline: '09 Jul, 2026 07:30 PM', ConversationId: 510520 },
-                { BranchId: 570, BranchName: 'Bogura College Road Udvash', MentorId: 103, TargetedProgram: '2nd Time Varsity \'KHA\' Admission Program (Online) 2026 [ONLINE CARE]', ProgramId: 275, TrackingId: 310530, CreatedBy: '2002@demo.local', CreationDate: '28 Mar, 2026 09:56 AM', DataType: 'Chemistar', ConversationType: 'Due Collection', Entries: [{ ExecutedBy: '-', TodayDateEntry: null, AvgCallTime: '-' }], TotalStudent: 329, DataEntry: 277, Pending: 52, Deadline: '10 Jul, 2026 08:30 PM', ConversationId: 510530 },
-                { BranchId: 590, BranchName: 'Bhaluka Udvash', MentorId: 77, TargetedProgram: '2nd Time Medical Admission Program (Online) 2025 [ONLINE CARE]', ProgramId: 258, TrackingId: 310540, CreatedBy: '2003@demo.local', CreationDate: '29 Jun, 2026 01:46 PM', DataType: 'New Admission', ConversationType: 'Information Update', Entries: [{ ExecutedBy: '-', TodayDateEntry: null, AvgCallTime: '-' }], TotalStudent: 46, DataEntry: -17, Pending: 63, Deadline: '11 Jul, 2026 09:30 PM', ConversationId: 510540 },
-                { BranchId: 602, BranchName: 'Birganj Udvash', MentorId: 83, TargetedProgram: 'Medical Admission Program (Online) 2026 [ONLINE CARE]', ProgramId: 164, TrackingId: 310550, CreatedBy: '2004@demo.local', CreationDate: '03 Jul, 2026 10:56 AM', DataType: 'CAP+HSC 1st Year Advanced Program-2027', ConversationType: 'New Admission', Entries: [{ ExecutedBy: '-', TodayDateEntry: null, AvgCallTime: '-' }], TotalStudent: 63, DataEntry: -11, Pending: 74, Deadline: '12 Jul, 2026 08:00 PM', ConversationId: 510550 },
-                { BranchId: 88, BranchName: 'Azimpur Udvash', MentorId: 6, TargetedProgram: 'Medical Admission Program 2025 [UNMESH]', ProgramId: 74, TrackingId: 310560, CreatedBy: '2001@demo.local', CreationDate: '29 Jun, 2026 01:46 PM', DataType: 'New Admission', ConversationType: 'Relation Call', Entries: [{ ExecutedBy: '[2001] Shakil Ahmed', TodayDateEntry: 3, AvgCallTime: '2m 15s' }], TotalStudent: 23, DataEntry: 23, Pending: 0, Deadline: '-', ConversationId: 510560 },
-                { BranchId: 541, BranchName: 'Badda Udvash', MentorId: 25, TargetedProgram: 'Engineering Admission Program 2026 [UDVASH]', ProgramId: 68, TrackingId: 310570, CreatedBy: '2002@demo.local', CreationDate: '03 Jul, 2026 10:56 AM', DataType: 'CAP+HSC 1st Year Advanced Program-2027', ConversationType: 'Due Collection', Entries: [{ ExecutedBy: '[2002] Md. Tariful Islam', TodayDateEntry: 8, AvgCallTime: '3m 22s' }, { ExecutedBy: '[2003] Abdullah Al Mamun', TodayDateEntry: 15, AvgCallTime: '4m 8s' }], TotalStudent: 56, DataEntry: 56, Pending: 0, Deadline: '-', ConversationId: 510570 },
-                { BranchId: 380, BranchName: 'Bagerhat Udvash', MentorId: 25, TargetedProgram: 'Varsity \'KA\' Admission Program 2025 [UDVASH]', ProgramId: 82, TrackingId: 310580, CreatedBy: '2003@demo.local', CreationDate: '04 Jul, 2026 02:54 PM', DataType: 'HSC 2nd Year Progressive Batch-2026+Admission-27 DP Batch', ConversationType: 'Information Update', Entries: [{ ExecutedBy: '[2003] Abdullah Al Mamun', TodayDateEntry: 13, AvgCallTime: '4m 8s' }, { ExecutedBy: '[2004] Md. Shamsul Alam', TodayDateEntry: 20, AvgCallTime: '5m 41s' }, { ExecutedBy: '[2005] Tushar Imran', TodayDateEntry: 7, AvgCallTime: '2m 50s' }], TotalStudent: 86, DataEntry: 86, Pending: 0, Deadline: '-', ConversationId: 510580 },
-                { BranchId: 271, BranchName: 'Bakshibazar Udvash', MentorId: 41, TargetedProgram: 'Varsity \'KHA\' Admission Program 2026 [UDVASH]', ProgramId: 198, TrackingId: 310590, CreatedBy: '2004@demo.local', CreationDate: '05 Jul, 2026 05:18 PM', DataType: 'AHC Humanities 2027 Data Telemarketing For DP Batch VAP kHA-2027', ConversationType: 'New Admission', Entries: [{ ExecutedBy: '[2004] Md. Shamsul Alam', TodayDateEntry: 18, AvgCallTime: '5m 41s' }], TotalStudent: 77, DataEntry: 77, Pending: 0, Deadline: '-', ConversationId: 510590 },
-                { BranchId: 87, BranchName: 'Banasree Udvash', MentorId: 41, TargetedProgram: 'College Admission Program 2025 [UDVASH]', ProgramId: 67, TrackingId: 310600, CreatedBy: '2005@demo.local', CreationDate: '06 Jul, 2026 02:43 PM', DataType: 'Progressive Batch অফলাইন', ConversationType: 'Relation Call', Entries: [{ ExecutedBy: '[2005] Tushar Imran', TodayDateEntry: 3, AvgCallTime: '2m 50s' }, { ExecutedBy: '[2006] Nayeem Hasan', TodayDateEntry: 10, AvgCallTime: '3m 37s' }], TotalStudent: 85, DataEntry: 85, Pending: 0, Deadline: '-', ConversationId: 510600 },
-                { BranchId: 368, BranchName: 'Bandarban Udvash', MentorId: 53, TargetedProgram: 'SSC Model Test 2026 [UDVASH]', ProgramId: 65, TrackingId: 310610, CreatedBy: '2006@demo.local', CreationDate: '28 Mar, 2026 09:56 AM', DataType: 'Class-10 Academic Programme Service Feedback', ConversationType: 'Due Collection', Entries: [{ ExecutedBy: '[2006] Nayeem Hasan', TodayDateEntry: 8, AvgCallTime: '3m 37s' }, { ExecutedBy: '[2007] Rakibul Hasan', TodayDateEntry: 15, AvgCallTime: '4m 26s' }, { ExecutedBy: '[2008] Sabbir Ahmed', TodayDateEntry: 22, AvgCallTime: '5m 3s' }], TotalStudent: 130, DataEntry: 130, Pending: 0, Deadline: '-', ConversationId: 510610 },
-                { BranchId: 376, BranchName: 'Barguna Udvash', MentorId: 65, TargetedProgram: 'HSC Model Test 2025 [UDVASH]', ProgramId: 66, TrackingId: 310620, CreatedBy: '2007@demo.local', CreationDate: '29 Jun, 2026 01:46 PM', DataType: 'SSC FRC & SSC MT-2027', ConversationType: 'Information Update', Entries: [{ ExecutedBy: '[2007] Rakibul Hasan', TodayDateEntry: 13, AvgCallTime: '4m 26s' }], TotalStudent: 111, DataEntry: 111, Pending: 0, Deadline: '-', ConversationId: 510620 },
-                { BranchId: 136, BranchName: 'Barishal Udvash', MentorId: 65, TargetedProgram: 'Class 9 Academic Program 2026 [UDVASH]', ProgramId: 60, TrackingId: 310630, CreatedBy: '2008@demo.local', CreationDate: '03 Jul, 2026 10:56 AM', DataType: 'NDC+HCC ONLINE/COMBO Batch', ConversationType: 'New Admission', Entries: [{ ExecutedBy: '[2008] Sabbir Ahmed', TodayDateEntry: 18, AvgCallTime: '5m 3s' }, { ExecutedBy: '[2001] Shakil Ahmed', TodayDateEntry: 5, AvgCallTime: '2m 15s' }], TotalStudent: 54, DataEntry: 54, Pending: 0, Deadline: '-', ConversationId: 510630 },
-                { BranchId: 94, BranchName: 'Basabo Udvash', MentorId: 68, TargetedProgram: 'Class 10 Academic Program 2025 [UDVASH]', ProgramId: 61, TrackingId: 310640, CreatedBy: '2001@demo.local', CreationDate: '04 Jul, 2026 02:54 PM', DataType: 'Chemistar', ConversationType: 'Relation Call', Entries: [{ ExecutedBy: '[2001] Shakil Ahmed', TodayDateEntry: 3, AvgCallTime: '2m 15s' }, { ExecutedBy: '[2002] Md. Tariful Islam', TodayDateEntry: 10, AvgCallTime: '3m 22s' }, { ExecutedBy: '[2003] Abdullah Al Mamun', TodayDateEntry: 17, AvgCallTime: '4m 8s' }], TotalStudent: 74, DataEntry: 74, Pending: 0, Deadline: '-', ConversationId: 510640 },
-                { BranchId: 507, BranchName: 'Bhairab Udvash', MentorId: 68, TargetedProgram: 'Class 11 Academic Program 2026 [UDVASH]', ProgramId: 62, TrackingId: 310650, CreatedBy: '2002@demo.local', CreationDate: '05 Jul, 2026 05:18 PM', DataType: 'New Admission', ConversationType: 'Due Collection', Entries: [{ ExecutedBy: '[2002] Md. Tariful Islam', TodayDateEntry: 8, AvgCallTime: '3m 22s' }], TotalStudent: 65, DataEntry: 65, Pending: 0, Deadline: '-', ConversationId: 510650 },
-                { BranchId: 590, BranchName: 'Bhaluka Udvash', MentorId: 77, TargetedProgram: 'Class 12 Academic Program 2025 [UDVASH]', ProgramId: 63, TrackingId: 310660, CreatedBy: '2003@demo.local', CreationDate: '06 Jul, 2026 02:43 PM', DataType: 'CAP+HSC 1st Year Advanced Program-2027', ConversationType: 'Information Update', Entries: [{ ExecutedBy: '[2003] Abdullah Al Mamun', TodayDateEntry: 13, AvgCallTime: '4m 8s' }, { ExecutedBy: '[2004] Md. Shamsul Alam', TodayDateEntry: 20, AvgCallTime: '5m 41s' }], TotalStudent: 103, DataEntry: 103, Pending: 0, Deadline: '-', ConversationId: 510660 },
-                { BranchId: 372, BranchName: 'Bhola Udvash', MentorId: 83, TargetedProgram: '2nd Time Medical Admission Program 2026 [UNMESH]', ProgramId: 255, TrackingId: 310670, CreatedBy: '2004@demo.local', CreationDate: '28 Mar, 2026 09:56 AM', DataType: 'HSC 2nd Year Progressive Batch-2026+Admission-27 DP Batch', ConversationType: 'New Admission', Entries: [{ ExecutedBy: '[2004] Md. Shamsul Alam', TodayDateEntry: 18, AvgCallTime: '5m 41s' }, { ExecutedBy: '[2005] Tushar Imran', TodayDateEntry: 5, AvgCallTime: '2m 50s' }, { ExecutedBy: '[2006] Nayeem Hasan', TodayDateEntry: 12, AvgCallTime: '3m 37s' }], TotalStudent: 118, DataEntry: 118, Pending: 0, Deadline: '-', ConversationId: 510670 },
-                { BranchId: 602, BranchName: 'Birganj Udvash', MentorId: 83, TargetedProgram: 'HSC Bangla-English Full Program 2025 [UDVASH]', ProgramId: 261, TrackingId: 310680, CreatedBy: '2005@demo.local', CreationDate: '29 Jun, 2026 01:46 PM', DataType: 'AHC Humanities 2027 Data Telemarketing For DP Batch VAP kHA-2027', ConversationType: 'Relation Call', Entries: [{ ExecutedBy: '[2005] Tushar Imran', TodayDateEntry: 3, AvgCallTime: '2m 50s' }], TotalStudent: 99, DataEntry: 99, Pending: 0, Deadline: '-', ConversationId: 510680 },
-                { BranchId: 570, BranchName: 'Bogura College Road Udvash', MentorId: 103, TargetedProgram: 'HSC Final Revision & Pre-Admission Program 2026 [UDVASH]', ProgramId: 197, TrackingId: 310690, CreatedBy: '2006@demo.local', CreationDate: '03 Jul, 2026 10:56 AM', DataType: 'Progressive Batch অফলাইন', ConversationType: 'Due Collection', Entries: [{ ExecutedBy: '[2006] Nayeem Hasan', TodayDateEntry: 8, AvgCallTime: '3m 37s' }, { ExecutedBy: '[2007] Rakibul Hasan', TodayDateEntry: 15, AvgCallTime: '4m 26s' }], TotalStudent: 52, DataEntry: 52, Pending: 0, Deadline: '-', ConversationId: 510690 },
-                { BranchId: 484, BranchName: 'Bogura Sherpur Udvash', MentorId: 103, TargetedProgram: 'Primary Britti Porikkha Prostuti 2025 [UDVASH]', ProgramId: 259, TrackingId: 310700, CreatedBy: '2007@demo.local', CreationDate: '04 Jul, 2026 02:54 PM', DataType: 'Class-10 Academic Programme Service Feedback', ConversationType: 'Information Update', Entries: [{ ExecutedBy: '[2007] Rakibul Hasan', TodayDateEntry: 13, AvgCallTime: '4m 26s' }, { ExecutedBy: '[2008] Sabbir Ahmed', TodayDateEntry: 20, AvgCallTime: '5m 3s' }, { ExecutedBy: '[2001] Shakil Ahmed', TodayDateEntry: 7, AvgCallTime: '2m 15s' }], TotalStudent: 82, DataEntry: 82, Pending: 0, Deadline: '-', ConversationId: 510700 },
-                { BranchId: 131, BranchName: 'Bogura Udvash', MentorId: 449, TargetedProgram: 'Junior Britti Porikkha Prostuti 2026 [UDVASH]', ProgramId: 264, TrackingId: 310710, CreatedBy: '2008@demo.local', CreationDate: '05 Jul, 2026 05:18 PM', DataType: 'SSC FRC & SSC MT-2027', ConversationType: 'New Admission', Entries: [{ ExecutedBy: '[2008] Sabbir Ahmed', TodayDateEntry: 18, AvgCallTime: '5m 3s' }], TotalStudent: 73, DataEntry: 73, Pending: 0, Deadline: '-', ConversationId: 510710 },
-                { BranchId: 552, BranchName: 'Bosila Udvash', MentorId: 499, TargetedProgram: 'HSC Bangla-English Special Program 2025 [UDVASH]', ProgramId: 113, TrackingId: 310720, CreatedBy: '2001@demo.local', CreationDate: '06 Jul, 2026 02:43 PM', DataType: 'NDC+HCC ONLINE/COMBO Batch', ConversationType: 'Relation Call', Entries: [{ ExecutedBy: '[2001] Shakil Ahmed', TodayDateEntry: 3, AvgCallTime: '2m 15s' }, { ExecutedBy: '[2002] Md. Tariful Islam', TodayDateEntry: 10, AvgCallTime: '3m 22s' }], TotalStudent: 81, DataEntry: 81, Pending: 0, Deadline: '-', ConversationId: 510720 },
-                { BranchId: 167, BranchName: 'Brahmanbaria Udvash', MentorId: 499, TargetedProgram: 'Class 8 Bangla-English Full Course 2026 [UDVASH]', ProgramId: 180, TrackingId: 310730, CreatedBy: '2002@demo.local', CreationDate: '28 Mar, 2026 09:56 AM', DataType: 'Chemistar', ConversationType: 'Due Collection', Entries: [{ ExecutedBy: '[2002] Md. Tariful Islam', TodayDateEntry: 8, AvgCallTime: '3m 22s' }, { ExecutedBy: '[2003] Abdullah Al Mamun', TodayDateEntry: 15, AvgCallTime: '4m 8s' }, { ExecutedBy: '[2004] Md. Shamsul Alam', TodayDateEntry: 22, AvgCallTime: '5m 41s' }], TotalStudent: 126, DataEntry: 126, Pending: 0, Deadline: '-', ConversationId: 510730 },
-                { BranchId: 93, BranchName: 'Cantonment Udvash', MentorId: 572, TargetedProgram: 'HSC Science Foundation Program 2025 [UDVASH]', ProgramId: 174, TrackingId: 310740, CreatedBy: '2003@demo.local', CreationDate: '29 Jun, 2026 01:46 PM', DataType: 'New Admission', ConversationType: 'Information Update', Entries: [{ ExecutedBy: '[2003] Abdullah Al Mamun', TodayDateEntry: 13, AvgCallTime: '4m 8s' }], TotalStudent: 107, DataEntry: 107, Pending: 0, Deadline: '-', ConversationId: 510740 },
-                { BranchId: 385, BranchName: 'Chandpur Udvash', MentorId: 572, TargetedProgram: 'SSC MCQ Booster Program 2026 [UDVASH]', ProgramId: 170, TrackingId: 310750, CreatedBy: '2004@demo.local', CreationDate: '03 Jul, 2026 10:56 AM', DataType: 'CAP+HSC 1st Year Advanced Program-2027', ConversationType: 'New Admission', Entries: [{ ExecutedBy: '[2004] Md. Shamsul Alam', TodayDateEntry: 18, AvgCallTime: '5m 41s' }, { ExecutedBy: '[2005] Tushar Imran', TodayDateEntry: 5, AvgCallTime: '2m 50s' }], TotalStudent: 50, DataEntry: 50, Pending: 0, Deadline: '-', ConversationId: 510750 },
-
+            // ---- Demo fake data ------------------------------------------------
+            // No live backend here, so a fixed set of fake conversation records is
+            // generated once at page load (not re-randomized per search) and every
+            // filter just narrows this same underlying set — matches how the real
+            // page would filter real ContactedNumber/ContactMedium data saved from
+            // the Conversation Entry page.
+            var FAKE_BRANCHES = [
+                { name: 'Azimpur Udvash', org: 'UDVASH' },
+                { name: 'Badda Udvash', org: 'UDVASH' },
+                { name: 'Banasree Udvash', org: 'UDVASH' },
+                { name: 'Mirpur Udvash', org: 'UDVASH' },
+                { name: 'Chattogram Udvash', org: 'UDVASH' },
+                { name: 'Rajshahi Unmesh', org: 'UNMESH' },
+                { name: 'Khulna Unmesh', org: 'UNMESH' },
+                { name: 'Sylhet Online Care', org: 'ONLINE CARE' },
+                { name: 'Bogura Udvash', org: 'UDVASH' },
+                { name: 'Cumilla Udvash', org: 'UDVASH' },
+                { name: 'Gazipur Udvash', org: 'UDVASH' },
+                { name: 'Uttara Udvash', org: 'UDVASH' }
+            ];
+            var FAKE_PROGRAMS = [
+                { value: '74', text: 'Medical Admission Program' },
+                { value: '68', text: 'Engineering Admission Program' },
+                { value: '82', text: "Varsity 'KA' Admission Program" },
+                { value: '198', text: "Varsity 'KHA' Admission Program" },
+                { value: '67', text: 'College Admission Program' },
+                { value: '61', text: 'Class 10 Academic Program' },
+                { value: '62', text: 'Class 11 Academic Program' },
+                { value: '63', text: 'Class 12 Academic Program' }
+            ];
+            var CONTACTED_PERSONS = ['Student', 'Father', 'Mother'];
+            var CONTACT_MEDIUMS = ['Mobile', 'WhatsApp', 'Telegram'];
+            var CONTACT_MEDIUM_LABELS = { Mobile: 'Mobile Call', WhatsApp: 'WhatsApp', Telegram: 'Telegram' };
+            var FIRST_NAMES = ['Rakibul', 'Sabbir', 'Farhana', 'Nusrat', 'Tanvir', 'Mehedi', 'Shorna', 'Imran', 'Jannatul', 'Rafid', 'Sadia', 'Tamim', 'Anika', 'Fahim', 'Ruponti'];
+            var LAST_NAMES = ['Hasan', 'Ahmed', 'Islam', 'Rahman', 'Khan', 'Akter', 'Chowdhury', 'Hossain', 'Alam', 'Siddique'];
+            // Who made the entry (a team member, not the student) — shown in the
+            // Details table's "User Name" column as their login-style username
+            // (dummy values, matching the real site's firstname.####@org.net
+            // pattern but not any real account). Parallel to FAKE_BRANCHES (same
+            // index = that branch's staff member) — a real team member works out
+            // of exactly one branch, so User Wise -> Branch is always 1-to-1.
+            var ENTRY_BY_NAMES = ['rahim.2201@udvash.net', 'shirin.2213@udvash.net', 'imran.3324@udvash.net', 'nusrat.4471@udvash.net', 'tanjim.5582@udvash.net', 'karim.3350@unmesh.net', 'farhan.6693@unmesh.net', 'ruma.7789@onlinecare.net', 'mitu.7784@udvash.net', 'moin.8895@udvash.net', 'salman.9906@udvash.net', 'priya.1017@udvash.net'];
+            // Matches the value/text pairs used in the Session filter above — each
+            // fake record is tagged with one of these so the filter has something
+            // real to narrow down.
+            var SESSIONS = [
+                { value: '66', text: '2026' },
+                { value: '65', text: '2025' },
+                { value: '63', text: '2024' }
             ];
 
-            // Demo: default the date-picker to today, narrow the Branch list to the
-            // pre-selected mentor [6], and auto-run Search once on page load — matching
-            // the new requirement that Mentor Dashboard opens with a mentor already
-            // selected and its data already loaded, instead of an empty page waiting
-            // for the user to search.
-            (function () {
-                var todayIso = new Date().toISOString().slice(0, 10);
-                // Future dates aren't allowed — there's no "entry" data for a day that
-                // hasn't happened yet.
-                $('#dateFilter').attr('max', todayIso).val(todayIso);
-            })();
-            narrowBranchesByMentor();
-            loadDashboard();
-
-            function loadDashboard() {
-                $('#dashboardContainer').empty();
-
-                $.blockUI({
-                    timeout: 0,
-                    message: '<h1><img src="data:image/gif;base64,R0lGODlhIAAgAPMAAOzz8wAAALe9vXp+fqmuro+TkzIzM09SUsjOztPa2q6zsxscHAMDAwAAAAAAAAAAACH+GkNyZWF0ZWQgd2l0aCBhamF4bG9hZC5pbmZvACH5BAAKAAAAIf8LTkVUU0NBUEUyLjADAQAAACwAAAAAIAAgAAAE5xDISWlhperN52JLhSSdRgwVo1ICQZRUsiwHpTJT4iowNS8vyW2icCF6k8HMMBkCEDskxTBDAZwuAkkqIfxIQyhBQBFvAQSDITM5VDW6XNE4KagNh6Bgwe60smQUB3d4Rz1ZBApnFASDd0hihh12BkE9kjAJVlycXIg7CQIFA6SlnJ87paqbSKiKoqusnbMdmDC2tXQlkUhziYtyWTxIfy6BE8WJt5YJvpJivxNaGmLHT0VnOgSYf0dZXS7APdpB309RnHOG5gDqXGLDaC457D1zZ/V/nmOM82XiHRLYKhKP1oZmADdEAAAh+QQACgABACwAAAAAIAAgAAAE6hDISWlZpOrNp1lGNRSdRpDUolIGw5RUYhhHukqFu8DsrEyqnWThGvAmhVlteBvojpTDDBUEIFwMFBRAmBkSgOrBFZogCASwBDEY/CZSg7GSE0gSCjQBMVG023xWBhklAnoEdhQEfyNqMIcKjhRsjEdnezB+A4k8gTwJhFuiW4dokXiloUepBAp5qaKpp6+Ho7aWW54wl7obvEe0kRuoplCGepwSx2jJvqHEmGt6whJpGpfJCHmOoNHKaHx61WiSR92E4lbFoq+B6QDtuetcaBPnW6+O7wDHpIiK9SaVK5GgV543tzjgGcghAgAh+QQACgACACwAAAAAIAAgAAAE7hDISSkxpOrN5zFHNWRdhSiVoVLHspRUMoyUakyEe8PTPCATW9A14E0UvuAKMNAZKYUZCiBMuBakSQKG8G2FzUWox2AUtAQFcBKlVQoLgQReZhQlCIJesQXI5B0CBnUMOxMCenoCfTCEWBsJColTMANldx15BGs8B5wlCZ9Po6OJkwmRpnqkqnuSrayqfKmqpLajoiW5HJq7FL1Gr2mMMcKUMIiJgIemy7xZtJsTmsM4xHiKv5KMCXqfyUCJEonXPN2rAOIAmsfB3uPoAK++G+w48edZPK+M6hLJpQg484enXIdQFSS1u6UhksENEQAAIfkEAAoAAwAsAAAAACAAIAAABOcQyEmpGKLqzWcZRVUQnZYg1aBSh2GUVEIQ2aQOE+G+cD4ntpWkZQj1JIiZIogDFFyHI0UxQwFugMSOFIPJftfVAEoZLBbcLEFhlQiqGp1Vd140AUklUN3eCA51C1EWMzMCezCBBmkxVIVHBWd3HHl9JQOIJSdSnJ0TDKChCwUJjoWMPaGqDKannasMo6WnM562R5YluZRwur0wpgqZE7NKUm+FNRPIhjBJxKZteWuIBMN4zRMIVIhffcgojwCF117i4nlLnY5ztRLsnOk+aV+oJY7V7m76PdkS4trKcdg0Zc0tTcKkRAAAIfkEAAoABAAsAAAAACAAIAAABO4QyEkpKqjqzScpRaVkXZWQEximw1BSCUEIlDohrft6cpKCk5xid5MNJTaAIkekKGQkWyKHkvhKsR7ARmitkAYDYRIbUQRQjWBwJRzChi9CRlBcY1UN4g0/VNB0AlcvcAYHRyZPdEQFYV8ccwR5HWxEJ02YmRMLnJ1xCYp0Y5idpQuhopmmC2KgojKasUQDk5BNAwwMOh2RtRq5uQuPZKGIJQIGwAwGf6I0JXMpC8C7kXWDBINFMxS4DKMAWVWAGYsAdNqW5uaRxkSKJOZKaU3tPOBZ4DuK2LATgJhkPJMgTwKCdFjyPHEnKxFCDhEAACH5BAAKAAUALAAAAAAgACAAAATzEMhJaVKp6s2nIkolIJ2WkBShpkVRWqqQrhLSEu9MZJKK9y1ZrqYK9WiClmvoUaF8gIQSNeF1Er4MNFn4SRSDARWroAIETg1iVwuHjYB1kYc1mwruwXKC9gmsJXliGxc+XiUCby9ydh1sOSdMkpMTBpaXBzsfhoc5l58Gm5yToAaZhaOUqjkDgCWNHAULCwOLaTmzswadEqggQwgHuQsHIoZCHQMMQgQGubVEcxOPFAcMDAYUA85eWARmfSRQCdcMe0zeP1AAygwLlJtPNAAL19DARdPzBOWSm1brJBi45soRAWQAAkrQIykShQ9wVhHCwCQCACH5BAAKAAYALAAAAAAgACAAAATrEMhJaVKp6s2nIkqFZF2VIBWhUsJaTokqUCoBq+E71SRQeyqUToLA7VxF0JDyIQh/MVVPMt1ECZlfcjZJ9mIKoaTl1MRIl5o4CUKXOwmyrCInCKqcWtvadL2SYhyASyNDJ0uIiRMDjI0Fd30/iI2UA5GSS5UDj2l6NoqgOgN4gksEBgYFf0FDqKgHnyZ9OX8HrgYHdHpcHQULXAS2qKpENRg7eAMLC7kTBaixUYFkKAzWAAnLC7FLVxLWDBLKCwaKTULgEwbLA4hJtOkSBNqITT3xEgfLpBtzE/jiuL04RGEBgwWhShRgQExHBAAh+QQACgAHACwAAAAAIAAgAAAE7xDISWlSqerNpyJKhWRdlSAVoVLCWk6JKlAqAavhO9UkUHsqlE6CwO1cRdCQ8iEIfzFVTzLdRAmZX3I2SfZiCqGk5dTESJeaOAlClzsJsqwiJwiqnFrb2nS9kmIcgEsjQydLiIlHehhpejaIjzh9eomSjZR+ipslWIRLAgMDOR2DOqKogTB9pCUJBagDBXR6XB0EBkIIsaRsGGMMAxoDBgYHTKJiUYEGDAzHC9EACcUGkIgFzgwZ0QsSBcXHiQvOwgDdEwfFs0sDzt4S6BK4xYjkDOzn0unFeBzOBijIm1Dgmg5YFQwsCMjp1oJ8LyIAACH5BAAKAAgALAAAAAAgACAAAATwEMhJaVKp6s2nIkqFZF2VIBWhUsJaTokqUCoBq+E71SRQeyqUToLA7VxF0JDyIQh/MVVPMt1ECZlfcjZJ9mIKoaTl1MRIl5o4CUKXOwmyrCInCKqcWtvadL2SYhyASyNDJ0uIiUd6GGl6NoiPOH16iZKNlH6KmyWFOggHhEEvAwwMA0N9GBsEC6amhnVcEwavDAazGwIDaH1ipaYLBUTCGgQDA8NdHz0FpqgTBwsLqAbWAAnIA4FWKdMLGdYGEgraigbT0OITBcg5QwPT4xLrROZL6AuQAPUS7bxLpoWidY0JtxLHKhwwMJBTHgPKdEQAACH5BAAKAAkALAAAAAAgACAAAATrEMhJaVKp6s2nIkqFZF2VIBWhUsJaTokqUCoBq+E71SRQeyqUToLA7VxF0JDyIQh/MVVPMt1ECZlfcjZJ9mIKoaTl1MRIl5o4CUKXOwmyrCInCKqcWtvadL2SYhyASyNDJ0uIiUd6GAULDJCRiXo1CpGXDJOUjY+Yip9DhToJA4RBLwMLCwVDfRgbBAaqqoZ1XBMHswsHtxtFaH1iqaoGNgAIxRpbFAgfPQSqpbgGBqUD1wBXeCYp1AYZ19JJOYgH1KwA4UBvQwXUBxPqVD9L3sbp2BNk2xvvFPJd+MFCN6HAAIKgNggY0KtEBAAh+QQACgAKACwAAAAAIAAgAAAE6BDISWlSqerNpyJKhWRdlSAVoVLCWk6JKlAqAavhO9UkUHsqlE6CwO1cRdCQ8iEIfzFVTzLdRAmZX3I2SfYIDMaAFdTESJeaEDAIMxYFqrOUaNW4E4ObYcCXaiBVEgULe0NJaxxtYksjh2NLkZISgDgJhHthkpU4mW6blRiYmZOlh4JWkDqILwUGBnE6TYEbCgevr0N1gH4At7gHiRpFaLNrrq8HNgAJA70AWxQIH1+vsYMDAzZQPC9VCNkDWUhGkuE5PxJNwiUK4UfLzOlD4WvzAHaoG9nxPi5d+jYUqfAhhykOFwJWiAAAIfkEAAoACwAsAAAAACAAIAAABPAQyElpUqnqzaciSoVkXVUMFaFSwlpOCcMYlErAavhOMnNLNo8KsZsMZItJEIDIFSkLGQoQTNhIsFehRww2CQLKF0tYGKYSg+ygsZIuNqJksKgbfgIGepNo2cIUB3V1B3IvNiBYNQaDSTtfhhx0CwVPI0UJe0+bm4g5VgcGoqOcnjmjqDSdnhgEoamcsZuXO1aWQy8KAwOAuTYYGwi7w5h+Kr0SJ8MFihpNbx+4Erq7BYBuzsdiH1jCAzoSfl0rVirNbRXlBBlLX+BP0XJLAPGzTkAuAOqb0WT5AH7OcdCm5B8TgRwSRKIHQtaLCwg1RAAAOwAAAAAAAAAAAA==" />Processing...</h1>'
-                });
-
-                // Demo: no live backend — simulate the network round trip and render the
-                // fabricated dataset instead of posting to LoadMentorDashboardData.
-                // Selected Mentor(s) actually filter which (fake) branches show up,
-                // same way the real page would narrow results to the chosen mentor(s).
-                setTimeout(function () {
-                    $.unblockUI();
-                    var selectedMentors = $('#mentorIds').val();
-                    var selectedBranches = $('#branchIds').val();
-                    var selectedPrograms = $('#programIds').val();
-                    // Working Tr ID = only Tracking IDs that actually have Entry By (team
-                    // member) data. Active Tr ID = every Tracking ID, including the ones
-                    // with no Entry By data.
-                    var trIdStatus = $('#trIdStatus').val();
-                    function hasEntryByData(row) {
-                        return !(row.Entries.length === 1 && row.Entries[0].ExecutedBy === '-');
-                    }
-                    var filtered = $.grep(fakeDashboardData, function (row) {
-                        var mentorOk = !selectedMentors || selectedMentors.length === 0
-                            || $.inArray(String(row.MentorId), selectedMentors) !== -1;
-                        var branchOk = !selectedBranches || selectedBranches.length === 0
-                            || $.inArray(String(row.BranchId), selectedBranches) !== -1;
-                        var programOk = !selectedPrograms || selectedPrograms.length === 0
-                            || $.inArray(String(row.ProgramId), selectedPrograms) !== -1;
-                        var trIdOk = (trIdStatus === 'Active') || hasEntryByData(row);
-                        return mentorOk && branchOk && programOk && trIdOk;
-                    });
-
-                    renderDashboard(filtered);
-                }, 500);
+            function pick(arr, seed) {
+                return arr[seed % arr.length];
             }
 
-            function renderDashboard(data) {
-                var $container = $('#dashboardContainer');
+            function formatDateTime(d) {
+                var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                var hours = d.getHours();
+                var ampm = hours >= 12 ? 'PM' : 'AM';
+                var h12 = hours % 12 || 12;
+                var mm = d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes();
+                return d.getDate() + ' ' + months[d.getMonth()] + ', ' + d.getFullYear() + ' ' + h12 + ':' + mm + ' ' + ampm;
+            }
 
-                if (!data || data.length === 0) {
-                    $container.append('<p style="text-align:center; color:#888; margin:20px 0;">কোনো তথ্য পাওয়া যায়নি।</p>');
+            // Date-only (no time) — used by GroupBy: Date Wise, so every entry made
+            // on the same calendar day groups together regardless of time of day.
+            function formatDateOnly(d) {
+                var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                return d.getDate() + ' ' + months[d.getMonth()] + ', ' + d.getFullYear();
+            }
+
+            // seconds -> "MM:SS" (or "H:MM:SS" past an hour) — used for both the
+            // Details table's per-call duration and the Summary table's total.
+            function formatDuration(totalSeconds) {
+                var h = Math.floor(totalSeconds / 3600);
+                var m = Math.floor((totalSeconds % 3600) / 60);
+                var s = totalSeconds % 60;
+                var mm = m < 10 ? '0' + m : m;
+                var ss = s < 10 ? '0' + s : s;
+                return (h > 0 ? h + ':' : '') + mm + ':' + ss;
+            }
+
+            var FAKE_RECORDS = [];
+            (function generateFakeRecords() {
+                // Records spread day-by-day (not randomly scattered) over the last
+                // 7 days, with a deliberately uneven daily volume (some days over
+                // 100, some in the 50-100 range, some under 50) rather than a flat
+                // ~85/day — closer to how real call volume fluctuates day to day.
+                // Index 0 = today, index 6 = 6 days ago.
+                // Contact medium cycles within each day's block so every date that
+                // has entries has Mobile Call, WhatsApp and Telegram entries — not
+                // a random sparse mix that could leave a date missing a medium
+                // (important since Date From/To default to today only, and
+                // GroupBy defaults to Contact Medium Wise).
+                var DAILY_COUNTS = [90, 45, 120, 60, 35, 105, 70];
+                var daysBack = DAILY_COUNTS.length;
+                var i = 0;
+                for (var dayOffset = 0; dayOffset < daysBack; dayOffset++) {
+                    var recordsThisDay = DAILY_COUNTS[dayOffset];
+                    for (var j = 0; j < recordsThisDay; j++) {
+                        var branch = pick(FAKE_BRANCHES, i);
+                        var program = pick(FAKE_PROGRAMS, i * 3 + 1);
+                        var person = pick(CONTACTED_PERSONS, i * 5 + 2);
+                        // Mobile Call is the most common medium, WhatsApp next,
+                        // Telegram the rarest (real call-center mix, not an even
+                        // split) — the first 3 records of each day still cover all
+                        // three mediums once each so no date is ever missing one,
+                        // the rest are weighted-random per record so the exact
+                        // ratio varies day to day instead of a fixed pattern.
+                        var medium;
+                        if (j === 0) {
+                            medium = 'Mobile';
+                        } else if (j === 1) {
+                            medium = 'WhatsApp';
+                        } else if (j === 2) {
+                            medium = 'Telegram';
+                        } else {
+                            var roll = (i * 53 + dayOffset * 17) % 100;
+                            medium = roll < 55 ? 'Mobile' : (roll < 87 ? 'WhatsApp' : 'Telegram');
+                        }
+                        // Built from that day's midnight (not by subtracting minutes
+                        // from "now") so the time-of-day offset can never roll the
+                        // record into the previous calendar day — keeps the data
+                        // strictly within the last `daysBack` dates. Today's records
+                        // are also capped to not land in the future.
+                        var dayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate() - dayOffset);
+                        var maxMinutes = dayOffset === 0 ? (today.getHours() * 60 + today.getMinutes()) : (24 * 60 - 1);
+                        var offsetMinutes = maxMinutes > 0 ? (i * 37) % (maxMinutes + 1) : 0;
+                        var entryDate = new Date(dayStart.getTime() + offsetMinutes * 60000);
+                        var first = pick(FIRST_NAMES, i * 13 + 1);
+                        var last = pick(LAST_NAMES, i * 17 + 4);
+                        var session = pick(SESSIONS, i * 19 + 8);
+                        // Same seed as `branch` above (both arrays are parallel,
+                        // same length) so each staff member always maps to their
+                        // one branch, never a different one.
+                        var entryBy = pick(ENTRY_BY_NAMES, i);
+                        // 25 sec to ~9.5 min, deterministic per record.
+                        var callDurationSec = 25 + ((i * 47 + dayOffset * 13) % 536);
+                        FAKE_RECORDS.push({
+                            regNo: 4200000 + (i * 37) % 89999,
+                            name: first + ' ' + last,
+                            mobile: '018' + (10000000 + (i * 9973) % 89999999),
+                            program: program.text,
+                            branch: branch.name,
+                            organization: branch.org,
+                            trackingId: 310000 + (i * 53) % 9000,
+                            contactedPerson: person,
+                            contactMedium: medium,
+                            entryDate: entryDate,
+                            sessionValue: session.value,
+                            sessionText: session.text,
+                            entryBy: entryBy,
+                            callDurationSec: callDurationSec
+                        });
+                        i++;
+                    }
+                }
+            })();
+
+            function getSelectedOrEmpty(selector) {
+                var v = $(selector).val();
+                return (v === null || v === undefined) ? [] : (Array.isArray(v) ? v : [v]);
+            }
+
+            function applyFilters() {
+                var orgVal = $('#organizationId').val();
+                var branchVals = getSelectedOrEmpty('#branchIds');
+                var programVals = getSelectedOrEmpty('#programIds');
+                var sessionVals = getSelectedOrEmpty('#sessionIds').filter(function (v) { return v !== '0'; });
+                var dateFrom = $('#dateFrom').val();
+                var dateTo = $('#dateTo').val();
+                var personVals = getSelectedOrEmpty('#contactedPerson');
+                var mediumVals = getSelectedOrEmpty('#contactMedium');
+
+                var orgNameById = { '1': 'UDVASH', '2': 'UNMESH', '13': 'ONLINE CARE' };
+
+                return FAKE_RECORDS.filter(function (r) {
+                    if (orgVal && orgVal !== '0' && orgNameById[orgVal] && r.organization !== orgNameById[orgVal]) return false;
+                    if (branchVals.length) {
+                        // branchIds values are branch ids in the option list, but fake
+                        // records only carry the branch name — match by name via the
+                        // selected <option> labels instead of trying to keep ids in sync.
+                        var selectedBranchNames = branchVals.map(function (v) {
+                            return $('#branchIds option[value="' + v + '"]').text();
+                        });
+                        if (selectedBranchNames.indexOf(r.branch) === -1) return false;
+                    }
+                    if (programVals.length) {
+                        var selectedProgramNames = programVals.map(function (v) {
+                            return $('#programIds option[value="' + v + '"]').text();
+                        });
+                        if (selectedProgramNames.indexOf(r.program) === -1) return false;
+                    }
+                    if (sessionVals.length && sessionVals.indexOf(r.sessionValue) === -1) return false;
+                    if (dateFrom && formatIso(r.entryDate) < dateFrom) return false;
+                    if (dateTo && formatIso(r.entryDate) > dateTo) return false;
+                    if (personVals.length && personVals.indexOf(r.contactedPerson) === -1) return false;
+                    if (mediumVals.length && mediumVals.indexOf(r.contactMedium) === -1) return false;
+                    return true;
+                });
+            }
+
+            function formatIso(d) {
+                return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+            }
+
+            // Every Summary row is also cross-tabbed against a second dimension
+            // (columns), each split into Total Call + Duration, matching the
+            // reference report layout. Contact Medium Wise cross-tabs by "যে
+            // নম্বরে কথা হয়েছে" instead of by medium again — crossing a
+            // dimension against itself would just be a diagonal of blanks.
+            var CROSS_TAB_DIMENSIONS = {
+                medium: {
+                    title: 'যে মাধ্যমে কথা হয়েছে',
+                    categories: CONTACT_MEDIUMS.map(function (m) { return { key: m, label: CONTACT_MEDIUM_LABELS[m] }; }),
+                    getValue: function (r) { return r.contactMedium; }
+                },
+                person: {
+                    title: 'যে নম্বরে কথা হয়েছে',
+                    categories: CONTACTED_PERSONS.map(function (p) { return { key: p, label: p }; }),
+                    getValue: function (r) { return r.contactedPerson; }
+                }
+            };
+
+            // GroupBy decides both the Summary table's row grouping dimension
+            // and what a drill-down click filters Details by.
+            var GROUP_BY_CONFIG = {
+                branch: { label: 'Branch', getValue: function (r) { return r.branch; }, crossTabKey: 'medium' },
+                program: { label: 'Program', getValue: function (r) { return r.program; }, crossTabKey: 'medium' },
+                person: { label: 'যে নম্বরে কথা হয়েছে', getValue: function (r) { return r.contactedPerson; }, crossTabKey: 'medium' },
+                medium: { label: 'যে মাধ্যমে কথা হয়েছে', getValue: function (r) { return CONTACT_MEDIUM_LABELS[r.contactMedium]; }, crossTabKey: 'person' },
+                // getSortKey (optional): a properly-orderable value for the default
+                // sort and for clicking the "value" column header — needed for Date
+                // Wise since the display string ("2 Jul, 2026") would sort wrong
+                // alphabetically (e.g. "10 Jun" before "2 Jul"). Dimensions without
+                // getSortKey just sort alphabetically on their display value.
+                date: { label: 'Date', getValue: function (r) { return formatDateOnly(r.entryDate); }, getSortKey: function (r) { return r.entryDate.getTime(); }, crossTabKey: 'medium' },
+                // User Wise also breaks each user's count down by Branch (a real
+                // team member only ever belongs to one branch) — subGroup adds
+                // that extra column between the main dimension and the cross-tab.
+                user: { label: 'User Name', getValue: function (r) { return r.entryBy; }, subGroup: { label: 'Branch', getValue: function (r) { return r.branch; } }, crossTabKey: 'medium' }
+            };
+
+            function drillLink(count, groupByKey, value, subValue, crossTabKey, crossTabValue) {
+                if (!count) return '-';
+                var attrs = 'data-group="' + groupByKey + '" data-value="' + $('<div>').text(value).html() + '"';
+                if (subValue !== undefined) attrs += ' data-subvalue="' + $('<div>').text(subValue).html() + '"';
+                if (crossTabKey !== undefined) attrs += ' data-crosstabkey="' + crossTabKey + '" data-crosstabvalue="' + $('<div>').text(crossTabValue).html() + '"';
+                return '<a href="javascript:void(0)" class="dashboard-drill-link conv-drill" ' + attrs + '>' + count + '</a>';
+            }
+
+            function getPerPage() {
+                return parseInt($('#displayPerPage').val(), 10) || 100;
+            }
+
+            // Shared "Sl." + pagination helper — Display Per Page (the same field
+            // used as a filter) doubles as the page size for both the Summary and
+            // Details tables. Page-link clicks just re-render the current view at
+            // the new page; they don't re-run the filters. Markup/wording matches
+            // the "Showing X to Y of Z entries" + Previous/[page]/Next look already
+            // used on the Details Report page (DataTables' default style), reusing
+            // its existing dataTables_info CSS class — always shown, even for a
+            // single page, same as that page's convention.
+            function paginationHtml(totalItems, perPage, page, pageClass) {
+                var totalPages = Math.max(1, Math.ceil(totalItems / perPage));
+                page = Math.min(Math.max(1, page), totalPages);
+                var startIdx = totalItems === 0 ? 0 : (page - 1) * perPage + 1;
+                var endIdx = Math.min(page * perPage, totalItems);
+                var startPage = Math.max(1, Math.min(page - 2, totalPages - 4));
+                var endPage = Math.min(totalPages, startPage + 4);
+
+                var html = '<div class="dt-info-row ' + pageClass + '">';
+                html += '<div class="dataTables_info">Showing ' + startIdx + ' to ' + endIdx + ' of ' + totalItems + ' entries</div>';
+                html += '<div class="dt-paginate">';
+                html += '<a href="javascript:void(0)" class="paginate_button conv-page-link' + (page <= 1 ? ' disabled' : '') + '" data-page="' + (page - 1) + '">Previous</a>';
+                for (var p = startPage; p <= endPage; p++) {
+                    html += '<a href="javascript:void(0)" class="paginate_button conv-page-link' + (p === page ? ' current' : '') + '" data-page="' + p + '">' + p + '</a>';
+                }
+                html += '<a href="javascript:void(0)" class="paginate_button conv-page-link' + (page >= totalPages ? ' disabled' : '') + '" data-page="' + (page + 1) + '">Next</a>';
+                html += '</div></div>';
+                return html;
+            }
+
+            // Current view state — enough to re-render on a page-link/sort click
+            // without redoing the filters/grouping. "mode" is kept in sync with
+            // #reportType. sortKey/sortDir are reset whenever the view type changes
+            // (Summary and Details have different sortable columns).
+            var lastFilteredRecords = [];
+            var viewState = { mode: 'summary', page: 1, detailFilterFn: null, detailTitle: null, sortKey: null, sortDir: 'asc' };
+
+            function sortHeader(label, key, colspan, rowspan, extraClass) {
+                var cls = 'conv-sortable' + (extraClass ? ' ' + extraClass : '');
+                if (viewState.sortKey === key) cls += viewState.sortDir === 'desc' ? ' sort-desc' : ' sort-asc';
+                var attrs = (colspan ? ' colspan="' + colspan + '"' : '') + (rowspan ? ' rowspan="' + rowspan + '"' : '');
+                return '<th' + attrs + ' class="' + cls + '" data-sort="' + key + '">' + label + '</th>';
+            }
+
+            function sortValues(items, getter, key) {
+                if (viewState.sortKey !== key) return items;
+                var factor = viewState.sortDir === 'desc' ? -1 : 1;
+                return items.slice().sort(function (a, b) {
+                    var av = getter(a), bv = getter(b);
+                    if (av < bv) return -1 * factor;
+                    if (av > bv) return 1 * factor;
+                    return 0;
+                });
+            }
+
+            // Cross-tab report — one row per distinct value of whichever dimension
+            // "GroupBy" is set to (Branch/Program/Contacted Person/Contact Medium/
+            // Date/User Wise), columns cross-tabbed against CROSS_TAB_DIMENSIONS
+            // (Total Call + Duration per category, plus an overall Grand Total),
+            // with every count cell clickable (switches the whole view to Details,
+            // filtered to that exact row + column combination). Matches the
+            // reference report layout. The row Grand Total and the bottom Grand
+            // Total row always reflect every matching row, not just the current
+            // page.
+            function renderSummary() {
+                var records = lastFilteredRecords;
+                if (records.length === 0) {
+                    $('#dashboardContainer').html('<div class="alert alert-warning">কোনো ডাটা পাওয়া যায়নি — অন্য ফিল্টার দিয়ে আবার চেষ্টা করুন।</div>');
                     return;
                 }
 
-                var branchOrder = [];
-                var branchMap   = {};
-                $.each(data, function (_, row) {
-                    var key = String(row.BranchId);
-                    if (!branchMap[key]) {
-                        branchMap[key] = [];
-                        branchOrder.push(key);
-                    }
-                    branchMap[key].push(row);
-                });
+                var groupByKey = $('#groupBy').val();
+                var config = GROUP_BY_CONFIG[groupByKey];
+                var hasSub = !!config.subGroup;
+                var crossTab = CROSS_TAB_DIMENSIONS[config.crossTabKey];
+                var categories = crossTab.categories;
 
-                $.each(branchOrder, function (_, key) {
-                    var rows     = branchMap[key];
-                    var $section = $('<div style="border:1px solid #dee2e6; border-radius:4px; background:#fff; margin-bottom:20px; padding:15px 15px 0 15px;"></div>');
-
-                    $section.append(
-                        $('<h5 style="font-weight:bold; margin-bottom:10px;"></h5>')
-                            .text(rows[0].BranchName + '  (' + rows.length + ')')
-                    );
-                    $section.append(buildBranchTable(rows));
-                    $container.append($section);
-                });
-            }
-
-            var monthNamesFull = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
-            function todayIsoDate() {
-                return new Date().toISOString().slice(0, 10);
-            }
-
-            // "2026-07-01" -> "01-July-2026"
-            function formatDisplayDate(isoStr) {
-                var parts = isoStr.split('-');
-                var y = parts[0], m = parseInt(parts[1], 10) - 1, d = parts[2];
-                return d + '-' + monthNamesFull[m] + '-' + y;
-            }
-
-            function daysBetween(isoA, isoB) {
-                var a = new Date(isoA + 'T00:00:00');
-                var b = new Date(isoB + 'T00:00:00');
-                return Math.round((a - b) / 86400000);
-            }
-
-            // A day further in the past naturally has less accumulated activity than today
-            // (today's cumulative total already includes everything from every earlier day
-            // plus whatever came in today), so the entry-count numbers are scaled down more
-            // the further back the selected calendar date is — matching how far "Yesterday"
-            // used to scale things down (~20% less), just extended to any past date instead
-            // of only yesterday. Floors out at 30% of the original so old dates don't look
-            // unrealistically empty.
-            function dateAdjust(val, dateLabel) {
-                // No entry recorded at all (null/undefined) stays that way — don't turn
-                // a "nothing happened yet" case into a literal 0.
-                if (val === null || val === undefined || val === '') { return val; }
-                var n = parseInt(val, 10) || 0;
-                if (!dateLabel || dateLabel === 'Today') { return n; }
-                var daysAgo = daysBetween(todayIsoDate(), dateLabel);
-                if (daysAgo <= 0) { return n; }
-                var factor = Math.max(0.3, 1 - daysAgo * 0.2);
-                return Math.max(0, Math.round(n * factor));
-            }
-
-            // Toggle to bring back the previous behavior later: "Entry Till Today" used
-            // to rename itself to "Entry Till (DD-Month-YYYY)" and scale its number down
-            // via dateAdjust() the further back the selected calendar date was — exactly
-            // like "Today/Yesterday Entry" still does. Per the user's 2026-07-07 request,
-            // that's now OFF: "Entry Till Today" always shows today's real running total,
-            // label and number both fixed, no matter what date is picked. Flip this back
-            // to true (and nothing else needs to change) to restore the old behavior.
-            var entryTillFollowsSelectedDate = false;
-
-            // Wraps dateAdjust() specifically for the "Entry Till Today" column/sums so
-            // the behavior above can be toggled in one place.
-            function dateAdjustEntryTill(val, dateLabel) {
-                return entryTillFollowsSelectedDate ? dateAdjust(val, dateLabel) : dateAdjust(val, 'Today');
-            }
-
-            function sumEntries(cases, key) {
-                var total = 0;
-                $.each(cases, function (_, c) {
-                    $.each(c.Entries, function (_, e) {
-                        total += parseInt(e[key]) || 0;
-                    });
-                });
-                return total;
-            }
-
-            /* Flatten each case's team-member entries into one record per (case, person)
-               pair — needed for Pinwise view, where the grouping key is the person, not
-               the program, so every entry needs its own copy of the case-level fields. */
-            function flattenEntries(cases) {
-                var out = [];
-                $.each(cases, function (_, item) {
-                    var allExecutedBy = $.map(item.Entries, function (e) { return e.ExecutedBy; });
-                    $.each(item.Entries, function (_, entry) {
-                        out.push({
-                            ExecutedBy: entry.ExecutedBy,
-                            AllExecutedBy: allExecutedBy,
-                            TodayDateEntry: entry.TodayDateEntry,
-                            AvgCallTime: entry.AvgCallTime,
-                            TargetedProgram: item.TargetedProgram,
-                            ConversationType: item.ConversationType,
-                            DataType: item.DataType,
-                            TrackingId: item.TrackingId,
-                            CreationDate: item.CreationDate,
-                            Deadline: item.Deadline,
-                            TotalStudent: item.TotalStudent,
-                            DataEntry: item.DataEntry,
-                            Pending: item.Pending,
-                            ConversationId: item.ConversationId
-                        });
-                    });
-                });
-                return out;
-            }
-
-            function buildBranchTable(branchRows) {
-                var viewBy = ($('#viewBy').val() === 'Pinwise') ? 'pin' : 'program';
-
-                // Active Tr ID mixes real-entry and no-entry rows together — a light
-                // highlight on the rows that DO have Entry By data makes it easy to see,
-                // at a glance, which of the Active Tr IDs actually had work done on the
-                // selected date. Working Tr ID only ever shows real-entry rows anyway, so
-                // no highlight is needed there.
-                var highlightActive = ($('#trIdStatus').val() === 'Active');
-
-                // dateLabel is either the literal 'Today' or the selected calendar date's
-                // ISO string (e.g. '2026-07-01') — drives both the two entry-count column
-                // headers below and how much the numbers get scaled down (see dateAdjust).
-                var selectedDateVal = $('#dateFilter').val();
-                var dateLabel = (!selectedDateVal || selectedDateVal === todayIsoDate()) ? 'Today' : selectedDateVal;
-
-                var entryColLabel = (dateLabel === 'Today')
-                    ? 'Today<br>Entry'
-                    : 'Entry on<br>(' + formatDisplayDate(dateLabel) + ')';
-                var entryTillColLabel = (entryTillFollowsSelectedDate && dateLabel !== 'Today')
-                    ? 'Entry Till<br>(' + formatDisplayDate(dateLabel) + ')'
-                    : 'Entry Till<br>Today';
-
-                var grandStudent = sumBy(branchRows, 'TotalStudent');
-                var grandEntry   = dateAdjustEntryTill(sumBy(branchRows, 'DataEntry'), dateLabel);
-                var grandPending = sumBy(branchRows, 'Pending');
-                var grandToday   = dateAdjust(sumEntries(branchRows, 'TodayDateEntry'), dateLabel);
-                var grandExecutedBy = $.map(branchRows, function (c) {
-                    return $.map(c.Entries, function (e) { return e.ExecutedBy; });
-                });
-                // Per-Tracking-ID breakdown of the Grand Total, for the multi-Tracking-ID
-                // Details Report view (see buildDrillHref).
-                var grandTodayBreakdown = $.map(branchRows, function (c) {
-                    return { trackingId: c.TrackingId, count: dateAdjust(sumBy(c.Entries, 'TodayDateEntry'), dateLabel) };
-                });
-                var grandEntryBreakdown = $.map(branchRows, function (c) {
-                    return { trackingId: c.TrackingId, count: dateAdjustEntryTill(c.DataEntry, dateLabel) };
-                });
-
-                var headerCells = (viewBy === 'pin')
-                    ? (
-                        '<th style="width:150px;">Entry By</th>' +
-                        '<th style="width:90px;">Conversation<br>Type</th>' +
-                        '<th style="width:150px;">Data Type</th>' +
-                        '<th style="width:180px;">Targeted Program</th>' +
-                        '<th style="width:110px;">' + entryColLabel + '</th>' +
-                        '<th style="width:80px;">Avg. Call<br>Time</th>' +
-                        '<th style="width:60px;">Total<br>Student</th>' +
-                        '<th style="width:110px;">' + entryTillColLabel + '</th>' +
-                        '<th style="width:60px;">Pending</th>' +
-                        '<th style="width:90px;">Tracking ID</th>' +
-                        '<th style="width:90px;">Creation Date</th>' +
-                        '<th style="width:90px;">Deadline</th>' +
-                        '<th style="width:70px;">Action</th>'
-                    )
-                    : (
-                        '<th style="width:210px;">Targeted Program</th>' +
-                        '<th style="width:90px;">Conversation<br>Type</th>' +
-                        '<th style="width:150px;">Data Type</th>' +
-                        '<th style="width:120px;">Entry By</th>' +
-                        '<th style="width:110px;">' + entryColLabel + '</th>' +
-                        '<th style="width:80px;">Avg. Call<br>Time</th>' +
-                        '<th style="width:60px;">Total<br>Student</th>' +
-                        '<th style="width:110px;">' + entryTillColLabel + '</th>' +
-                        '<th style="width:60px;">Pending</th>' +
-                        '<th style="width:90px;">Tracking ID</th>' +
-                        '<th style="width:90px;">Creation Date</th>' +
-                        '<th style="width:90px;">Deadline</th>' +
-                        '<th style="width:70px;">Action</th>'
-                    );
-
-                var $table = $(
-                    '<table class="table table-bordered"><thead><tr>' + headerCells + '</tr></thead>' +
-                    '<tbody></tbody><tfoot></tfoot></table>'
-                );
-
-                var $tbody = $table.find('tbody');
-                var $tfoot = $table.find('tfoot');
-
-                if (viewBy === 'pin') {
-                    renderPinwiseBody($tbody, flattenEntries(branchRows), dateLabel, highlightActive);
-                } else {
-                    renderProgramwiseBody($tbody, branchRows, dateLabel, highlightActive);
-                }
-
-                /* Grand Total */
-                $tfoot.append(
-                    '<tr>' +
-                    '<td colspan="4" style="text-align:right;"><strong>Grand Total</strong></td>' +
-                    '<td>' + linkCellHtml(grandToday, grandExecutedBy, dateLabel, grandTodayBreakdown) + '</td>' +
-                    '<td></td>' +
-                    '<td><strong>' + grandStudent + '</strong></td>' +
-                    '<td>' + linkCellHtml(grandEntry, grandExecutedBy, null, grandEntryBreakdown) + '</td>' +
-                    '<td><strong>' + grandPending + '</strong></td>' +
-                    '<td colspan="4"></td>' +
-                    '</tr>'
-                );
-
-                return $table;
-            }
-
-            /* Programwise (default): group by Targeted Program, then by Tracking ID case,
-               with one sub-row per team-member entry on each case. */
-            var activeEntryHighlightColor = '#f4fcf4';
-
-            function renderProgramwiseBody($tbody, branchRows, dateLabel, highlightActive) {
-                var pgOrder = [];
-                var pgMap   = {};
-                $.each(branchRows, function (_, row) {
-                    var key = row.TargetedProgram || '';
-                    if (!pgMap[key]) { pgMap[key] = []; pgOrder.push(key); }
-                    pgMap[key].push(row);
-                });
-
-                $.each(pgOrder, function (i, pgKey) {
-                    var pgRows    = pgMap[pgKey];
-                    var pgCount   = pgRows.length;
-                    var pgStudent = sumBy(pgRows, 'TotalStudent');
-                    var pgEntry   = dateAdjustEntryTill(sumBy(pgRows, 'DataEntry'), dateLabel);
-                    var pgPending = sumBy(pgRows, 'Pending');
-                    var pgToday   = dateAdjust(sumEntries(pgRows, 'TodayDateEntry'), dateLabel);
-
-                    /* total sub-rows across every case in this program group — one per
-                       team-member entry, plus one extra for each case's own subtotal row
-                       (only added when that case has more than one team member) */
-                    var pgSubRowCount = 0;
-                    $.each(pgRows, function (_, c) {
-                        pgSubRowCount += c.Entries.length + (c.Entries.length > 1 ? 1 : 0);
-                    });
-
-                    /* spacer between program groups */
-                    if (i > 0) {
-                        $tbody.append('<tr class="border-0" style="height:10px;"><td colspan="13" class="border-0"></td></tr>');
-                    }
-
-                    var isFirstSubRowOfGroup = true;
-
-                    $.each(pgRows, function (_, item) {
-                        var caseRowCount = item.Entries.length;
-                        var caseHasRealEntry = item.Entries.length > 0 && item.Entries[0].ExecutedBy !== '-';
-                        var caseHighlight = highlightActive && caseHasRealEntry;
-
-                        $.each(item.Entries, function (entryIdx, entry) {
-                            var $tr = $('<tr></tr>');
-                            if (caseHighlight) {
-                                $tr.css('background-color', activeEntryHighlightColor);
-                            }
-
-                            /* Targeted Program cell — rowspan across every sub-row in the whole program group */
-                            if (isFirstSubRowOfGroup) {
-                                $tr.append(
-                                    $('<td></td>')
-                                        .attr('rowspan', pgSubRowCount)
-                                        .text(item.TargetedProgram || '-')
-                                );
-                                isFirstSubRowOfGroup = false;
-                            }
-
-                            /* case-level cells — rowspan across this case's team-member entries only */
-                            if (entryIdx === 0) {
-                                $tr.append(td(item.ConversationType).attr('rowspan', caseRowCount));
-                                $tr.append(td(item.DataType).attr('rowspan', caseRowCount));
-                            }
-
-                            $tr.append(td(entry.ExecutedBy));
-                            $tr.append(linkTd(dateAdjust(entry.TodayDateEntry, dateLabel), [entry.ExecutedBy], dateLabel));
-                            $tr.append(td(entry.AvgCallTime));
-
-                            if (entryIdx === 0) {
-                                var caseExecutedByList = $.map(item.Entries, function (e) { return e.ExecutedBy; });
-                                $tr.append(td(item.TotalStudent).attr('rowspan', caseRowCount));
-                                $tr.append(linkTd(dateAdjustEntryTill(item.DataEntry, dateLabel), caseExecutedByList).attr('rowspan', caseRowCount));
-                                $tr.append(td(item.Pending).attr('rowspan', caseRowCount));
-                                $tr.append(td(item.TrackingId).attr('rowspan', caseRowCount));
-                                $tr.append(td(item.CreationDate).attr('rowspan', caseRowCount));
-                                $tr.append(td(item.Deadline).attr('rowspan', caseRowCount));
-                                $tr.append(
-                                    actionCell(item.Pending, item.TrackingId, item.ConversationId)
-                                        .attr('rowspan', caseRowCount)
-                                );
-                            }
-
-                            $tbody.append($tr);
-                        });
-
-                        /* Case subtotal row — only when more than one team member worked
-                           this Tracking ID. The Targeted Program column isn't repeated
-                           here since it's still covered by the program group's rowspan. */
-                        if (caseRowCount > 1) {
-                            var caseExecutedBy = $.map(item.Entries, function (e) { return e.ExecutedBy; });
-                            var caseToday = dateAdjust(sumBy(item.Entries, 'TodayDateEntry'), dateLabel);
-                            var $caseTotalTr = $(
-                                '<tr>' +
-                                '<td colspan="3" style="text-align:right;"><strong>Total</strong></td>' +
-                                '<td>' + linkCellHtml(caseToday, caseExecutedBy, dateLabel) + '</td>' +
-                                '<td colspan="8"></td>' +
-                                '</tr>'
-                            );
-                            if (caseHighlight) {
-                                $caseTotalTr.css('background-color', activeEntryHighlightColor);
-                            }
-                            $tbody.append($caseTotalTr);
-                        }
-                    });
-
-                    /* Total row — only for multi-case program groups */
-                    if (pgCount > 1) {
-                        var pgExecutedBy = $.map(pgRows, function (c) {
-                            return $.map(c.Entries, function (e) { return e.ExecutedBy; });
-                        });
-                        var pgTodayBreakdown = $.map(pgRows, function (c) {
-                            return { trackingId: c.TrackingId, count: dateAdjust(sumBy(c.Entries, 'TodayDateEntry'), dateLabel) };
-                        });
-                        var pgEntryBreakdown = $.map(pgRows, function (c) {
-                            return { trackingId: c.TrackingId, count: dateAdjustEntryTill(c.DataEntry, dateLabel) };
-                        });
-                        $tbody.append(
-                            '<tr>' +
-                            '<td colspan="4" style="text-align:right;"><strong>Total</strong></td>' +
-                            '<td>' + linkCellHtml(pgToday, pgExecutedBy, dateLabel, pgTodayBreakdown) + '</td>' +
-                            '<td></td>' +
-                            '<td><strong>' + pgStudent + '</strong></td>' +
-                            '<td>' + linkCellHtml(pgEntry, pgExecutedBy, null, pgEntryBreakdown) + '</td>' +
-                            '<td><strong>' + pgPending + '</strong></td>' +
-                            '<td colspan="4"></td>' +
-                            '</tr>'
-                        );
-                    }
-                });
-            }
-
-            /* Pinwise: group the same underlying data by Entry By (team member / pin)
-               instead of by program — Targeted Program becomes a regular per-row column
-               since one person can have entries against several different programs. */
-            function renderPinwiseBody($tbody, flatRecords, dateLabel, highlightActive) {
+                var groups = {};
                 var order = [];
-                var map   = {};
-                $.each(flatRecords, function (_, r) {
-                    var key = r.ExecutedBy || '';
-                    if (!map[key]) { map[key] = []; order.push(key); }
-                    map[key].push(r);
-                });
-
-                $.each(order, function (i, key) {
-                    var rows     = map[key];
-                    var count    = rows.length;
-                    var sStudent = sumBy(rows, 'TotalStudent');
-                    var sEntry   = dateAdjustEntryTill(sumBy(rows, 'DataEntry'), dateLabel);
-                    var sPending = sumBy(rows, 'Pending');
-                    var sToday   = dateAdjust(sumBy(rows, 'TodayDateEntry'), dateLabel);
-                    var sTodayBreakdown = $.map(rows, function (r) {
-                        return { trackingId: r.TrackingId, count: dateAdjust(r.TodayDateEntry, dateLabel) };
-                    });
-                    var sEntryBreakdown = $.map(rows, function (r) {
-                        return { trackingId: r.TrackingId, count: dateAdjustEntryTill(r.DataEntry, dateLabel) };
-                    });
-
-                    /* spacer between person groups */
-                    if (i > 0) {
-                        $tbody.append('<tr class="border-0" style="height:10px;"><td colspan="13" class="border-0"></td></tr>');
+                var grandCatCounts = {}, grandCatDurations = {};
+                categories.forEach(function (c) { grandCatCounts[c.key] = 0; grandCatDurations[c.key] = 0; });
+                var grandTotal = 0;
+                var grandTotalDuration = 0;
+                records.forEach(function (r) {
+                    var value = config.getValue(r);
+                    var subValue = hasSub ? config.subGroup.getValue(r) : null;
+                    var key = hasSub ? (value + String.fromCharCode(1) + subValue) : value;
+                    if (!(key in groups)) {
+                        var catCounts = {}, catDurations = {};
+                        categories.forEach(function (c) { catCounts[c.key] = 0; catDurations[c.key] = 0; });
+                        groups[key] = { value: value, subValue: subValue, sortKey: config.getSortKey ? config.getSortKey(r) : value, catCounts: catCounts, catDurations: catDurations, totalCount: 0, totalDuration: 0 };
+                        order.push(key);
                     }
-
-                    var groupHasRealEntry = key !== '-';
-                    var groupHighlight = highlightActive && groupHasRealEntry;
-
-                    $.each(rows, function (idx, r) {
-                        var $tr = $('<tr></tr>');
-                        if (groupHighlight) {
-                            $tr.css('background-color', activeEntryHighlightColor);
-                        }
-
-                        if (idx === 0) {
-                            $tr.append(
-                                $('<td></td>')
-                                    .attr('rowspan', count)
-                                    .text(r.ExecutedBy || '-')
-                            );
-                        }
-
-                        $tr.append(td(r.ConversationType));
-                        $tr.append(td(r.DataType));
-                        $tr.append(td(r.TargetedProgram));
-                        $tr.append(linkTd(dateAdjust(r.TodayDateEntry, dateLabel), [r.ExecutedBy], dateLabel));
-                        $tr.append(td(r.AvgCallTime));
-                        $tr.append(td(r.TotalStudent));
-                        $tr.append(linkTd(dateAdjustEntryTill(r.DataEntry, dateLabel), r.AllExecutedBy));
-                        $tr.append(td(r.Pending));
-                        $tr.append(td(r.TrackingId));
-                        $tr.append(td(r.CreationDate));
-                        $tr.append(td(r.Deadline));
-                        $tr.append(actionCell(r.Pending, r.TrackingId, r.ConversationId));
-
-                        $tbody.append($tr);
-                    });
-
-                    /* Total row — shown for every person, even with just one entry */
-                    {
-                        var $personTotalTr = $(
-                            '<tr>' +
-                            '<td colspan="4" style="text-align:right;"><strong>Total</strong></td>' +
-                            '<td>' + linkCellHtml(sToday, [key], dateLabel, sTodayBreakdown) + '</td>' +
-                            '<td></td>' +
-                            '<td><strong>' + sStudent + '</strong></td>' +
-                            '<td>' + linkCellHtml(sEntry, [key], null, sEntryBreakdown) + '</td>' +
-                            '<td><strong>' + sPending + '</strong></td>' +
-                            '<td colspan="4"></td>' +
-                            '</tr>'
-                        );
-                        if (groupHighlight) {
-                            $personTotalTr.css('background-color', activeEntryHighlightColor);
-                        }
-                        $tbody.append($personTotalTr);
-                    }
+                    var g = groups[key];
+                    var catKey = crossTab.getValue(r);
+                    g.catCounts[catKey]++;
+                    g.catDurations[catKey] += r.callDurationSec;
+                    g.totalCount++;
+                    g.totalDuration += r.callDurationSec;
+                    grandCatCounts[catKey]++;
+                    grandCatDurations[catKey] += r.callDurationSec;
+                    grandTotal++;
+                    grandTotalDuration += r.callDurationSec;
                 });
-            }
-
-            // Sibling demo pages are named "<Name>_Offline.html" when viewed locally
-            // (file://) but get renamed to "index.html" when published to GitHub Pages
-            // (http/https) — this resolves to whichever one actually exists so links
-            // between demo pages don't 404 after publishing.
-            function siblingPageUrl(folder, offlineFileName) {
-                if (location.protocol === 'file:') {
-                    return '../' + folder + '/' + offlineFileName;
+                order.sort(function (a, b) {
+                    var ka = groups[a].sortKey, kb = groups[b].sortKey;
+                    if (ka < kb) return -1;
+                    if (ka > kb) return 1;
+                    if (hasSub) {
+                        var sa = groups[a].subValue, sb = groups[b].subValue;
+                        return sa < sb ? -1 : (sa > sb ? 1 : 0);
+                    }
+                    return 0;
+                });
+                // Per-category (e.g. "Mobile Call Total Call") sort keys are named
+                // cat<index>_count / cat<index>_duration since the category set
+                // varies by GroupBy (medium categories vs. person categories).
+                var catSortMatch = viewState.sortKey ? /^cat(\d+)_(count|duration)$/.exec(viewState.sortKey) : null;
+                if (viewState.sortKey === 'count') {
+                    order = sortValues(order, function (k) { return groups[k].totalCount; }, 'count');
+                } else if (viewState.sortKey === 'duration') {
+                    order = sortValues(order, function (k) { return groups[k].totalDuration; }, 'duration');
+                } else if (viewState.sortKey === 'value') {
+                    order = sortValues(order, function (k) { return groups[k].sortKey; }, 'value');
+                } else if (viewState.sortKey === 'subvalue' && hasSub) {
+                    order = sortValues(order, function (k) { return groups[k].subValue; }, 'subvalue');
+                } else if (catSortMatch) {
+                    var catIdx = parseInt(catSortMatch[1], 10);
+                    var catField = catSortMatch[2];
+                    var sortCatKey = categories[catIdx] ? categories[catIdx].key : null;
+                    if (sortCatKey) {
+                        order = sortValues(order, function (k) {
+                            return catField === 'count' ? groups[k].catCounts[sortCatKey] : groups[k].catDurations[sortCatKey];
+                        }, viewState.sortKey);
+                    }
                 }
-                return '../' + folder + '/';
+
+                var perPage = getPerPage();
+                var totalPages = Math.max(1, Math.ceil(order.length / perPage));
+                viewState.page = Math.min(Math.max(1, viewState.page), totalPages);
+                var startIdx = (viewState.page - 1) * perPage;
+                var pageKeys = order.slice(startIdx, startIdx + perPage);
+                var leadingCols = hasSub ? 3 : 2;
+
+                var html = '<div class="table-responsive"><table class="table table-bordered table-striped" id="convSummaryTable">';
+                html += '<colgroup>';
+                html += '<col style="width:45px">';
+                html += '<col style="width:220px">';
+                if (hasSub) html += '<col style="width:150px">';
+                html += '<col style="width:80px"><col style="width:80px">';
+                categories.forEach(function () { html += '<col style="width:80px"><col style="width:80px">'; });
+                html += '</colgroup>';
+                html += '<thead>';
+                html += '<tr>' +
+                    '<th rowspan="3" class="conv-id-col conv-id-first">Sl.</th>' +
+                    sortHeader(config.label, 'value', null, 3, 'conv-id-col') +
+                    (hasSub ? sortHeader(config.subGroup.label, 'subvalue', null, 3, 'conv-id-col') : '') +
+                    '<th colspan="2" rowspan="2" class="conv-id-col">Grand Total</th>' +
+                    '<th colspan="' + (categories.length * 2) + '" class="conv-detail-col conv-detail-first conv-detail-last">Details</th>' +
+                    '</tr>';
+                html += '<tr>';
+                categories.forEach(function (c, idx) {
+                    var edgeClass = idx === 0 ? ' conv-detail-first' : (idx === categories.length - 1 ? ' conv-detail-last' : '');
+                    html += '<th colspan="2" class="conv-detail-col' + edgeClass + '">' + c.label + '</th>';
+                });
+                html += '</tr>';
+                html += '<tr>';
+                html += sortHeader('Call Count', 'count', null, null, 'conv-id-col') + sortHeader('Duration', 'duration', null, null, 'conv-id-col conv-id-last');
+                categories.forEach(function (c, idx) {
+                    html += sortHeader('Total Call', 'cat' + idx + '_count', null, null, 'conv-detail-col' + (idx === 0 ? ' conv-detail-first' : ''));
+                    html += sortHeader('Duration', 'cat' + idx + '_duration', null, null, 'conv-detail-col' + (idx === categories.length - 1 ? ' conv-detail-last' : ''));
+                });
+                html += '</tr>';
+                html += '</thead><tbody>';
+
+                pageKeys.forEach(function (key, i) {
+                    var g = groups[key];
+                    html += '<tr>' +
+                        '<td class="conv-id-col conv-id-first">' + (startIdx + i + 1) + '</td>' +
+                        '<td class="conv-dim-cell conv-id-col">' + g.value + '</td>' +
+                        (hasSub ? '<td class="conv-id-col">' + g.subValue + '</td>' : '');
+                    html += '<td class="conv-id-col">' + drillLink(g.totalCount, groupByKey, g.value, hasSub ? g.subValue : undefined) + '</td>' +
+                        '<td class="conv-id-col conv-id-last">' + formatDuration(g.totalDuration) + '</td>';
+                    categories.forEach(function (c, idx) {
+                        var cnt = g.catCounts[c.key];
+                        var firstCls = idx === 0 ? ' conv-detail-first' : '';
+                        var lastCls = idx === categories.length - 1 ? ' conv-detail-last' : '';
+                        html += '<td class="conv-detail-col' + firstCls + '">' + drillLink(cnt, groupByKey, g.value, hasSub ? g.subValue : undefined, config.crossTabKey, c.key) + '</td>' +
+                            '<td class="conv-detail-col' + lastCls + '">' + (cnt ? formatDuration(g.catDurations[c.key]) : '-') + '</td>';
+                    });
+                    html += '</tr>';
+                });
+
+                html += '<tr style="background:#f5f5f5;"><td colspan="' + leadingCols + '" class="conv-id-col conv-id-first" style="text-align:right;"><strong>Grand Total</strong></td>';
+                html += '<td class="conv-id-col"><strong>' + grandTotal + '</strong></td>' +
+                    '<td class="conv-id-col conv-id-last"><strong>' + formatDuration(grandTotalDuration) + '</strong></td>';
+                categories.forEach(function (c, idx) {
+                    var firstCls = idx === 0 ? ' conv-detail-first' : '';
+                    var lastCls = idx === categories.length - 1 ? ' conv-detail-last' : '';
+                    html += '<td class="conv-detail-col' + firstCls + '"><strong>' + grandCatCounts[c.key] + '</strong></td>' +
+                        '<td class="conv-detail-col' + lastCls + '"><strong>' + formatDuration(grandCatDurations[c.key]) + '</strong></td>';
+                });
+                html += '</tr>';
+
+                html += '</tbody></table></div>';
+                html += paginationHtml(order.length, perPage, viewState.page, 'summary');
+
+                $('#dashboardContainer').html(html);
             }
 
-            $(document).on('click', '.entry', function () {
-                // Demo: the real page opens a new tab to RedirectEntry for the clicked
-                // row — here that's simulated by opening the Conversation Entry demo page.
-                window.open(siblingPageUrl('ConversationEntry', 'CrmConversationEntry_Offline.html'), '_blank');
+            // getter functions for each sortable Details column, keyed the same as
+            // the data-sort attribute on that column's <th>.
+            var DETAIL_SORT_GETTERS = {
+                regNo: function (r) { return r.regNo; },
+                name: function (r) { return r.name; },
+                mobile: function (r) { return r.mobile; },
+                program: function (r) { return r.program; },
+                branch: function (r) { return r.branch; },
+                trackingId: function (r) { return r.trackingId; },
+                contactedPerson: function (r) { return r.contactedPerson; },
+                contactMedium: function (r) { return CONTACT_MEDIUM_LABELS[r.contactMedium]; },
+                callDuration: function (r) { return r.callDurationSec; },
+                entryBy: function (r) { return r.entryBy; },
+                entryDate: function (r) { return r.entryDate.getTime(); }
+            };
+
+            // Shared row-level table markup for the "Details" report type and for
+            // drilling into one Summary row — same columns either way, plus a
+            // leading Sl. column (numbered from the current page's offset).
+            function detailTableHtml(pageRecords, offset, titleHtml, totalCount) {
+                var html = '';
+                if (titleHtml) {
+                    html += '<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">' +
+                        '<strong>' + titleHtml + ' (' + totalCount + 'টা রেকর্ড)</strong>' +
+                        '<button type="button" class="btn btn-xs btn-default" id="convBackToSummary">&larr; Summary-তে ফিরে যান</button>' +
+                        '</div>';
+                }
+                html += '<div class="table-responsive"><table class="table table-bordered table-striped" id="convDetailTable">' +
+                    '<thead><tr>' +
+                    '<th>Sl.</th>' +
+                    sortHeader('Registration No', 'regNo') + sortHeader('Student Name', 'name') +
+                    sortHeader('Mobile Number', 'mobile') + sortHeader('Program', 'program') +
+                    sortHeader('Branch', 'branch') + sortHeader('Tracking ID', 'trackingId') +
+                    sortHeader('যে নম্বরে কথা হয়েছে', 'contactedPerson') + sortHeader('যে মাধ্যমে কথা হয়েছে', 'contactMedium') +
+                    sortHeader('Call Duration', 'callDuration') +
+                    sortHeader('User Name', 'entryBy') + sortHeader('Entry Date-Time', 'entryDate') +
+                    '</tr></thead><tbody>';
+                pageRecords.forEach(function (r, i) {
+                    html += '<tr>' +
+                        '<td>' + (offset + i + 1) + '</td>' +
+                        '<td>' + r.regNo + '</td>' +
+                        '<td>' + r.name + '</td>' +
+                        '<td>' + r.mobile + '</td>' +
+                        '<td>' + r.program + '</td>' +
+                        '<td>' + r.branch + '</td>' +
+                        '<td>' + r.trackingId + '</td>' +
+                        '<td>' + r.contactedPerson + '</td>' +
+                        '<td>' + CONTACT_MEDIUM_LABELS[r.contactMedium] + '</td>' +
+                        '<td>' + formatDuration(r.callDurationSec) + '</td>' +
+                        '<td>' + r.entryBy + '</td>' +
+                        '<td>' + formatDateTime(r.entryDate) + '</td>' +
+                        '</tr>';
+                });
+                html += '</tbody></table></div>';
+                return html;
+            }
+
+            function renderDetailsView() {
+                var matched = viewState.detailFilterFn ? lastFilteredRecords.filter(viewState.detailFilterFn) : lastFilteredRecords;
+                if (matched.length === 0) {
+                    $('#dashboardContainer').html('<div class="alert alert-warning">কোনো ডাটা পাওয়া যায়নি — অন্য ফিল্টার দিয়ে আবার চেষ্টা করুন।</div>');
+                    return;
+                }
+                if (viewState.sortKey && DETAIL_SORT_GETTERS[viewState.sortKey]) {
+                    matched = sortValues(matched, DETAIL_SORT_GETTERS[viewState.sortKey], viewState.sortKey);
+                }
+                var perPage = getPerPage();
+                var totalPages = Math.max(1, Math.ceil(matched.length / perPage));
+                viewState.page = Math.min(Math.max(1, viewState.page), totalPages);
+                var startIdx = (viewState.page - 1) * perPage;
+                var pageRecords = matched.slice(startIdx, startIdx + perPage);
+
+                var html = detailTableHtml(pageRecords, startIdx, viewState.detailTitle, matched.length);
+                html += paginationHtml(matched.length, perPage, viewState.page, 'details');
+                $('#dashboardContainer').html(html).get(0).scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+
+            function renderCurrentView() {
+                $('#convReportPanelTitle').text(viewState.mode === 'details' ? 'Details Report' : 'Summary Report');
+                if (viewState.mode === 'details') {
+                    renderDetailsView();
+                } else {
+                    renderSummary();
+                }
+            }
+
+            function loadReport() {
+                lastFilteredRecords = applyFilters();
+                viewState.mode = $('#reportType').val();
+                viewState.page = 1;
+                if (viewState.mode === 'details') {
+                    viewState.sortKey = null;
+                    viewState.sortDir = 'asc';
+                } else {
+                    // Summary always opens sorted by Grand Total Call Count,
+                    // highest first, so the busiest rows are immediately visible.
+                    viewState.sortKey = 'count';
+                    viewState.sortDir = 'desc';
+                }
+                if (viewState.mode !== 'details') {
+                    viewState.detailFilterFn = null;
+                    viewState.detailTitle = null;
+                }
+                renderCurrentView();
+            }
+
+            $('#btnSearch').on('click', loadReport);
+
+            // Demo: no live backend to generate a real export file — builds a CSV
+            // client-side from whichever table (Summary or Details) is currently shown
+            // (only the current page's rows, matching what's visible on screen).
+            $('#btnExport').on('click', function () {
+                var $table = $('#dashboardContainer table').first();
+                if (!$table.length) {
+                    $.fn.customMessage ? $.fn.customMessage({ displayMessage: 'আগে View করে ডাটা লোড করুন।', displayMessageType: 'error' }) : alert('আগে View করে ডাটা লোড করুন।');
+                    return;
+                }
+                var rows = [];
+                $table.find('tr').each(function () {
+                    var cells = $(this).find('th,td').map(function () {
+                        return '"' + $(this).text().trim().replace(/"/g, '""') + '"';
+                    }).get();
+                    rows.push(cells.join(','));
+                });
+                var csv = rows.join('\r\n');
+                var blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
+                var link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = 'ConversationReport.csv';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
             });
 
-            function td(val) {
-                return $('<td></td>').text(val === null || val === undefined || val === '' ? '-' : val);
-            }
+            // Clicking a Summary count switches the whole view to Details, filtered
+            // to just that row's GroupBy value — not an inline expansion below the
+            // Summary table.
+            $(document).on('click', '.conv-drill', function (e) {
+                e.preventDefault();
+                var groupByKey = $(this).data('group');
+                var value = String($(this).data('value'));
+                var subValue = $(this).data('subvalue');
+                var crossTabKey = $(this).data('crosstabkey');
+                var crossTabValue = $(this).data('crosstabvalue');
+                var config = GROUP_BY_CONFIG[groupByKey];
+                $('#reportType').val('details');
+                viewState.mode = 'details';
+                viewState.page = 1;
+                viewState.sortKey = null;
+                viewState.sortDir = 'asc';
 
-            // Demo: value shown as a clickable link — exact click destination/behavior
-            // to be defined later by the user, for now it's just visual + no-op.
-            // Demo: links to the DetailsReport offline demo page (sibling project folder),
-            // passing the clicked number as ?count= so that page fabricates exactly that
-            // many fake rows (real live page opens its own Details Report the same way,
-            // drilling into the specific count that was clicked).
-            // entryByNames: which team member(s) the Details Report page should attribute
-            // its fabricated rows to. "Today Entry" passes just the one person who made
-            // that entry; "Entry Till Today" passes every team member who has entered
-            // against that Tracking ID, so the drilled-down page reflects everyone's work.
-            // sameDayLabel: pass 'Today'/'Yesterday' for the per-entry columns (all those
-            // rows happened on that one real date); omit for "Entry Till Today/Yesterday"
-            // since that total built up across multiple different days.
-            // onDateLabel: either 'Today' or the selected calendar date's ISO string —
-            // passed through as ?onDate= so Details Report can fabricate every row on
-            // that one specific real date (only the time varies) instead of spreading
-            // them across random dates, since this number represents one day's activity.
-            // trIdBreakdown: only relevant for Total/Grand Total cells that combine more
-            // than one Tracking ID — an array of { trackingId, count } for each case that
-            // contributed to this sum. When it has more than one entry, Details Report
-            // shows every one of those Tracking IDs and renders a separate table per
-            // Tracking ID instead of a single merged table. A single-case link (or one
-            // omitting this argument entirely) keeps the existing single-table behavior.
-            function buildDrillHref(val, entryByNames, onDateLabel, trIdBreakdown) {
-                var count = parseInt(val, 10) || 0;
-                var href = siblingPageUrl('DetailsReport', 'DetailsReport_Offline.html') + '?count=' + count;
-                if (entryByNames && entryByNames.length) {
-                    href += '&entryBy=' + encodeURIComponent(entryByNames.join('|'));
+                var filters = [function (r) { return config.getValue(r) === value; }];
+                var titleParts = [config.label + ': ' + value];
+                if (config.subGroup && subValue !== undefined) {
+                    subValue = String(subValue);
+                    filters.push(function (r) { return config.subGroup.getValue(r) === subValue; });
+                    titleParts.push(config.subGroup.label + ': ' + subValue);
                 }
-                if (onDateLabel) {
-                    href += '&onDate=' + encodeURIComponent(onDateLabel);
+                if (crossTabKey !== undefined) {
+                    crossTabValue = String(crossTabValue);
+                    var ctDim = CROSS_TAB_DIMENSIONS[crossTabKey];
+                    filters.push(function (r) { return ctDim.getValue(r) === crossTabValue; });
+                    var cat = ctDim.categories.filter(function (c) { return c.key === crossTabValue; })[0];
+                    titleParts.push(ctDim.title + ': ' + (cat ? cat.label : crossTabValue));
                 }
-                if (trIdBreakdown && trIdBreakdown.length > 1) {
-                    var pairs = $.map(trIdBreakdown, function (p) { return p.trackingId + ':' + p.count; }).join(',');
-                    href += '&trIds=' + encodeURIComponent(pairs);
+                viewState.detailFilterFn = function (r) { return filters.every(function (f) { return f(r); }); };
+                viewState.detailTitle = titleParts.join(', ');
+                renderCurrentView();
+            });
+
+            $(document).on('click', '.conv-sortable', function () {
+                var key = $(this).data('sort');
+                if (viewState.sortKey === key) {
+                    viewState.sortDir = viewState.sortDir === 'asc' ? 'desc' : 'asc';
+                } else {
+                    viewState.sortKey = key;
+                    viewState.sortDir = 'asc';
                 }
-                return href;
-            }
+                viewState.page = 1;
+                renderCurrentView();
+            });
 
-            function linkTd(val, entryByNames, onDateLabel) {
-                var display = (val === null || val === undefined || val === '') ? '-' : val;
-                return $('<td></td>').append(
-                    $('<a></a>')
-                        .attr('href', buildDrillHref(val, entryByNames, onDateLabel))
-                        .attr('target', '_blank')
-                        .addClass('dashboard-drill-link')
-                        .text(display)
-                );
-            }
+            $(document).on('click', '#convBackToSummary', function () {
+                $('#reportType').val('summary');
+                viewState.mode = 'summary';
+                viewState.page = 1;
+                viewState.sortKey = 'count';
+                viewState.sortDir = 'desc';
+                viewState.detailFilterFn = null;
+                viewState.detailTitle = null;
+                renderCurrentView();
+            });
 
-            // String-built equivalent of linkTd, for the Total/Grand Total rows which are
-            // assembled as raw HTML strings rather than jQuery objects.
-            function linkCellHtml(val, entryByNames, onDateLabel, trIdBreakdown) {
-                var display = (val === null || val === undefined || val === '') ? '-' : val;
-                return '<strong><a href="' + buildDrillHref(val, entryByNames, onDateLabel, trIdBreakdown) +
-                    '" target="_blank" class="dashboard-drill-link">' + display + '</a></strong>';
-            }
+            $(document).on('click', '.conv-page-link', function (e) {
+                e.preventDefault();
+                if ($(this).hasClass('disabled') || $(this).hasClass('current')) return;
+                viewState.page = parseInt($(this).data('page'), 10) || 1;
+                renderCurrentView();
+            });
 
-            // No Pending data left for this Tracking ID means there's nothing left to
-            // enter, so the Entry button is hidden — only rendered when Pending > 0.
-            function actionCell(pending, trackingId, conversationId) {
-                var $td = $('<td></td>');
-                if ((parseInt(pending, 10) || 0) > 0) {
-                    $td.append(
-                        $('<button class="btn btn-sm btn-success entry"></button>')
-                            .text('Entry')
-                            .attr('data-trackingId', trackingId)
-                            .attr('data-conversationId', conversationId)
-                    );
-                }
-                return $td;
-            }
-
-            function sumBy(arr, key) {
-                return arr.reduce(function (s, r) { return s + (parseInt(r[key]) || 0); }, 0);
-            }
-
-            function showAlert(type, msg) {
-                $('#dashboardContainer').html('<div class="alert alert-' + type + '">' + msg + '</div>');
-            }
+            // Show a first result set immediately so the page isn't blank on load.
+            loadReport();
         });
             </script>
+
             <script type="text/javascript">
               $(document).ready(function () {
             // Div Full Screen
@@ -12925,69 +13114,45 @@ function DeselectSelectedOptionAdd(elem) {
                   <div class="modal-header" style="background:#4338CA; color:#fff; border-top-left-radius:4px; border-top-right-radius:4px;">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:#fff; opacity:.85; text-shadow:none;"><span aria-hidden="true">&times;</span></button>
                     <button type="button" class="pcm-copy-btn" title="সম্পূর্ণ কনটেন্ট কপি করুন" style="float:right; margin:-2px 8px 0 0; background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.5); color:#fff; border-radius:4px; padding:2px 10px; font-size:12px; line-height:1.6; cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="12" height="12" fill="currentColor" style="vertical-align:-1px; margin-right:4px;"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path></svg>Copy</button>
-                    <h4 class="modal-title" id="pageChangesModalLabel">এই পেইজে যা যা পরিবর্তন/আপডেট করা হয়েছে</h4>
+                    <h4 class="modal-title" id="pageChangesModalLabel">এই মেনু সম্পর্কে বিস্তারিত</h4>
                   </div>
                   <div class="modal-body" style="height:65vh; overflow-y:auto;">
-                    <p style="font-weight:bold; margin-bottom:4px;">ফিল্টার বার:</p>
+                    <p style="font-weight:bold; margin-bottom:4px; color:#B42318;">এটা একটা সম্পূর্ণ নতুন মেনু — লাইভ সাইটে এখনো নেই।</p>
+                    <p style="margin:4px 0 16px; color:#555;">"Conversation Call Report" CRM Management সাবমেনুতে নতুন যোগ করার জন্য প্রস্তাব করা হয়েছে (Mentor Dashboard-এর পরে)। Conversation Entry পেইজে সেভ হওয়া "যে নম্বরে কথা হয়েছে" ও "যে মাধ্যমে কথা হয়েছে" ডাটা বিভিন্নভাবে ফিল্টার করে অ্যানালাইসিস করার জন্য এই রিপোর্টটা।</p>
+                    <p style="font-weight:bold; margin-bottom:4px;">ফিল্টার বার (ক্রম অনুযায়ী):</p>
                     <ol style="padding-left:20px; margin:0 0 20px;">
-                      <li style="margin-bottom:14px;">
-                        <strong>উপরের ফিল্টার অপশনে চারটি নতুন অপশন যোগ করা হয়েছে</strong>
-                        <p style="margin:4px 0 0; color:#555;">Mentor ও Branch ফিল্টারের পর — Program (মাল্টি-সিলেক্ট), View By (একটাই সিলেক্ট করা যাবে: Programwise / Pinwise), Tr ID Status (একটাই সিলেক্ট করা যাবে: Working Tr ID / Active Tr ID), এরপর ক্যালেন্ডার যোগ করা হয়েছে এবং Search বাটন থাকবে।</p>
+                      <li style="margin-bottom:10px;">
+                        <strong>GroupBy</strong> — Branch Wise / Program Wise / Contacted Person Wise / Contact Medium Wise, ডিফল্ট Branch Wise। Summary টেবিল কোন ডাইমেনশন অনুযায়ী গ্রুপ হবে তা এটাই ঠিক করে।
                       </li>
-                      <li style="margin-bottom:14px;">
-                        <strong>Mentor</strong>
-                        <p style="margin:4px 0 0; color:#555;">Mentor ড্রপডাউনে কোনো মেন্টর সিলেক্ট করা হলে Branch ড্রপডাউনে স্বয়ংক্রিয়ভাবে শুধু সেই মেন্টরের ব্রাঞ্চগুলো দেখাবে (বাকি ব্রাঞ্চ তালিকায় দেখাবে না)। এই মেনুতে ক্লিক করা হলে ইউজার অনুযায়ি সে একজন মেন্টর হলে ডিফল্টভাবে তার নাম সিলেক্ট থেকে অটো সার্চ হবে। ইউজার মেন্টর না হলে, All Mentor ও All Branch সিলেক্ট থেকে ডাটা লোড হবে। ইউজার পারমিশন অনুযায়ি ব্রাঞ্চ লোড হবে।</p>
+                      <li style="margin-bottom:10px;">
+                        <strong>Organization, Program, Session, Branch</strong> — Organization একটাই সিলেক্ট করা যাবে, বাকি সবগুলো মাল্টি-সিলেক্ট, ডিফল্টে সবগুলোই।
                       </li>
-                      <li style="margin-bottom:14px;">
-                        <strong>Program</strong>
-                        <p style="margin:4px 0 0; color:#555;">প্রোগ্রাম সিলেকশনে সকল প্রোগ্রাম দেখাবে। নির্দিষ্ট বা একাধিক প্রোগ্রাম সিলেক্ট করে ডাটা সার্চ করা যাবে।</p>
+                      <li style="margin-bottom:10px;">
+                        <strong>যে নম্বরে কথা হয়েছে</strong> (Student/Father/Mother) ও <strong>যে মাধ্যমে কথা হয়েছে</strong> (Mobile Call/WhatsApp/Telegram) — দুটোই মাল্টি-সিলেক্ট, একসাথে বা আলাদাভাবে ফিল্টার করা যাবে।
                       </li>
-                      <li style="margin-bottom:14px;">
-                        <strong>View By</strong>
-                        <p style="margin:4px 0 0; color:#555;">Programwise/Pinwise যেকোনো একটি সিলেক্ট করে ডাটা সার্চ করা যাবে। ডিফল্টভাবে Programwise সিলেক্ট থাকবে।</p>
-                      </li>
-                      <li style="margin-bottom:14px;">
-                        <strong>Tr ID Status</strong>
-                        <p style="margin:4px 0 0; color:#555;">Working Tr ID/Active Tr ID যেকোনো একটি সিলেক্ট করে ডাটা সার্চ করা যাবে। ডিফল্টভাবে Working Tr ID সিলেক্ট থাকবে। এই অবস্থায় সার্চ করা হলে সিলেক্টেড তারিখ অনুযায়ি যে Tracking ID গুলোতে ডাটা এন্ট্রি করা হয়েছে সেই অনুযায়ি তথ্য দেখাবে। Active Tr ID সিলেক্ট করলে যেসব Tracking ID এখন একটিভ আছে সেই অনুযায়ি ডাটা দেখাবে।</p>
+                      <li style="margin-bottom:10px;">
+                        <strong>Date From / Date To</strong> — Entry Date অনুযায়ী রেঞ্জ, ডিফল্টে গত ৩০ দিন।
                       </li>
                       <li>
-                        <strong>ক্যালেন্ডার অপশন</strong>
-                        <p style="margin:4px 0 0; color:#555;">ক্যালেন্ডার/ডেট-পিকারে ডিফল্টভাবে আজকের তারিখ সিলেক্ট থাকবে, ভবিষ্যতের কোনো তারিখ সিলেক্ট করা যাবে না। আজকের তারিখ সিলেক্ট থাকলে নিচের ডাটা টেবিলে Entry on Today দেখাবে। অতীতের কোনো তারিখ সিলেক্ট করে সার্চ করলে কলামের নাম বদলে হয় "Entry on (Selected Date)" হবে।</p>
+                        <strong>Report Type</strong> (Summary / Details, ডিফল্ট Summary) ও <strong>Display Per Page</strong> (ডিফল্ট 100, টেবিলের পেইজ-সাইজ)।
                       </li>
                     </ol>
-                    <p style="font-weight:bold; margin-bottom:4px;">ডাটা টেবিল:</p>
-                    <ol style="padding-left:20px; margin:0;">
-                      <li style="margin-bottom:14px;">
-                        <strong>তিনটি কলাম বাদ</strong>
-                        <p style="margin:4px 0 0; color:#555;">"Created By", "Initiated By" ও "Executed By" কলাম তিনটি সম্পূর্ণ বাদ দেওয়া হয়েছে।</p>
-                      </li>
-                      <li style="margin-bottom:14px;">
-                        <strong>চারটি নতুন কলাম যোগ</strong>
-                        <p style="margin:4px 0 0; color:#555;">"Entry By" (কল করে যে ডাটা এন্ট্রি হয়েছে), "Entry on Today/Selected Date" (নির্দিষ্ট দিনে কতগুলো এন্ট্রি হয়েছে), "Avg. Call Time" (গড় কল-সময়) এবং "Entry Till Today" (আজ পর্যন্ত মোট এন্ট্রি) — এই চারটি কলাম যোগ করা হয়েছে।</p>
-                      </li>
-                      <li style="margin-bottom:14px;">
-                        <strong>Date ফিল্টার অনুযায়ী কলামের নাম বদল</strong>
-                        <p style="margin:4px 0 0; color:#555;">Date ফিল্টারে "Today" সিলেক্ট থাকলে কলাম দুটির নাম হবে "Entry On Today" ও আগের কোনো তারিখ সিলেক্ট করলে এই কলামের নাম বদলে "Entry On (Selected Date)" আকারে দেখাবে।</p>
-                      </li>
-                      <li style="margin-bottom:14px;">
-                        <strong>একই Tracking ID-তে একাধিক টিম মেম্বারের এন্ট্রি</strong>
-                        <p style="margin:4px 0 0; color:#555;">কোনো Tracking ID-তে একাধিক টিম মেম্বার এন্ট্রি করে থাকলে প্রতিটা টিম মেম্বারের জন্য আলাদা সারি দেখাবে (নিজস্ব Entry By, Entry on Today/Selected Date, Avg. Call Time সহ), কিন্তু বাকি তথ্য (Program, Total Student, Pending, Tracking ID ইত্যাদি) সব সারির উপর একসাথে মার্জ করে দেখাবে যেহেতু সেগুলো ব্যক্তি-ভিত্তিক না, পুরো Tracking ID-ভিত্তিক তথ্য।</p>
-                      </li>
-                      <li style="margin-bottom:14px;">
-                        <strong>এন্ট্রি সংখ্যা ক্লিক করে সরাসরি ডিটেইলস দেখা</strong>
-                        <p style="margin:4px 0 0; color:#555;">"Entry on Today/Selected Date" ও "Entry Till Today" কলামের সংখ্যাগুলো ক্লিকযোগ্য (লিংকের মতো) — ক্লিক করলে সরাসরি Details Report পেইজে সেই নির্দিষ্ট সংখ্যক রেকর্ডের বিস্তারিত তালিকা দেখাবে, আলাদাভাবে কোনো ফিল্টার/সার্চ করার প্রয়োজন হবে না। Total সংখ্যায় ক্লিক করা হলে একাধিক Tracking ID এর ডাটা একসাথে থাকলে Details পেইজে সবগুলো Tracking ID এর ডাটা আলাদা টেবিল আকারে দেখাবে।</p>
-                      </li>
-                      <li style="margin-bottom:14px;">
-                        <strong>Pending শেষ হলে Entry বাটন লুকানো</strong>
-                        <p style="margin:4px 0 0; color:#555;">কোনো Tracking ID-এর Pending সংখ্যা ০ হয়ে গেলে (অর্থাৎ আর কোনো এন্ট্রি বাকি নেই), সেই সারির Action কলামে Entry বাটন আর দেখাবে না।</p>
-                      </li>
-                      <li style="margin-bottom:14px;">
-                        <strong>View By: Pinwise ভিউ</strong>
-                        <p style="margin:4px 0 0; color:#555;">View By-তে "Pinwise" সিলেক্ট করলে একই ডাটা Program-এর বদলে Entry By (টিম মেম্বার) অনুযায়ী গ্রুপ করে দেখাবে — একজন টিম মেম্বারের সব এন্ট্রি একসাথে দেখা যাবে, তিনি একাধিক ভিন্ন প্রোগ্রামে কাজ করলেও।</p>
+                    <p style="font-weight:bold; margin-bottom:4px;">রেজাল্ট (Report Type অনুযায়ী):</p>
+                    <ol style="padding-left:20px; margin:0 0 20px;">
+                      <li style="margin-bottom:10px;">
+                        <strong>Summary (ডিফল্ট)</strong> — ফ্ল্যাট টেবিল, GroupBy অনুযায়ী মাত্র একটা ডাইমেনশনে গ্রুপ (Branch/Program/ব্যক্তি/মাধ্যম) + Total Count, সবশেষে Grand Total। Total Count ক্লিক করলে পুরো ভিউ Details-এ পাল্টে যায় সেই নির্দিষ্ট মান দেখিয়ে, "← Summary-তে ফিরে যান" বাটন দিয়ে ফেরা যাবে।
                       </li>
                       <li>
-                        <strong>Active Tr ID-তে Entry By থাকা সারিতে হালকা কালার হাইলাইট</strong>
-                        <p style="margin:4px 0 0; color:#555;">Active Tr ID সিলেক্ট করে সার্চ করলে, সিলেক্টেড তারিখ অনুযায়ী যে Tracking ID-গুলোতে Entry By (টিম মেম্বার) ডেটা আছে, সেই সারিগুলোর ব্যাকগ্রাউন্ডে হালকা সবুজ কালার দেখাবে; যে Tracking ID-গুলোতে এখনো কোনো এন্ট্রি হয়নি সেগুলো সাদা ব্যাকগ্রাউন্ডেই থাকবে। এতে এক নজরেই বোঝা যাবে কোন Tracking ID-গুলোতে কাজ হয়েছে আর কোনগুলো এখনো বাকি। বিশেষ দ্রষ্টব্য: Working Tr ID দিয়ে সার্চ করা হলে এই কালার হাইলাইট প্রযোজ্য হবে না।</p>
+                        <strong>Details</strong> — সরাসরি প্রতিটা রেকর্ড এক-এক সারিতে (কোনো গ্রুপিং ছাড়া): Registration No, Student Name, Mobile Number, Program, Branch, Tracking ID, যে নম্বরে/মাধ্যমে কথা হয়েছে, <strong>Entry By</strong>, Entry Date-Time।
+                      </li>
+                    </ol>
+                    <p style="font-weight:bold; margin-bottom:4px;">টেবিল ফিচার (দুটোতেই):</p>
+                    <ol style="padding-left:20px; margin:0;">
+                      <li style="margin-bottom:10px;">
+                        <strong>Sl. কলাম</strong> ও <strong>পেজিনেশন</strong> — Display Per Page অনুযায়ী পেইজ-সাইজ, স্টাইল Details Report পেইজের ("Showing X to Y of Z entries" + Previous/Next) মতোই।
+                      </li>
+                      <li>
+                        <strong>কলাম সর্ট</strong> — Sl. বাদে বাকি সব কলামের হেডারে ক্লিক করে ascending/descending সর্ট করা যাবে (↕/↑/↓ আইকন)।
                       </li>
                     </ol>
                   </div>
