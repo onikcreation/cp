@@ -13201,15 +13201,46 @@ function DeselectSelectedOptionAdd(elem) {
               });
             </script>
             <script>
+              // Sibling-page navigation for the left "CRM Management" sidebar menu —
+              // of its 12 real submenu items, only these 5 have an offline demo built
+              // so far; clicking one of them should actually navigate there (this
+              // page's own entry just reloads), same as picking it on the live site.
+              // The other 7 items have nowhere to go yet and stay inert below.
+              function siblingPageUrl(folder, offlineFileName) {
+                  if (location.protocol === 'file:') {
+                      return '../' + folder + '/' + offlineFileName;
+                  }
+                  return '../' + folder + '/';
+              }
+              var siblingLivePages = {
+                  '/Student/CrmConversationTargetedStudent/ManageSingleEntry': { folder: 'ConversationEntry', file: 'CrmConversationEntry_Offline.html' },
+                  '/Student/CrmReport/DetailsReport': { folder: 'DetailsReport', file: 'DetailsReport_Offline.html' },
+                  '/Student/CrmComments/Index': { folder: 'ManageStudentFeedback', file: 'ManageStudentFeedback_Offline.html' },
+                  '/Student/CrmConversation/MentorDashboard': { folder: 'MentorDashboard', file: 'MentorDashboard_Offline.html' },
+                  '/Student/CrmReport/ConversationReport': { folder: 'ConversationCallReport', file: 'ConversationCallReport_Offline.html' }
+              };
+              var thisPageRoute = '/Student/CrmReport/ConversationReport';
+
               // This is a static design demo — it must never navigate away to the
               // real umsbd.net site (menu links, notice links, logout, form POST, etc.
               // all point to real app routes in the captured markup). Block every
-              // real link click and form submit at the document level.
+              // real link click and form submit at the document level, except the
+              // drill-down links and sidebar links to sibling demo pages handled above.
               document.addEventListener('click', function (e) {
                   var a = e.target.closest('a[href]');
                   if (!a) return;
                   if (a.classList.contains('dashboard-drill-link')) return; // intentional link to the DetailsReport demo page
                   var href = a.getAttribute('href');
+                  if (a.classList.contains('submenuitem') && href && siblingLivePages.hasOwnProperty(href)) {
+                      e.preventDefault();
+                      if (href === thisPageRoute) {
+                          window.location.reload();
+                      } else {
+                          var target = siblingLivePages[href];
+                          window.location.href = siblingPageUrl(target.folder, target.file);
+                      }
+                      return;
+                  }
                   if (href && href.indexOf('#') !== 0 && href.indexOf('javascript:') !== 0) {
                       e.preventDefault();
                   }

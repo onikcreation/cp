@@ -11221,11 +11221,41 @@ let feedbackData = [
       });
     </script>
     <script type="text/javascript">
+      // Sibling-page navigation for the left "CRM Management" sidebar menu — of its
+      // 12 real submenu items, only these 5 have an offline demo built so far;
+      // clicking one of them should actually navigate there (this page's own entry
+      // just reloads), same as picking it on the live site. The other 7 items have
+      // nowhere to go yet and stay inert below.
+      function siblingPageUrl(folder, offlineFileName) {
+          if (location.protocol === 'file:') {
+              return '../' + folder + '/' + offlineFileName;
+          }
+          return '../' + folder + '/';
+      }
+      var siblingLivePages = {
+          '/Student/CrmConversationTargetedStudent/ManageSingleEntry': { folder: 'ConversationEntry', file: 'CrmConversationEntry_Offline.html' },
+          '/Student/CrmReport/DetailsReport': { folder: 'DetailsReport', file: 'DetailsReport_Offline.html' },
+          '/Student/CrmComments/Index': { folder: 'ManageStudentFeedback', file: 'ManageStudentFeedback_Offline.html' },
+          '/Student/CrmConversation/MentorDashboard': { folder: 'MentorDashboard', file: 'MentorDashboard_Offline.html' },
+          '/Student/CrmReport/ConversationReport': { folder: 'ConversationCallReport', file: 'ConversationCallReport_Offline.html' }
+      };
+      var thisPageRoute = '/Student/CrmComments/Index';
+
       document.addEventListener('click', function (e) {
           var a = e.target.closest ? e.target.closest('a[href]') : null;
           if (!a) return;
           var href = a.getAttribute('href');
           if (!href) return;
+          if (a.classList.contains('submenuitem') && siblingLivePages.hasOwnProperty(href)) {
+              e.preventDefault();
+              if (href === thisPageRoute) {
+                  window.location.reload();
+              } else {
+                  var target = siblingLivePages[href];
+                  window.location.href = siblingPageUrl(target.folder, target.file);
+              }
+              return;
+          }
           if (href.indexOf('#') === 0 || href.indexOf('javascript:') === 0) return;
           e.preventDefault();
       }, true);
