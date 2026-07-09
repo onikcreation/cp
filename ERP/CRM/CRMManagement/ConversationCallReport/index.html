@@ -8290,10 +8290,14 @@ span.hide-native-select{position:relative}span.hide-native-select select{border:
         border-bottom: 2px solid #7fa0d6;
     }
     #convSummaryTable tr.conv-mentor-header td {
-        background: #f5f5f5;
+        background: #f3fff4;
         font-weight: bold;
         text-align: left;
         border-top: 2px solid #ddd;
+    }
+    #convSummaryTable tr.conv-mentor-total td {
+        background: #effaff;
+        font-weight: bold;
     }
                   </style>
                   <input name="__RequestVerificationToken" type="hidden" value="demo-anti-forgery-token-not-real">
@@ -12900,7 +12904,7 @@ function DeselectSelectedOptionAdd(elem) {
                     html += '</tr>';
                     if (mentorSectionEnd[key]) {
                         var mt = mentorTotals[mentorSectionEnd[key]];
-                        html += '<tr style="background:#f0f0f0;"><td colspan="' + leadingCols + '" style="text-align:right;"><strong>Total</strong></td>';
+                        html += '<tr class="conv-mentor-total"><td colspan="' + leadingCols + '" style="text-align:right;"><strong>Mentor Total</strong></td>';
                         html += '<td><strong>' + mt.totalCount + '</strong></td><td><strong>' + formatDuration(mt.totalDuration) + '</strong></td>';
                         categories.forEach(function (c) {
                             html += '<td><strong>' + mt.catCounts[c.key] + '</strong></td><td><strong>' + formatDuration(mt.catDurations[c.key]) + '</strong></td>';
