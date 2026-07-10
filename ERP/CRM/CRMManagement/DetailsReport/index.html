@@ -9047,7 +9047,7 @@ table.DTFC_Cloned thead,table.DTFC_Cloned tfoot{background-color:white}div.DTFC_
                           <div class="col-md-4">
                             <select name="entryStatus" id="entryStatus" class="form-control" multiple="multiple">
                               <option value="10">
-                                Pending
+                                Not Called Yet
                               </option>
                               <option value="20">
                                 Call Received
@@ -9086,7 +9086,7 @@ table.DTFC_Cloned thead,table.DTFC_Cloned tfoot{background-color:white}div.DTFC_
                         </div>
                         <div class="form-group">
                           <label class="control-label col-md-2" for="Entry_By">
-                            Entry By
+                            Executed By
                           </label>
                           <div class="col-md-4">
                             <input type="text" class="form-control" id="entryBy" placeholder="User Email" value="">
@@ -9151,10 +9151,16 @@ table.DTFC_Cloned thead,table.DTFC_Cloned tfoot{background-color:white}div.DTFC_
                               <option value="Remarks">
                                 Remarks
                               </option>
-                              <option value="Entry By">
-                                Entry By
+                              <option value="Contacted Number" selected="selected">
+                                যে নম্বরে কথা হয়েছে
                               </option>
-                              <option value="Entry Date">
+                              <option value="Contacted Medium" selected="selected">
+                                যে মাধ্যমে কথা হয়েছে
+                              </option>
+                              <option value="Executed By" selected="selected">
+                                Executed By
+                              </option>
+                              <option value="Entry Date" selected="selected">
                                 Entry Date &amp; Time
                               </option>
                               <option value="Mobile Number">
@@ -9212,13 +9218,13 @@ table.DTFC_Cloned thead,table.DTFC_Cloned tfoot{background-color:white}div.DTFC_
                               </div>
                               <div class="col-md-8">
                                 <span style="font-size: 14px; font-weight:bold">Initiated By :&nbsp;</span>
-                                <span id="initiatedById">[3801] Placeholder Name</span>
+                                <span id="initiatedById">[3801] Kazi Fahim Ahmed</span>
                                 <br>
                                 <span style="font-size: 14px; font-weight:bold">PIN / TPIN &nbsp;  :&nbsp;</span>
-                                <span id="pinOrTPinId">[3802] Placeholder Name</span>
+                                <span id="pinOrTPinId">[3801] Kazi Fahim Ahmed</span>
                               </div>
                               <div class="col-md-4 text-left">
-                                <span style="font-size: 14px; font-weight:bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Executed By :&nbsp;</span>
+                                <span style="font-size: 14px; font-weight:bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Assigned To :&nbsp;</span>
                                 <span id="exceutedById">Management</span>
                                 <br>
                                 <span style="font-size: 14px; font-weight:bold">Conversation Type&nbsp; :&nbsp;</span>
@@ -9226,6 +9232,25 @@ table.DTFC_Cloned thead,table.DTFC_Cloned tfoot{background-color:white}div.DTFC_
                               </div>
                             </div>
                           </div>
+                          <style>
+                            /* Demo: the 11 default-visible columns must fit on one screen
+                               with no horizontal scrollbar — table-layout:fixed honors each
+                               column's own width% (set in buildResultColumns()) instead of
+                               DataTables' usual auto-sizing, and wrapping keeps long cell
+                               text (Remarks, Executed By emails, etc.) readable at that
+                               narrower width instead of forcing the table wider. Matches
+                               table[id^="DataGrid"] so it covers the single-Tracking-ID
+                               table, every per-Tracking-ID table (DataGrid_multi_N), and
+                               every per-(Tracking ID, Executed By) table (DataGrid_pb_N).
+                            */
+                            table[id^="DataGrid"] { table-layout: fixed; width: 100% !important; }
+                            table[id^="DataGrid"] > thead > tr > th,
+                            table[id^="DataGrid"] > tbody > tr > td {
+                              word-wrap: break-word;
+                              word-break: break-word;
+                              white-space: normal;
+                            }
+                          </style>
                           <div id="DataGrid_wrapper" class="dataTables_wrapper no-footer">
                             <table id="DataGrid" class="display table table-striped table-bordered table-condensed table-hover table-responsive text-wrap" cellspacing="0" width="100%">
                               <thead>
@@ -9243,7 +9268,9 @@ table.DTFC_Cloned thead,table.DTFC_Cloned tfoot{background-color:white}div.DTFC_
                                   <th>Conversation Duration</th>
                                   <th>Feedback</th>
                                   <th>Remarks</th>
-                                  <th>Entry By</th>
+                                  <th>যে নম্বরে কথা হয়েছে</th>
+                                  <th>যে মাধ্যমে কথা হয়েছে</th>
+                                  <th>Executed By</th>
                                   <th>Entry Date &amp; Time</th>
                                   <th>Mobile Number</th>
                                 </tr>
@@ -28899,6 +28926,40 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
         // visit starts empty and waits for the user to type a Tracking ID and submit.
         var cameFromDrillDownLink = new URLSearchParams(window.location.search).has('count');
 
+        // Demo: Mentor Dashboard's Pending (NCY+CNR) column links here with "?pb="
+        // instead of "?count=/?trIds=" — one "<trackingId>~<executedBy>~<count>" triple
+        // per (Tracking ID, Executed By) pair that contributed to the number clicked,
+        // comma-separated. Unlike the existing Entry Today/Entry Till Today breakdown
+        // (grouped only by Tracking ID), a Pending click can span several team members
+        // within the very same Tracking ID, so each pair gets its own table with both
+        // its Tracking ID and its Executed By shown in that table's own header.
+        var demoPendingBreakdownParam = new URLSearchParams(window.location.search).get('pb');
+        var demoPendingBreakdown = demoPendingBreakdownParam
+            ? demoPendingBreakdownParam.split(',').map(function (triple) {
+                var parts = triple.split('~');
+                return {
+                    trackingId: decodeURIComponent(parts[0] || ''),
+                    executedBy: decodeURIComponent(parts[1] || ''),
+                    count: parseInt(parts[2], 10) || 0
+                };
+            }).filter(function (p) { return p.trackingId && p.count > 0; })
+            : null;
+
+        // Demo: "?statusOnly=" restricts which statuses the fake-row generator below is
+        // allowed to pick, matching what was actually clicked on the sending page
+        // instead of the full 3-way status pool used everywhere else:
+        // - "ncy_cnr": a Pending (NCY+CNR) number was clicked (Mentor Dashboard's Pending
+        //   column, or Dashboard's Pending column) — only "Not Called Yet"/"Call Not
+        //   Received" rows.
+        // - "call_received": a Call Received number was clicked (Dashboard's Call
+        //   Received column) — only "Call Received" rows.
+        // Omitted entirely (e.g. Dashboard's Total Student column, or a plain manual
+        // search): the full 3-way pool, unrestricted.
+        var demoStatusOnlyParam = new URLSearchParams(window.location.search).get('statusOnly');
+        var demoStatusPool = demoStatusOnlyParam === 'ncy_cnr' ? ['Not Called Yet', 'Call Not Received']
+            : demoStatusOnlyParam === 'call_received' ? ['Call Received']
+            : null;
+
         // Demo: total fake row count driven by a ?count=N query param (used when this
         // page is opened from another already-converted page's clickable totals),
         // defaulting to 25 when absent so the page still shows a plausible result set.
@@ -28906,7 +28967,7 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
         if (!demoTotalCount || demoTotalCount < 1) { demoTotalCount = 25; }
         window.demoTotalCount = demoTotalCount;
 
-        // Demo: which team member(s) to attribute the fabricated rows' "Entry By" to —
+        // Demo: which team member(s) to attribute the fabricated rows' "Executed By" to —
         // passed from Mentor Dashboard's clickable numbers. "Today Entry" passes just the
         // one team member who made that entry; "Entry Till Today" passes every team member
         // who has ever entered data against that Tracking ID (pipe-separated), and the
@@ -28989,11 +29050,24 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
         var fakeInstituteList = ['DHAKA CITY COLLEGE', 'NOTRE DAME COLLEGE, DHAKA', 'RAJSHAHI COLLEGE', 'CHITTAGONG COLLEGE', 'BARISHAL BM COLLEGE', 'KHULNA CITY COLLEGE', 'COMILLA VICTORIA COLLEGE', 'MYMENSINGH GOVT. COLLEGE', 'SIRAJGANJ GOVT. COLLEGE', 'BOGURA GOVT. AZIZUL HAQUE COLLEGE', 'RANGPUR CARMICHAEL COLLEGE', 'JESSORE GOVT. CITY COLLEGE', 'PABNA EDWARD COLLEGE', 'DINAJPUR GOVT. COLLEGE', 'KUSHTIA GOVT. COLLEGE'];
         var fakeNickNames = ['Rifat', 'Tania', 'Mehedi', 'Sadia', 'Habiba', 'Arif', 'Tanvir', 'Farhan', 'Mim', 'Antor', 'Rakib', 'Nabila', 'Shanto', 'Tuhin', 'Anika', 'Proma', 'Junayed', 'Nusrat', 'Fahim', 'Emon', 'Wasy', 'Maruf', 'Nishat', 'Mahbuba', 'Zakia', 'Mugdho', 'Pronoy', 'Siam', 'Raita', 'Sabbir', 'Tahmina', 'Rezwan', 'Israt', 'Nayeem', 'Lamia'];
         var fakeTargets = ['Medical', 'Engineering', "Varsity 'KA'", "Varsity 'KHA'", '-'];
-        var fakeStatuses = ['Call Received', 'Call Not Received', 'Pending'];
+        var fakeStatuses = ['Call Received', 'Call Not Received', 'Not Called Yet'];
         var fakeStudentFeedbacks = ['Interested', 'Not Interested', 'Thinking', 'Already Admitted Elsewhere', 'No Response'];
         var fakeFeedbacks = ['ভর্তি বিষয়ে আগ্রহী', 'পরে যোগাযোগ করবে বলেছে', 'নম্বর বন্ধ পাওয়া গেছে', 'ফোন ধরেনি', 'বিস্তারিত তথ্য চেয়েছে'];
         var fakeRemarks = ['Follow-up প্রয়োজন', 'তথ্য নোট করা হয়েছে', 'কোনো মন্তব্য নেই', 'দ্বিতীয়বার কল করতে হবে', '-'];
         var fakeAgents = ['shakil.2001@demo.local', 'tariful.2002@demo.local', 'mamun.2003@demo.local', 'shamsul.2004@demo.local', 'tushar.2005@demo.local', 'nayeem.2006@demo.local', 'rakibul.2007@demo.local', 'sabbir.2008@demo.local'];
+        var fakeContactedRelations = ['Student', 'Father', 'Mother'];
+        var fakeContactMediums = ['Mobile Call', 'WhatsApp', 'Telegram'];
+        // Demo: 'যে নম্বরে কথা হয়েছে' / 'যে মাধ্যমে কথা হয়েছে' only apply to Call
+        // Received rows — matches Conversation Entry's own logic, where these fields
+        // are hidden entirely for Call Not Received / Not Called Yet entries since no
+        // call was ever connected. Returned together (not two separate random picks)
+        // so a row's number and medium always describe the same one real call.
+        function demoFakeContactedInfo(status) {
+            if (status !== 'Call Received') { return { number: '-', medium: '-' }; }
+            var relation = fakeContactedRelations[demoRandInt(0, fakeContactedRelations.length - 1)];
+            var medium = fakeContactMediums[demoRandInt(0, fakeContactMediums.length - 1)];
+            return { number: relation + ' (' + demoFakeMobile() + ')', medium: medium };
+        }
         var fakeEntryMonths = ['Mar', 'Jun', 'Jul'];
 
         function demoRandInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
@@ -29016,13 +29090,32 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
             return hour + ':' + (minute < 10 ? '0' + minute : minute) + ' ' + ampm;
         }
 
-        function demoFakeEntryDateTime(fixedDateOnly) {
+        var monthAbbrevIndex = {};
+        $.each(fullMonthNames, function (idx, abbrev) { monthAbbrevIndex[abbrev] = idx; });
+
+        // Builds one fabricated Entry Date & Time along with a comparable numeric
+        // sort key — rows are always shown most-recently-entered first (see the
+        // post-generation sort in generateFakeReportRows below), and a formatted
+        // "DD Mon, YYYY h:mm AM/PM" string alone isn't chronologically sortable.
+        function demoFakeEntryMoment(fixedDateOnly) {
+            var day, monthAbbrev, year;
             if (fixedDateOnly) {
-                return fixedDateOnly + ' ' + demoFakeTimeOfDay();
+                var parts = fixedDateOnly.replace(',', '').split(' ');
+                day = parseInt(parts[0], 10);
+                monthAbbrev = parts[1];
+                year = parseInt(parts[2], 10);
+            } else {
+                day = demoRandInt(1, 28);
+                monthAbbrev = fakeEntryMonths[demoRandInt(0, fakeEntryMonths.length - 1)];
+                year = 2026;
             }
-            var day = demoRandInt(1, 28);
-            var month = fakeEntryMonths[demoRandInt(0, fakeEntryMonths.length - 1)];
-            return (day < 10 ? '0' + day : day) + ' ' + month + ', 2026 ' + demoFakeTimeOfDay();
+            var hour12 = demoRandInt(1, 12);
+            var minute = demoRandInt(0, 59);
+            var ampm = demoRandInt(0, 1) ? 'AM' : 'PM';
+            var hour24 = (ampm === 'PM') ? (hour12 % 12) + 12 : (hour12 % 12);
+            var display = (day < 10 ? '0' + day : day) + ' ' + monthAbbrev + ', ' + year + ' ' +
+                hour12 + ':' + (minute < 10 ? '0' + minute : minute) + ' ' + ampm;
+            return { display: display, sortValue: new Date(year, monthAbbrevIndex[monthAbbrev], day, hour24, minute).getTime() };
         }
 
         function demoFakeCallDuration() {
@@ -29038,12 +29131,30 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
 
         function demoFakeMobileOrDash() { return Math.random() < 0.28 ? '-' : demoFakeMobile(); }
 
-        function generateFakeReportRows(total) {
+        // Demo: a "Not Called Yet" row means no call has ever been attempted for that
+        // student, so nothing that only exists because of a logged call entry should
+        // show for it — no Student Feedback/Conversation Duration/Custom Entry
+        // Field/Remarks/contacted info, no Executed By, no Entry Date & Time. "Call Not
+        // Received" did have an attempt logged (an entry exists, someone made it, at
+        // some point) — it just never connected, so those fields stay filled except
+        // the contacted-info ones (see demoFakeContactedInfo, unchanged) and the
+        // feedback/duration ones that require an actual conversation to have happened.
+        // `forcedEntryBy` lets a caller pin every row to one specific name (used by the
+        // Pending (NCY+CNR) breakdown, where each panel is already scoped to one
+        // (Tracking ID, Executed By) pair — see renderPendingBreakdownTables) instead
+        // of falling back to demoEntryByList / a random agent per row.
+        function generateFakeReportRows(total, forcedEntryBy) {
             var fixedDateOnly = !demoOnDateParam ? null
                 : (demoOnDateParam === 'Today') ? demoRealDateOnly()
                 : demoRealDateOnly(demoOnDateParam);
             var rows = [];
             for (var i = 1; i <= total; i++) {
+                var statusPool = demoStatusPool || fakeStatuses;
+                var rowStatus = statusPool[demoRandInt(0, statusPool.length - 1)];
+                var wasEntered = rowStatus !== 'Not Called Yet';
+                var wasConnected = rowStatus === 'Call Received';
+                var contactInfo = demoFakeContactedInfo(rowStatus);
+                var moment = wasEntered ? demoFakeEntryMoment(fixedDateOnly) : null;
                 rows.push({
                     serial: String(i).padStart(2, '0'),
                     regNo: String(demoRandInt(2700000, 5999999)),
@@ -29053,46 +29164,74 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                     mobileMother: demoFakeMobileOrDash(),
                     institute: fakeInstituteList[demoRandInt(0, fakeInstituteList.length - 1)],
                     target: fakeTargets[demoRandInt(0, fakeTargets.length - 1)],
-                    status: fakeStatuses[demoRandInt(0, fakeStatuses.length - 1)],
-                    studentFeedback: fakeStudentFeedbacks[demoRandInt(0, fakeStudentFeedbacks.length - 1)],
-                    conversationDuration: demoFakeCallDuration(),
-                    feedback: fakeFeedbacks[demoRandInt(0, fakeFeedbacks.length - 1)],
-                    remarks: fakeRemarks[demoRandInt(0, fakeRemarks.length - 1)],
-                    entryBy: demoEntryByList
+                    status: rowStatus,
+                    studentFeedback: wasConnected ? fakeStudentFeedbacks[demoRandInt(0, fakeStudentFeedbacks.length - 1)] : '-',
+                    conversationDuration: wasConnected ? demoFakeCallDuration() : '-',
+                    feedback: wasEntered ? fakeFeedbacks[demoRandInt(0, fakeFeedbacks.length - 1)] : '-',
+                    remarks: wasEntered ? fakeRemarks[demoRandInt(0, fakeRemarks.length - 1)] : '-',
+                    contactedNumber: contactInfo.number,
+                    contactedMedium: contactInfo.medium,
+                    entryBy: !wasEntered ? '-' : (forcedEntryBy || (demoEntryByList
                         ? demoEntryByList[(i - 1) % demoEntryByList.length]
-                        : fakeAgents[demoRandInt(0, fakeAgents.length - 1)],
-                    entryDateTime: demoFakeEntryDateTime(fixedDateOnly),
+                        : fakeAgents[demoRandInt(0, fakeAgents.length - 1)])),
+                    entryDateTime: moment ? moment.display : '-',
+                    entryDateTimeSort: moment ? moment.sortValue : null,
                     mobileNumber: demoFakeMobile()
                 });
             }
+            // Demo: always show the most-recently-entered row first. Rows with no entry
+            // at all (Not Called Yet, entryDateTimeSort === null) have nothing to sort
+            // by and are listed ahead of every dated row — on the Pending (NCY+CNR) view
+            // this naturally puts every Not Called Yet row before the Call Not Received
+            // ones, which is also the order explicitly wanted there. A stable sort
+            // (guaranteed by Array#sort in all supported engines) keeps same-bucket rows
+            // in their original (already random) order rather than re-shuffling them.
+            rows.sort(function (a, b) {
+                if (a.entryDateTimeSort === null && b.entryDateTimeSort === null) { return 0; }
+                if (a.entryDateTimeSort === null) { return -1; }
+                if (b.entryDateTimeSort === null) { return 1; }
+                return b.entryDateTimeSort - a.entryDateTimeSort;
+            });
+            $.each(rows, function (idx, row) { row.serial = String(idx + 1).padStart(2, '0'); });
             return rows;
         }
 
         // Demo: Serial, Reg. No, Nick Name, Status, Student Feedback, Conversation
         // Duration and Remarks always show. Every other column only shows if its
         // matching field has been moved to the "Selected" side of the "Select
-        // Information To View" dual-listbox. Shared by both the single-Tracking-ID
-        // table and the per-Tracking-ID tables (multi Tracking ID view).
+        // Information To View" dual-listbox — by default that's just Contacted Number,
+        // Contacted Medium, Executed By and Entry Date (so the table opens showing
+        // exactly 11 columns), everything else (Mobile Number Student/Father/Mother,
+        // Institute, Admission Target, Custom Entry Field/Feedback, generic Mobile
+        // Number) is available in the listbox but off by default, same as the live
+        // site. Shared by every table on this page: the single-Tracking-ID table, the
+        // per-Tracking-ID tables (multi Tracking ID view), and the per-(Tracking ID,
+        // Executed By) tables (Mentor Dashboard Pending drill-down). Each column also
+        // carries an explicit width% (used with table-layout:fixed, see the CSS near
+        // the table markup) so the 11 default-visible columns always fit one screen
+        // without a horizontal scrollbar, wrapping cell text instead.
         function buildResultColumns() {
             var selectedInfo = $(informationViewListIdName).val() || [];
             function infoSelected(v) { return $.inArray(v, selectedInfo) !== -1; }
             return [
-                { data: 'serial' },
-                { data: 'regNo' },
-                { data: 'nickName' },
-                { data: 'mobileStudent', visible: infoSelected('Mobile Number (Student)') },
-                { data: 'mobileFather', visible: infoSelected('Mobile Number (Father)') },
-                { data: 'mobileMother', visible: infoSelected('Mobile Number (Mother)') },
-                { data: 'institute', visible: infoSelected('Institute Name') },
-                { data: 'target', visible: infoSelected('Admission Target') },
-                { data: 'status' },
-                { data: 'studentFeedback' },
-                { data: 'conversationDuration' },
-                { data: 'feedback', visible: infoSelected('Custom Entry Field') },
-                { data: 'remarks' },
-                { data: 'entryBy', visible: infoSelected('Entry By') },
-                { data: 'entryDateTime', visible: infoSelected('Entry Date') },
-                { data: 'mobileNumber', visible: infoSelected('Mobile Number') }
+                { data: 'serial', width: '4%' },
+                { data: 'regNo', width: '7%' },
+                { data: 'nickName', width: '7%' },
+                { data: 'mobileStudent', visible: infoSelected('Mobile Number (Student)'), width: '8%' },
+                { data: 'mobileFather', visible: infoSelected('Mobile Number (Father)'), width: '8%' },
+                { data: 'mobileMother', visible: infoSelected('Mobile Number (Mother)'), width: '8%' },
+                { data: 'institute', visible: infoSelected('Institute Name'), width: '10%' },
+                { data: 'target', visible: infoSelected('Admission Target'), width: '6%' },
+                { data: 'status', width: '8%' },
+                { data: 'studentFeedback', width: '9%' },
+                { data: 'conversationDuration', width: '8%' },
+                { data: 'feedback', visible: infoSelected('Custom Entry Field'), width: '10%' },
+                { data: 'remarks', width: '12%' },
+                { data: 'contactedNumber', visible: infoSelected('Contacted Number'), width: '12%' },
+                { data: 'contactedMedium', visible: infoSelected('Contacted Medium'), width: '8%' },
+                { data: 'entryBy', visible: infoSelected('Executed By'), width: '13%' },
+                { data: 'entryDateTime', visible: infoSelected('Entry Date'), width: '12%' },
+                { data: 'mobileNumber', visible: infoSelected('Mobile Number'), width: '8%' }
             ];
         }
 
@@ -29116,7 +29255,8 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                 searching: false,
                 serverSide: false,
                 data: rows,
-                scrollX: true,
+                scrollX: false,
+                autoWidth: false,
                 bLengthChange: false,
                 iDisplayLength: resolvedPageSize(),
                 scrollCollapse: true,
@@ -29132,7 +29272,41 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
         // panel — these fields are static demo constants, not tied to a Tracking ID,
         // so each per-Tracking-ID panel below gets its own copy with only the
         // Tracking ID line swapped in.
-        function buildHeadContentHtml(trackingIdText) {
+        function buildHeadContentHtml(trackingIdText, executedByOverride) {
+            // Demo: a table scoped to one specific team member (Mentor Dashboard's
+            // Pending drill-down, one panel per (Tracking ID, Executed By) pair) has no
+            // use for the full "Initiative & Execution" box — Initiated By/PIN-TPIN/
+            // Conversation Type all describe the case as a whole, not this one person's
+            // slice of it. Swap the whole box for just that person's name and their own
+            // mobile number. A direct Tracking ID search (executedByOverride omitted)
+            // keeps the original full box unchanged.
+            var initiativeSectionHtml = executedByOverride
+                ? (
+                    '<div class="col-md-6">' +
+                    '<span style="font-size: 14px; font-weight:bold">Executed By :&nbsp;</span>' +
+                    '<span>' + executedByOverride + '</span>' +
+                    '</div>' +
+                    '<div class="col-md-6 text-left">' +
+                    '<span style="font-size: 14px; font-weight:bold">Mobile Number :&nbsp;</span>' +
+                    '<span>' + demoFakeMobile() + '</span>' +
+                    '</div>'
+                )
+                : (
+                    '<div class="col-md-8">' +
+                    '<span style="font-size: 14px; font-weight:bold">Initiated By :&nbsp;</span>' +
+                    '<span>[3801] Kazi Fahim Ahmed</span>' +
+                    '<br>' +
+                    '<span style="font-size: 14px; font-weight:bold">PIN / TPIN &nbsp;  :&nbsp;</span>' +
+                    '<span>[3801] Kazi Fahim Ahmed</span>' +
+                    '</div>' +
+                    '<div class="col-md-4 text-left">' +
+                    '<span style="font-size: 14px; font-weight:bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Assigned To :&nbsp;</span>' +
+                    '<span>Management</span>' +
+                    '<br>' +
+                    '<span style="font-size: 14px; font-weight:bold">Conversation Type&nbsp; :&nbsp;</span>' +
+                    '<span>New Admission</span>' +
+                    '</div>'
+                );
             return (
                 '<div class="container border bottom-right" style="margin-bottom: 10px !important;">' +
                 '<div class="form-group">' +
@@ -29151,25 +29325,14 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                 '</div>' +
                 '</div>' +
                 '<div class="form-group" style="margin-top:20px!important">' +
-                '<div class="form-group">' +
-                '<div class="col-md-12">' +
-                '<span style="font-size: 16px; font-weight:bold">Initiative &amp; Execution</span>' +
-                '</div>' +
-                '</div>' +
-                '<div class="col-md-8">' +
-                '<span style="font-size: 14px; font-weight:bold">Initiated By :&nbsp;</span>' +
-                '<span>[3801] Placeholder Name</span>' +
-                '<br>' +
-                '<span style="font-size: 14px; font-weight:bold">PIN / TPIN &nbsp;  :&nbsp;</span>' +
-                '<span>[3802] Placeholder Name</span>' +
-                '</div>' +
-                '<div class="col-md-4 text-left">' +
-                '<span style="font-size: 14px; font-weight:bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Executed By :&nbsp;</span>' +
-                '<span>Management</span>' +
-                '<br>' +
-                '<span style="font-size: 14px; font-weight:bold">Conversation Type&nbsp; :&nbsp;</span>' +
-                '<span>New Admission</span>' +
-                '</div>' +
+                (executedByOverride ? '' :
+                    '<div class="form-group">' +
+                    '<div class="col-md-12">' +
+                    '<span style="font-size: 16px; font-weight:bold">Initiative &amp; Execution</span>' +
+                    '</div>' +
+                    '</div>'
+                ) +
+                initiativeSectionHtml +
                 '</div>' +
                 '</div>'
             );
@@ -29181,29 +29344,39 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
         // its own heading naming that Tracking ID, and its own table with fabricated
         // rows sized to that Tracking ID's own share of the total — a sibling of
         // #detailsPanel, not nested inside it, and independently collapsible.
+        //
+        // Same "single executor" simplification as renderPendingBreakdownTables below:
+        // a Today Entry / Entry Till Today click always names either exactly one team
+        // member (a per-entry or per-person-Total click) or several at once (a
+        // program-group/Grand Total click, entryByNames.length > 1) — only the former
+        // case is scoped to one person, so only that case gets the simplified header
+        // and the "| Executed By: X" panel-title suffix.
         function renderMultiTrackingTables(breakdown) {
             var $container = $('#multiTrackingContainer').empty();
+            var singleExecutedBy = (demoEntryByList && demoEntryByList.length === 1) ? demoEntryByList[0] : null;
 
             $.each(breakdown, function (i, entry) {
                 var tableId = 'DataGrid_multi_' + i;
                 var collapseId = 'collapse_trid_' + i;
+                var titleSuffix = singleExecutedBy ? (' | Executed By: ' + singleExecutedBy) : '';
                 var $block = $(
                     '<div class="panel panel-primary" style="margin-bottom:15px;">' +
                     '<div class="panel-heading" data-toggle="collapse" href="#' + collapseId + '" style="cursor:pointer;">' +
-                    '<h4 class="panel-title">Details - Tracking ID: ' + entry.trackingId +
+                    '<h4 class="panel-title">Details - Tracking ID: ' + entry.trackingId + titleSuffix +
                     '<span style="float:right;"><i class="fa fa-minus" aria-hidden="true"></i></span>' +
                     '</h4>' +
                     '</div>' +
                     '<div id="' + collapseId + '" class="panel-collapse collapse in">' +
                     '<div class="panel-body">' +
                     '<div class="table-responsive" style="overflow: auto; max-width: 100%; margin-top:10px!important;">' +
-                    buildHeadContentHtml(entry.trackingId) +
+                    buildHeadContentHtml(entry.trackingId, singleExecutedBy) +
                     '<table id="' + tableId + '" class="display table table-striped table-bordered table-condensed table-hover table-responsive text-wrap" cellspacing="0" width="100%">' +
                     '<thead><tr role="row">' +
                     '<th>Serial</th><th>Reg. No</th><th>Nick Name</th><th>Mobile Number(Student)</th>' +
                     '<th>Mobile Number(Father)</th><th>Mobile Number(Mother)</th><th>Institute</th>' +
                     '<th>Admission Target</th><th>Status</th><th>Student Feedback</th>' +
-                    '<th>Conversation Duration</th><th>Feedback</th><th>Remarks</th><th>Entry By</th>' +
+                    '<th>Conversation Duration</th><th>Feedback</th><th>Remarks</th>' +
+                    '<th>যে নম্বরে কথা হয়েছে</th><th>যে মাধ্যমে কথা হয়েছে</th><th>Executed By</th>' +
                     '<th>Entry Date &amp; Time</th><th>Mobile Number</th>' +
                     '</tr></thead><tbody></tbody></table>' +
                     '</div>' +
@@ -29220,7 +29393,68 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                     searching: false,
                     serverSide: false,
                     data: rows,
-                    scrollX: true,
+                    scrollX: false,
+                    autoWidth: false,
+                    bLengthChange: false,
+                    iDisplayLength: resolvedPageSize(),
+                    scrollCollapse: true,
+                    scrollY: "60vh",
+                    bSort: false,
+                    columns: buildResultColumns()
+                });
+            });
+        }
+
+        // Demo: one independent "Details"-style panel per (Tracking ID, Executed By)
+        // pair, used when Mentor Dashboard's Pending (NCY+CNR) column is clicked. A
+        // single Tracking ID can itself have more than one contributing team member, so
+        // unlike renderMultiTrackingTables (grouped only by Tracking ID) this groups by
+        // the pair — every panel's header names both its Tracking ID and its Executed
+        // By — and every fabricated row across every panel is restricted to "Not Called
+        // Yet"/"Call Not Received" only (see demoStatusPool in generateFakeReportRows).
+        function renderPendingBreakdownTables(breakdown) {
+            var $container = $('#multiTrackingContainer').empty();
+
+            $.each(breakdown, function (i, entry) {
+                var tableId = 'DataGrid_pb_' + i;
+                var collapseId = 'collapse_pb_' + i;
+                var $block = $(
+                    '<div class="panel panel-primary" style="margin-bottom:15px;">' +
+                    '<div class="panel-heading" data-toggle="collapse" href="#' + collapseId + '" style="cursor:pointer;">' +
+                    '<h4 class="panel-title">Details - Tracking ID: ' + entry.trackingId +
+                    ' | Executed By: ' + entry.executedBy +
+                    '<span style="float:right;"><i class="fa fa-minus" aria-hidden="true"></i></span>' +
+                    '</h4>' +
+                    '</div>' +
+                    '<div id="' + collapseId + '" class="panel-collapse collapse in">' +
+                    '<div class="panel-body">' +
+                    '<div class="table-responsive" style="overflow: auto; max-width: 100%; margin-top:10px!important;">' +
+                    buildHeadContentHtml(entry.trackingId, entry.executedBy) +
+                    '<table id="' + tableId + '" class="display table table-striped table-bordered table-condensed table-hover table-responsive text-wrap" cellspacing="0" width="100%">' +
+                    '<thead><tr role="row">' +
+                    '<th>Serial</th><th>Reg. No</th><th>Nick Name</th><th>Mobile Number(Student)</th>' +
+                    '<th>Mobile Number(Father)</th><th>Mobile Number(Mother)</th><th>Institute</th>' +
+                    '<th>Admission Target</th><th>Status</th><th>Student Feedback</th>' +
+                    '<th>Conversation Duration</th><th>Feedback</th><th>Remarks</th>' +
+                    '<th>যে নম্বরে কথা হয়েছে</th><th>যে মাধ্যমে কথা হয়েছে</th><th>Executed By</th>' +
+                    '<th>Entry Date &amp; Time</th><th>Mobile Number</th>' +
+                    '</tr></thead><tbody></tbody></table>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>'
+                );
+                $container.append($block);
+
+                var rows = generateFakeReportRows(entry.count, entry.executedBy);
+
+                $('#' + tableId).DataTable({
+                    destroy: true,
+                    searching: false,
+                    serverSide: false,
+                    data: rows,
+                    scrollX: false,
+                    autoWidth: false,
                     bLengthChange: false,
                     iDisplayLength: resolvedPageSize(),
                     scrollCollapse: true,
@@ -29280,6 +29514,15 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                         $(trackingShowId).text(trackingNo);
                         $('#multiTrackingContainer').hide().empty();
                         $('#detailsPanel').show();
+                        // Demo: a Today Entry / Entry Till Today click that named exactly
+                        // one team member (?entryBy= with one name, no comma-separated
+                        // Tracking IDs so it stayed on this single-table path) is just as
+                        // single-executor-scoped as the multi-panel case above — swap in
+                        // the same simplified header. A plain manual Tracking ID search
+                        // (no entryBy param) leaves the original static header untouched.
+                        if (demoEntryByList && demoEntryByList.length === 1) {
+                            $('#head-content').html($(buildHeadContentHtml(trackingNo, demoEntryByList[0])).html());
+                        }
                         var rows = generateFakeReportRows(window.demoTotalCount);
                         dataTableRender(rows);
                     }
@@ -29441,13 +29684,26 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                 $('#likeSearchDataListContainer').empty();
             });
 
+            // Demo: Mentor Dashboard's Pending (NCY+CNR) column links here with "?pb="
+            // — takes priority over the ?count=/?trIds= flow below since a Pending click
+            // can span several (Tracking ID, Executed By) pairs that don't fit the plain
+            // comma-separated-Tracking-ID-box model those params use.
+            if (demoPendingBreakdown && demoPendingBreakdown.length) {
+                var pbTrackingIds = $.map(demoPendingBreakdown, function (p) { return p.trackingId; })
+                    .filter(function (id, idx, arr) { return arr.indexOf(id) === idx; });
+                $(trackingNoId).val(pbTrackingIds.join(', '));
+                $(trackingShowId).text(pbTrackingIds.join(', '));
+                $('#detailsPanel').hide();
+                $('#multiTrackingContainer').show();
+                renderPendingBreakdownTables(demoPendingBreakdown);
+            }
             // Demo: only auto-run on page open when arriving via a Mentor Dashboard
             // clickable-total link (?count= present) — the Tracking ID box auto-fills
             // and a populated report shows immediately, matching the "already
             // submitted" state the original capture was taken in. A direct visit to
             // this page (no ?count=) starts with an empty box and no report — the user
             // must type a Tracking ID and click Submit themselves.
-            if (cameFromDrillDownLink) {
+            else if (cameFromDrillDownLink) {
                 $(trackingNoId).val(
                     Object.keys(demoTrIdCountMap).length > 1
                         ? Object.keys(demoTrIdCountMap).join(', ')

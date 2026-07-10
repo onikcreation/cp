@@ -8213,16 +8213,6 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                             </a>
                           </li>
                           <li data-parent-id="962">
-                            <a href="/Student/CrmComments/Index" data-businessid="CrmComments-Index|CrmComments-LogReport|CrmComments-SaveOrUpdate|" class="submenuitem">
-                              Manage Student Feedback
-                            </a>
-                          </li>
-                          <li data-parent-id="962">
-                            <a href="/Student/CrmConversationType/Index" data-businessid="CrmConversationType-Index|CrmConversationType-LogReport|CrmConversationType-SaveOrUpdate|" class="submenuitem">
-                              Manage Conversation Type
-                            </a>
-                          </li>
-                          <li data-parent-id="962">
                             <a href="/Student/CrmReport/DetailsReport" data-businessid="CrmReport-DetailsReport|CrmReport-CrmDetailsReportExport|" class="submenuitem">
                               Details Report
                             </a>
@@ -8233,6 +8223,16 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                             </a>
                           </li>
                           <li data-parent-id="962">
+                            <a href="/Student/CrmComments/Index" data-businessid="CrmComments-Index|CrmComments-LogReport|CrmComments-SaveOrUpdate|" class="submenuitem">
+                              Manage Student Feedback
+                            </a>
+                          </li>
+                          <li data-parent-id="962">
+                            <a href="/Student/CrmConversationType/Index" data-businessid="CrmConversationType-Index|CrmConversationType-LogReport|CrmConversationType-SaveOrUpdate|" class="submenuitem">
+                              Manage Conversation Type
+                            </a>
+                          </li>
+                          <li data-parent-id="962">
                             <a href="/Student/CrmConversationTargetedStudent/DefaultSettings" data-businessid="CrmConversationTargetedStudent-DefaultSettings|" class="submenuitem">
                               Default Settings
                             </a>
@@ -8240,6 +8240,11 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                           <li data-parent-id="962">
                             <a href="/Student/CrmConversation/MentorDashboard" data-businessid="CrmConversation-MentorDashboard|" class="submenuitem">
                               Mentor Dashboard
+                            </a>
+                          </li>
+                          <li data-parent-id="962">
+                            <a href="/Student/CrmReport/ConversationReport" data-businessid="CrmReport-ConversationReport|CrmReport-CrmConversationReportExport|" class="submenuitem">
+                              Conversation Call Report
                             </a>
                           </li>
                         </ul>
@@ -8345,6 +8350,16 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
         text-align: center;
         vertical-align: middle;
     }
+    a.dashboard-drill-link {
+        color: #337ab7;
+        text-decoration: none;
+        cursor: pointer;
+        font-weight: bold;
+    }
+    a.dashboard-drill-link:hover {
+        color: #23527c;
+        text-decoration: underline;
+    }
                   </style>
                   <table id="trackingTable" class="table table-bordered">
                     <thead>
@@ -8362,7 +8377,7 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                           Initiated By
                         </th>
                         <th>
-                          Executed By
+                          Assigned To
                         </th>
                         <th>
                           Conversation Type
@@ -8371,10 +8386,10 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                           Total Student
                         </th>
                         <th>
-                          Data Entry
+                          Call Received
                         </th>
                         <th>
-                          Pending
+                          Pending (NCY+CNR)
                         </th>
                         <th>
                           Deadline
@@ -8405,13 +8420,13 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                           New Admission
                         </td>
                         <td>
-                          23
+                          <a href="../DetailsReport/DetailsReport_Offline.html?count=23" target="_blank" class="dashboard-drill-link">23</a>
                         </td>
                         <td>
-                          15
+                          <a href="../DetailsReport/DetailsReport_Offline.html?count=9&statusOnly=call_received" target="_blank" class="dashboard-drill-link">9</a>
                         </td>
                         <td>
-                          8
+                          <a href="../DetailsReport/DetailsReport_Offline.html?count=14&statusOnly=ncy_cnr" target="_blank" class="dashboard-drill-link">14</a>
                         </td>
                         <td style="">
                           -
@@ -8432,17 +8447,17 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                         </td>
                         <td>
                           <strong>
-                            23
+                            <a href="../DetailsReport/DetailsReport_Offline.html?count=23" target="_blank" class="dashboard-drill-link">23</a>
                           </strong>
                         </td>
                         <td>
                           <strong>
-                            15
+                            <a href="../DetailsReport/DetailsReport_Offline.html?count=9&statusOnly=call_received" target="_blank" class="dashboard-drill-link">9</a>
                           </strong>
                         </td>
                         <td>
                           <strong>
-                            8
+                            <a href="../DetailsReport/DetailsReport_Offline.html?count=14&statusOnly=ncy_cnr" target="_blank" class="dashboard-drill-link">14</a>
                           </strong>
                         </td>
                         <td>
@@ -8472,13 +8487,13 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                           New Admission
                         </td>
                         <td>
-                          13
+                          <a href="../DetailsReport/DetailsReport_Offline.html?count=13" target="_blank" class="dashboard-drill-link">13</a>
                         </td>
                         <td>
                           0
                         </td>
                         <td>
-                          13
+                          <a href="../DetailsReport/DetailsReport_Offline.html?count=13&statusOnly=ncy_cnr" target="_blank" class="dashboard-drill-link">13</a>
                         </td>
                         <td style="">
                           -
@@ -8499,7 +8514,7 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                         </td>
                         <td>
                           <strong>
-                            13
+                            <a href="../DetailsReport/DetailsReport_Offline.html?count=13" target="_blank" class="dashboard-drill-link">13</a>
                           </strong>
                         </td>
                         <td>
@@ -8509,7 +8524,7 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                         </td>
                         <td>
                           <strong>
-                            13
+                            <a href="../DetailsReport/DetailsReport_Offline.html?count=13&statusOnly=ncy_cnr" target="_blank" class="dashboard-drill-link">13</a>
                           </strong>
                         </td>
                         <td>
@@ -8539,13 +8554,13 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                           New Admission
                         </td>
                         <td>
-                          505
+                          <a href="../DetailsReport/DetailsReport_Offline.html?count=505" target="_blank" class="dashboard-drill-link">505</a>
                         </td>
                         <td>
-                          24
+                          <a href="../DetailsReport/DetailsReport_Offline.html?count=15&statusOnly=call_received" target="_blank" class="dashboard-drill-link">15</a>
                         </td>
                         <td>
-                          481
+                          <a href="../DetailsReport/DetailsReport_Offline.html?count=490&statusOnly=ncy_cnr" target="_blank" class="dashboard-drill-link">490</a>
                         </td>
                         <td style="">
                           31 Aug, 2026 12:00 AM
@@ -8566,17 +8581,17 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                         </td>
                         <td>
                           <strong>
-                            505
+                            <a href="../DetailsReport/DetailsReport_Offline.html?count=505" target="_blank" class="dashboard-drill-link">505</a>
                           </strong>
                         </td>
                         <td>
                           <strong>
-                            24
+                            <a href="../DetailsReport/DetailsReport_Offline.html?count=15&statusOnly=call_received" target="_blank" class="dashboard-drill-link">15</a>
                           </strong>
                         </td>
                         <td>
                           <strong>
-                            481
+                            <a href="../DetailsReport/DetailsReport_Offline.html?count=490&statusOnly=ncy_cnr" target="_blank" class="dashboard-drill-link">490</a>
                           </strong>
                         </td>
                         <td>
@@ -8606,13 +8621,13 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                           New Admission
                         </td>
                         <td>
-                          2298
+                          <a href="../DetailsReport/DetailsReport_Offline.html?count=2298" target="_blank" class="dashboard-drill-link">2298</a>
                         </td>
                         <td>
-                          6
+                          <a href="../DetailsReport/DetailsReport_Offline.html?count=4&statusOnly=call_received" target="_blank" class="dashboard-drill-link">4</a>
                         </td>
                         <td>
-                          2292
+                          <a href="../DetailsReport/DetailsReport_Offline.html?count=2294&statusOnly=ncy_cnr" target="_blank" class="dashboard-drill-link">2294</a>
                         </td>
                         <td style="">
                           -
@@ -8640,13 +8655,13 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                           Information Share
                         </td>
                         <td>
-                          2
+                          <a href="../DetailsReport/DetailsReport_Offline.html?count=2" target="_blank" class="dashboard-drill-link">2</a>
                         </td>
                         <td>
-                          1
+                          <a href="../DetailsReport/DetailsReport_Offline.html?count=1&statusOnly=call_received" target="_blank" class="dashboard-drill-link">1</a>
                         </td>
                         <td>
-                          1
+                          <a href="../DetailsReport/DetailsReport_Offline.html?count=1&statusOnly=ncy_cnr" target="_blank" class="dashboard-drill-link">1</a>
                         </td>
                         <td style="">
                           -
@@ -8674,13 +8689,13 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                           Student Data Update
                         </td>
                         <td>
-                          11
+                          <a href="../DetailsReport/DetailsReport_Offline.html?count=11" target="_blank" class="dashboard-drill-link">11</a>
                         </td>
                         <td>
                           0
                         </td>
                         <td>
-                          11
+                          <a href="../DetailsReport/DetailsReport_Offline.html?count=11&statusOnly=ncy_cnr" target="_blank" class="dashboard-drill-link">11</a>
                         </td>
                         <td style="">
                           -
@@ -8708,13 +8723,13 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                           Relation Call
                         </td>
                         <td>
-                          3
+                          <a href="../DetailsReport/DetailsReport_Offline.html?count=3" target="_blank" class="dashboard-drill-link">3</a>
                         </td>
                         <td>
-                          1
+                          <a href="../DetailsReport/DetailsReport_Offline.html?count=1&statusOnly=call_received" target="_blank" class="dashboard-drill-link">1</a>
                         </td>
                         <td>
-                          2
+                          <a href="../DetailsReport/DetailsReport_Offline.html?count=2&statusOnly=ncy_cnr" target="_blank" class="dashboard-drill-link">2</a>
                         </td>
                         <td style="">
                           30 Dec, 2026 12:00 AM
@@ -8735,17 +8750,17 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                         </td>
                         <td>
                           <strong>
-                            2314
+                            <a href="../DetailsReport/DetailsReport_Offline.html?count=2314&trIds=133180%3A2298%2C159062%3A2%2C180133%3A11%2C180823%3A3" target="_blank" class="dashboard-drill-link">2314</a>
                           </strong>
                         </td>
                         <td>
                           <strong>
-                            8
+                            <a href="../DetailsReport/DetailsReport_Offline.html?count=6&trIds=133180%3A4%2C159062%3A1%2C180823%3A1&statusOnly=call_received" target="_blank" class="dashboard-drill-link">6</a>
                           </strong>
                         </td>
                         <td>
                           <strong>
-                            2306
+                            <a href="../DetailsReport/DetailsReport_Offline.html?count=2308&trIds=133180%3A2294%2C159062%3A1%2C180133%3A11%2C180823%3A2&statusOnly=ncy_cnr" target="_blank" class="dashboard-drill-link">2308</a>
                           </strong>
                         </td>
                         <td>
@@ -8775,13 +8790,13 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                           Due Collection
                         </td>
                         <td>
-                          385
+                          <a href="../DetailsReport/DetailsReport_Offline.html?count=385" target="_blank" class="dashboard-drill-link">385</a>
                         </td>
                         <td>
                           0
                         </td>
                         <td>
-                          385
+                          <a href="../DetailsReport/DetailsReport_Offline.html?count=385&statusOnly=ncy_cnr" target="_blank" class="dashboard-drill-link">385</a>
                         </td>
                         <td style="">
                           -
@@ -8802,7 +8817,7 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                         </td>
                         <td>
                           <strong>
-                            385
+                            <a href="../DetailsReport/DetailsReport_Offline.html?count=385" target="_blank" class="dashboard-drill-link">385</a>
                           </strong>
                         </td>
                         <td>
@@ -8812,7 +8827,7 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                         </td>
                         <td>
                           <strong>
-                            385
+                            <a href="../DetailsReport/DetailsReport_Offline.html?count=385&statusOnly=ncy_cnr" target="_blank" class="dashboard-drill-link">385</a>
                           </strong>
                         </td>
                         <td>
@@ -8842,13 +8857,13 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                           New Admission
                         </td>
                         <td>
-                          1744
+                          <a href="../DetailsReport/DetailsReport_Offline.html?count=1744" target="_blank" class="dashboard-drill-link">1744</a>
                         </td>
                         <td>
-                          21
+                          <a href="../DetailsReport/DetailsReport_Offline.html?count=13&statusOnly=call_received" target="_blank" class="dashboard-drill-link">13</a>
                         </td>
                         <td>
-                          1723
+                          <a href="../DetailsReport/DetailsReport_Offline.html?count=1731&statusOnly=ncy_cnr" target="_blank" class="dashboard-drill-link">1731</a>
                         </td>
                         <td style="">
                           -
@@ -8869,17 +8884,17 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                         </td>
                         <td>
                           <strong>
-                            1744
+                            <a href="../DetailsReport/DetailsReport_Offline.html?count=1744" target="_blank" class="dashboard-drill-link">1744</a>
                           </strong>
                         </td>
                         <td>
                           <strong>
-                            21
+                            <a href="../DetailsReport/DetailsReport_Offline.html?count=13&statusOnly=call_received" target="_blank" class="dashboard-drill-link">13</a>
                           </strong>
                         </td>
                         <td>
                           <strong>
-                            1723
+                            <a href="../DetailsReport/DetailsReport_Offline.html?count=1731&statusOnly=ncy_cnr" target="_blank" class="dashboard-drill-link">1731</a>
                           </strong>
                         </td>
                         <td>
@@ -8899,17 +8914,17 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                         </td>
                         <td>
                           <strong>
-                            4984
+                            <a href="../DetailsReport/DetailsReport_Offline.html?count=4984&trIds=106997%3A23%2C113841%3A13%2C128580%3A505%2C133180%3A2298%2C159062%3A2%2C180133%3A11%2C180823%3A3%2C137830%3A385%2C176800%3A1744" target="_blank" class="dashboard-drill-link">4984</a>
                           </strong>
                         </td>
                         <td>
                           <strong>
-                            68
+                            <a href="../DetailsReport/DetailsReport_Offline.html?count=43&trIds=106997%3A9%2C128580%3A15%2C133180%3A4%2C159062%3A1%2C180823%3A1%2C176800%3A13&statusOnly=call_received" target="_blank" class="dashboard-drill-link">43</a>
                           </strong>
                         </td>
                         <td>
                           <strong>
-                            4916
+                            <a href="../DetailsReport/DetailsReport_Offline.html?count=4941&trIds=106997%3A14%2C113841%3A13%2C128580%3A490%2C133180%3A2294%2C159062%3A1%2C180133%3A11%2C180823%3A2%2C137830%3A385%2C176800%3A1731&statusOnly=ncy_cnr" target="_blank" class="dashboard-drill-link">4941</a>
                           </strong>
                         </td>
                       </tr>
@@ -10848,6 +10863,18 @@ function getDPI() {
             }
             return '../' + folder + '/';
           }
+          // The Total Student/Call Received/Pending (NCY+CNR) drill-down links are
+          // static hrefs baked into the table markup (this table isn't JS-templated
+          // like Mentor Dashboard's), so they're always written as
+          // "../DetailsReport/DetailsReport_Offline.html?..." — correct for local
+          // file:// viewing but a 404 on GitHub Pages, where that sibling page is
+          // served as "index.html" instead (see siblingPageUrl above). Strip the
+          // filename out of each one at load time when not viewing locally.
+          if (location.protocol !== 'file:') {
+            document.querySelectorAll('a.dashboard-drill-link').forEach(function (a) {
+              a.setAttribute('href', a.getAttribute('href').replace('DetailsReport_Offline.html', ''));
+            });
+          }
           var siblingLivePages = {
             '/Student/CrmConversationTargetedStudent/ManageSingleEntry': { folder: 'ConversationEntry', file: 'CrmConversationEntry_Offline.html' },
             '/Student/CrmReport/DetailsReport': { folder: 'DetailsReport', file: 'DetailsReport_Offline.html' },
@@ -10865,6 +10892,7 @@ function getDPI() {
           document.addEventListener('click', function (e) {
             var a = e.target.closest('a[href]');
             if (!a) return;
+            if (a.classList.contains('dashboard-drill-link')) return; // intentional link to the DetailsReport demo page
             var href = a.getAttribute('href');
             if (a.classList.contains('submenuitem') && href && siblingLivePages.hasOwnProperty(href)) {
               e.preventDefault();
