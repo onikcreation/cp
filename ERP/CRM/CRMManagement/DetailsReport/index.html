@@ -29931,7 +29931,7 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                 var $block = $(
                     '<div class="panel panel-primary" style="margin-bottom:15px;">' +
                     '<div class="panel-heading" data-toggle="collapse" href="#' + collapseId + '" style="cursor:pointer;">' +
-                    '<h4 class="panel-title">Details - Tracking ID: ' + entry.trackingId + titleSuffix +
+                    '<h4 class="panel-title">Total Data: ' + entry.count + ' : Details - Tracking ID: ' + entry.trackingId + titleSuffix +
                     '<span style="float:right;"><i class="fa ' + (startExpanded ? 'fa-minus' : 'fa-plus') + '" aria-hidden="true"></i></span>' +
                     '</h4>' +
                     '</div>' +
@@ -30054,7 +30054,7 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                 // inspect.
                 appendPendingPanel(
                     $group, 'DataGrid_pb_ncy_' + gi, 'collapse_pb_ncy_' + gi,
-                    'Total ' + ncyRows.length + ' : Not Called Yet', buildNotCalledYetSummaryHtml(ncyRows), ncyRows, false
+                    'Total Data: ' + ncyRows.length + ' : Not Called Yet', buildNotCalledYetSummaryHtml(ncyRows), ncyRows, false
                 );
 
                 $.each(pairs, function (pi, pairEntry) {
@@ -30063,7 +30063,7 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                     });
                     appendPendingPanel(
                         $group, 'DataGrid_pb_cnr_' + gi + '_' + pi, 'collapse_pb_cnr_' + gi + '_' + pi,
-                        'Total ' + personRows.length + ' : Call Not Received Executed By: ' + pairEntry.executedBy,
+                        'Total Data: ' + personRows.length + ' : Call Not Received Executed By: ' + pairEntry.executedBy,
                         buildCompactCallNotReceivedSummaryHtml(personRows, pairEntry.executedBy),
                         personRows, false
                     );
@@ -30120,9 +30120,9 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                     var tableId = 'DataGrid_eb_' + gi + '_' + pi;
                     var collapseId = 'collapse_eb_' + gi + '_' + pi;
                     var rows = generateFakeReportRows(entry.count, entry.executedBy);
-                    var panelTitle = groupByExecutedBy
+                    var panelTitle = 'Total Data: ' + entry.count + ' : ' + (groupByExecutedBy
                         ? 'Details - Tracking ID: ' + entry.trackingId
-                        : 'Details - Executed By: ' + entry.executedBy;
+                        : 'Details - Executed By: ' + entry.executedBy);
                     // Pinwise's panels each need their own program-info block (omitted
                     // for Programwise, where it's already shown once above the group).
                     var ownHeadHtml = groupByExecutedBy ? buildHeadContentHtml(entry.trackingId) : '';
