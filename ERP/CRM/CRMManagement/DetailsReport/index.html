@@ -9220,32 +9220,18 @@ table.DTFC_Cloned thead,table.DTFC_Cloned tfoot{background-color:white}div.DTFC_
                                 <span style="font-size: 16px;">Tracking ID :&nbsp;</span>
                                 <span id="trackingNoId" style="font-size: 16px; font-weight:bold">100000</span>
                                 <br>
+                                <span style="font-size: 16px;">Conversation Type :&nbsp;</span>
+                                <span id="conversationTypeId" style="font-size: 16px;">New Admission</span>
+                                <br>
+                                <span style="font-size: 16px;">Assigned To :&nbsp;</span>
+                                <span id="exceutedById" style="font-size: 16px;">[2005] Tushar Imran</span>
+                                <br>
                                 <span id="titleName" style="font-size: 16px;">Admission 2026 Telemarketing</span>
                                 <br>
                               </div>
                             </div>
-                            <div class="form-group" style="margin-top:20px!important">
-                              <div class="form-group">
-                                <div class="col-md-12">
-                                  <span style="font-size: 16px; font-weight:bold">Initiative &amp; Execution</span>
-                                </div>
-                              </div>
-                              <div class="col-md-8">
-                                <span style="font-size: 14px; font-weight:bold">Initiated By :&nbsp;</span>
-                                <span id="initiatedById">[3801] Kazi Fahim Ahmed</span>
-                                <br>
-                                <span style="font-size: 14px; font-weight:bold">PIN / TPIN &nbsp;  :&nbsp;</span>
-                                <span id="pinOrTPinId">[3801] Kazi Fahim Ahmed</span>
-                              </div>
-                              <div class="col-md-4 text-left">
-                                <span style="font-size: 14px; font-weight:bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Assigned To :&nbsp;</span>
-                                <span id="exceutedById">Management</span>
-                                <br>
-                                <span style="font-size: 14px; font-weight:bold">Conversation Type&nbsp; :&nbsp;</span>
-                                <span id="conversationTypeId">New Admission</span>
-                              </div>
-                            </div>
                           </div>
+                          <div id="detailsSummaryBar"></div>
                           <style>
                             /* Demo: the 11 default-visible columns must fit on one screen
                                with no horizontal scrollbar — table-layout:fixed honors each
@@ -9263,6 +9249,130 @@ table.DTFC_Cloned thead,table.DTFC_Cloned tfoot{background-color:white}div.DTFC_
                               word-wrap: break-word;
                               word-break: break-word;
                               white-space: normal;
+                            }
+                            /* Demo: compact count-breakdown "KPI tile row" shown between
+                               the header info box and the data table — one tile each for
+                               Status / যে নম্বরে কথা হয়েছে / যে মাধ্যমে কথা হয়েছে /
+                               Executed By, so the user sees at a glance how the
+                               currently-loaded rows split across each field instead of
+                               having to scroll/count them. One global block since it's
+                               shared by the single-Tracking-ID view and every
+                               dynamically-built multi-panel view. Chosen over a plain
+                               wrapping chip row (which broke ragged mid-line) and a
+                               table-grid variant, after reviewing sample layouts. */
+                            .summary-bar { margin-bottom: 12px; }
+                            .summary-bar .kpi-row {
+                              display: grid;
+                              grid-template-columns: repeat(4, 1fr);
+                              gap: 10px;
+                            }
+                            @media (max-width: 900px) {
+                              .summary-bar .kpi-row { grid-template-columns: repeat(2, 1fr); }
+                            }
+                            .summary-bar .kpi-tile {
+                              border: 1px solid #ded9e3;
+                              border-radius: 6px;
+                              padding: 11px 13px;
+                              background: #f6f4f8;
+                            }
+                            /* Demo: trying a distinct light tint per tile so the four
+                               cards read as separate at a glance — easy to drop back
+                               to the single shared background above if it doesn't
+                               look right. */
+                            .summary-bar .kpi-tile.tile-status { background: #fdf1f5; }
+                            .summary-bar .kpi-tile.tile-person { background: #eef4fc; }
+                            .summary-bar .kpi-tile.tile-medium { background: #edf9f2; }
+                            .summary-bar .kpi-tile.exec-tile { background: #fdf7e8; }
+                            .summary-bar .kpi-title {
+                              font-size: 11px;
+                              font-weight: bold;
+                              text-transform: uppercase;
+                              letter-spacing: 0.03em;
+                              color: #8b8594;
+                              margin-bottom: 8px;
+                              display: flex;
+                              justify-content: space-between;
+                            }
+                            .summary-bar .kpi-title .kn {
+                              font-weight: normal;
+                              text-transform: none;
+                              letter-spacing: normal;
+                            }
+                            .summary-bar .kpi-mini-bar {
+                              display: flex;
+                              height: 7px;
+                              border-radius: 4px;
+                              overflow: hidden;
+                              background: #ffffff;
+                              margin-bottom: 8px;
+                            }
+                            .summary-bar .kpi-mini-seg { height: 100%; }
+                            .summary-bar .kpi-legend {
+                              display: flex;
+                              flex-direction: column;
+                            }
+                            .summary-bar .kpi-legend .row {
+                              display: flex;
+                              align-items: center;
+                              font-size: 12.5px;
+                              gap: 6px;
+                              /* Inset from the tile's own edges — without this the
+                                 row spans edge-to-edge and the right-aligned count
+                                 sits right against the tile border. */
+                              margin-left: 10px;
+                              margin-right: 10px;
+                              padding: 4px 0;
+                              border-bottom: 1px solid #e6e3ea;
+                            }
+                            .summary-bar .kpi-legend .row:last-child {
+                              border-bottom: none;
+                            }
+                            .summary-bar .kpi-legend .row .lbl {
+                              color: #5b5566;
+                              overflow: hidden;
+                              text-overflow: ellipsis;
+                              white-space: nowrap;
+                              /* flex-grow:1 is what actually keeps every count on the
+                                 same right edge across all rows in a tile — each row
+                                 is its own flex line, so the label fills whatever
+                                 space the row has left over (fixed by the row's
+                                 margins above, same for every row), always pushing
+                                 the count to that same edge regardless of how long
+                                 that particular row's label is. min-width:0 lets it
+                                 shrink/ellipsis instead of overflowing when a long
+                                 Executed By email doesn't fit. */
+                              flex: 1 1 0;
+                              min-width: 0;
+                            }
+                            .summary-bar .kpi-legend .row .val {
+                              font-weight: bold;
+                              font-variant-numeric: tabular-nums;
+                              color: #1a1420;
+                              flex: none;
+                              text-align: right;
+                            }
+                            .summary-bar .kpi-dot {
+                              width: 8px;
+                              height: 8px;
+                              border-radius: 50%;
+                              display: inline-block;
+                              flex: none;
+                            }
+                            /* A Tracking ID can have many contributing team members
+                               (e.g. 10), which would otherwise make this one tile's
+                               list much taller than the other three (fixed at 3 rows
+                               each) and stretch the whole KPI row. Capping the height
+                               and scrolling internally keeps every tile the same
+                               footprint regardless of how many people show up here. */
+                            .summary-bar .kpi-tile.exec-tile .kpi-legend {
+                              max-height: 92px;
+                              overflow-y: auto;
+                              /* Explicit, not left to default: per spec, setting only
+                                 overflow-y makes the browser auto-compute overflow-x
+                                 too (rather than leaving it "visible"), which is what
+                                 was drawing an unwanted horizontal scrollbar here. */
+                              overflow-x: hidden;
+                              padding-right: 2px;
                             }
                           </style>
                           <div id="DataGrid_wrapper" class="dataTables_wrapper no-footer">
@@ -29068,7 +29178,12 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
         var fakeStudentFeedbacks = ['Interested', 'Not Interested', 'Thinking', 'Already Admitted Elsewhere', 'No Response'];
         var fakeFeedbacks = ['ভর্তি বিষয়ে আগ্রহী', 'পরে যোগাযোগ করবে বলেছে', 'নম্বর বন্ধ পাওয়া গেছে', 'ফোন ধরেনি', 'বিস্তারিত তথ্য চেয়েছে'];
         var fakeRemarks = ['Follow-up প্রয়োজন', 'তথ্য নোট করা হয়েছে', 'কোনো মন্তব্য নেই', 'দ্বিতীয়বার কল করতে হবে', '-'];
-        var fakeAgents = ['shakil.2001@demo.local', 'tariful.2002@demo.local', 'mamun.2003@demo.local', 'shamsul.2004@demo.local', 'tushar.2005@demo.local', 'nayeem.2006@demo.local', 'rakibul.2007@demo.local', 'sabbir.2008@demo.local'];
+        // Demo: same 8 team members (same IDs 2001-2008) Mentor Dashboard's
+        // ExecutedBy fake data uses — kept in "[ID] Full Name" format here too
+        // so a Dashboard-originated drill-down (which has no entryBy param to
+        // pass, unlike Mentor Dashboard's links) still shows the same Name
+        // style instead of falling back to an email/username look.
+        var fakeAgents = ['[2001] Shakil Ahmed', '[2002] Md. Tariful Islam', '[2003] Abdullah Al Mamun', '[2004] Md. Shamsul Alam', '[2005] Tushar Imran', '[2006] Nayeem Hasan', '[2007] Rakibul Hasan', '[2008] Sabbir Ahmed'];
         var fakeContactedRelations = ['Student', 'Father', 'Mother'];
         var fakeContactMediums = ['Mobile Call', 'WhatsApp', 'Telegram'];
         // Demo: 'যে নম্বরে কথা হয়েছে' / 'যে মাধ্যমে কথা হয়েছে' only apply to Call
@@ -29144,6 +29259,16 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
         }
 
         function demoFakeMobileOrDash() { return Math.random() < 0.28 ? '-' : demoFakeMobile(); }
+
+        // Demo: the Executed By KPI tile shows each team member's own mobile
+        // number next to their name — cached per name so the same person always
+        // shows the same number within this page load, instead of a fresh random
+        // one every time the summary bar re-renders.
+        var EXECUTOR_MOBILE_CACHE = {};
+        function demoMobileForAgent(name) {
+            if (!EXECUTOR_MOBILE_CACHE[name]) { EXECUTOR_MOBILE_CACHE[name] = demoFakeMobile(); }
+            return EXECUTOR_MOBILE_CACHE[name];
+        }
 
         // Demo: a "Not Called Yet" row means no call has ever been attempted for that
         // student, so nothing that only exists because of a logged call entry should
@@ -29249,6 +29374,107 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
             ];
         }
 
+        // Demo: fixed-order category metadata for each KPI tile's dots/segments.
+        // Status colors are user-specified (red/green/blue, not the usual
+        // good/warning/critical semantic mapping); যে নম্বরে কথা হয়েছে and যে
+        // মাধ্যমে কথা হয়েছে reuse the same three categorical hues since each is
+        // its own clearly-labeled tile, never compared side by side against the
+        // other.
+        var SUMMARY_STATUS_META = [
+            { key: 'Not Called Yet', dot: '#c22f2f' },
+            { key: 'Call Received', dot: '#0ca30c' },
+            { key: 'Call Not Received', dot: '#2a6fd6' }
+        ];
+        var SUMMARY_PERSON_META = [
+            { key: 'Student', dot: '#2a6fd6' },
+            { key: 'Father', dot: '#16966f' },
+            { key: 'Mother', dot: '#b440bb' }
+        ];
+        var SUMMARY_MEDIUM_META = [
+            { key: 'Mobile Call', dot: '#2a6fd6' },
+            { key: 'WhatsApp', dot: '#16966f' },
+            { key: 'Telegram', dot: '#b440bb' }
+        ];
+
+        // Demo: one KPI tile — a title, a proportional mini-bar (segments sized by
+        // each category's share of `total`), and a legend list of dot+label+count
+        // rows in the meta's fixed order. Used for the Status / যে নম্বরে কথা
+        // হয়েছে / যে মাধ্যমে কথা হয়েছে tiles, all three fixed-cardinality.
+        function kpiTileHtml(title, meta, counts, total, tileClass) {
+            var segs = meta.map(function (m) {
+                var pct = total ? (counts[m.key] / total * 100) : 0;
+                return '<div class="kpi-mini-seg" style="width:' + pct + '%;background:' + m.dot + '"></div>';
+            }).join('');
+            var legend = meta.map(function (m) {
+                return '<div class="row"><span class="kpi-dot" style="background:' + m.dot + '"></span>' +
+                    '<span class="lbl">' + m.key + '</span>' +
+                    '<span class="val">' + counts[m.key] + '</span></div>';
+            }).join('');
+            return (
+                '<div class="kpi-tile ' + tileClass + '">' +
+                '<div class="kpi-title">' + title + '</div>' +
+                '<div class="kpi-mini-bar">' + segs + '</div>' +
+                '<div class="kpi-legend">' + legend + '</div>' +
+                '</div>'
+            );
+        }
+
+        // Demo: computes the four count breakdowns (Status, যে নম্বরে কথা
+        // হয়েছে, যে মাধ্যমে কথা হয়েছে, Executed By) from whichever rows are
+        // about to be shown and renders them as a KPI tile row — called for the
+        // single-Tracking-ID table and for every per-panel table in the
+        // multi-Tracking-ID / Pending-breakdown views, each scoped to just its
+        // own rows.
+        function buildSummaryBarHtml(rows) {
+            var statusCounts = {};
+            SUMMARY_STATUS_META.forEach(function (m) { statusCounts[m.key] = 0; });
+            var personCounts = {};
+            SUMMARY_PERSON_META.forEach(function (m) { personCounts[m.key] = 0; });
+            var mediumCounts = {};
+            SUMMARY_MEDIUM_META.forEach(function (m) { mediumCounts[m.key] = 0; });
+            var executedByCounts = {};
+            var personTotal = 0, mediumTotal = 0;
+
+            rows.forEach(function (r) {
+                if (r.status in statusCounts) { statusCounts[r.status]++; }
+                if (r.contactedNumber !== '-') {
+                    var relation = r.contactedNumber.split(' (')[0];
+                    if (relation in personCounts) { personCounts[relation]++; personTotal++; }
+                }
+                if (r.contactedMedium !== '-' && r.contactedMedium in mediumCounts) {
+                    mediumCounts[r.contactedMedium]++; mediumTotal++;
+                }
+                if (r.entryBy !== '-') {
+                    executedByCounts[r.entryBy] = (executedByCounts[r.entryBy] || 0) + 1;
+                }
+            });
+
+            // Busiest team member first so the user doesn't have to scan an
+            // unordered list to find who has done the most entries.
+            var executedByEntries = Object.keys(executedByCounts)
+                .map(function (name) { return { name: name, count: executedByCounts[name] }; })
+                .sort(function (a, b) { return b.count - a.count; });
+            var executedByLegend = executedByEntries.length
+                ? executedByEntries.map(function (e) {
+                    return '<div class="row"><span class="lbl">' + e.name + ' (' + demoMobileForAgent(e.name) + ')</span><span class="val">' + e.count + '</span></div>';
+                }).join('')
+                : '<div class="row"><span class="lbl">-</span></div>';
+
+            return (
+                '<div class="summary-bar">' +
+                '<div class="kpi-row">' +
+                kpiTileHtml('Status', SUMMARY_STATUS_META, statusCounts, rows.length, 'tile-status') +
+                kpiTileHtml('যে নম্বরে কথা হয়েছে', SUMMARY_PERSON_META, personCounts, personTotal, 'tile-person') +
+                kpiTileHtml('যে মাধ্যমে কথা হয়েছে', SUMMARY_MEDIUM_META, mediumCounts, mediumTotal, 'tile-medium') +
+                '<div class="kpi-tile exec-tile">' +
+                '<div class="kpi-title">Executed By <span class="kn">(' + executedByEntries.length + ' জন)</span></div>' +
+                '<div class="kpi-legend">' + executedByLegend + '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>'
+            );
+        }
+
         function resolvedPageSize() {
             let PageSize = 100;
             if ($(pageSizeId).val() != "" && /^\d+$/.test($(pageSizeId).val()) && Number.parseInt($(pageSizeId).val()) > 0) {
@@ -29264,6 +29490,7 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
         // CrmDetailsReportDatatable ajax init. Pagination/paging controls still work
         // normally since DataTables itself paginates the in-memory `rows` array.
         function dataTableRender(rows) {
+            $('#detailsSummaryBar').html(buildSummaryBarHtml(rows));
             $('#DataGrid').DataTable({
                 destroy: true,
                 searching: false,
@@ -29275,52 +29502,22 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                 iDisplayLength: resolvedPageSize(),
                 scrollCollapse: true,
                 scrollY: "60vh",
-                bSort: false,
+                bSort: true,
                 columns: buildResultColumns()
             });
         }
         // data Table
 
-        // Demo: the same "Details" header block (organization/program/session/title/
-        // Initiative & Execution) shown above #DataGrid in the single-Tracking-ID
-        // panel — these fields are static demo constants, not tied to a Tracking ID,
-        // so each per-Tracking-ID panel below gets its own copy with only the
-        // Tracking ID line swapped in.
-        function buildHeadContentHtml(trackingIdText, executedByOverride) {
-            // Demo: a table scoped to one specific team member (Mentor Dashboard's
-            // Pending drill-down, one panel per (Tracking ID, Executed By) pair) has no
-            // use for the full "Initiative & Execution" box — Initiated By/PIN-TPIN/
-            // Conversation Type all describe the case as a whole, not this one person's
-            // slice of it. Swap the whole box for just that person's name and their own
-            // mobile number. A direct Tracking ID search (executedByOverride omitted)
-            // keeps the original full box unchanged.
-            var initiativeSectionHtml = executedByOverride
-                ? (
-                    '<div class="col-md-6">' +
-                    '<span style="font-size: 14px; font-weight:bold">Executed By :&nbsp;</span>' +
-                    '<span>' + executedByOverride + '</span>' +
-                    '</div>' +
-                    '<div class="col-md-6 text-left">' +
-                    '<span style="font-size: 14px; font-weight:bold">Mobile Number :&nbsp;</span>' +
-                    '<span>' + demoFakeMobile() + '</span>' +
-                    '</div>'
-                )
-                : (
-                    '<div class="col-md-8">' +
-                    '<span style="font-size: 14px; font-weight:bold">Initiated By :&nbsp;</span>' +
-                    '<span>[3801] Kazi Fahim Ahmed</span>' +
-                    '<br>' +
-                    '<span style="font-size: 14px; font-weight:bold">PIN / TPIN &nbsp;  :&nbsp;</span>' +
-                    '<span>[3801] Kazi Fahim Ahmed</span>' +
-                    '</div>' +
-                    '<div class="col-md-4 text-left">' +
-                    '<span style="font-size: 14px; font-weight:bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Assigned To :&nbsp;</span>' +
-                    '<span>Management</span>' +
-                    '<br>' +
-                    '<span style="font-size: 14px; font-weight:bold">Conversation Type&nbsp; :&nbsp;</span>' +
-                    '<span>New Admission</span>' +
-                    '</div>'
-                );
+        // Demo: the same "Details" header block (organization/program/session/
+        // title/Tracking ID/Conversation Type/Assigned To) shown above
+        // #DataGrid in the single-Tracking-ID panel — these fields are static
+        // demo constants, not tied to a Tracking ID, so each per-Tracking-ID
+        // panel below gets its own copy with only the Tracking ID line
+        // swapped in. The old "Initiative & Execution" block's Initiated
+        // By/PIN-TPIN stay dropped now that the KPI tile row below covers
+        // Executed By directly; Conversation Type and Assigned To moved up to
+        // sit right after Tracking ID instead.
+        function buildHeadContentHtml(trackingIdText) {
             return (
                 '<div class="container border bottom-right" style="margin-bottom: 10px !important;">' +
                 '<div class="form-group">' +
@@ -29334,19 +29531,15 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                 '<span style="font-size: 16px;">Tracking ID :&nbsp;</span>' +
                 '<span style="font-size: 16px; font-weight:bold">' + trackingIdText + '</span>' +
                 '<br>' +
+                '<span style="font-size: 16px;">Conversation Type :&nbsp;</span>' +
+                '<span style="font-size: 16px;">New Admission</span>' +
+                '<br>' +
+                '<span style="font-size: 16px;">Assigned To :&nbsp;</span>' +
+                '<span style="font-size: 16px;">[2005] Tushar Imran</span>' +
+                '<br>' +
                 '<span style="font-size: 16px;">Admission 2026 Telemarketing</span>' +
                 '<br>' +
                 '</div>' +
-                '</div>' +
-                '<div class="form-group" style="margin-top:20px!important">' +
-                (executedByOverride ? '' :
-                    '<div class="form-group">' +
-                    '<div class="col-md-12">' +
-                    '<span style="font-size: 16px; font-weight:bold">Initiative &amp; Execution</span>' +
-                    '</div>' +
-                    '</div>'
-                ) +
-                initiativeSectionHtml +
                 '</div>' +
                 '</div>'
             );
@@ -29373,6 +29566,7 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                 var tableId = 'DataGrid_multi_' + i;
                 var collapseId = 'collapse_trid_' + i;
                 var titleSuffix = singleExecutedBy ? (' | Executed By: ' + singleExecutedBy) : '';
+                var rows = generateFakeReportRows(entry.count);
                 var $block = $(
                     '<div class="panel panel-primary" style="margin-bottom:15px;">' +
                     '<div class="panel-heading" data-toggle="collapse" href="#' + collapseId + '" style="cursor:pointer;">' +
@@ -29383,7 +29577,8 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                     '<div id="' + collapseId + '" class="panel-collapse collapse in">' +
                     '<div class="panel-body">' +
                     '<div class="table-responsive" style="overflow: auto; max-width: 100%; margin-top:10px!important;">' +
-                    buildHeadContentHtml(entry.trackingId, singleExecutedBy) +
+                    buildHeadContentHtml(entry.trackingId) +
+                    buildSummaryBarHtml(rows) +
                     '<table id="' + tableId + '" class="display table table-striped table-bordered table-condensed table-hover table-responsive text-wrap" cellspacing="0" width="100%">' +
                     '<thead><tr role="row">' +
                     '<th>Serial</th><th>Reg. No</th><th>Nick Name</th><th>Mobile Number(Student)</th>' +
@@ -29400,8 +29595,6 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                 );
                 $container.append($block);
 
-                var rows = generateFakeReportRows(entry.count);
-
                 $('#' + tableId).DataTable({
                     destroy: true,
                     searching: false,
@@ -29413,7 +29606,7 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                     iDisplayLength: resolvedPageSize(),
                     scrollCollapse: true,
                     scrollY: "60vh",
-                    bSort: false,
+                    bSort: true,
                     columns: buildResultColumns()
                 });
             });
@@ -29432,6 +29625,7 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
             $.each(breakdown, function (i, entry) {
                 var tableId = 'DataGrid_pb_' + i;
                 var collapseId = 'collapse_pb_' + i;
+                var rows = generateFakeReportRows(entry.count, entry.executedBy);
                 var $block = $(
                     '<div class="panel panel-primary" style="margin-bottom:15px;">' +
                     '<div class="panel-heading" data-toggle="collapse" href="#' + collapseId + '" style="cursor:pointer;">' +
@@ -29443,7 +29637,8 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                     '<div id="' + collapseId + '" class="panel-collapse collapse in">' +
                     '<div class="panel-body">' +
                     '<div class="table-responsive" style="overflow: auto; max-width: 100%; margin-top:10px!important;">' +
-                    buildHeadContentHtml(entry.trackingId, entry.executedBy) +
+                    buildHeadContentHtml(entry.trackingId) +
+                    buildSummaryBarHtml(rows) +
                     '<table id="' + tableId + '" class="display table table-striped table-bordered table-condensed table-hover table-responsive text-wrap" cellspacing="0" width="100%">' +
                     '<thead><tr role="row">' +
                     '<th>Serial</th><th>Reg. No</th><th>Nick Name</th><th>Mobile Number(Student)</th>' +
@@ -29460,8 +29655,6 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                 );
                 $container.append($block);
 
-                var rows = generateFakeReportRows(entry.count, entry.executedBy);
-
                 $('#' + tableId).DataTable({
                     destroy: true,
                     searching: false,
@@ -29473,7 +29666,7 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                     iDisplayLength: resolvedPageSize(),
                     scrollCollapse: true,
                     scrollY: "60vh",
-                    bSort: false,
+                    bSort: true,
                     columns: buildResultColumns()
                 });
             });
@@ -29528,15 +29721,6 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                         $(trackingShowId).text(trackingNo);
                         $('#multiTrackingContainer').hide().empty();
                         $('#detailsPanel').show();
-                        // Demo: a Today Entry / Entry Till Today click that named exactly
-                        // one team member (?entryBy= with one name, no comma-separated
-                        // Tracking IDs so it stayed on this single-table path) is just as
-                        // single-executor-scoped as the multi-panel case above — swap in
-                        // the same simplified header. A plain manual Tracking ID search
-                        // (no entryBy param) leaves the original static header untouched.
-                        if (demoEntryByList && demoEntryByList.length === 1) {
-                            $('#head-content').html($(buildHeadContentHtml(trackingNo, demoEntryByList[0])).html());
-                        }
                         var rows = generateFakeReportRows(window.demoTotalCount);
                         dataTableRender(rows);
                     }
@@ -30894,10 +31078,19 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                             <strong>কলাম সিরিয়াল এমন হবে:</strong> Serial &gt; Reg. No &gt; Nick Name &gt; Status &gt; Student Feedback &gt; Conversation Duration &gt; Remarks &gt; যে নম্বরে কথা হয়েছে &gt; যে মাধ্যমে কথা হয়েছে &gt; Executed By &gt; Entry Date &amp; Time
                           </li>
                           <li style="margin-bottom:12px;">
-                            <strong>Mentor Dashboard-এর Pending (NCY+CNR) কলাম থেকে ক্লিক করে এই মেনুতে আসলে</strong> এবং তাতে একাধিক টিম মেম্বার/Tracking ID মিলে থাকলে প্রতিটার জন্য আলাদা টেবিল, হেডারে Tracking ID + Executed By উল্লেখ থাকবে। তাছাড়া একজন টিম মেম্বারের হলে নির্দিষ্ট টেবিলে সহজ হেডার ("Executed By : নাম" + Mobile Number) দেখাবে, পুরনো "Initiative &amp; Execution" তথ্য বাদ।
+                            <strong>Mentor Dashboard-এর Pending (NCY+CNR) কলাম থেকে ক্লিক করে এই মেনুতে আসলে</strong> এবং তাতে একাধিক টিম মেম্বার/Tracking ID মিলে থাকলে প্রতিটার জন্য আলাদা টেবিল, হেডারে Tracking ID + Executed By উল্লেখ থাকবে।
+                          </li>
+                          <li style="margin-bottom:12px;">
+                            <strong>টেবিলে Entry Date &amp; Time অনুযায়ী রিসেন্ট ডাটা প্রথমে থাকবে</strong> (Not Called Yet রো থাকলে সেগুলো সবার আগে থাকবে)।
+                          </li>
+                          <li style="margin-bottom:12px;">
+                            <strong>হেডারে "কেপিআই টাইল রো" (৪টা কার্ড) যোগ করা হয়েছে</strong> — Status (Not Called Yet লাল/Call Received সবুজ/Call Not Received নীল), যে নম্বরে কথা হয়েছে (Student/Father/Mother), যে মাধ্যমে কথা হয়েছে (Mobile Call/WhatsApp/Telegram), এবং Executed By (কে কতগুলো এন্ট্রি করেছে, নামের পাশে মোবাইল নম্বরসহ, বেশি এন্ট্রি করা ইউজার আগে) — লোড হওয়া ডাটা অনুযায়ী স্বয়ংক্রিয়ভাবে কাউন্ট দেখায়। Executed By কার্ডে অনেক (১০+) টিম মেম্বার থাকলে লিস্টটা নিজে থেকেই স্ক্রলযোগ্য হয়ে যায়। প্রতিটা কার্ডের সারির মাঝে হালকা ডিভাইডার এবং প্রতিটা কার্ডে আলাদা হালকা ব্যাকগ্রাউন্ড কালার।
+                          </li>
+                          <li style="margin-bottom:12px;">
+                            <strong>পুরনো "Initiative &amp; Execution" তথ্য-বক্স সম্পূর্ণ বাদ দেওয়া হয়েছে</strong> — যেহেতু নতুন কেপিআই কার্ডেই এই তথ্য দেখা যায়। হেডারের Organization/Program/Tracking ID বক্সে এখন Tracking ID-এর পর সরাসরি Conversation Type ও Assigned To (একজন নির্দিষ্ট ব্যক্তির নাম, যেমন: [2005] Tushar Imran) রো দেখায়।
                           </li>
                           <li>
-                            <strong>টেবিলে Entry Date &amp; Time অনুযায়ী রিসেন্ট ডাটা প্রথমে থাকবে</strong> (Not Called Yet রো থাকলে সেগুলো সবার আগে থাকবে)।
+                            <strong>ডাটা টেবিলে কলাম সর্ট ফিচার যোগ</strong> — এখন যেকোনো কলামের হেডারে ক্লিক করে ascending/descending সর্ট করা যায়।
                           </li>
                         </ol>
                       </div>
