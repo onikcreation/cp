@@ -9310,7 +9310,304 @@ table tfoot th::after {
                 -->
                 <div class="customMessage text-center">
                 </div>
-                <div id="main-body-content">
+                <div id="ceListView" style="margin-top: 2rem;">
+                  <div class="panel panel-primary">
+                    <div class="panel-heading" title="Colapse">
+                      <h4 class="panel-title">
+                        Single Conversation Entry
+                      </h4>
+                    </div>
+                    <div class="panel-body">
+                      <div class="form-horizontal">
+                        <div class="form-group">
+                          <label class="control-label col-md-4" for="ceTrackingId">
+                            Tracking ID
+                          </label>
+                          <div class="col-md-4">
+                            <input type="text" id="ceTrackingId" class="form-control custom-max-width" placeholder="0" autocomplete="off">
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="control-label col-md-4">
+                            Registration / Mobile No.
+                          </label>
+                          <div class="col-md-4">
+                            <input type="text" class="form-control custom-max-width" placeholder="Registration / Mobile No." autocomplete="off">
+                          </div>
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                          <label class="control-label col-md-2">
+                            Organization
+                          </label>
+                          <div class="col-md-4">
+                            <select class="form-control custom-max-width">
+                              <option value="">Select Organization</option>
+                              <option>UDVASH</option>
+                              <option>UNMESH</option>
+                              <option>ONLINE CARE</option>
+                              <option>UTTORON</option>
+                              <option>UTKORSHO</option>
+                              <option>Shikkha Poribar</option>
+                            </select>
+                          </div>
+                          <label class="control-label col-md-2">
+                            Program
+                          </label>
+                          <div class="col-md-4">
+                            <select class="form-control custom-max-width">
+                              <option value="">Select Program</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="control-label col-md-2">
+                            Session
+                          </label>
+                          <div class="col-md-4">
+                            <select class="form-control custom-max-width">
+                              <option value="">Select Session</option>
+                            </select>
+                          </div>
+                          <label class="control-label col-md-2">
+                            Branch
+                          </label>
+                          <div class="col-md-4">
+                            <select class="form-control custom-max-width">
+                              <option>Select All</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="control-label col-md-2">
+                            Initiated By
+                          </label>
+                          <div class="col-md-4">
+                            <input type="text" class="form-control custom-max-width" placeholder="Member PIN">
+                          </div>
+                          <label class="control-label col-md-2">
+                            Executed By
+                          </label>
+                          <div class="col-md-4">
+                            <select class="form-control custom-max-width">
+                              <option value="">All</option>
+                              <option>Self</option>
+                              <option>Teacher</option>
+                              <option>Management</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="control-label col-md-2">
+                            PIN / TPIN
+                          </label>
+                          <div class="col-md-4">
+                            <input type="text" class="form-control custom-max-width" placeholder="Member / Teacher PIN">
+                          </div>
+                          <label class="control-label col-md-2">
+                            Conversation Type
+                          </label>
+                          <div class="col-md-4">
+                            <select class="form-control custom-max-width">
+                              <option value="">All</option>
+                              <option>New Admission</option>
+                              <option>Due Collection</option>
+                              <option>Student Data Update</option>
+                              <option>Absent Call</option>
+                              <option>Materials</option>
+                              <option>Relation Call</option>
+                              <option>Service Feedback</option>
+                              <option>Information Collect</option>
+                              <option>Information Share</option>
+                              <option>Branch Mentoring</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="control-label col-md-2">
+                            Status
+                          </label>
+                          <div class="col-md-4">
+                            <select class="form-control custom-max-width">
+                              <option selected>Pending</option>
+                              <option>Call Received</option>
+                              <option>Call Not Received</option>
+                            </select>
+                          </div>
+                          <label class="control-label col-md-2">
+                            Gender
+                          </label>
+                          <div class="col-md-4">
+                            <select class="form-control custom-max-width">
+                              <option>All</option>
+                              <option>Male</option>
+                              <option>Female</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="control-label col-md-2">
+                            Student Feedback
+                          </label>
+                          <div class="col-md-4">
+                            <select class="form-control custom-max-width">
+                              <option>Select All</option>
+                            </select>
+                          </div>
+                          <label class="control-label col-md-2">
+                            Admission Target
+                          </label>
+                          <div class="col-md-4">
+                            <select class="form-control custom-max-width">
+                              <option>Select All</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="control-label col-md-2">
+                            Date From
+                          </label>
+                          <div class="col-md-4">
+                            <input type="text" class="form-control custom-max-width" readonly>
+                          </div>
+                          <label class="control-label col-md-2">
+                            Date To
+                          </label>
+                          <div class="col-md-4">
+                            <input type="text" class="form-control custom-max-width" readonly>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="control-label col-md-2">
+                            Last Entry By
+                          </label>
+                          <div class="col-md-4">
+                            <input type="text" class="form-control custom-max-width" placeholder="User Email">
+                          </div>
+                          <label class="control-label col-md-2">
+                            Display Per Page
+                          </label>
+                          <div class="col-md-4">
+                            <input type="text" class="form-control custom-max-width" value="100">
+                          </div>
+                        </div>
+                        <div class="form-group" style="margin-top:3rem;">
+                          <div class="col-md-12 text-center">
+                            <button class="btn btn-primary" id="ceSubmitBtn" style="width: 150px;" type="button">
+                              Submit
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="ceResultsPanel" class="panel panel-primary" style="display:none;">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        Details
+                      </h4>
+                    </div>
+                    <div class="panel-body">
+                      <style>
+                        #ceResultsPanel table { table-layout: fixed; width: 100%; }
+                        #ceResultsPanel th, #ceResultsPanel td { word-wrap: break-word; word-break: break-word; white-space: normal; font-size: 12px; padding: 4px 5px; vertical-align: middle; }
+                      </style>
+                      <table class="table table-striped table-bordered table-condensed table-hover">
+                        <colgroup>
+                          <col style="width:5%">
+                          <col style="width:13%">
+                          <col style="width:6%">
+                          <col style="width:6%">
+                          <col style="width:6%">
+                          <col style="width:5%">
+                          <col style="width:8%">
+                          <col style="width:6%">
+                          <col style="width:8%">
+                          <col style="width:7%">
+                          <col style="width:5%">
+                          <col style="width:7%">
+                          <col style="width:7%">
+                          <col style="width:6%">
+                          <col style="width:5%">
+                        </colgroup>
+                        <thead class="text-center">
+                          <tr>
+                            <th>Serial</th>
+                            <th>Conversation Title</th>
+                            <th>Tracking ID</th>
+                            <th>Organization</th>
+                            <th>Program</th>
+                            <th>Session</th>
+                            <th>Initiated By</th>
+                            <th>Branch</th>
+                            <th>Executed by</th>
+                            <th>Conversation Type</th>
+                            <th>Total Student</th>
+                            <th>Deadline</th>
+                            <th>Created By</th>
+                            <th>Creation Date</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody id="ceResultsTbody" class="text-center">
+                        </tbody>
+                      </table>
+                      <div class="dataTables_info" id="ceResultsInfo">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <script>
+                  $(document).ready(function () {
+                    // Demo: the live "Conversation Entry" menu opens a filter+list page
+                    // first (Tracking ID search -> Details table -> per-row "Entry" button),
+                    // matching ConversationEntry0.html. But other pages (e.g. Mentor
+                    // Dashboard) already link straight to this same offline file's "Single
+                    // Entry" detail view with no filter step, same as the live site does for
+                    // them. A "direct=1" query param on the URL distinguishes that case from
+                    // a plain sidebar-menu open. (Runs on ready, not inline, because
+                    // #main-body-content is defined further down the page than this script.)
+                    if (/[?&]direct=1(&|$)/.test(location.search)) {
+                      $('#ceListView').hide();
+                      $('#main-body-content').show();
+                    }
+
+                    $('#ceSubmitBtn').on('click', function () {
+                      var trackingId = $.trim($('#ceTrackingId').val()) || '128580';
+                      var rowHtml = '<tr>' +
+                        '<td>1</td>' +
+                        '<td>HSC Batch-27 ভর্তি রিমাইন্ডার কল লিস্ট</td>' +
+                        '<td>' + $('<div>').text(trackingId).html() + '</td>' +
+                        '<td>UDVASH</td>' +
+                        '<td>Engineering Admission Program</td>' +
+                        '<td>2026</td>' +
+                        '<td>[101] Demo User</td>' +
+                        '<td>Mirpur Branch</td>' +
+                        '<td>[202] Demo Officer</td>' +
+                        '<td>New Admission</td>' +
+                        '<td>320</td>' +
+                        '<td>31 Aug, 2026 12:00 AM</td>' +
+                        '<td>demo.user@example.com</td>' +
+                        '<td>22 Sep, 2025 02:58:35 PM</td>' +
+                        '<td><button type="button" class="btn btn-sm btn-success ceEntryBtn">Entry</button></td>' +
+                        '</tr>';
+                      $('#ceResultsTbody').html(rowHtml);
+                      $('#ceResultsInfo').text('Showing 1 to 1 of 1 entries');
+                      $('#ceResultsPanel').show();
+                    });
+
+                    // Demo: only the one conversation type/status this page was built for
+                    // ("New Admission") is wired to open the detail view below — matching
+                    // the live site, other conversation types/statuses have no detail page
+                    // built yet and are out of scope here.
+                    $(document).on('click', '.ceEntryBtn', function () {
+                      $('#ceListView').hide();
+                      $('#main-body-content').show();
+                      window.scrollTo(0, 0);
+                    });
+                  });
+                </script>
+                <div id="main-body-content" style="display:none;">
                   <div id="timer">
                     29:34
                   </div>
@@ -16662,7 +16959,11 @@ $(document).ready(function () {
                                                                           if (a.classList.contains('submenuitem') && href && siblingLivePages.hasOwnProperty(href)) {
                                                                               e.preventDefault();
                                                                               if (href === thisPageRoute) {
-                                                                                  window.location.reload();
+                                                                                  // Strip any "direct=1" (see the ceListView script above) so
+                                                                                  // picking this menu item always lands back on the filter+list
+                                                                                  // view, even from a tab that was opened straight into the
+                                                                                  // detail view (e.g. via Mentor Dashboard's Entry button).
+                                                                                  window.location.href = window.location.pathname;
                                                                               } else {
                                                                                   var target = siblingLivePages[href];
                                                                                   window.location.href = siblingPageUrl(target.folder, target.file);

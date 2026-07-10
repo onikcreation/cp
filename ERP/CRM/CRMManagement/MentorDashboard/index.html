@@ -12733,11 +12733,19 @@ function DeselectSelectedOptionAdd(elem) {
                 }
                 return '../' + folder + '/';
             }
+            // Exposed on window because the later "sidebar menu navigation" <script>
+            // block is a separate top-level script (not inside this same
+            // $(document).ready(...) closure) and calls this same helper — without
+            // this, that block threw "siblingPageUrl is not defined" on every sidebar
+            // link click and silently did nothing.
+            window.siblingPageUrl = siblingPageUrl;
 
             $(document).on('click', '.entry', function () {
-                // Demo: the real page opens a new tab to RedirectEntry for the clicked
-                // row — here that's simulated by opening the Conversation Entry demo page.
-                window.open(siblingPageUrl('ConversationEntry', 'CrmConversationEntry_Offline.html'), '_blank');
+                // Demo: the real page opens a new tab straight to the Single Entry detail
+                // page for the clicked row, no filter step in between — simulated here by
+                // opening the Conversation Entry demo page with "direct=1", which tells it
+                // to skip its own filter+list landing view and show the detail view directly.
+                window.open(siblingPageUrl('ConversationEntry', 'CrmConversationEntry_Offline.html') + '?direct=1', '_blank');
             });
 
             function td(val) {
