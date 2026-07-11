@@ -13157,30 +13157,18 @@ function DeselectSelectedOptionAdd(elem) {
                   </div>
                   <div class="modal-body" style="height:65vh; overflow-y:auto;">
                     <p style="font-weight:bold; margin-bottom:12px;">নতুন আপডেট:</p>
-                    <p style="font-weight:bold; margin-bottom:4px;">কলামের নাম পরিবর্তন:</p>
-                    <ol style="padding-left:20px; margin:0 0 20px;">
+                    <ol style="padding-left:20px; margin:0;">
                       <li style="margin-bottom:12px;">
-                        <strong>"Entry By" → "Executed By"</strong>।
+                        <strong>Entry Today, Entry Till Today ও Pending কলামের নাম পরিবর্তন করে যথাক্রমে Effective Call (CR) Today, Effective Call (CR) Till Today, Pending Call (NCY+CNR) করা হয়েছে।</strong>
                       </li>
                       <li style="margin-bottom:12px;">
-                        <strong>"Today Entry" → "Effective Call (CR) Today" করা হয়েছে।</strong> (তারিখ অনুযায়ি নাম পরিবর্তন হবে।)
+                        <strong>Effective Call (CR) Today এবং Effective Call (CR) Till Today কলামে ডাটা দেখানোর ক্ষেত্রে শুধু Call Received ডাটাগুলো Count করে দেখানো হবে।</strong>
                       </li>
                       <li style="margin-bottom:12px;">
-                        <strong>Effective Call (CR) Today কলামে এখন শুধু Call Received সংখ্যাই বোঝায়।</strong>
-                      </li>
-                      <li style="margin-bottom:12px;">
-                        <strong>"Pending" → "Pending Call (NCY+CNR)"</strong>
-                      </li>
-                      <li style="margin-bottom:12px;">
-                        <strong>"Pending Call (NCY+CNR)" কলামে Not Called Yet + Call Not Received সংখ্যা যোগ করে দেখাবে।</strong>
+                        <strong>Pending Call (NCY+CNR) কলামের ডাটা ক্যালকুলেশন করার ক্ষেত্রে Tracking ID অনুযায়ি Not Called Yet ও Call Not Received এই দুই ধরনের ডাটা যোগ করে দেখানো হবে।</strong> এই কলামের ডাটাগুলো ক্লিকেবল — সংখ্যায় ক্লিক করা হলে Details Report মেনুতে গিয়ে সেই পেইজের লজিক অনুযায়ি Programwise বা Pinwise ডাটা দেখাবে।
                       </li>
                       <li>
-                        <strong>"Entry Till Today" → "Call Received Till Today"</strong>।
-                      </li>
-                    </ol>
-                    <ol style="padding-left:20px; margin:0;" start="7">
-                      <li>
-                        <strong>Mentor Dashboard মেনুর পারমিশন বিভিন্ন ইউজারকে দেওয়া হবে, তাই এই মেনুটি User Permission Authorisation হিসেবে তৈরি করতে হবে।</strong> যাতে ইউজারকে যে ব্রাঞ্চের পারমিশন দেওয়া হয় সে ঠিক সেই ব্রাঞ্চের ডাটাই দেখতে পায়।
+                        <strong>Mentor Dashboard মেনুর পারমিশন বিভিন্ন ইউজারকে দেওয়া হবে, তাই Mentor Dashboard মেনুটি User Permission Authorisation হিসেবে তৈরি করতে হবে।</strong> যাতে ইউজারদেরকে যে ব্রাঞ্চের পারমিশন দেওয়া হবে সে এই মেনুতে ব্রাঞ্চ ড্রপডাউনে ঠিক সেই ব্রাঞ্চগুলোই পাবে এবং শুধু সেই ব্রাঞ্চের ডাটাগুলোই সে দেখতে পাবে।
                       </li>
                     </ol>
                   </div>

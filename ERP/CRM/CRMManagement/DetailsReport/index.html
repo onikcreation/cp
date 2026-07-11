@@ -31668,31 +31668,28 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                         <p style="font-weight:bold; margin-bottom:12px;">নতুন আপডেট:</p>
                         <ol style="padding-left:20px; margin:0;">
                           <li style="margin-bottom:12px;">
-                            <strong>অন্য মেনুগুলোর সাথে সামঞ্জস্যপূর্ণ রেখে সব জায়গায়, Executed By কে Assigned To, Entry By কে Executed By এবং Pending কে Not Called Yet করা হয়েছে।</strong>
+                            <strong>View By ফিল্টার যোগ করা হয়েছে।</strong> Programwise/Pinwise ডাটা ভিউ করা যাবে।
                           </li>
                           <li style="margin-bottom:12px;">
-                            <strong>"Select Information To View"-এ নতুন ২টা অপশন যোগ</strong> ("যে নম্বরে কথা হয়েছে", "যে মাধ্যমে কথা হয়েছে")।
-                          </li>
-                          <li style="margin-bottom:12px;">
-                            <strong>ডাটা টেবিলে আগে যে কলামগুলো দেখাতো তাদের সাথে ডিফল্টভাবে, যে নম্বরে কথা হয়েছে, যে মাধ্যমে কথা হয়েছে, Executed By, Entry Date &amp; Time এই ৪টি কলাম দেখাবে।</strong>
-                          </li>
-                          <li style="margin-bottom:12px;">
-                            <strong>কলাম সিরিয়াল এমন হবে:</strong> Serial &gt; Reg. No &gt; Nick Name &gt; Status &gt; Student Feedback &gt; Conversation Duration &gt; Remarks &gt; যে নম্বরে কথা হয়েছে &gt; যে মাধ্যমে কথা হয়েছে &gt; Executed By &gt; Entry Date &amp; Time
-                          </li>
-                          <li style="margin-bottom:12px;">
-                            <strong>Mentor Dashboard-এর Pending (NCY+CNR) কলাম থেকে ক্লিক করে এই মেনুতে আসলে</strong> এবং তাতে একাধিক টিম মেম্বার/Tracking ID মিলে থাকলে প্রতিটার জন্য আলাদা টেবিল, হেডারে Tracking ID + Executed By উল্লেখ থাকবে।
-                          </li>
-                          <li style="margin-bottom:12px;">
-                            <strong>টেবিলে Entry Date &amp; Time অনুযায়ী রিসেন্ট ডাটা প্রথমে থাকবে</strong> (Not Called Yet রো থাকলে সেগুলো সবার আগে থাকবে)।
-                          </li>
-                          <li style="margin-bottom:12px;">
-                            <strong>হেডারে "কেপিআই টাইল রো" (৪টা কার্ড) যোগ করা হয়েছে</strong> — Status (Not Called Yet লাল/Call Received সবুজ/Call Not Received নীল), যে নম্বরে কথা হয়েছে (Student/Father/Mother), যে মাধ্যমে কথা হয়েছে (Mobile Call/WhatsApp/Telegram), এবং Executed By (কে কতগুলো এন্ট্রি করেছে, নামের পাশে মোবাইল নম্বরসহ, বেশি এন্ট্রি করা ইউজার আগে) — লোড হওয়া ডাটা অনুযায়ী স্বয়ংক্রিয়ভাবে কাউন্ট দেখায়। Executed By কার্ডে অনেক (১০+) টিম মেম্বার থাকলে লিস্টটা নিজে থেকেই স্ক্রলযোগ্য হয়ে যায়। প্রতিটা কার্ডের সারির মাঝে হালকা ডিভাইডার এবং প্রতিটা কার্ডে আলাদা হালকা ব্যাকগ্রাউন্ড কালার।
-                          </li>
-                          <li style="margin-bottom:12px;">
-                            <strong>পুরনো "Initiative &amp; Execution" তথ্য-বক্স সম্পূর্ণ বাদ দেওয়া হয়েছে</strong> — যেহেতু নতুন কেপিআই কার্ডেই এই তথ্য দেখা যায়। হেডারের Organization/Program/Tracking ID বক্সে এখন Tracking ID-এর পর সরাসরি Conversation Type ও Assigned To (একজন নির্দিষ্ট ব্যক্তির নাম, যেমন: [2005] Tushar Imran) রো দেখায়।
+                            <strong>ডাটা টেবিলে ডিফল্টভাবে যে কলামগুলো থাকে তার সাথে ডিফল্টভাবে শিক্ষার্থীর "যে নম্বরে কথা হয়েছে" তা দেখাবে।</strong> টেবিলের কলামগুলো বর্তমান ডিজাইন অনুযায়ি যে সিকোয়েন্সে আছে ঠিক সেই সিকোয়েন্সেই থাকবে।
                           </li>
                           <li>
-                            <strong>ডাটা টেবিলে কলাম সর্ট ফিচার যোগ</strong> — এখন যেকোনো কলামের হেডারে ক্লিক করে ascending/descending সর্ট করা যায়।
+                            <strong>টেবিলের কলামে ডাটা সর্ট ফিচার থাকবে।</strong>
+                          </li>
+                        </ol>
+                        <p style="font-weight:bold; margin:16px 0 12px;">ডাটা টেবিল সেকশন (Programwise/Pinwise):</p>
+                        <ol style="padding-left:20px; margin:0;">
+                          <li style="margin-bottom:12px;">
+                            <strong>ডাটা টেবিলের ঠিক উপরে চারটি বক্সের মাধ্যমে ডাটা সামারি দেখানো হয়েছে।</strong> Executed By, Total Call, Call To, Call Medium — এই তথ্যগুলো সামারি আকারে প্রতিটি টেবিলের উপরে দেখাবে।
+                          </li>
+                          <li style="margin-bottom:12px;">
+                            <strong>Programwise ভিউ করা হলে উপরে ট্র্যাকিং আইডি সম্পর্কে তথ্য এবং এরপর সেই ট্র্যাকিং আইডিতে যারা যারা Executed করেছে তাদের তথ্য আলাদা আলাদা টেবিলে দেখাবে।</strong>
+                          </li>
+                          <li style="margin-bottom:12px;">
+                            <strong>Pinwise ভিউ করা হলে প্রথমে Executed By এর তথ্য দেখিয়ে, তার ডাটা টেবিল দেখাতে হবে।</strong> ডাটা টেবিল সেকশনে টেবিলের উপর সামারি ও ট্র্যাকিং আইডি এর তথ্য থাকবে।
+                          </li>
+                          <li>
+                            <strong>টেবিল সেকশনের হেডারে Programwise/Pinwise অনুযায়ি Total Data, Status, Tracking ID ও Executed By এর তথ্য দেখাবে।</strong>
                           </li>
                         </ol>
                       </div>
