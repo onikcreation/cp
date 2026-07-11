@@ -11240,24 +11240,27 @@ let feedbackData = [
           '/Student/CrmConversation/MentorDashboard': { folder: 'MentorDashboard', file: 'MentorDashboard_Offline.html' },
           '/Student/CrmReport/ConversationReport': { folder: 'ConversationCallReport', file: 'ConversationCallReport_Offline.html' }
       };
-      var thisPageRoute = '/Student/CrmComments/Index';
+
+      // Demo: the sidebar's submenuitem hrefs above are still the real live-site
+      // routes baked into the captured markup — fine for the JS click-catch below
+      // (left-click), but right-click "Open link in new tab"/middle-click bypass
+      // that JS entirely and follow the raw href literally, 404-ing on GitHub Pages
+      // since that route isn't a real static file there. Rewrite every one of them
+      // to the correct sibling-page URL up front so every way of following the
+      // link (left-click, new tab, middle-click) lands correctly.
+      Object.keys(siblingLivePages).forEach(function (route) {
+          var target = siblingLivePages[route];
+          document.querySelectorAll('a.submenuitem[href="' + route + '"]').forEach(function (a) {
+              a.setAttribute('href', siblingPageUrl(target.folder, target.file));
+          });
+      });
 
       document.addEventListener('click', function (e) {
           var a = e.target.closest ? e.target.closest('a[href]') : null;
           if (!a) return;
           var href = a.getAttribute('href');
           if (!href) return;
-          if (a.classList.contains('submenuitem') && siblingLivePages.hasOwnProperty(href)) {
-              e.preventDefault();
-              if (href === thisPageRoute) {
-                  window.location.reload();
-              } else {
-                  var target = siblingLivePages[href];
-                  window.location.href = siblingPageUrl(target.folder, target.file);
-              }
-              return;
-          }
-          if (href.indexOf('#') === 0 || href.indexOf('javascript:') === 0) return;
+          if (href.indexOf('#') === 0 || href.indexOf('javascript:') === 0 || href.indexOf('../') === 0) return;
           e.preventDefault();
       }, true);
 

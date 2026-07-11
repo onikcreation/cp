@@ -13107,29 +13107,40 @@ function DeselectSelectedOptionAdd(elem) {
                   '/Student/CrmConversation/MentorDashboard': { folder: 'MentorDashboard', file: 'MentorDashboard_Offline.html' },
                   '/Student/CrmReport/ConversationReport': { folder: 'ConversationCallReport', file: 'ConversationCallReport_Offline.html' }
               };
-              var thisPageRoute = '/Student/CrmConversation/MentorDashboard';
+
+              // Demo: the sidebar's submenuitem hrefs above are still the real live-site
+              // routes baked into the captured markup — fine for the JS click-catch below
+              // (left-click), but right-click "Open link in new tab"/middle-click bypass
+              // that JS entirely and follow the raw href literally, 404-ing on GitHub Pages
+              // since that route isn't a real static file there. Rewrite every one of them
+              // to the correct sibling-page URL up front so every way of following the
+              // link (left-click, new tab, middle-click) lands correctly. Deferred to
+              // $(document).ready — this script block runs before the earlier
+              // $(document).ready closure that defines/exposes window.siblingPageUrl,
+              // so calling it here directly would throw "siblingPageUrl is not defined";
+              // jQuery runs ready callbacks in registration order, so this one (registered
+              // later in the file) is guaranteed to run after that one.
+              $(document).ready(function () {
+                  Object.keys(siblingLivePages).forEach(function (route) {
+                      var target = siblingLivePages[route];
+                      document.querySelectorAll('a.submenuitem[href="' + route + '"]').forEach(function (a) {
+                          a.setAttribute('href', siblingPageUrl(target.folder, target.file));
+                      });
+                  });
+              });
 
               // This is a static design demo — it must never navigate away to the
               // real umsbd.net site (menu links, notice links, logout, form POST, etc.
               // all point to real app routes in the captured markup). Block every
               // real link click and form submit at the document level, except the
-              // drill-down links and sidebar links to sibling demo pages handled above.
+              // drill-down links and the sidebar links to sibling demo pages (already
+              // rewritten to correct relative URLs above, so left as normal navigation).
               document.addEventListener('click', function (e) {
                   var a = e.target.closest('a[href]');
                   if (!a) return;
                   if (a.classList.contains('dashboard-drill-link')) return; // intentional link to the DetailsReport demo page
                   var href = a.getAttribute('href');
-                  if (a.classList.contains('submenuitem') && href && siblingLivePages.hasOwnProperty(href)) {
-                      e.preventDefault();
-                      if (href === thisPageRoute) {
-                          window.location.reload();
-                      } else {
-                          var target = siblingLivePages[href];
-                          window.location.href = siblingPageUrl(target.folder, target.file);
-                      }
-                      return;
-                  }
-                  if (href && href.indexOf('#') !== 0 && href.indexOf('javascript:') !== 0) {
+                  if (href && href.indexOf('#') !== 0 && href.indexOf('javascript:') !== 0 && href.indexOf('../') !== 0) {
                       e.preventDefault();
                   }
               }, true);

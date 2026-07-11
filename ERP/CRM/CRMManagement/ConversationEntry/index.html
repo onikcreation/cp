@@ -17003,32 +17003,35 @@ $(document).ready(function () {
                                                                           '/Student/CrmConversation/MentorDashboard': { folder: 'MentorDashboard', file: 'MentorDashboard_Offline.html' },
                                                                           '/Student/CrmReport/ConversationReport': { folder: 'ConversationCallReport', file: 'ConversationCallReport_Offline.html' }
                                                                       };
-                                                                      var thisPageRoute = '/Student/CrmConversationTargetedStudent/ManageSingleEntry';
+
+                                                                      // Demo: the sidebar's submenuitem hrefs above are still the real live-site
+                                                                      // routes baked into the captured markup — fine for the JS click-catch below
+                                                                      // (left-click), but right-click "Open link in new tab"/middle-click bypass
+                                                                      // that JS entirely and follow the raw href literally, 404-ing on GitHub Pages
+                                                                      // since that route isn't a real static file there. Rewrite every one of them
+                                                                      // to the correct sibling-page URL up front so every way of following the
+                                                                      // link (left-click, new tab, middle-click) lands correctly — including this
+                                                                      // page's own entry, whose rewritten href carries no query string, so it
+                                                                      // still drops any "direct=1" (see the ceListView script above) and lands
+                                                                      // back on the filter+list view same as before.
+                                                                      Object.keys(siblingLivePages).forEach(function (route) {
+                                                                          var target = siblingLivePages[route];
+                                                                          document.querySelectorAll('a.submenuitem[href="' + route + '"]').forEach(function (a) {
+                                                                              a.setAttribute('href', siblingPageUrl(target.folder, target.file));
+                                                                          });
+                                                                      });
 
                                                                       // This is a static design demo — it must never navigate away to the
                                                                       // real umsbd.net site (menu links, notice links, logout, form POST, etc.
                                                                       // all point to real app routes in the captured markup). Block every
                                                                       // real link click and form submit at the document level, except the
-                                                                      // sidebar links to sibling demo pages handled above.
+                                                                      // sidebar links to sibling demo pages (already rewritten to correct
+                                                                      // relative URLs above, so left as normal navigation).
                                                                       document.addEventListener('click', function (e) {
                                                                           var a = e.target.closest('a[href]');
                                                                           if (!a) return;
                                                                           var href = a.getAttribute('href');
-                                                                          if (a.classList.contains('submenuitem') && href && siblingLivePages.hasOwnProperty(href)) {
-                                                                              e.preventDefault();
-                                                                              if (href === thisPageRoute) {
-                                                                                  // Strip any "direct=1" (see the ceListView script above) so
-                                                                                  // picking this menu item always lands back on the filter+list
-                                                                                  // view, even from a tab that was opened straight into the
-                                                                                  // detail view (e.g. via Mentor Dashboard's Entry button).
-                                                                                  window.location.href = window.location.pathname;
-                                                                              } else {
-                                                                                  var target = siblingLivePages[href];
-                                                                                  window.location.href = siblingPageUrl(target.folder, target.file);
-                                                                              }
-                                                                              return;
-                                                                          }
-                                                                          if (href && href.indexOf('#') !== 0 && href.indexOf('javascript:') !== 0) {
+                                                                          if (href && href.indexOf('#') !== 0 && href.indexOf('javascript:') !== 0 && href.indexOf('../') !== 0) {
                                                                               e.preventDefault();
                                                                           }
                                                                       }, true);
