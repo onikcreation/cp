@@ -30142,10 +30142,6 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
         //   (titled "Total Data: N : Tracking ID: X" this time) carries its own full
         //   program-info block, since that genuinely differs panel to panel here.
         function renderEntryBreakdownTables(breakdown) {
-            // Remembered so the "View By" dropdown's change handler can re-render this
-            // exact same breakdown with the opposite grouping (Programwise <-> Pinwise)
-            // without needing a fresh search — see the viewByFilter change handler.
-            window.lastEntryBreakdownForViewBy = breakdown;
             var $container = $('#multiTrackingContainer').empty();
             // A single panel starts expanded; two or more start collapsed — see the
             // matching comment in renderMultiTrackingTables above. Counted across the
@@ -30351,18 +30347,10 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                 AdjustMultiSelectSelectAll($(this));
             })
 
-            // Demo: "View By" (Programwise/Pinwise) toggle — re-renders whatever
-            // Tracking ID/Executed By breakdown is currently on screen (however it got
-            // there: a manual search, or a Mentor Dashboard/Dashboard ?eb= link) with
-            // the opposite grouping, without needing a fresh search. No-op if nothing
-            // eb=-shaped is currently displayed (e.g. Pending's two-table view, or an
-            // old-style ?count=/?trIds= single/multi table).
-            $(document).on('change', '#viewByFilter', function () {
-                if (window.lastEntryBreakdownForViewBy && window.lastEntryBreakdownForViewBy.length) {
-                    demoGroupByExecutedBy = $(this).val() === 'Pinwise';
-                    renderEntryBreakdownTables(window.lastEntryBreakdownForViewBy);
-                }
-            });
+            // Demo: "View By" (Programwise/Pinwise) is intentionally NOT live — changing
+            // it only updates what the "View" button will render next time it's clicked
+            // (see NextOperation, which reads $('#viewByFilter').val() at click time).
+            // The table already on screen stays as-is until then.
 
             $(document).on('input', pageSizeId, function () {
 

@@ -12484,8 +12484,8 @@ function DeselectSelectedOptionAdd(elem) {
                     ? 'Effective Call<br>(CR) Today'
                     : 'Effective Call<br>(CR) (' + formatDisplayDate(dateLabel) + ')';
                 var entryTillColLabel = (entryTillFollowsSelectedDate && dateLabel !== 'Today')
-                    ? 'Effective Call (CR)<br>Till (' + formatDisplayDate(dateLabel) + ')'
-                    : 'Effective Call (CR)<br>Till Today';
+                    ? 'Effective Call<br>(CR) Till (' + formatDisplayDate(dateLabel) + ')'
+                    : 'Effective Call<br>(CR) Till Today';
 
                 var grandStudent = sumBy(branchRows, 'TotalStudent');
                 var grandEntry   = dateAdjustEntryTill(sumBy(branchRows, 'DataEntry'), dateLabel);
@@ -12525,7 +12525,7 @@ function DeselectSelectedOptionAdd(elem) {
                         '<th style="width:110px;">' + entryColLabel + '</th>' +
                         '<th style="width:80px;">Avg. Call<br>Time</th>' +
                         '<th style="width:60px;">Total<br>Student</th>' +
-                        '<th style="width:110px;">' + entryTillColLabel + '</th>' +
+                        '<th style="width:160px;">' + entryTillColLabel + '</th>' +
                         '<th style="width:90px;">Pending Call<br>(NCY+CNR)</th>' +
                         '<th style="width:90px;">Tracking ID</th>' +
                         '<th style="width:90px;">Creation Date</th>' +
@@ -12540,7 +12540,7 @@ function DeselectSelectedOptionAdd(elem) {
                         '<th style="width:110px;">' + entryColLabel + '</th>' +
                         '<th style="width:80px;">Avg. Call<br>Time</th>' +
                         '<th style="width:60px;">Total<br>Student</th>' +
-                        '<th style="width:110px;">' + entryTillColLabel + '</th>' +
+                        '<th style="width:160px;">' + entryTillColLabel + '</th>' +
                         '<th style="width:90px;">Pending Call<br>(NCY+CNR)</th>' +
                         '<th style="width:90px;">Tracking ID</th>' +
                         '<th style="width:90px;">Creation Date</th>' +
