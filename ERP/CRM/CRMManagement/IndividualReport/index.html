@@ -7957,6 +7957,35 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
         font-weight:bold;
     }
                 </style>
+                <style>
+                    #pageChangesBtn {
+                        display: inline-block;
+                        position: absolute;
+                        left: 50%;
+                        top: 11px;
+                        transform: translateX(-50%);
+                        padding: 6px 12px;
+                        line-height: 1.2;
+                        text-align: center;
+                        border-radius: 6px;
+                        background: #F59E0B;
+                        border: 2px solid #fff;
+                        color: #fff !important;
+                        font-size: 12.5px;
+                        font-weight: bold;
+                        white-space: nowrap;
+                        z-index: 1031;
+                        animation: pageChangesPulse 1.6s infinite;
+                    }
+                    @keyframes pageChangesPulse {
+                        0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, .7); }
+                        70% { box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); }
+                        100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+                    }
+                </style>
+                <a href="javascript:void(0)" id="pageChangesBtn" data-toggle="modal" data-target="#pageChangesModal" title="এই পেইজে যা নতুন পরিবর্তন/আপডেট করা হয়েছে">
+                  New Updates
+                </a>
                 <form action="javascript:void(0)" onsubmit="return false;" class="navbar-right" id="logoutForm" method="post">
                   <ul class="nav navbar-nav navbar-right">
                     <li class="blink">
@@ -25403,7 +25432,7 @@ function getDPI() {
                       '<th style="min-width:200px;">Conversation Type</th><th style="min-width:100px;">Status</th>' +
                       '<th style="min-width:200px;">Student Feedback</th><th>Conversation Duration</th>' +
                       '<th style="min-width:200px;">Remarks</th><th style="min-width:250px;">Custom Entry Field</th>' +
-                      '<th style="min-width:150px;">Entry By</th><th style="min-width:200px;">Entry Date &amp; Time</th>' +
+                      '<th style="min-width:150px;">Executed By</th><th style="min-width:200px;">Entry Date &amp; Time</th>' +
                       '<th style="min-width:150px;">Mobile Number</th>' +
                       '</tr></thead>' +
                       '<tbody class="text-center">' + rowsHtml + '</tbody>' +
@@ -25442,7 +25471,7 @@ function getDPI() {
                       '<p><strong>PIN/TPIN :</strong> ' + row.pinTpin + '</p>' +
                       '</div>' +
                       '<div class="col-md-6 text-right">' +
-                      '<p><strong>Executed By :</strong> ' + row.executedBy + '</p>' +
+                      '<p><strong>Assigned To :</strong> ' + row.executedBy + '</p>' +
                       '<p><strong>Conversation Type :</strong> ' + row.type + '</p>' +
                       '</div>' +
                       '</div></div>' +
@@ -25451,7 +25480,7 @@ function getDPI() {
                       '<thead class="table-light"><tr>' +
                       '<th>Serial</th><th style="min-width:150px;">Status</th><th style="min-width:200px;">Student Feedback</th>' +
                       '<th>Conversation Duration</th><th style="min-width:200px;">Remarks</th>' +
-                      '<th style="min-width:150px;">Entry By</th><th style="min-width:200px;">Entry Date &amp; Time</th>' +
+                      '<th style="min-width:150px;">Executed By</th><th style="min-width:200px;">Entry Date &amp; Time</th>' +
                       '<th style="min-width:150px;">Mobile Number</th>' +
                       '</tr></thead>' +
                       '<tbody class="text-center"><tr>' +
@@ -25674,5 +25703,74 @@ function getDPI() {
       });
       document.addEventListener('submit', function (e) { e.preventDefault(); });
     </script>
+        <style>
+          @media screen and (min-width: 768px) {
+            #pageChangesModal .modal-dialog {
+              width: 60%;
+            }
+          }
+        </style>
+        <div class="modal fade" id="pageChangesModal" tabindex="-1" role="dialog" aria-labelledby="pageChangesModalLabel">
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header" style="background:#4338CA; color:#fff; border-top-left-radius:4px; border-top-right-radius:4px;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:#fff; opacity:.85; text-shadow:none;"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="pcm-copy-btn" title="সম্পূর্ণ কনটেন্ট কপি করুন" style="float:right; margin:-2px 8px 0 0; background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.5); color:#fff; border-radius:4px; padding:2px 10px; font-size:12px; line-height:1.6; cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="12" height="12" fill="currentColor" style="vertical-align:-1px; margin-right:4px;"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path></svg>Copy</button>
+                <h4 class="modal-title" id="pageChangesModalLabel">এই পেইজে যা নতুন পরিবর্তন/আপডেট করা হয়েছে</h4>
+              </div>
+              <div class="modal-body" style="height:65vh; overflow-y:auto;">
+                <p style="font-weight:bold; margin-bottom:12px;">নতুন আপডেট:</p>
+                <ol style="padding-left:20px; margin:0;">
+                  <li style="margin-bottom:12px;">
+                    <strong>Report Type: Details দিয়ে সাবমিট করলে যে ডাটাটেবিল পাওয়া যায়, তার "Entry By" কলামের নাম পরিবর্তন করে "Executed By" করা হয়েছে।</strong>
+                  </li>
+                  <li>
+                    <strong>Report Type: Summary দিয়ে সাবমিট করলে যে ডাটাটেবিল পাওয়া যায়, তার "Details" বাটনে ক্লিক করলে যে তথ্য দেখা যায় সেখানে "Executed By" ফিল্ডের নাম পরিবর্তন করে "Assigned To" করা হয়েছে, এবং নিচের টেবিলের "Entry By" কলামের নাম পরিবর্তন করে "Executed By" করা হয়েছে।</strong>
+                  </li>
+                </ol>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">বন্ধ করুন</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <script>
+          function pcmFeedback(btn, label) {
+              var original = btn.innerHTML;
+              btn.innerHTML = label;
+              setTimeout(function () { btn.innerHTML = original; }, 1800);
+          }
+          function pcmSelectionFallbackCopy(btn, modalBody) {
+              try {
+                  var range = document.createRange();
+                  range.selectNodeContents(modalBody);
+                  var sel = window.getSelection();
+                  sel.removeAllRanges();
+                  sel.addRange(range);
+                  var ok = document.execCommand('copy');
+                  sel.removeAllRanges();
+                  pcmFeedback(btn, ok ? 'Copied!' : 'সিলেক্ট হয়েছে, Ctrl+C চাপুন');
+              } catch (err) {
+                  pcmFeedback(btn, 'কপি ব্যর্থ হয়েছে');
+              }
+          }
+          document.addEventListener('click', function (e) {
+              var btn = e.target.closest('.pcm-copy-btn');
+              if (!btn) return;
+              var modalBody = btn.closest('.modal-content').querySelector('.modal-body');
+              if (!modalBody) return;
+              var text = modalBody.innerText || modalBody.textContent || '';
+              if (navigator.clipboard && navigator.clipboard.writeText) {
+                  navigator.clipboard.writeText(text).then(function () {
+                      pcmFeedback(btn, 'Copied!');
+                  }).catch(function () {
+                      pcmSelectionFallbackCopy(btn, modalBody);
+                  });
+              } else {
+                  pcmSelectionFallbackCopy(btn, modalBody);
+              }
+          });
+        </script>
           </body>
         </html>
