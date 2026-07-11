@@ -9112,6 +9112,21 @@ table.DTFC_Cloned thead,table.DTFC_Cloned tfoot{background-color:white}div.DTFC_
                             <input type="text" class="form-control numbersOnly" id="PageSize" value="100">
                           </div>
                         </div>
+                        <div class="form-group">
+                          <label class="control-label col-md-2" for="ViewBy">
+                            View By
+                          </label>
+                          <div class="col-md-4">
+                            <select name="viewByFilter" id="viewByFilter" class="form-control">
+                              <option value="Programwise" selected="selected">
+                                Programwise
+                              </option>
+                              <option value="Pinwise">
+                                Pinwise
+                              </option>
+                            </select>
+                          </div>
+                        </div>
                         <div class="row">
                           <div class="col-md-12" style="text-align:center; font-weight:bold;">
                             <h4>
@@ -29181,6 +29196,38 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
             });
         }
 
+        // Demo: a manually-typed Tracking ID (View By filter path) has no real
+        // per-Executed-By breakdown the way a Mentor Dashboard/Dashboard "?eb=" link
+        // already does — so fabricate one deterministically per Tracking ID, splitting
+        // its total across 1-3 fake agents chosen/weighted via demoHashString of the
+        // Tracking ID, so the same Tracking ID always produces the same split across
+        // reloads and View By (Programwise/Pinwise) toggles instead of jumping around.
+        function fabricateEntryPairsForTrackingIds(breakdown) {
+            var pairs = [];
+            breakdown.forEach(function (entry) {
+                var agentCount = 1 + (demoHashString(entry.trackingId + 'agentCount') % 3); // 1-3
+                var startIdx = demoHashString(entry.trackingId + 'agentStart') % fakeAgents.length;
+                var weights = [];
+                for (var i = 0; i < agentCount; i++) {
+                    weights.push(1 + (demoHashString(entry.trackingId + 'agentWeight' + i) % 5));
+                }
+                var totalWeight = weights.reduce(function (a, b) { return a + b; }, 0);
+                var remaining = entry.count;
+                for (var i = 0; i < agentCount; i++) {
+                    var agent = fakeAgents[(startIdx + i) % fakeAgents.length];
+                    var share = (i === agentCount - 1)
+                        ? remaining
+                        : Math.max(1, Math.round(entry.count * weights[i] / totalWeight));
+                    share = Math.min(share, remaining);
+                    if (share > 0) {
+                        pairs.push({ trackingId: entry.trackingId, executedBy: agent, count: share });
+                    }
+                    remaining -= share;
+                }
+            });
+            return pairs;
+        }
+
         // variable decalre
 
         // pre defined module
@@ -30095,6 +30142,10 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
         //   (titled "Total Data: N : Tracking ID: X" this time) carries its own full
         //   program-info block, since that genuinely differs panel to panel here.
         function renderEntryBreakdownTables(breakdown) {
+            // Remembered so the "View By" dropdown's change handler can re-render this
+            // exact same breakdown with the opposite grouping (Programwise <-> Pinwise)
+            // without needing a fresh search — see the viewByFilter change handler.
+            window.lastEntryBreakdownForViewBy = breakdown;
             var $container = $('#multiTrackingContainer').empty();
             // A single panel starts expanded; two or more start collapsed — see the
             // matching comment in renderMultiTrackingTables above. Counted across the
@@ -30223,21 +30274,39 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                 // (see the ?count= query-param handling above).
                 setTimeout(function () {
                     var trackingBreakdown = currentTrackingIdBreakdown();
-                    if (trackingBreakdown.length > 1) {
-                        // More than one Tracking ID is in the box — whether it got there via
-                        // a Mentor Dashboard Total/Grand Total click or was typed in by hand —
-                        // show them all, one table per Tracking ID.
+                    if (cameFromDrillDownLink) {
+                        // Old-style "?count=/?trIds=" drill-down (still used by Mentor
+                        // Dashboard Pinwise's Till Today column) — keep this exact prior
+                        // behavior untouched, since it has its own already-known
+                        // per-Tracking-ID counts/entryBy list and isn't View-By-aware.
+                        if (trackingBreakdown.length > 1) {
+                            // More than one Tracking ID is in the box — show them all,
+                            // one table per Tracking ID.
+                            var allTrackingIds = $.map(trackingBreakdown, function (p) { return p.trackingId; }).join(', ');
+                            $(trackingShowId).text(allTrackingIds);
+                            $('#detailsPanel').hide();
+                            $('#multiTrackingContainer').show();
+                            renderMultiTrackingTables(trackingBreakdown);
+                        } else {
+                            $(trackingShowId).text(trackingNo);
+                            $('#multiTrackingContainer').hide().empty();
+                            $('#detailsPanel').show();
+                            var rows = generateFakeReportRows(window.demoTotalCount);
+                            dataTableRender(rows);
+                        }
+                    } else {
+                        // Genuine manual Tracking ID entry — no real per-Executed-By
+                        // breakdown exists for it, so fabricate one and reuse the same
+                        // Programwise/Pinwise renderer Mentor Dashboard/Dashboard's ?eb=
+                        // links use, grouped per the "View By" dropdown (defaults to
+                        // Programwise).
                         var allTrackingIds = $.map(trackingBreakdown, function (p) { return p.trackingId; }).join(', ');
                         $(trackingShowId).text(allTrackingIds);
                         $('#detailsPanel').hide();
                         $('#multiTrackingContainer').show();
-                        renderMultiTrackingTables(trackingBreakdown);
-                    } else {
-                        $(trackingShowId).text(trackingNo);
-                        $('#multiTrackingContainer').hide().empty();
-                        $('#detailsPanel').show();
-                        var rows = generateFakeReportRows(window.demoTotalCount);
-                        dataTableRender(rows);
+                        demoGroupByExecutedBy = $('#viewByFilter').val() === 'Pinwise';
+                        var pairs = fabricateEntryPairsForTrackingIds(trackingBreakdown);
+                        renderEntryBreakdownTables(pairs);
                     }
                     $.unblockUI();
                     ShowHide();
@@ -30282,7 +30351,18 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                 AdjustMultiSelectSelectAll($(this));
             })
 
-            
+            // Demo: "View By" (Programwise/Pinwise) toggle — re-renders whatever
+            // Tracking ID/Executed By breakdown is currently on screen (however it got
+            // there: a manual search, or a Mentor Dashboard/Dashboard ?eb= link) with
+            // the opposite grouping, without needing a fresh search. No-op if nothing
+            // eb=-shaped is currently displayed (e.g. Pending's two-table view, or an
+            // old-style ?count=/?trIds= single/multi table).
+            $(document).on('change', '#viewByFilter', function () {
+                if (window.lastEntryBreakdownForViewBy && window.lastEntryBreakdownForViewBy.length) {
+                    demoGroupByExecutedBy = $(this).val() === 'Pinwise';
+                    renderEntryBreakdownTables(window.lastEntryBreakdownForViewBy);
+                }
+            });
 
             $(document).on('input', pageSizeId, function () {
 
@@ -30422,6 +30502,10 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                 $(trackingShowId).text(ebTrackingIds.join(', '));
                 $('#detailsPanel').hide();
                 $('#multiTrackingContainer').show();
+                // Reflect which grouping this link actually carried (Mentor Dashboard's
+                // Pinwise columns add "&groupBy=executedBy") so the dropdown matches
+                // what's on screen instead of always resetting to Programwise.
+                $('#viewByFilter').val(demoGroupByExecutedBy ? 'Pinwise' : 'Programwise');
                 renderEntryBreakdownTables(demoEntryBreakdown);
                 collapseFilterPanel();
             }

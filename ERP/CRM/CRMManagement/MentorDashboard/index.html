@@ -12484,8 +12484,8 @@ function DeselectSelectedOptionAdd(elem) {
                     ? 'Effective Call<br>(CR) Today'
                     : 'Effective Call<br>(CR) (' + formatDisplayDate(dateLabel) + ')';
                 var entryTillColLabel = (entryTillFollowsSelectedDate && dateLabel !== 'Today')
-                    ? 'Call Received<br>Till (' + formatDisplayDate(dateLabel) + ')'
-                    : 'Call Received<br>Till Today';
+                    ? 'Effective Call (CR)<br>Till (' + formatDisplayDate(dateLabel) + ')'
+                    : 'Effective Call (CR)<br>Till Today';
 
                 var grandStudent = sumBy(branchRows, 'TotalStudent');
                 var grandEntry   = dateAdjustEntryTill(sumBy(branchRows, 'DataEntry'), dateLabel);
