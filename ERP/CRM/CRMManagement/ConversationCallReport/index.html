@@ -12669,7 +12669,7 @@ function DeselectSelectedOptionAdd(elem) {
                     var c = counts[key];
                     return c.trackingId + '~' + encodeURIComponent(c.executedBy) + '~' + c.count;
                 });
-                var href = '../DetailsReport/DetailsReport_Offline.html?statusOnly=call_received&eb=' + triples.join(',');
+                var href = siblingPageUrl('DetailsReport', 'DetailsReport_Offline.html') + '?statusOnly=call_received&eb=' + triples.join(',');
                 if (pinwise) href += '&groupBy=executedBy';
                 return href;
             }

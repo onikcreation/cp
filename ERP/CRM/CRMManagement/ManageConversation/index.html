@@ -10617,7 +10617,7 @@ var mcSessions = ['2025','2026','2027'];
       }
 
       function mcRowHtml(r, idx) {
-        var editHref = '../CreateConversation/CreateConversation_Offline.html?mode=edit&tid=' + encodeURIComponent(r.trackingId) +
+        var editHref = siblingPageUrl('CreateConversation', 'CreateConversation_Offline.html') + '?mode=edit&tid=' + encodeURIComponent(r.trackingId) +
           '&ct=' + encodeURIComponent(r.conversationType) + '&title=' + encodeURIComponent(r.title) +
           '&org=' + encodeURIComponent(r.organization) + '&program=' + encodeURIComponent(r.program) +
           '&session=' + encodeURIComponent(r.session) + '&initiatedBy=' + encodeURIComponent(r.initiatedBy);

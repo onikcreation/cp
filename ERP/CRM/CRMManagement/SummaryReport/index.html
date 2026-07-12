@@ -12463,7 +12463,7 @@ var srBranches = ["Barishal Unmesh","Basabo Unmesh","Bhaluka Udvash","Bogura Col
       function srDrillHref(trackingId, person, count, statusOnly) {
         if (!count) return null;
         var triple = trackingId + '~' + encodeURIComponent(person || '-') + '~' + count;
-        var href = '../DetailsReport/DetailsReport_Offline.html?eb=' + triple;
+        var href = siblingPageUrl('DetailsReport', 'DetailsReport_Offline.html') + '?eb=' + triple;
         if (statusOnly) href += '&statusOnly=' + statusOnly;
         return href;
       }
