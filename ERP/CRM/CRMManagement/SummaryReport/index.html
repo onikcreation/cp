@@ -7829,6 +7829,35 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
         font-weight:bold;
     }
                 </style>
+                <style>
+                    #pageChangesBtn {
+                        display: inline-block;
+                        position: absolute;
+                        left: 50%;
+                        top: 11px;
+                        transform: translateX(-50%);
+                        padding: 6px 12px;
+                        line-height: 1.2;
+                        text-align: center;
+                        border-radius: 6px;
+                        background: #F59E0B;
+                        border: 2px solid #fff;
+                        color: #fff !important;
+                        font-size: 12.5px;
+                        font-weight: bold;
+                        white-space: nowrap;
+                        z-index: 1031;
+                        animation: pageChangesPulse 1.6s infinite;
+                    }
+                    @keyframes pageChangesPulse {
+                        0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, .7); }
+                        70% { box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); }
+                        100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+                    }
+                </style>
+                <a href="javascript:void(0)" id="pageChangesBtn" data-toggle="modal" data-target="#pageChangesModal" title="এই পেইজে যা যা পরিবর্তন/আপডেট করা হয়েছে">
+                  New Updates
+                </a>
                 <form action="javascript:void(0)" onsubmit="return false;" class="navbar-right" id="logoutForm" method="post">
                   <ul class="nav navbar-nav navbar-right">
                     <li class="blink">
@@ -8133,7 +8162,7 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                             <input type="hidden" id="InitiatedBy">
                             <input type="text" id="InitiatedByText" class="form-control initiatedByText" placeholder="Member PIN" autocomplete="off">
                           </div>
-                          <label class="control-label col-md-2" for="ExecutedBy">Executed By</label>
+                          <label class="control-label col-md-2" for="ExecutedBy">Assign To</label>
                           <div class="col-md-4">
                             <select class="form-control" id="ExecutedBy" multiple="multiple" name="ExecutedBy">
                               <option value="10">Self</option>
@@ -8215,7 +8244,7 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                           <div class="col-md-4">
                             <input class="form-control" id="RegNo" maxlength="13" name="RegNo" placeholder="Registration / Mobile No." type="text" value="">
                           </div>
-                          <label class="control-label col-md-2" for="Keyword">Entry By</label>
+                          <label class="control-label col-md-2" for="Keyword">Executed By</label>
                           <div class="col-md-4">
                             <input class="form-control" id="Keyword" name="Keyword" placeholder="User Email" type="text" value="">
                           </div>
@@ -8256,6 +8285,94 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                     </div>
                   </div>
                 </div>
+
+                <style>
+                  @media screen and (min-width: 768px) {
+                    #pageChangesModal .modal-dialog {
+                      width: 60%;
+                    }
+                  }
+                </style>
+                <div class="modal fade" id="pageChangesModal" tabindex="-1" role="dialog" aria-labelledby="pageChangesModalLabel">
+                  <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header" style="background:#4338CA; color:#fff; border-top-left-radius:4px; border-top-right-radius:4px;">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:#fff; opacity:.85; text-shadow:none;"><span aria-hidden="true">&times;</span></button>
+                        <button type="button" class="pcm-copy-btn" title="সম্পূর্ণ কনটেন্ট কপি করুন" style="float:right; margin:-2px 8px 0 0; background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.5); color:#fff; border-radius:4px; padding:2px 10px; font-size:12px; line-height:1.6; cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="12" height="12" fill="currentColor" style="vertical-align:-1px; margin-right:4px;"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path></svg>Copy</button>
+                        <h4 class="modal-title" id="pageChangesModalLabel">এই পেইজে যা যা পরিবর্তন/আপডেট করা হয়েছে</h4>
+                      </div>
+                      <div class="modal-body" style="height:65vh; overflow-y:auto;">
+                        <p style="font-weight:bold; margin-bottom:12px;">নতুন আপডেট:</p>
+                        <ol style="padding-left:20px; margin:0;">
+                          <li style="margin-bottom:16px;">
+                            <strong>"Executed By" টাইটেল ফিল্ডের নাম পরিবর্তন করে "Assign To" করা হয়েছে।</strong>
+                            <p style="margin:4px 0 0; color:#555;"><em>যেভাবে কাজ করবে:</em> ফিল্টার ফর্মের "Executed By" (Self/Teacher/Management) লেবেল এবং Details রেজাল্ট টেবিলের "Executed By" কলাম হেডিং — দুই জায়গাতেই নাম বদলে "Assign To" দেখাবে।</p>
+                          </li>
+                          <li style="margin-bottom:16px;">
+                            <strong>"Entry By" টাইটেল ফিল্ডের নাম পরিবর্তন করে "Executed By" করা হয়েছে।</strong>
+                            <p style="margin:4px 0 0; color:#555;"><em>যেভাবে কাজ করবে:</em> ফিল্টার ফর্মের "Entry By" (placeholder: User Email) লেবেল এবং User Tracking ID Wise মোডে Details টেবিলের "Entry By" কলাম হেডিং — দুই জায়গাতেই নাম বদলে "Executed By" দেখাবে।</p>
+                          </li>
+                          <li style="margin-bottom:16px;">
+                            <strong>Average Duration কলামের একেবারে নিচে Total রোতে Average Duration কলামের Average ডাটা হিসেব করে দেখাবে হবে।</strong>
+                            <p style="margin:4px 0 0; color:#555;"><em>যেভাবে কাজ করবে:</em> আগে Total রোতে Average Duration কলাম খালি ("-") দেখাতো। এখন বর্তমানে ফিল্টার করা সব রো-এর Average Duration যোগ করে রো-সংখ্যা দিয়ে ভাগ করে (গড়) হিসাব করে Total রোতে দেখানো হয় (h/m/s ফরম্যাটে)।</p>
+                          </li>
+                          <li style="margin-bottom:16px;">
+                            <strong>Report Type : Tracking ID Wise হলে ডাটা টেবিলের ক্লিকেবল সংখ্যাগুলোতে ক্লিক করা হলে Details Report মেনুতে Programwise লজিক অনুযায়ি দেখাতে হবে।</strong>
+                            <p style="margin:4px 0 0; color:#555;"><em>যেভাবে কাজ করবে:</em> Number of Calls/Recieved Calls/Not Recieved Calls কলামের সংখ্যায় ক্লিক করলে নতুন ট্যাবে Details Report খুলবে, Report Type Tracking ID Wise থাকলে সেখানে "View By" ডিফল্ট Programwise-এই দেখাবে।</p>
+                          </li>
+                          <li style="margin-bottom:16px;">
+                            <strong>Report Type : User Tracking ID Wise হলে ডাটা টেবিলের ক্লিকেবল সংখ্যাগুলোতে ক্লিক করা হলে Details Report মেনুতে Pinwise লজিক অনুযায়ি দেখাতে হবে।</strong>
+                            <p style="margin:4px 0 0; color:#555;"><em>যেভাবে কাজ করবে:</em> একই ক্লিকেবল সংখ্যাগুলোতে ক্লিক করলে, Report Type User Tracking ID Wise থাকলে Details Report-এ "View By" স্বয়ংক্রিয়ভাবে Pinwise সিলেক্ট হয়ে দেখাবে।</p>
+                          </li>
+                          <li>
+                            <strong>এই মেনুতে আসা হলে শুরুতে Date From ও Date To ডিফল্টভাবে আজকের তারিখ অটো সিলেক্ট থাকতে হবে।</strong>
+                            <p style="margin:4px 0 0; color:#555;"><em>যেভাবে কাজ করবে:</em> আগে পেইজে প্রথমে আসলে Date From/Date To খালি থাকতো। এখন পেইজ লোড হওয়ার সাথে সাথেই দুটো ফিল্ডে আজকের তারিখ (yyyy-mm-dd) অটো-সিলেক্ট হয়ে থাকবে — ইউজার চাইলে অন্য তারিখে বদলে দিতে পারবে, কিন্তু ফিল্ডটা খালি করতে পারবে না (Clear অপশন নেই)।</p>
+                          </li>
+                        </ol>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">বন্ধ করুন</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <script>
+                  function pcmFeedback(btn, label) {
+                      var original = btn.innerHTML;
+                      btn.innerHTML = label;
+                      setTimeout(function () { btn.innerHTML = original; }, 1800);
+                  }
+                  function pcmSelectionFallbackCopy(btn, modalBody) {
+                      try {
+                          var range = document.createRange();
+                          range.selectNodeContents(modalBody);
+                          var sel = window.getSelection();
+                          sel.removeAllRanges();
+                          sel.addRange(range);
+                          var ok = document.execCommand('copy');
+                          sel.removeAllRanges();
+                          pcmFeedback(btn, ok ? 'Copied!' : 'সিলেক্ট হয়েছে, Ctrl+C চাপুন');
+                      } catch (err) {
+                          pcmFeedback(btn, 'কপি ব্যর্থ হয়েছে');
+                      }
+                  }
+                  document.addEventListener('click', function (e) {
+                      var btn = e.target.closest('.pcm-copy-btn');
+                      if (!btn) return;
+                      var modalBody = btn.closest('.modal-content').querySelector('.modal-body');
+                      if (!modalBody) return;
+                      var text = modalBody.innerText || modalBody.textContent || '';
+                      if (navigator.clipboard && navigator.clipboard.writeText) {
+                          navigator.clipboard.writeText(text).then(function () {
+                              pcmFeedback(btn, 'Copied!');
+                          }).catch(function () {
+                              pcmSelectionFallbackCopy(btn, modalBody);
+                          });
+                      } else {
+                          pcmSelectionFallbackCopy(btn, modalBody);
+                      }
+                  });
+                </script>
 
             <div class="container body-content">
               <hr>
@@ -12414,6 +12531,15 @@ var srBranches = ["Barishal Unmesh","Basabo Unmesh","Bhaluka Udvash","Bogura Col
       // "22 May, 2025 01:12 PM" / "03 Jul, 2026" / "-" -> Date or null
       function srParseDate(str) {
         if (!str || str === '-') return null;
+        str = str.trim();
+        // "yyyy-mm-dd" (Date From/To ইনপুট ফিল্ডের ভ্যালু) যদি new Date(str)-এ সরাসরি দেওয়া হয় তাহলে
+        // browser সেটাকে UTC হিসেবে ধরে, অথচ ক্যাপচার করা "dd Mon, yyyy" স্ট্রিং local time হিসেবে
+        // পার্স হয় — এই মিসম্যাচের কারণে timezone অনুযায়ী একদিন এদিক-ওদিক হয়ে যেতে পারত।
+        // তাই yyyy-mm-dd ফরম্যাটটা এখানেই local date হিসেবে বানানো হচ্ছে।
+        var isoMatch = str.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+        if (isoMatch) {
+          return new Date(parseInt(isoMatch[1], 10), parseInt(isoMatch[2], 10) - 1, parseInt(isoMatch[3], 10));
+        }
         var d = new Date(str.replace(',', ''));
         return isNaN(d.getTime()) ? null : d;
       }
@@ -12425,7 +12551,7 @@ var srBranches = ["Barishal Unmesh","Basabo Unmesh","Bhaluka Udvash","Bogura Col
 
       // --- Column definitions per Report Type mode ---
       function srTheadHtml(mode) {
-        var extraLeftCol = mode === '20' ? '<th rowspan="2" class="sorting_disabled" style="width:177px;">Entry By</th>' : '';
+        var extraLeftCol = mode === '20' ? '<th rowspan="2" class="sorting_disabled" style="width:177px;">Executed By</th>' : '';
         var admissionCol = mode === '10' ? '<th rowspan="2" class="sorting_disabled" style="width:109px;">Total Admission</th>' : '';
         return '<tr>' +
           '<th rowspan="2" class="sorting_disabled" style="width:38px;">Serial</th>' +
@@ -12444,7 +12570,7 @@ var srBranches = ["Barishal Unmesh","Basabo Unmesh","Bhaluka Udvash","Bogura Col
           '<th rowspan="2" class="sorting_disabled" style="width:124px;">Deadline</th>' +
           '<th rowspan="2" class="sorting_disabled" style="width:196px;">Initiated By</th>' +
           '<th rowspan="2" class="sorting_disabled" style="width:186px;">Branch</th>' +
-          '<th rowspan="2" class="sorting_disabled" style="width:201px;">Executed By</th>' +
+          '<th rowspan="2" class="sorting_disabled" style="width:201px;">Assign To</th>' +
           '</tr><tr>' +
           '<th class="sorting_disabled" style="width:40px;">Count</th>' +
           '<th class="sorting_disabled" style="width:55px;">Pending</th>' +
@@ -12460,17 +12586,19 @@ var srBranches = ["Barishal Unmesh","Basabo Unmesh","Bhaluka Udvash","Bogura Col
       // Demo: reuses the exact "?eb=<trackingId>~<person>~<count>" drill-down format
       // Mentor Dashboard/Dashboard/Conversation Call Report already use to open Details
       // Report with a plausible fabricated row set — same mechanism, not a new one.
-      function srDrillHref(trackingId, person, count, statusOnly) {
+      function srDrillHref(trackingId, person, count, statusOnly, mode) {
         if (!count) return null;
         var triple = trackingId + '~' + encodeURIComponent(person || '-') + '~' + count;
         var href = siblingPageUrl('DetailsReport', 'DetailsReport_Offline.html') + '?eb=' + triple;
         if (statusOnly) href += '&statusOnly=' + statusOnly;
+        // Report Type = Tracking ID Wise (mode '10') → Details Report-এ Programwise (ডিফল্ট); User Tracking ID Wise (mode '20') → Pinwise
+        if (mode === '20') href += '&groupBy=executedBy';
         return href;
       }
 
-      function srDrillLink(trackingId, person, count, statusOnly) {
+      function srDrillLink(trackingId, person, count, statusOnly, mode) {
         if (!count) return String(count);
-        var href = srDrillHref(trackingId, person, count, statusOnly);
+        var href = srDrillHref(trackingId, person, count, statusOnly, mode);
         return '<a class="my-link" target="_blank" rel="noopener" href="' + href + '">' + count + '</a>';
       }
 
@@ -12491,9 +12619,9 @@ var srBranches = ["Barishal Unmesh","Basabo Unmesh","Bhaluka Udvash","Bogura Col
           '<td>' + row.totalCalled + '</td>' +
           '<td>' + row.received + '</td>' +
           '<td>' + row.notReceived + '</td>' +
-          '<td>' + srDrillLink(row.trackingId, person, row.numberOfCalls) + '</td>' +
-          '<td>' + srDrillLink(row.trackingId, person, row.receivedCalls, 'call_received') + '</td>' +
-          '<td>' + srDrillLink(row.trackingId, person, row.notReceivedCalls, 'ncy_cnr') + '</td>' +
+          '<td>' + srDrillLink(row.trackingId, person, row.numberOfCalls, null, mode) + '</td>' +
+          '<td>' + srDrillLink(row.trackingId, person, row.receivedCalls, 'call_received', mode) + '</td>' +
+          '<td>' + srDrillLink(row.trackingId, person, row.notReceivedCalls, 'ncy_cnr', mode) + '</td>' +
           '<td>' + srEsc(row.totalDuration) + '</td>' +
           '<td>' + srEsc(row.avgDuration) + '</td>' +
           admissionCol +
@@ -12528,16 +12656,36 @@ var srBranches = ["Barishal Unmesh","Basabo Unmesh","Bhaluka Udvash","Bogura Col
         return mode === '20' ? srUserRows : srTrRows;
       }
 
+      function srDurationToSeconds(str) {
+        if (!str) return 0;
+        var m = String(str).match(/(?:(\d+)h)?\s*(?:(\d+)m)?\s*(?:(\d+)s)?/);
+        if (!m) return 0;
+        return (parseInt(m[1], 10) || 0) * 3600 + (parseInt(m[2], 10) || 0) * 60 + (parseInt(m[3], 10) || 0);
+      }
+      function srSecondsToDuration(sec) {
+        sec = Math.round(sec);
+        var h = Math.floor(sec / 3600);
+        var m = Math.floor((sec % 3600) / 60);
+        var s = sec % 60;
+        var parts = [];
+        if (h) parts.push(h + 'h');
+        if (m) parts.push(m + 'm');
+        if (s || !parts.length) parts.push(s + 's');
+        return parts.join(' ');
+      }
+
       function srComputeTotal(rows) {
-        var t = { count: 0, pending: 0, totalCalled: 0, received: 0, notReceived: 0, numberOfCalls: 0, receivedCalls: 0, notReceivedCalls: 0, totalAdmission: 0, totalDurationSec: 0 };
+        var t = { count: 0, pending: 0, totalCalled: 0, received: 0, notReceived: 0, numberOfCalls: 0, receivedCalls: 0, notReceivedCalls: 0, totalAdmission: 0, totalDurationSumSec: 0, avgDurationSumSec: 0 };
         rows.forEach(function (r) {
           t.count += r.count; t.pending += r.pending; t.totalCalled += r.totalCalled;
           t.received += r.received; t.notReceived += r.notReceived;
           t.numberOfCalls += r.numberOfCalls; t.receivedCalls += r.receivedCalls; t.notReceivedCalls += r.notReceivedCalls;
           if (r.totalAdmission) t.totalAdmission += r.totalAdmission;
+          t.totalDurationSumSec += srDurationToSeconds(r.totalDuration);
+          t.avgDurationSumSec += srDurationToSeconds(r.avgDuration);
         });
-        t.totalDuration = rows.length ? (rows.length + ' rows') : '0s';
-        t.avgDuration = '-';
+        t.totalDuration = rows.length ? srSecondsToDuration(t.totalDurationSumSec) : '0s';
+        t.avgDuration = rows.length ? srSecondsToDuration(t.avgDurationSumSec / rows.length) : '-';
         return t;
       }
 
@@ -12720,7 +12868,7 @@ var srBranches = ["Barishal Unmesh","Basabo Unmesh","Bhaluka Udvash","Bogura Col
 
         $('.date-from, .date-to').datetimepicker({
           format: 'yyyy-mm-dd',
-          showClear: true,
+          showClear: false, // ইউজার তারিখ বদলাতে পারবে, কিন্তু খালি করতে পারবে না
           autoclose: true,
           todayBtn: false,
           startView: 2,
@@ -12728,10 +12876,21 @@ var srBranches = ["Barishal Unmesh","Basabo Unmesh","Bhaluka Udvash","Bogura Col
           maxView: 4
         });
 
-        // Demo: real page's initial load already shows a Details result set (per the
-        // capture) — Date From/To stay blank until the user picks one, matching the
-        // live site's default state. The Details table itself only appears after
-        // the user clicks Submit (matches live site's behavior).
+        // পেইজে প্রথমে আসলেই Date From/Date To ডিফল্টভাবে আজকের তারিখ অটো-সিলেক্ট থাকবে (প্রস্তাবিত পরিবর্তন)।
+        // ডেমো নোট: real system date ব্যবহার করলে ক্যাপচার করা স্যাম্পল রো-গুলোর creationDate
+        // (সর্বশেষ যেটা ২০২৬-০৭-১১) থেকে পিছিয়ে থাকায় Submit করলে কোনো ডাটা মিলতো না।
+        // তাই "আজকে" হিসেবে ডেমো ডাটাসেটের সবচেয়ে সাম্প্রতিক creationDate ব্যবহার করা হচ্ছে,
+        // real system date না — এতে ডিফল্ট তারিখেই ডাটা দেখা যায়, লজিক (real Date) লাইভ সাইটে অক্ষত থাকবে।
+        (function () {
+          var latest = null;
+          srTrRows.concat(srUserRows).forEach(function (r) {
+            var d = srParseDate(r.creationDate);
+            if (d && (!latest || d > latest)) latest = d;
+          });
+          var today = latest || new Date();
+          var todayStr = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+          $('#DateFrom, #DateTo').val(todayStr);
+        })();
 
         $('#ReportType').on('change', function () { /* takes effect on next Submit */ });
 
