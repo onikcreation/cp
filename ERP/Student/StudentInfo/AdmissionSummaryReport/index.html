@@ -17515,10 +17515,7 @@ span.hide-native-select{position:relative}span.hide-native-select select{border:
                               Class:
                             </label>
                             <div class="col-md-4">
-                              <select class="form-control" id="classFilter" name="classFilter" style="min-width:100%">
-                                <option selected="selected" value="All">
-                                  All
-                                </option>
+                              <select class="form-control" id="classFilter" multiple="multiple" name="classFilter" style="min-width:100%">
                                 <option value="Five">
                                   Five
                                 </option>
@@ -57479,7 +57476,7 @@ function DeselectSelectedOptionAdd(elem) {
         // treated as Paid.
         function applyProgramTypeFilter() {
             var type = $('#programType').val();
-            var cls = $('#classFilter').val();
+            var selectedClasses = $('#classFilter').val() || [];
             var prevSelected = $('#programIds').val() || [];
 
             var $allOptions = $('<select>' + window.ORIGINAL_PROGRAM_OPTIONS_HTML + '</select>').find('option');
@@ -57487,9 +57484,9 @@ function DeselectSelectedOptionAdd(elem) {
                 var isFree = /free|ফ্রি/i.test($(this).text());
                 var typeMatches = type === '1' ? !isFree : (type === '2' ? isFree : true);
                 if (!typeMatches) return false;
-                if (cls === 'All') return true;
+                if (selectedClasses.length === 0) return true;
                 var classes = PROGRAM_CLASS_MAP[$(this).attr('value')] || [];
-                return classes.indexOf(cls) !== -1;
+                return selectedClasses.some(function (cls) { return classes.indexOf(cls) !== -1; });
             });
 
             $('#programIds').empty().append($filtered.clone());
@@ -57538,6 +57535,7 @@ function DeselectSelectedOptionAdd(elem) {
             // very first page load before anything's been touched.
             $('#sessionIds').html(window.ORIGINAL_SESSION_OPTIONS_HTML);
 
+            muliselectfnc($('#classFilter'), "All Class");
             muliselectfnc($('#programIds'), "All Program");
             applyProgramTypeFilter();
             muliselectfnc($('#sessionIds'), "All Session");
@@ -59272,13 +59270,9 @@ function DeselectSelectedOptionAdd(elem) {
                                           <div class="modal-body" style="height:65vh; overflow-y:auto;">
                                             <p style="font-weight:bold; margin-bottom:12px;">নতুন আপডেট:</p>
                                             <ol style="padding-left:20px; margin:0;">
-                                              <li style="margin-bottom:16px;">
-                                                <strong>Organization-এর পরে (Program Type-এর আগে) নতুন Class (All/Five-Twelve/Model Test/Admission/Graduate/Undergrad) ফিল্টার যোগ করা হয়েছে, ডিফল্টভাবে All সিলেক্ট থাকবে।</strong>
-                                                <p style="margin:4px 0 0; color:#555;"><em>যেভাবে কাজ করবে:</em> Class যেহেতু Program ফিল্টারেরই অংশ, তাই এটা Program ড্রপডাউনের অপশন লিস্টকেই সংকুচিত করবে — নির্দিষ্ট Class সিলেক্ট করলে শুধু সেই ক্লাস/ক্যাটাগরির প্রোগ্রামগুলোই Program ড্রপডাউনে দেখাবে, Program Type-এর সাথে একসাথে (AND লজিকে) কাজ করে। "All" সিলেক্ট থাকলে (ডিফল্ট) Class অনুযায়ী কোনো ফিল্টার প্রযোজ্য হবে না।</p>
-                                              </li>
                                               <li>
-                                                <strong>Class-এর পরে (Program-এর ঠিক আগে) নতুন Program Type (All/Paid/Free) ফিল্টার যোগ করা হয়েছে, ডিফল্টভাবে Paid সিলেক্ট থাকবে।</strong>
-                                                <p style="margin:4px 0 0; color:#555;"><em>যেভাবে কাজ করবে:</em> Program Type যেহেতু Program ফিল্টারেরই অংশ, তাই এটা Program ড্রপডাউনের অপশন লিস্টকেই সংকুচিত করবে — Paid সিলেক্ট থাকলে (ডিফল্ট) Program ড্রপডাউনে শুধু Paid প্রোগ্রামগুলোই দেখাবে, Free সিলেক্ট করলে শুধু Free প্রোগ্রামগুলো, আর All সিলেক্ট করলে সবগুলো প্রোগ্রামই দেখাবে। তারপর সেই (সংকুচিত) লিস্ট থেকে Program সিলেক্ট করে সার্চ করলে সেই অনুযায়ী ডাটা দেখাবে।</p>
+                                                <strong>Class ফিল্টার এখন Program-এর মতো মাল্টি-সিলেক্ট করা হয়েছে — একসাথে একাধিক Class সিলেক্ট করা যাবে।</strong>
+                                                <p style="margin:4px 0 0; color:#555;"><em>যেভাবে কাজ করবে:</em> একাধিক Class (যেমন Nine + Ten) একসাথে সিলেক্ট করলে Program ড্রপডাউনে সেই সবগুলো Class-এর প্রোগ্রামই (Program Type ফিল্টারের সাথে মিলিয়ে) দেখাবে, আগের মতো একটামাত্র Class সিলেক্ট করার সীমাবদ্ধতা আর থাকবে না। কিছু সিলেক্ট না করলে (ডিফল্ট) আগের "All"-এর মতোই সব Class-এর প্রোগ্রাম দেখাবে।</p>
                                               </li>
                                             </ol>
                                           </div>
@@ -59306,6 +59300,14 @@ function DeselectSelectedOptionAdd(elem) {
                                               <li>
                                                 <strong>আগের বছরের একই সেশনের সাথে তুলনা করার জন্য Previous Session Compare অপশন যোগ করা হয়েছে।</strong>
                                                 <p style="margin:4px 0 0; color:#555;"><em>যেভাবে কাজ করবে:</em> শুধু একটি Session সিলেক্ট করলে এবং Generation Type: Summary Report থাকলেই Generation Type-এর পাশে নতুন চেকবক্স অপশনটা দেখা যাবে। এই চেকবক্স অন করে ডাটা ভিউ করা হলে, রিপোর্টের প্রতিটা প্রোগ্রাম কলাম তিনটা সাব-কলামে ভাগ হয়ে দেখাবে: আগের বছর, এই বছর, পার্থক্য। এই ডাটা Till Date অথবা, Date From - Date To অনুযায়ি ঠিক আগের বছরের একই দিনের সাথে তুলনা করে দেখতে হবে।</p>
+                                              </li>
+                                              <li style="margin-top:16px;">
+                                                <strong>Organization-এর পরে (Program Type-এর আগে) নতুন Class (All/Five-Twelve/Model Test/Admission/Graduate/Undergrad) ফিল্টার যোগ করা হয়েছে, ডিফল্টভাবে All সিলেক্ট থাকবে।</strong>
+                                                <p style="margin:4px 0 0; color:#555;"><em>যেভাবে কাজ করবে:</em> Class যেহেতু Program ফিল্টারেরই অংশ, তাই এটা Program ড্রপডাউনের অপশন লিস্টকেই সংকুচিত করবে — নির্দিষ্ট Class সিলেক্ট করলে শুধু সেই ক্লাস/ক্যাটাগরির প্রোগ্রামগুলোই Program ড্রপডাউনে দেখাবে, Program Type-এর সাথে একসাথে (AND লজিকে) কাজ করে। "All" সিলেক্ট থাকলে (ডিফল্ট) Class অনুযায়ী কোনো ফিল্টার প্রযোজ্য হবে না।</p>
+                                              </li>
+                                              <li style="margin-top:16px;">
+                                                <strong>Class-এর পরে (Program-এর ঠিক আগে) নতুন Program Type (All/Paid/Free) ফিল্টার যোগ করা হয়েছে, ডিফল্টভাবে Paid সিলেক্ট থাকবে।</strong>
+                                                <p style="margin:4px 0 0; color:#555;"><em>যেভাবে কাজ করবে:</em> Program Type যেহেতু Program ফিল্টারেরই অংশ, তাই এটা Program ড্রপডাউনের অপশন লিস্টকেই সংকুচিত করবে — Paid সিলেক্ট থাকলে (ডিফল্ট) Program ড্রপডাউনে শুধু Paid প্রোগ্রামগুলোই দেখাবে, Free সিলেক্ট করলে শুধু Free প্রোগ্রামগুলো, আর All সিলেক্ট করলে সবগুলো প্রোগ্রামই দেখাবে। তারপর সেই (সংকুচিত) লিস্ট থেকে Program সিলেক্ট করে সার্চ করলে সেই অনুযায়ী ডাটা দেখাবে।</p>
                                               </li>
                                             </ol>
                                             <p style="font-weight:bold; margin-bottom:6px; color:#B42318;">Bug:</p>
