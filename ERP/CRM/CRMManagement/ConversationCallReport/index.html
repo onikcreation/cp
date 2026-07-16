@@ -8255,38 +8255,10 @@ span.hide-native-select{position:relative}span.hide-native-select select{border:
         font-weight: bold;
         color: #000;
     }
-    #convSummaryTable th.conv-id-first,
-    #convSummaryTable td.conv-id-first {
-        border-left: 2px solid #85c99a;
-    }
-    #convSummaryTable th.conv-id-last,
-    #convSummaryTable td.conv-id-last {
-        border-right: 2px solid #85c99a;
-    }
-    #convSummaryTable thead tr:first-child th.conv-id-col {
-        border-top: 2px solid #85c99a;
-    }
-    #convSummaryTable tbody tr:last-child td.conv-id-col {
-        border-bottom: 2px solid #85c99a;
-    }
     #convSummaryTable th.conv-detail-col,
     #convSummaryTable td.conv-detail-col {
         font-weight: bold;
         color: #000;
-    }
-    #convSummaryTable th.conv-detail-first,
-    #convSummaryTable td.conv-detail-first {
-        border-left: 2px solid #7fa0d6;
-    }
-    #convSummaryTable th.conv-detail-last,
-    #convSummaryTable td.conv-detail-last {
-        border-right: 2px solid #7fa0d6;
-    }
-    #convSummaryTable thead tr:first-child th.conv-detail-col {
-        border-top: 2px solid #7fa0d6;
-    }
-    #convSummaryTable tbody tr:last-child td.conv-detail-col {
-        border-bottom: 2px solid #7fa0d6;
     }
     #convSummaryTable tr.conv-mentor-header td {
         background: #f3fff4;
@@ -8318,7 +8290,7 @@ span.hide-native-select{position:relative}span.hide-native-select select{border:
                           <option value="program">Program Wise</option>
                           <option value="branch">Branch Wise</option>
                           <option value="mentorBranch">Mentor Branch Wise</option>
-                          <option value="user">Executed By</option>
+                          <option value="user">Executed By Wise</option>
                           <option value="person">Contacted Person Wise</option>
                         </select>
                       </div>
@@ -8697,22 +8669,22 @@ span.hide-native-select{position:relative}span.hide-native-select select{border:
                           <option value="581">581 - Sana Ullah (Sana)</option>
                         </select>
                       </div>
+                      <label class="control-label col-md-2" for="Executed By:">
+                        Executed By:
+                      </label>
+                      <div class="col-md-4">
+                        <input type="text" class="form-control" id="userEmailSearch" name="userEmailSearch" list="userEmailSearchList" placeholder="User Email" autocomplete="off">
+                        <datalist id="userEmailSearchList">
+                          <!-- populated from ENTRY_BY_NAMES at page load -->
+                        </datalist>
+                      </div>
+                    </div>
+                    <div class="form-group">
                       <label class="control-label col-md-2" for="Display Per Page:">
                         Display Per Page:
                       </label>
                       <div class="col-md-4">
                         <input type="number" class="form-control" id="displayPerPage" name="displayPerPage" value="10" min="10" step="10">
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label class="control-label col-md-2" for="User Email:">
-                        User Email:
-                      </label>
-                      <div class="col-md-4">
-                        <input type="text" class="form-control" id="userEmailSearch" name="userEmailSearch" list="userEmailSearchList" placeholder="e.g. rahim.2201@udvash.net" autocomplete="off">
-                        <datalist id="userEmailSearchList">
-                          <!-- populated from ENTRY_BY_NAMES at page load -->
-                        </datalist>
                       </div>
                     </div>
                   <div class="form-group">
@@ -12629,7 +12601,10 @@ function DeselectSelectedOptionAdd(elem) {
                 // header per mentor (mentorGrouped) — matches AdmissionSummaryReport's
                 // "Mentor Wise" branch-select behavior.
                 mentorBranch: { label: 'Branch', getValue: function (r) { return r.branch; }, crossTabKey: 'medium', mentorGrouped: true },
-                program: { label: 'Program', getValue: function (r) { return r.program; }, crossTabKey: 'medium' },
+                // Program Wise also breaks each program's count down by Session —
+                // subGroup adds that extra column between the main dimension and
+                // the cross-tab, same mechanism as User Wise's Branch subGroup.
+                program: { label: 'Program', getValue: function (r) { return r.program; }, subGroup: { label: 'Session', getValue: function (r) { return r.sessionText; } }, crossTabKey: 'medium' },
                 person: { label: 'যে নম্বরে কথা হয়েছে', getValue: function (r) { return r.contactedPerson; }, crossTabKey: 'medium' },
                 // getSortKey (optional): a properly-orderable value for the default
                 // sort and for clicking the "value" column header — needed for Date
@@ -13163,57 +13138,44 @@ function DeselectSelectedOptionAdd(elem) {
                   </div>
                   <div class="modal-body" style="height:65vh; overflow-y:auto;">
                     <p style="font-weight:bold; margin-bottom:4px; color:#B42318;">এই মেনুটি সম্পূর্ণ নতুন — লাইভ সাইটে এখনো তৈরি করা হয়নি।</p>
-                    <p style="margin:4px 0 16px; color:#555;">নাম হবে "Conversation Call Report" এবং এটি CRM Management মেনুর সাবমেনুতে Mentor Dashboard-এর পরে যোগ করতে হবে। Conversation Entry পেইজে থেকে সেভ হওয়া "যে নম্বরে কথা হয়েছে" এবং "যে মাধ্যমে কথা হয়েছে" ফিল্ডগুলোর ডাটা বিভিন্নভাবে ফিল্টার ও অ্যানালাইসিস করার জন্য এই মেনুটি তৈরি করা হচ্ছে।</p>
-                    <p style="font-weight:bold; margin-bottom:4px;">ফিল্টার বার:</p>
+                    <p style="margin:4px 0 16px; color:#555;">নাম হবে "Conversation Call Report" এবং এটি CRM Management মেনুর সাবমেনুতে সবার শেষে যোগ করতে হবে। Conversation Entry পেইজ থেকে সেভ হওয়া "যে নম্বরে কথা হয়েছে" এবং "যে মাধ্যমে কথা হয়েছে" ফিল্ডগুলোর ডাটা বিভিন্নভাবে ফিল্টার ও অ্যানালাইসিস করার জন্য এই মেনুটি তৈরি করা হচ্ছে।</p>
+                    <p style="font-weight:bold; margin-bottom:4px;">ফিল্টার অপশন:</p>
                     <ol style="padding-left:20px; margin:0 0 20px;">
                       <li style="margin-bottom:10px;">
-                        <strong>GroupBy:</strong> Date Wise / Program Wise / Branch Wise / Mentor Branch Wise / User Wise / Contacted Person Wise, ডিফল্টভাবে Date Wise সিলেক্ট থাকবে।
+                        <strong>GroupBy:</strong> Date Wise / Program Wise / Branch Wise / Mentor Branch Wise / Executed By Wise / Contacted Person Wise, ডিফল্টভাবে Date Wise সিলেক্ট থাকবে।
                       </li>
                       <li style="margin-bottom:10px;">
-                        <strong>Organization, Program, Session, Branch</strong> — Organization একটাই সিলেক্ট করা যাবে, বাকি সবগুলো মাল্টি-সিলেক্ট, ডিফল্টে সবগুলোই।
+                        <strong>Organization, Program, Session, Branch</strong> — Organization একটাই সিলেক্ট করা যাবে, বাকি সবগুলো মাল্টি-সিলেক্ট থাকবে, ডিফল্ট All থাকবে।
                       </li>
                       <li style="margin-bottom:10px;">
-                        <strong>যে নম্বরে কথা হয়েছে</strong> (Student/Father/Mother) ও <strong>যে মাধ্যমে কথা হয়েছে</strong> (Mobile Call/WhatsApp/Telegram) — দুটোই সিঙ্গেল-সিলেক্ট, ডিফল্ট All।
+                        <strong>যে নম্বরে কথা হয়েছে</strong> (Student/Father/Mother) ও <strong>যে মাধ্যমে কথা হয়েছে</strong> (Mobile Call/WhatsApp/Telegram) — দুটোই সিঙ্গেল-সিলেক্ট, ডিফল্ট All থাকবে।
                       </li>
                       <li style="margin-bottom:10px;">
-                        <strong>Date From / Date To</strong>, ডিফল্টভাবে দুটোতেই আজকের তারিখ থাকবে।
+                        <strong>Date From / Date To</strong>, ডিফল্টভাবে দুটোতেই আজকের তারিখ সিলেক্ট থাকবে।
                       </li>
                       <li style="margin-bottom:10px;">
-                        <strong>Report Type</strong> (Summary / Details, ডিফল্টভাবে Summary সিলেক্ট থাকবে)।
-                      </li>
-                      <li style="margin-bottom:10px;">
-                        <strong>Branch Mentor</strong> (নির্দিষ্ট মেন্টর সিলেক্ট করলে শুধু তার ব্রাঞ্চের ডাটা দেখাবে)।
+                        <strong>Branch Mentor</strong> (নির্দিষ্ট মেন্টর সিলেক্ট করলে শুধু তার ব্রাঞ্চের ডাটা দেখাবে)
                       </li>
                       <li>
-                        <strong>Display Per Page</strong> (ডিফল্টভাবে 10 থাকবে)।
+                        <strong>Executed By</strong> একজন নির্দিষ্ট টিম মেম্বারের ইমেইল লিখে সার্চ করলে শুধু তার ডাটাই দেখাবে, এবং GroupBy স্বয়ংক্রিয়ভাবে Date Wise-এ বদলে যাবে।
                       </li>
                     </ol>
-                    <p style="margin:0 0 20px;">মেনু ওপেন করার সাথে সাথে নিচে কোনো টেবিল/প্যানেলই দেখাবে না — ইউজার ফিল্টার সিলেক্ট করে <strong>View</strong> বাটনে ক্লিক করলে তবেই "Summary Report"/"Details Report" প্যানেলটা দেখা যাবে।</p>
-                    <p style="font-weight:bold; margin-bottom:4px;">রেজাল্ট ভিউ (Report Type অনুযায়ী, টেবিলের হেডারের শিরোনামও পাল্টাবে — "Summary Report" / "Details Report"):</p>
+                    <p style="margin:0 0 20px;">মেনু ওপেন করার সাথে সাথে নিচে কোনো টেবিল/প্যানেলই দেখাবে না — ইউজার ফিল্টার সিলেক্ট করে <strong>View</strong> বাটনে ক্লিক করলে তবেই "Summary Report" প্যানেলটা দেখা যাবে।</p>
                     <p style="font-weight:bold; margin-bottom:4px;">Summary টেবিল:</p>
                     <ol style="padding-left:20px; margin:0 0 20px;">
                       <li style="margin-bottom:10px;">
-                        Sl., GroupBy ডাইমেনশন-এর ঠিক পরেই Grand Total (Call Count, Duration) কলাম দুটো, তারপর ডান পাশে সবসময় তিনটি কলাম — <strong>Mobile Call / WhatsApp / Telegram</strong> (যে মাধ্যমে কথা হয়েছে অনুযায়ী কল-সংখ্যা, প্রতিটা একটাই কলাম — কোনো আলাদা Duration কলাম নেই)।
+                        Sl., GroupBy ডাইমেনশন কলাম (<strong>Program Wise</strong>-এ Program-এর ঠিক পরে একটা <strong>Session</strong> কলাম, <strong>Executed By Wise</strong>-এ Executed By-এর ঠিক পরে একটা <strong>Branch</strong> কলাম যোগ হয়), তারপর Grand Total (Call Count, Duration) কলাম দুটো, তারপর ডান পাশে সবসময় তিনটি কলাম — <strong>Mobile Call / WhatsApp / Telegram</strong> (যে মাধ্যমে কথা হয়েছে অনুযায়ী কল-সংখ্যা, প্রতিটা একটাই কলাম)।
                       </li>
                       <li style="margin-bottom:10px;">
-                        Grand Total বা Details ব্লকের যেকোনো সংখ্যায় ক্লিক করলে পুরো ভিউ Details-এ পাল্টে যাবে, শুধু সেই নির্দিষ্ট রো ও কলামে মিলে যাওয়া রেকর্ড দেখাবে। "← Summary-তে ফিরে যান" বাটনে ক্লিক করে আবার Summary টেবিলে ফেরা যাবে।
+                        Grand Total বা ডান পাশের যেকোনো সংখ্যায় ক্লিক করলে <strong>Details Report</strong> মেনুতে (নতুন ট্যাবে) নিয়ে যাবে, শুধু সেই নির্দিষ্ট রো-কলাম মিলে যাওয়া রেকর্ড দেখিয়ে। Grand Total রো ও প্রতি-মেন্টর "Mentor Total" রো ক্লিকযোগ্য না।
                       </li>
                       <li style="margin-bottom:10px;">
-                        কলামগুলোতে সর্ট ফিচার থাকবে, ডিফল্টভাবে বেশি থেকে কম এই ক্রম অনুসারে থাকবে।
-                      </li>
-                      <li style="margin-bottom:10px;">
-                        GroupBy তে <strong>Mentor Branch Wise</strong> দেখলে ব্রাঞ্চগুলো মেন্টর অনুযায়ী সেকশনে ভাগ করে দেখাবে। মেন্টরের নাম হালকা সবুজ (#f3fff4) হেডার-রো হিসেবে সেই মেন্টরের ব্রাঞ্চগুলোর উপরে থাকবে, প্রতিটা মেন্টরের শেষে সেই মেন্টরের যোগফল নিয়ে হালকা নীল (#effaff) "Mentor Total" Row দেখাবে, আর সবশেষে সব মেন্টর মিলিয়ে একটা Grand Total Row থাকবে। এই ভিউতে Display Per Page উপেক্ষা করে সব ব্রাঞ্চ একই পেইজে দেখাতে হবে, যাতে কোনো মেন্টরের সেকশন দুই পেইজে ভাগ না হয়ে যায়।
+                        Sl. বাদে বাকি সব কলামের হেডারে ক্লিক করে ascending/descending সর্ট করা যাবে (↕/↑/↓ আইকন) — মেনু খোলার সাথে সাথে ডিফল্টে Grand Total-এর Call Count কলাম অনুযায়ী বেশি থেকে কম (descending) সাজানো থাকবে।
                       </li>
                       <li>
-                        <strong>বর্ডার:</strong> Sl./GroupBy ডাইমেনশন/Grand Total ব্লকটা হালকা সবুজ বর্ডারে, আর Details ব্লকটা হালকা নীল বর্ডারে ফ্রেম করা থাকবে।
+                        GroupBy তে <strong>Mentor Branch Wise</strong> দেখলে ব্রাঞ্চগুলো মেন্টর অনুযায়ী সেকশনে ভাগ করে দেখাবে। মেন্টরের নাম হালকা সবুজ (#f3fff4) হেডার-রো হিসেবে সেই মেন্টরের ব্রাঞ্চগুলোর উপরে থাকবে, প্রতিটা মেন্টরের শেষে সেই মেন্টরের যোগফল নিয়ে হালকা নীল (#effaff) "Mentor Total" Row দেখাবে, আর সবশেষে সব মেন্টর মিলিয়ে একটা Grand Total Row থাকবে। এই ভিউতে Display Per Page উপেক্ষা করে সব ব্রাঞ্চ একই পেইজে দেখাতে হবে, যাতে কোনো মেন্টরের সেকশন দুই পেইজে ভাগ না হয়ে যায়।
                       </li>
                     </ol>
-                    <p style="font-weight:bold; margin-bottom:4px;">Details টেবিল:</p>
-                    <p style="margin:0 0 20px;">Sl., Registration No, Student Name, Mobile Number, Program, Branch, Tracking ID, যে নম্বরে কথা হয়েছে, যে মাধ্যমে কথা হয়েছে, Call Duration (সেই নির্দিষ্ট কলের সময়কাল, মিনিট:সেকেন্ড), User Name (এন্ট্রিকারী টিম মেম্বারের লগইন ইউজারনেম), Entry Date-Time।</p>
-                    <p style="font-weight:bold; margin-bottom:4px;">টেবিল ফিচার:</p>
-                    <p style="margin:0 0 12px;">কলাম সর্ট করা যাবে — Sl. বাদে বাকি সব কলামের হেডারে ক্লিক করে ascending/descending সর্ট করা যাবে (↕/↑/↓ আইকন)।</p>
-                    <p style="font-weight:bold; margin-bottom:4px;">Export বাটন:</p>
-                    <p style="margin:0;">Summary বা Details যেভাবে সিলেক্ট করা থাকবে সেই অনুযায়ী বর্তমানে দেখানো টেবিলের একটা Excel ফাইল ডাউনলোড হবে।</p>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">বন্ধ করুন</button>
