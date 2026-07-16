@@ -12423,6 +12423,44 @@ function DeselectSelectedOptionAdd(elem) {
                 return entryTillFollowsSelectedDate ? dateAdjust(val, dateLabel) : dateAdjust(val, 'Today');
             }
 
+            // Total Call Time = Avg. Call Time × number of calls (the row's Effective
+            // Call (CR) Today count) — the actual total duration spent calling, shown
+            // right before the Avg. Call Time column. Demo AvgCallTime strings are
+            // always "Xm Ys" (or "-" when there's no entry), parsed to seconds here.
+            function parseCallTimeToSeconds(str) {
+                if (!str || str === '-') { return null; }
+                var m = /^(\d+)m\s+(\d+)s$/.exec(str);
+                if (!m) { return null; }
+                return (parseInt(m[1], 10) * 60) + parseInt(m[2], 10);
+            }
+
+            function formatCallTimeSeconds(totalSeconds) {
+                if (!totalSeconds) { return '-'; }
+                var h = Math.floor(totalSeconds / 3600);
+                var m = Math.floor((totalSeconds % 3600) / 60);
+                var s = totalSeconds % 60;
+                return h > 0 ? (h + 'h ' + m + 'm') : (m + 'm ' + s + 's');
+            }
+
+            function entryTotalCallTimeSeconds(entry, dateLabel) {
+                var count = dateAdjust(entry.TodayDateEntry, dateLabel);
+                var avgSeconds = parseCallTimeToSeconds(entry.AvgCallTime);
+                if (avgSeconds === null || !count) { return 0; }
+                return avgSeconds * count;
+            }
+
+            function entryTotalCallTimeText(entry, dateLabel) {
+                return formatCallTimeSeconds(entryTotalCallTimeSeconds(entry, dateLabel));
+            }
+
+            function sumTotalCallTimeSeconds(entries, dateLabel) {
+                var total = 0;
+                $.each(entries, function (_, e) {
+                    total += entryTotalCallTimeSeconds(e, dateLabel);
+                });
+                return total;
+            }
+
             function sumEntries(cases, key) {
                 var total = 0;
                 $.each(cases, function (_, c) {
@@ -12490,6 +12528,10 @@ function DeselectSelectedOptionAdd(elem) {
                 var grandEntry   = dateAdjustEntryTill(sumBy(branchRows, 'DataEntry'), dateLabel);
                 var grandPending = sumBy(branchRows, 'Pending');
                 var grandToday   = dateAdjust(sumEntries(branchRows, 'TodayDateEntry'), dateLabel);
+                var grandCallSeconds = 0;
+                $.each(branchRows, function (_, c) {
+                    grandCallSeconds += sumTotalCallTimeSeconds(c.Entries, dateLabel);
+                });
                 // Per-(Tracking ID, Executed By) breakdown of the Grand Total's Effective
                 // Call (CR) Today/Till Today, one entry per contributing team member (see
                 // buildEntryDrillHref) — shared by both views; only the drill-down link's
@@ -12518,14 +12560,15 @@ function DeselectSelectedOptionAdd(elem) {
                 var headerCells = (viewBy === 'pin')
                     ? (
                         '<th style="width:150px;">Executed By</th>' +
-                        '<th style="width:90px;">Conversation<br>Type</th>' +
+                        '<th style="width:120px;">Conversation<br>Type</th>' +
                         '<th style="width:150px;">Data Type</th>' +
                         '<th style="width:180px;">Targeted Program</th>' +
                         '<th style="width:110px;">' + entryColLabel + '</th>' +
+                        '<th style="width:100px;">Total Call<br>Time</th>' +
                         '<th style="width:80px;">Avg. Call<br>Time</th>' +
                         '<th style="width:80px;">Total<br>Student</th>' +
-                        '<th style="width:140px;">' + entryTillColLabel + '</th>' +
-                        '<th style="width:90px;">Pending Call<br>(NCY+CNR)</th>' +
+                        '<th style="width:160px;">' + entryTillColLabel + '</th>' +
+                        '<th style="width:120px;">Pending Call<br>(NCY+CNR)</th>' +
                         '<th style="width:90px;">Tracking ID</th>' +
                         '<th style="width:90px;">Creation Date</th>' +
                         '<th style="width:90px;">Deadline</th>' +
@@ -12533,14 +12576,15 @@ function DeselectSelectedOptionAdd(elem) {
                     )
                     : (
                         '<th style="width:210px;">Targeted Program</th>' +
-                        '<th style="width:90px;">Conversation<br>Type</th>' +
+                        '<th style="width:120px;">Conversation<br>Type</th>' +
                         '<th style="width:150px;">Data Type</th>' +
                         '<th style="width:120px;">Executed By</th>' +
                         '<th style="width:110px;">' + entryColLabel + '</th>' +
+                        '<th style="width:100px;">Total Call<br>Time</th>' +
                         '<th style="width:80px;">Avg. Call<br>Time</th>' +
                         '<th style="width:80px;">Total<br>Student</th>' +
-                        '<th style="width:140px;">' + entryTillColLabel + '</th>' +
-                        '<th style="width:90px;">Pending Call<br>(NCY+CNR)</th>' +
+                        '<th style="width:160px;">' + entryTillColLabel + '</th>' +
+                        '<th style="width:120px;">Pending Call<br>(NCY+CNR)</th>' +
                         '<th style="width:90px;">Tracking ID</th>' +
                         '<th style="width:90px;">Creation Date</th>' +
                         '<th style="width:90px;">Deadline</th>' +
@@ -12573,6 +12617,7 @@ function DeselectSelectedOptionAdd(elem) {
                     '<tr>' +
                     '<td colspan="4" style="text-align:right;"><strong>Grand Total</strong></td>' +
                     '<td>' + grandTodayCellHtml + '</td>' +
+                    '<td>' + formatCallTimeSeconds(grandCallSeconds) + '</td>' +
                     '<td></td>' +
                     '<td><strong>' + grandStudent + '</strong></td>' +
                     '<td>' + grandEntryCellHtml + '</td>' +
@@ -12604,6 +12649,10 @@ function DeselectSelectedOptionAdd(elem) {
                     var pgEntry   = dateAdjustEntryTill(sumBy(pgRows, 'DataEntry'), dateLabel);
                     var pgPending = sumBy(pgRows, 'Pending');
                     var pgToday   = dateAdjust(sumEntries(pgRows, 'TodayDateEntry'), dateLabel);
+                    var pgCallSeconds = 0;
+                    $.each(pgRows, function (_, c) {
+                        pgCallSeconds += sumTotalCallTimeSeconds(c.Entries, dateLabel);
+                    });
 
                     /* total sub-rows across every case in this program group — one per
                        team-member entry, plus one extra for each case's own subtotal row
@@ -12615,7 +12664,7 @@ function DeselectSelectedOptionAdd(elem) {
 
                     /* spacer between program groups */
                     if (i > 0) {
-                        $tbody.append('<tr class="border-0" style="height:10px;"><td colspan="13" class="border-0"></td></tr>');
+                        $tbody.append('<tr class="border-0" style="height:10px;"><td colspan="14" class="border-0"></td></tr>');
                     }
 
                     var isFirstSubRowOfGroup = true;
@@ -12654,6 +12703,7 @@ function DeselectSelectedOptionAdd(elem) {
                                 entryTodayCount,
                                 dateLabel
                             ));
+                            $tr.append(td(entryTotalCallTimeText(entry, dateLabel)));
                             $tr.append(td(entry.AvgCallTime));
 
                             if (entryIdx === 0) {
@@ -12690,6 +12740,7 @@ function DeselectSelectedOptionAdd(elem) {
                                 '<tr>' +
                                 '<td colspan="3" style="text-align:right;"><strong>Total</strong></td>' +
                                 '<td>' + entryLinkCellHtml(caseTodayBreakdown, caseToday, dateLabel) + '</td>' +
+                                '<td>' + formatCallTimeSeconds(sumTotalCallTimeSeconds(item.Entries, dateLabel)) + '</td>' +
                                 '<td colspan="8"></td>' +
                                 '</tr>'
                             );
@@ -12721,6 +12772,7 @@ function DeselectSelectedOptionAdd(elem) {
                             '<tr>' +
                             '<td colspan="4" style="text-align:right;"><strong>Total</strong></td>' +
                             '<td>' + entryLinkCellHtml(pgTodayBreakdown, pgToday, dateLabel) + '</td>' +
+                            '<td>' + formatCallTimeSeconds(pgCallSeconds) + '</td>' +
                             '<td></td>' +
                             '<td><strong>' + pgStudent + '</strong></td>' +
                             '<td>' + entryLinkCellHtml(pgEntryBreakdown, pgEntry, null) + '</td>' +
@@ -12754,6 +12806,7 @@ function DeselectSelectedOptionAdd(elem) {
                     // contributing team members too — see the PendingShare setup above).
                     var sPending = sumBy(rows, 'PendingShare');
                     var sToday   = dateAdjust(sumBy(rows, 'TodayDateEntry'), dateLabel);
+                    var sCallSeconds = sumTotalCallTimeSeconds(rows, dateLabel);
                     // Pair shape (adds executedBy) so this person's own Total row can
                     // drill into Details Report grouped by Executed By — one shared
                     // header for this person, one panel per Tracking ID underneath
@@ -12770,7 +12823,7 @@ function DeselectSelectedOptionAdd(elem) {
 
                     /* spacer between person groups */
                     if (i > 0) {
-                        $tbody.append('<tr class="border-0" style="height:10px;"><td colspan="13" class="border-0"></td></tr>');
+                        $tbody.append('<tr class="border-0" style="height:10px;"><td colspan="14" class="border-0"></td></tr>');
                     }
 
                     var groupHasRealEntry = key !== '-';
@@ -12798,6 +12851,7 @@ function DeselectSelectedOptionAdd(elem) {
                             [{ trackingId: r.TrackingId, executedBy: r.ExecutedBy, count: rowToday }],
                             rowToday, dateLabel, 'executedBy'
                         ));
+                        $tr.append(td(entryTotalCallTimeText(r, dateLabel)));
                         $tr.append(td(r.AvgCallTime));
                         $tr.append(td(r.TotalStudent));
                         $tr.append(linkTd(dateAdjustEntryTill(r.DataEntry, dateLabel), r.AllExecutedBy));
@@ -12816,6 +12870,7 @@ function DeselectSelectedOptionAdd(elem) {
                             '<tr>' +
                             '<td colspan="4" style="text-align:right;"><strong>Total</strong></td>' +
                             '<td>' + entryLinkCellHtml(sTodayBreakdown, sToday, dateLabel, 'executedBy') + '</td>' +
+                            '<td>' + formatCallTimeSeconds(sCallSeconds) + '</td>' +
                             '<td></td>' +
                             '<td><strong>' + sStudent + '</strong></td>' +
                             '<td>' + linkCellHtml(sEntry, [key], null, sEntryBreakdown) + '</td>' +
@@ -13174,17 +13229,8 @@ function DeselectSelectedOptionAdd(elem) {
                   <div class="modal-body" style="height:65vh; overflow-y:auto;">
                     <p style="font-weight:bold; margin-bottom:12px;">নতুন আপডেট:</p>
                     <ol style="padding-left:20px; margin:0;">
-                      <li style="margin-bottom:12px;">
-                        <strong>Entry Today, Entry Till Today ও Pending কলামের নাম পরিবর্তন করে যথাক্রমে Effective Call (CR) Today, Effective Call (CR) Till Today, Pending Call (NCY+CNR) করা হয়েছে।</strong>
-                      </li>
-                      <li style="margin-bottom:12px;">
-                        <strong>Effective Call (CR) Today এবং Effective Call (CR) Till Today কলামে ডাটা দেখানোর ক্ষেত্রে শুধু Call Received ডাটাগুলো Count করে দেখানো হবে।</strong>
-                      </li>
-                      <li style="margin-bottom:12px;">
-                        <strong>Pending Call (NCY+CNR) কলামের ডাটা ক্যালকুলেশন করার ক্ষেত্রে Tracking ID অনুযায়ি Not Called Yet ও Call Not Received এই দুই ধরনের ডাটা যোগ করে দেখানো হবে।</strong> এই কলামের ডাটাগুলো ক্লিকেবল — সংখ্যায় ক্লিক করা হলে Details Report মেনুতে গিয়ে সেই পেইজের লজিক অনুযায়ি Programwise বা Pinwise ডাটা দেখাবে।
-                      </li>
                       <li>
-                        <strong>Mentor Dashboard মেনুর পারমিশন বিভিন্ন ইউজারকে দেওয়া হবে, তাই Mentor Dashboard মেনুটি User Permission Authorisation হিসেবে তৈরি করতে হবে।</strong> যাতে ইউজারদেরকে যে ব্রাঞ্চের পারমিশন দেওয়া হবে সে এই মেনুতে ব্রাঞ্চ ড্রপডাউনে ঠিক সেই ব্রাঞ্চগুলোই পাবে এবং শুধু সেই ব্রাঞ্চের ডাটাগুলোই সে দেখতে পাবে।
+                        <strong>"Avg. Call Time" কলামের আগে নতুন কলাম "Total Call Time" যোগ করতে হবে।</strong> Programwise ও Pinwise - দুই ভিউতেই এই কলাম যোগ হবে। এই কলামে প্রতিটা টিম মেম্বার নির্দিষ্ট কেসে মোট কতক্ষণ কল করেছেন তা দেখাবে, এবং Case Total/Program-group Total/Person Total/Grand Total - সবগুলো Total রো-তেও এই কলামের যোগফল দেখাবে।
                       </li>
                     </ol>
                   </div>
@@ -13203,6 +13249,7 @@ function DeselectSelectedOptionAdd(elem) {
                     <h4 class="modal-title" id="pageChangesModalOldLabel">এই পেইজে আগে যা যা পরিবর্তন/আপডেট করা হয়েছিল</h4>
                   </div>
                   <div class="modal-body" style="height:65vh; overflow-y:auto;">
+                    <p style="font-weight:bold; font-size:15px; margin:0 0 10px; color:#374151; border-bottom:2px solid #6B7280; padding-bottom:4px;">Step 01</p>
                     <p style="font-weight:bold; margin-bottom:4px;">ফিল্টার বার:</p>
                     <ol style="padding-left:20px; margin:0 0 20px;">
                       <li style="margin-bottom:14px;">
@@ -13263,6 +13310,29 @@ function DeselectSelectedOptionAdd(elem) {
                       <li>
                         <strong>Active Tr ID-তে Entry By থাকা সারিতে হালকা কালার হাইলাইট</strong>
                         <p style="margin:4px 0 0; color:#555;">Active Tr ID সিলেক্ট করে সার্চ করলে, সিলেক্টেড তারিখ অনুযায়ী যে Tracking ID-গুলোতে Entry By (টিম মেম্বার) ডেটা আছে, সেই সারিগুলোর ব্যাকগ্রাউন্ডে হালকা সবুজ কালার দেখাবে; যে Tracking ID-গুলোতে এখনো কোনো এন্ট্রি হয়নি সেগুলো সাদা ব্যাকগ্রাউন্ডেই থাকবে। এতে এক নজরেই বোঝা যাবে কোন Tracking ID-গুলোতে কাজ হয়েছে আর কোনগুলো এখনো বাকি। বিশেষ দ্রষ্টব্য: Working Tr ID দিয়ে সার্চ করা হলে এই কালার হাইলাইট প্রযোজ্য হবে না।</p>
+                      </li>
+                    </ol>
+                    <p style="font-weight:bold; font-size:15px; margin:20px 0 10px; color:#374151; border-bottom:2px solid #6B7280; padding-bottom:4px;">Step 02</p>
+                    <p style="font-weight:bold; margin-bottom:4px;">ডাটা টেবিল:</p>
+                    <ol style="padding-left:20px; margin:0 0 20px;">
+                      <li style="margin-bottom:14px;">
+                        <strong>তিনটি কলামের নাম পরিবর্তন</strong>
+                        <p style="margin:4px 0 0; color:#555;">Entry Today, Entry Till Today ও Pending কলামের নাম পরিবর্তন করে যথাক্রমে Effective Call (CR) Today, Effective Call (CR) Till Today, Pending Call (NCY+CNR) করা হয়েছে।</p>
+                      </li>
+                      <li style="margin-bottom:14px;">
+                        <strong>Effective Call (CR) কলামগুলোর হিসাব পদ্ধতি</strong>
+                        <p style="margin:4px 0 0; color:#555;">Effective Call (CR) Today এবং Effective Call (CR) Till Today কলামে ডাটা দেখানোর ক্ষেত্রে শুধু Call Received ডাটাগুলো Count করে দেখানো হবে।</p>
+                      </li>
+                      <li>
+                        <strong>Pending Call (NCY+CNR) কলামের হিসাব ও ক্লিকযোগ্যতা</strong>
+                        <p style="margin:4px 0 0; color:#555;">Pending Call (NCY+CNR) কলামের ডাটা ক্যালকুলেশন করার ক্ষেত্রে Tracking ID অনুযায়ি Not Called Yet ও Call Not Received এই দুই ধরনের ডাটা যোগ করে দেখানো হবে। এই কলামের ডাটাগুলো ক্লিকেবল — সংখ্যায় ক্লিক করা হলে Details Report মেনুতে গিয়ে সেই পেইজের লজিক অনুযায়ি Programwise বা Pinwise ডাটা দেখাবে।</p>
+                      </li>
+                    </ol>
+                    <p style="font-weight:bold; margin-bottom:4px;">পারমিশন:</p>
+                    <ol style="padding-left:20px; margin:0;">
+                      <li>
+                        <strong>Mentor Dashboard মেনুতে User Permission Authorisation</strong>
+                        <p style="margin:4px 0 0; color:#555;">Mentor Dashboard মেনুর পারমিশন বিভিন্ন ইউজারকে দেওয়া হবে, তাই Mentor Dashboard মেনুটি User Permission Authorisation হিসেবে তৈরি করতে হবে। যাতে ইউজারদেরকে যে ব্রাঞ্চের পারমিশন দেওয়া হবে সে এই মেনুতে ব্রাঞ্চ ড্রপডাউনে ঠিক সেই ব্রাঞ্চগুলোই পাবে এবং শুধু সেই ব্রাঞ্চের ডাটাগুলোই সে দেখতে পাবে।</p>
                       </li>
                     </ol>
                   </div>
