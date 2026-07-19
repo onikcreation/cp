@@ -57403,8 +57403,8 @@ function DeselectSelectedOptionAdd(elem) {
 
 </script>
                 <script type="text/javascript">
-                  function muliselectfnc(holder, allText) {
-            $(holder).multiselect({
+                  function muliselectfnc(holder, allText, extraOptions) {
+            $(holder).multiselect($.extend({
                 enableCaseInsensitiveFiltering: true,
                 enableFiltering: true,
                 includeSelectAllOption: false,
@@ -57412,7 +57412,7 @@ function DeselectSelectedOptionAdd(elem) {
                 maxHeight: 400,
                 buttonWidth: '100%',
                 nonSelectedText: allText
-            });
+            }, extraOptions));
         }
 
         // Which class(es)/category a program belongs to, keyed by its option
@@ -57482,6 +57482,12 @@ function DeselectSelectedOptionAdd(elem) {
         function applyProgramTypeFilter() {
             var type = $('#programType').val();
             var selectedClasses = $('#classFilter').val() || [];
+            // "Select all" checked (the default) selects every option in the
+            // underlying <select>, same as nothing being selected at all — both
+            // mean "no Class filter applied", so unmapped programs (empty array
+            // in PROGRAM_CLASS_MAP) still show up in either case.
+            var allClassesSelected = selectedClasses.length === 0
+                || selectedClasses.length === $('#classFilter option').length;
             var prevSelected = $('#programIds').val() || [];
 
             var $allOptions = $('<select>' + window.ORIGINAL_PROGRAM_OPTIONS_HTML + '</select>').find('option');
@@ -57489,7 +57495,7 @@ function DeselectSelectedOptionAdd(elem) {
                 var isFree = /free|ফ্রি/i.test($(this).text());
                 var typeMatches = type === '1' ? !isFree : (type === '2' ? isFree : true);
                 if (!typeMatches) return false;
-                if (selectedClasses.length === 0) return true;
+                if (allClassesSelected) return true;
                 var classes = PROGRAM_CLASS_MAP[$(this).attr('value')] || [];
                 return selectedClasses.some(function (cls) { return classes.indexOf(cls) !== -1; });
             });
@@ -57540,7 +57546,9 @@ function DeselectSelectedOptionAdd(elem) {
             // very first page load before anything's been touched.
             $('#sessionIds').html(window.ORIGINAL_SESSION_OPTIONS_HTML);
 
-            muliselectfnc($('#classFilter'), "All Class");
+            muliselectfnc($('#classFilter'), "All Class", { includeSelectAllOption: true });
+            $('#classFilter').multiselect('selectAll', false);
+            $('#classFilter').multiselect('updateButtonText');
             muliselectfnc($('#programIds'), "All Program");
             applyProgramTypeFilter();
             muliselectfnc($('#sessionIds'), "All Session");
@@ -59280,8 +59288,8 @@ function DeselectSelectedOptionAdd(elem) {
                                             <p style="font-weight:bold; margin-bottom:12px;">নতুন আপডেট:</p>
                                             <ol style="padding-left:20px; margin:0;">
                                               <li>
-                                                <strong>Class ফিল্টার এখন Program-এর মতো মাল্টি-সিলেক্ট করা হয়েছে — একসাথে একাধিক Class সিলেক্ট করা যাবে।</strong>
-                                                <p style="margin:4px 0 0; color:#555;"><em>যেভাবে কাজ করবে:</em> একাধিক Class (যেমন Nine + Ten) একসাথে সিলেক্ট করলে Program ড্রপডাউনে সেই সবগুলো Class-এর প্রোগ্রামই (Program Type ফিল্টারের সাথে মিলিয়ে) দেখাবে, আগের মতো একটামাত্র Class সিলেক্ট করার সীমাবদ্ধতা আর থাকবে না। কিছু সিলেক্ট না করলে (ডিফল্ট) আগের "All"-এর মতোই সব Class-এর প্রোগ্রাম দেখাবে।</p>
+                                                <strong>Class ফিল্টারে "Select all" অপশন যোগ করা হয়েছে, ডিফল্টভাবে সিলেক্ট থাকবে।</strong>
+                                                <p style="margin:4px 0 0; color:#555;"><em>যেভাবে কাজ করবে:</em> Class ড্রপডাউনের তালিকার উপরে "Select all" চেকবক্স থাকবে, পেইজ লোড হওয়ার সময় ডিফল্টভাবে এটা সিলেক্ট থাকায় সবগুলো Class-ই সিলেক্ট করা দেখাবে। ইউজার চাইলে আনচেক করে নির্দিষ্ট Class বাছাই করে নিতে পারবেন।</p>
                                               </li>
                                             </ol>
                                           </div>
@@ -59317,6 +59325,10 @@ function DeselectSelectedOptionAdd(elem) {
                                               <li style="margin-top:16px;">
                                                 <strong>Class-এর পরে (Program-এর ঠিক আগে) নতুন Program Type (All/Paid/Free) ফিল্টার যোগ করা হয়েছে, ডিফল্টভাবে Paid সিলেক্ট থাকবে।</strong>
                                                 <p style="margin:4px 0 0; color:#555;"><em>যেভাবে কাজ করবে:</em> Program Type যেহেতু Program ফিল্টারেরই অংশ, তাই এটা Program ড্রপডাউনের অপশন লিস্টকেই সংকুচিত করবে — Paid সিলেক্ট থাকলে (ডিফল্ট) Program ড্রপডাউনে শুধু Paid প্রোগ্রামগুলোই দেখাবে, Free সিলেক্ট করলে শুধু Free প্রোগ্রামগুলো, আর All সিলেক্ট করলে সবগুলো প্রোগ্রামই দেখাবে। তারপর সেই (সংকুচিত) লিস্ট থেকে Program সিলেক্ট করে সার্চ করলে সেই অনুযায়ী ডাটা দেখাবে।</p>
+                                              </li>
+                                              <li style="margin-top:16px;">
+                                                <strong>Class ফিল্টার এখন Program-এর মতো মাল্টি-সিলেক্ট করা হয়েছে — একসাথে একাধিক Class সিলেক্ট করা যাবে।</strong>
+                                                <p style="margin:4px 0 0; color:#555;"><em>যেভাবে কাজ করবে:</em> একাধিক Class (যেমন Nine + Ten) একসাথে সিলেক্ট করলে Program ড্রপডাউনে সেই সবগুলো Class-এর প্রোগ্রামই (Program Type ফিল্টারের সাথে মিলিয়ে) দেখাবে, আগের মতো একটামাত্র Class সিলেক্ট করার সীমাবদ্ধতা আর থাকবে না। কিছু সিলেক্ট না করলে (ডিফল্ট) আগের "All"-এর মতোই সব Class-এর প্রোগ্রাম দেখাবে।</p>
                                               </li>
                                             </ol>
                                             <p style="font-weight:bold; margin-bottom:6px; color:#B42318;">Bug:</p>
