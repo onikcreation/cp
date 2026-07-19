@@ -59286,12 +59286,25 @@ function DeselectSelectedOptionAdd(elem) {
                                           </div>
                                           <div class="modal-body" style="height:65vh; overflow-y:auto;">
                                             <p style="font-weight:bold; margin-bottom:12px;">নতুন আপডেট:</p>
-                                            <ol style="padding-left:20px; margin:0;">
+                                            <ol style="padding-left:20px; margin:0 0 20px;">
                                               <li>
                                                 <strong>Class ফিল্টারে "Select all" অপশন যোগ করা হয়েছে, ডিফল্টভাবে সিলেক্ট থাকবে।</strong>
                                                 <p style="margin:4px 0 0; color:#555;"><em>যেভাবে কাজ করবে:</em> Class ড্রপডাউনের তালিকার উপরে "Select all" চেকবক্স থাকবে, পেইজ লোড হওয়ার সময় ডিফল্টভাবে এটা সিলেক্ট থাকায় সবগুলো Class-ই সিলেক্ট করা দেখাবে। ইউজার চাইলে আনচেক করে নির্দিষ্ট Class বাছাই করে নিতে পারবেন।</p>
                                               </li>
                                             </ol>
+                                            <p style="font-weight:bold; margin-bottom:6px; color:#B42318;">Bug: Generation Type "My Branch to All Branch"-এ Branch Transfer-জনিত ভুল ডাটা</p>
+                                            <p style="margin:0 0 10px; color:#555;"><strong>বর্তমান সমস্যা:</strong> কোনো টিম মেম্বার এক Branch থেকে অন্য Branch-এ Transfer হলে, তার পূর্বের সকল ডেটাও নতুন Branch-এ চলে আসছে। ফলে Branch-এর ডেটা ভুলভাবে দেখাচ্ছে।</p>
+                                            <p style="margin:0 0 4px; color:#555;"><strong>উদাহরণ:</strong> Program: SSC Model Test 2026, Branch: Sakhipur</p>
+                                            <ul style="margin:0 0 10px; padding-left:20px; color:#555;">
+                                              <li>All Branch to My Branch হিসেবে — Sakhipur Branch-এ ২০২৬ সালে কোনো শিক্ষার্থী ভর্তি নেই দেখাচ্ছে ✅ (সঠিক)</li>
+                                              <li>My Branch to All Branch হিসেবে — একই Branch-এ ৩৬৩ জন শিক্ষার্থী ভর্তির তথ্য দেখাচ্ছে ❌ (ভুল)</li>
+                                            </ul>
+                                            <p style="margin:0 0 4px; color:#555;">Transfer হওয়া টিম মেম্বারের ডেটা নতুন Branch-এ চলে আসায় এই গরমিল তৈরি হচ্ছে — TeamMember: jweel.3508@udvash.net (Tangail → Sakhipur) ও raju.1842@udvash.net (Gazipur → Sakhipur)।</p>
+                                            <p style="margin:10px 0 4px; color:#555;"><strong>প্রস্তাবিত সমাধান:</strong> Transfer-এর তারিখ অনুযায়ী ডেটা আলাদা করতে হবে —</p>
+                                            <ul style="margin:0; padding-left:20px; color:#555;">
+                                              <li>Transfer-এর আগের ডেটা → পুরনো Branch-এর আন্ডারে দেখাতে হবে</li>
+                                              <li>Transfer-এর পরের ডেটা → নতুন Branch-এর আন্ডারে দেখাতে হবে</li>
+                                            </ul>
                                           </div>
                                           <div class="modal-footer">
                                             <button type="button" class="btn btn-default" data-dismiss="modal">বন্ধ করুন</button>
@@ -59331,8 +59344,6 @@ function DeselectSelectedOptionAdd(elem) {
                                                 <p style="margin:4px 0 0; color:#555;"><em>যেভাবে কাজ করবে:</em> একাধিক Class (যেমন Nine + Ten) একসাথে সিলেক্ট করলে Program ড্রপডাউনে সেই সবগুলো Class-এর প্রোগ্রামই (Program Type ফিল্টারের সাথে মিলিয়ে) দেখাবে, আগের মতো একটামাত্র Class সিলেক্ট করার সীমাবদ্ধতা আর থাকবে না। কিছু সিলেক্ট না করলে (ডিফল্ট) আগের "All"-এর মতোই সব Class-এর প্রোগ্রাম দেখাবে।</p>
                                               </li>
                                             </ol>
-                                            <p style="font-weight:bold; margin-bottom:6px; color:#B42318;">Bug:</p>
-                                            <p style="margin:0; color:#555;">এই মেনুতে Generation Type-এ All Branch to My Branch ও My Branch to All Branch ফিল্টার করে সঠিক ডাটা দেখা যাচ্ছে না।</p>
                                           </div>
                                           <div class="modal-footer">
                                             <button type="button" class="btn btn-default" data-dismiss="modal">বন্ধ করুন</button>
