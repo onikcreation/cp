@@ -3,7 +3,7 @@
   ╔══════════════════════════════════════════════════════════╗
   ║              New Design Mockup — Not a Live Page          ║
   ╠══════════════════════════════════════════════════════════╣
-  ║  Page Title  : UMS - Conversation Call Report - Al Amin Anik   ║
+  ║  Page Title  : UMS - Effective Call Report - Al Amin Anik   ║
   ║  Note        : This menu does not exist on the live umsbd.net
   ║                site yet — it's a new page proposed for the
   ║                developer to build, assembled from the same
@@ -19,7 +19,7 @@
     <!-- <meta http-equiv="refresh" content="0;URL='http://dev.umsbd.net/'" />
     -->
     <title>
-      UMS - Conversation Call Report - Al Amin Anik (Demo Copy)
+      UMS - Effective Call Report - Al Amin Anik (Demo Copy)
     </title>
     <style>
 /* NUGET: BEGIN LICENSE TEXT
@@ -8062,8 +8062,8 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                             </a>
                           </li>
                           <li data-parent-id="962">
-                            <a href="/Student/CrmReport/ConversationReport" data-businessid="CrmReport-ConversationReport|CrmReport-CrmConversationReportExport|" class="submenuitem" style="font-weight: bold;">
-                              Conversation Call Report
+                            <a href="/Student/CrmReport/EffectiveCallReport" data-businessid="CrmReport-EffectiveCallReport|CrmReport-CrmEffectiveCallReportExport|" class="submenuitem" style="font-weight: bold;">
+                              Effective Call Report
                             </a>
                           </li></ul>
                       </div>
@@ -8275,7 +8275,7 @@ span.hide-native-select{position:relative}span.hide-native-select select{border:
                   <div class="panel panel-primary">
                     <div class="panel-heading">
                       <h4 class="panel-title">
-                        Conversation Call Report
+                        Effective Call Report
                       </h4>
                     </div>
                     <div class="panel-body">
@@ -13069,7 +13069,7 @@ var REAL_SESSIONS = [{value:"70",text:"2027"},{value:"66",text:"2026"},{value:"6
                 var blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
                 var link = document.createElement('a');
                 link.href = URL.createObjectURL(blob);
-                link.download = 'ConversationCallReport.csv';
+                link.download = 'EffectiveCallReport.csv';
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
@@ -13188,7 +13188,7 @@ var REAL_SESSIONS = [{value:"70",text:"2027"},{value:"66",text:"2026"},{value:"6
                   '/Student/CrmConversationTargetedStudent/DefaultSettings': { folder: 'DefaultSettings', file: 'DefaultSettings_Offline.html' },
                   '/Student/CrmComments/Index': { folder: 'ManageStudentFeedback', file: 'ManageStudentFeedback_Offline.html' },
                   '/Student/CrmConversation/MentorDashboard': { folder: 'MentorDashboard', file: 'MentorDashboard_Offline.html' },
-                  '/Student/CrmReport/ConversationReport': { folder: 'ConversationCallReport', file: 'ConversationCallReport_Offline.html' },
+                  '/Student/CrmReport/EffectiveCallReport': { folder: 'EffectiveCallReport', file: 'EffectiveCallReport_Offline.html' },
         '/Student/CrmConversationType/Index': { folder: 'ManageConversationType', file: 'ManageConversationType_Offline.html' },
         '/Student/CrmReport/SummaryReport': { folder: 'SummaryReport', file: 'SummaryReport_Offline.html' },
         '/Student/CrmConversation/SaveOrEdit': { folder: 'CreateConversation', file: 'CreateConversation_Offline.html' },
@@ -13248,7 +13248,7 @@ var REAL_SESSIONS = [{value:"70",text:"2027"},{value:"66",text:"2026"},{value:"6
                   </div>
                   <div class="modal-body" style="height:65vh; overflow-y:auto;">
                     <p style="font-weight:bold; margin-bottom:4px; color:#B42318;">এই মেনুটি সম্পূর্ণ নতুন — লাইভ সাইটে এখনো তৈরি করা হয়নি।</p>
-                    <p style="margin:4px 0 16px; color:#555;">নাম হবে "Conversation Call Report" এবং এটি CRM Management মেনুর সাবমেনুতে সবার শেষে যোগ করতে হবে। Conversation Entry পেইজ থেকে সেভ হওয়া "যে নম্বরে কথা হয়েছে" এবং "যে মাধ্যমে কথা হয়েছে" ফিল্ডগুলোর ডাটা বিভিন্নভাবে ফিল্টার ও অ্যানালাইসিস করার জন্য এই মেনুটি তৈরি করা হচ্ছে।</p>
+                    <p style="margin:4px 0 16px; color:#555;">নাম হবে "Effective Call Report" এবং এটি CRM Management মেনুর সাবমেনুতে সবার শেষে যোগ করতে হবে। Conversation Entry পেইজ থেকে সেভ হওয়া "যে নম্বরে কথা হয়েছে" এবং "যে মাধ্যমে কথা হয়েছে" ফিল্ডগুলোর ডাটা বিভিন্নভাবে ফিল্টার ও অ্যানালাইসিস করার জন্য এই মেনুটি তৈরি করা হচ্ছে।</p>
                     <p style="font-weight:bold; margin-bottom:4px;">ফিল্টার অপশন (ফিল্টার বারে যে ক্রমে আছে):</p>
                     <ol style="padding-left:20px; margin:0 0 20px;">
                       <li style="margin-bottom:10px;">

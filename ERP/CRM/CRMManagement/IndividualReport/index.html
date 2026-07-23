@@ -8114,8 +8114,8 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                             </a>
                           </li>
                           <li data-parent-id="962">
-                            <a href="/Student/CrmReport/ConversationReport" data-businessid="CrmReport-ConversationReport|CrmReport-CrmConversationReportExport|" class="submenuitem">
-                              Conversation Call Report
+                            <a href="/Student/CrmReport/EffectiveCallReport" data-businessid="CrmReport-EffectiveCallReport|CrmReport-CrmEffectiveCallReportExport|" class="submenuitem">
+                              Effective Call Report
                             </a>
                           </li></ul>
                       </div>
@@ -25225,7 +25225,7 @@ function getDPI() {
               // Demo: fabricated data pools used to build the fake student/conversation
               // rows below — no real student/institute/mobile data ships in this offline
               // copy. Pool style/format kept consistent with the other converted CRM
-              // pages in this module (DetailsReport, MentorDashboard, ConversationCallReport).
+              // pages in this module (DetailsReport, MentorDashboard, EffectiveCallReport).
               var fakeFullNames = ['Md. Rifat Hossain', 'Tania Akter', 'Mehedi Hasan', 'Sadia Islam', 'Habiba Sultana', 'Arif Rahman', 'Tanvir Ahmed', 'Farhana Yeasmin', 'Mim Akter', 'Antor Chowdhury', 'Rakib Hasan', 'Nabila Islam', 'Shanto Roy', 'Tuhin Sarkar', 'Anika Tabassum', 'Proma Akter', 'Junayed Khan', 'Nusrat Jahan', 'Fahim Muntasir', 'Emon Hossain'];
               var fakeNickNames = ['Rifat', 'Tania', 'Mehedi', 'Sadia', 'Habiba', 'Arif', 'Tanvir', 'Farhan', 'Mim', 'Antor', 'Rakib', 'Nabila', 'Shanto', 'Tuhin', 'Anika', 'Proma', 'Junayed', 'Nusrat', 'Fahim', 'Emon'];
               var fakeInstituteList = ['DHAKA CITY COLLEGE', 'NOTRE DAME COLLEGE, DHAKA', 'RAJSHAHI COLLEGE', 'CHITTAGONG COLLEGE', 'BARISHAL BM COLLEGE', 'KHULNA CITY COLLEGE', 'COMILLA VICTORIA COLLEGE', 'MYMENSINGH GOVT. COLLEGE', 'SIRAJGANJ GOVT. COLLEGE', 'BOGURA GOVT. AZIZUL HAQUE COLLEGE'];
@@ -25249,7 +25249,7 @@ function getDPI() {
                   '-'
               ];
               var fakeAgents = ['[2001] Shakil Ahmed', '[2002] Md. Tariful Islam', '[2003] Abdullah Al Mamun', '[2004] Md. Shamsul Alam', '[2005] Tushar Imran', '[2006] Nayeem Hasan', '[2007] Rakibul Hasan', '[2008] Sabbir Ahmed'];
-              // Same convention as Conversation Entry/Conversation Call Report - who was
+              // Same convention as Conversation Entry/Effective Call Report - who was
               // contacted and through which medium (only meaningful for a connected call).
               var fakeContactedPersons = ['Student', 'Father', 'Mother'];
               var fakeContactMediums = ['Mobile Call', 'WhatsApp', 'Telegram'];
@@ -25666,7 +25666,7 @@ function getDPI() {
     <script type="text/javascript">
       // Demo: same GitHub-Pages-compatible sibling-page URL used by the other
       // converted CRM pages (Dashboard, Mentor Dashboard, Details Report,
-      // Conversation Entry, Manage Student Feedback, Conversation Call Report) —
+      // Conversation Entry, Manage Student Feedback, Effective Call Report) —
       // '../<folder>/<file>' for local file:// viewing, '../<folder>/' for
       // GitHub Pages (served as index.html).
       function siblingPageUrl(folder, offlineFileName) {
@@ -25692,7 +25692,7 @@ function getDPI() {
         '/Student/CrmConversationTargetedStudent/DefaultSettings': { folder: 'DefaultSettings', file: 'DefaultSettings_Offline.html' },
         '/Student/CrmComments/Index': { folder: 'ManageStudentFeedback', file: 'ManageStudentFeedback_Offline.html' },
         '/Student/CrmConversation/MentorDashboard': { folder: 'MentorDashboard', file: 'MentorDashboard_Offline.html' },
-        '/Student/CrmReport/ConversationReport': { folder: 'ConversationCallReport', file: 'ConversationCallReport_Offline.html' },
+        '/Student/CrmReport/EffectiveCallReport': { folder: 'EffectiveCallReport', file: 'EffectiveCallReport_Offline.html' },
         '/Student/CrmConversationType/Index': { folder: 'ManageConversationType', file: 'ManageConversationType_Offline.html' },
         '/Student/CrmReport/SummaryReport': { folder: 'SummaryReport', file: 'SummaryReport_Offline.html' },
         '/Student/CrmConversation/SaveOrEdit': { folder: 'CreateConversation', file: 'CreateConversation_Offline.html' },
