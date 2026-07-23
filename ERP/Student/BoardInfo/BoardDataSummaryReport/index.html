@@ -17846,8 +17846,11 @@ span.hide-native-select{position:relative}span.hide-native-select select{border:
                               Session:
                             </label>
                             <div class="col-md-4">
-                              <select class="form-control" id="sessionIds" name="sessionIds">
-                                  <option selected="selected" value="0">
+                              <select class="form-control" id="sessionIds" multiple="multiple" name="sessionIds">
+                                  <option selected="selected" value="-1">
+                                    Last Session
+                                  </option>
+                                  <option value="0">
                                     All Session
                                   </option>
                                   <option value="70">
@@ -57353,13 +57356,23 @@ function DeselectSelectedOptionAdd(elem) {
                   // Admission Summary Report reuse its exact classification; the
                   // Organization-only programs (UNMESH/UTTORON BCS etc., not offered
                   // there) are tagged the same way by name pattern.
-                  var PROGRAM_CLASS_MAP = {"Medical Admission Program":["Admission"],"Medical Admission Program (Online)":["Admission"],"2nd Time Medical Admission Program (Online)":["Admission"],"Engineering Admission Program":["Admission"],"Engineering Admission Program (Online)":["Admission"],"Varsity 'KA' Admission Program":["Admission"],"Varsity 'KA' Admission Program (Online)":["Admission"],"2nd Time Varsity 'KA' Admission Program (Online)":["Admission"],"Varsity 'KHA' Admission Program":["Admission"],"Varsity 'KHA' Admission Program (Online)":["Admission"],"2nd Time Varsity 'KHA' Admission Program (Online)":["Admission"],"College Admission Program":["Admission"],"College Admission Program (Online)":["Admission"],"SSC Model Test":["Model Test"],"SSC Model Test (Online)":["Model Test"],"SSC A to Z Final Revision Course (Online)":["Model Test"],"HSC Model Test":["Model Test"],"HSC Model Test (Online)":["Model Test"],"HSC A to Z Final Revision Course (Online)":["Model Test"],"Cadet College Vorti Prostuti (Online)":[],"Class 6 Academic Program (Online)":["Six"],"Class 7 Academic Program (Online)":["Seven"],"Class 8 Academic Online Program":["Eight"],"Class 9 Academic Program":["Nine"],"Class 9 Academic Online Program":["Nine"],"Class 9 Bangla-English Program":["Nine"],"Class 9 Bangla-English Program (Online)":["Nine"],"Class 10 Academic Online Program":["Ten"],"Class 10 Academic Program":["Ten"],"Class 10 Bangla-English Program":["Ten"],"Class 10 Bangla-English Program (Online)":["Ten"],"2nd Time Medical Admission Program":["Admission"],"HSC ICT Online Program":["Eleven","Twelve"],"HSC Bangla-English Full Program":["Eleven","Twelve"],"Class 11 Academic Program":["Eleven"],"HSC Bangla-English Full Program (Online)":["Eleven","Twelve"],"Class 11 Academic Program (Online)":["Eleven"],"Class 12 Academic Program":["Twelve"],"Class 12 Academic Program Online":["Twelve"],"HSC Final Revision & Pre-Admission Program":["Eleven","Twelve"],"Primary Britti Porikkha Prostuti":[],"Junior Britti Porikkha Prostuti":[],"Class 9-10 Bangla-English Full Course (Online)":["Nine","Ten"],"Class 8 Bangla-English Full Course":["Eight"],"HSC Science Foundation Program":["Eleven","Twelve"],"HSC Science Foundation Program (Online)":["Eleven","Twelve"],"HSC 1st Year Basic Course (Top 100 Topics)":["Eleven"],"HSC 1st Year Crash Course":["Eleven"],"SSC MCQ Booster Program":["Model Test"],"Class 9-10 Bangla-English Full Course":["Nine","Ten"],"Class 9 Academic Program (Online New)":["Nine"],"Class 9 Academic Program (Online)":["Nine"],"Class 8 Academic Program":["Eight"],"Cadet College Vorti Prostuti Free Program":[],"Class 12 Academic Free Program":["Twelve"],"Class 11 Academic Free Program":["Eleven"],"Class 10 Academic Free Program":["Ten"],"Class 9 Academic Free Program":["Nine"],"Class 8 Academic Free Program":["Eight"],"Class 7 Academic Free Program":["Seven"],"Class 6 Academic Free Program":["Six"],"12 Academic Free Class":["Twelve"],"11 Academic Free Class":["Eleven"],"10 Academic Free Class":["Ten"],"9 Academic Free class":["Nine"],"8 Academic Free Class":["Eight"],"Varsity 'KHA'/Bivag Poriborton Free Program":["Admission"],"Udvash-Unmesh Service":[],"HSC Special Program (Online)":["Eleven","Twelve"],"SSC ChemiStar":["Nine","Ten"],"Cadet College Vorti Shomvabona":[],"Employee Training Program (ETP)":[],"HSC ChemiStar":["Eleven","Twelve"],"HSC CIVICS STAR":["Eleven","Twelve"],"SSC Udvashito Mukh":["Nine","Ten"],"Udvash-Unmesh-Uttoron Recruitment Test":[],"Varsity 'KHA' Talent Hunt":["Admission"],"Class 5 MCQ Math Olympiad":["Five"],"Class 6 MCQ Math Olympiad":["Six"],"Class 7 MCQ Math Olympiad":["Seven"],"Class 8 MCQ Math Olympiad":["Eight"],"Class 9 MCQ Math Olympiad":["Nine"],"DU 'KHA' Shomvabona":["Admission"],"HSC Udvashito Mukh":["Eleven","Twelve"],"Class 11 Academic Program (New Batch 4th Porbo)":["Eleven"],"UNMESH Botany Brilliant":["Admission"],"UNMESH Medi Chemistry":["Admission"],"BCS Free Course":["Graduate"],"BCS Preli Program":["Graduate"],"BCS Preli Written Combined Program":["Graduate"],"BCS Written Program":["Graduate"],"BCS Preli Live Exam (Free)":["Graduate"],"BCS Viva Program":["Graduate"],"Special BCS Program":["Graduate"],"BCS Preli Shomvabona":["Graduate"],"General BCS Program":["Graduate"],"Primary Job Preparation":["Graduate"],"BCS Foundation Program":["Graduate"],"BCS Quiz Contest Program":["Graduate"],"BCS Foundation Free Course":["Graduate"],"BCS Advance Program":["Graduate"]};
+                  var PROGRAM_CLASS_MAP = {"Medical Admission Program":["Admission"],"Medical Admission Program (Online)":["Admission"],"2nd Time Medical Admission Program (Online)":["Admission"],"Engineering Admission Program":["Admission"],"Engineering Admission Program (Online)":["Admission"],"Varsity 'KA' Admission Program":["Admission"],"Varsity 'KA' Admission Program (Online)":["Admission"],"2nd Time Varsity 'KA' Admission Program (Online)":["Admission"],"Varsity 'KHA' Admission Program":["Admission"],"Varsity 'KHA' Admission Program (Online)":["Admission"],"2nd Time Varsity 'KHA' Admission Program (Online)":["Admission"],"College Admission Program":[],"College Admission Program (Online)":[],"SSC Model Test":["Model Test"],"SSC Model Test (Online)":["Model Test"],"SSC A to Z Final Revision Course (Online)":["Model Test"],"HSC Model Test":["Model Test"],"HSC Model Test (Online)":["Model Test"],"HSC A to Z Final Revision Course (Online)":["Model Test"],"Cadet College Vorti Prostuti (Online)":[],"Class 6 Academic Program (Online)":["Six"],"Class 7 Academic Program (Online)":["Seven"],"Class 8 Academic Online Program":["Eight"],"Class 9 Academic Program":["Nine"],"Class 9 Academic Online Program":["Nine"],"Class 9 Bangla-English Program":["Nine"],"Class 9 Bangla-English Program (Online)":["Nine"],"Class 10 Academic Online Program":["Ten"],"Class 10 Academic Program":["Ten"],"Class 10 Bangla-English Program":["Ten"],"Class 10 Bangla-English Program (Online)":["Ten"],"2nd Time Medical Admission Program":["Admission"],"HSC ICT Online Program":["Eleven","Twelve"],"HSC Bangla-English Full Program":["Eleven","Twelve"],"Class 11 Academic Program":["Eleven"],"HSC Bangla-English Full Program (Online)":["Eleven","Twelve"],"Class 11 Academic Program (Online)":["Eleven"],"Class 12 Academic Program":["Twelve"],"Class 12 Academic Program Online":["Twelve"],"HSC Final Revision & Pre-Admission Program":["Eleven","Twelve"],"Primary Britti Porikkha Prostuti":[],"Junior Britti Porikkha Prostuti":[],"Class 9-10 Bangla-English Full Course (Online)":["Nine","Ten"],"Class 8 Bangla-English Full Course":["Eight"],"HSC Science Foundation Program":["Eleven","Twelve"],"HSC Science Foundation Program (Online)":["Eleven","Twelve"],"HSC 1st Year Basic Course (Top 100 Topics)":["Eleven"],"HSC 1st Year Crash Course":["Eleven"],"SSC MCQ Booster Program":["Model Test"],"Class 9-10 Bangla-English Full Course":["Nine","Ten"],"Class 9 Academic Program (Online New)":["Nine"],"Class 9 Academic Program (Online)":["Nine"],"Class 8 Academic Program":["Eight"],"Cadet College Vorti Prostuti Free Program":[],"Class 12 Academic Free Program":["Twelve"],"Class 11 Academic Free Program":["Eleven"],"Class 10 Academic Free Program":["Ten"],"Class 9 Academic Free Program":["Nine"],"Class 8 Academic Free Program":["Eight"],"Class 7 Academic Free Program":["Seven"],"Class 6 Academic Free Program":["Six"],"12 Academic Free Class":["Twelve"],"11 Academic Free Class":["Eleven"],"10 Academic Free Class":["Ten"],"9 Academic Free class":["Nine"],"8 Academic Free Class":["Eight"],"Varsity 'KHA'/Bivag Poriborton Free Program":["Admission"],"Udvash-Unmesh Service":[],"HSC Special Program (Online)":["Eleven","Twelve"],"SSC ChemiStar":["Nine","Ten"],"Cadet College Vorti Shomvabona":[],"Employee Training Program (ETP)":[],"HSC ChemiStar":["Eleven","Twelve"],"HSC CIVICS STAR":["Eleven","Twelve"],"SSC Udvashito Mukh":["Nine","Ten"],"Udvash-Unmesh-Uttoron Recruitment Test":[],"Varsity 'KHA' Talent Hunt":[],"Class 5 MCQ Math Olympiad":["Five"],"Class 6 MCQ Math Olympiad":["Six"],"Class 7 MCQ Math Olympiad":["Seven"],"Class 8 MCQ Math Olympiad":["Eight"],"Class 9 MCQ Math Olympiad":["Nine"],"DU 'KHA' Shomvabona":[],"HSC Udvashito Mukh":["Eleven","Twelve"],"Class 11 Academic Program (New Batch 4th Porbo)":["Eleven"],"UNMESH Botany Brilliant":[],"UNMESH Medi Chemistry":[],"BCS Free Course":["Graduate"],"BCS Preli Program":["Graduate"],"BCS Preli Written Combined Program":["Graduate"],"BCS Written Program":["Graduate"],"BCS Preli Live Exam (Free)":["Graduate"],"BCS Viva Program":["Graduate"],"Special BCS Program":["Graduate"],"BCS Preli Shomvabona":["Graduate"],"General BCS Program":["Graduate"],"Primary Job Preparation":["Graduate"],"BCS Foundation Program":["Graduate"],"BCS Quiz Contest Program":["Graduate"],"BCS Foundation Free Course":["Graduate"],"BCS Advance Program":["Graduate"]};
 
                   function muliselectfnc(holder, allText, extraOptions) {
             $(holder).multiselect($.extend({
                 enableCaseInsensitiveFiltering: true,
                 enableFiltering: true,
                 includeSelectAllOption: false,
+                // The plugin's own internal "select all" checkbox defaults to value 0
+                // and, when an option in the underlying <select> happens to share that
+                // same value (e.g. this page's own "All Program"/"All Session"
+                // placeholder options, both value="0"), it gets misidentified as that
+                // internal control and silently dropped from the rendered checkbox list
+                // - the option still exists in the <select> but the user has no visible
+                // way to click it. Pointing selectAllValue at a sentinel no real option
+                // will ever use avoids the collision for every filter built with this
+                // helper.
+                selectAllValue: '__select_all__',
                 numberDisplayed: 1,
                 maxHeight: 400,
                 buttonWidth: '100%',
@@ -57375,6 +57388,43 @@ function DeselectSelectedOptionAdd(elem) {
         // dropdown itself too (same idea as Admission Summary Report's
         // applyProgramTypeFilter/PROGRAM_CLASS_MAP), on top of the Organization
         // narrowing - all three combine with AND logic.
+        // Explicit display-order override for a handful of Admission-class programs
+        // (user-specified serial, 2026-07-23). This is applied only to how the
+        // Program dropdown renders - it must never reorder the COURSE_PROGRAMS array
+        // itself, since COURSE_DATA references each program by its numeric index
+        // into COURSE_PROGRAMS (see rebuildCourseOptions/getSessionForProgram); moving
+        // elements there would silently point every course/session lookup at the
+        // wrong program.
+        var PROGRAM_SERIAL_OVERRIDE = [
+            "Medical Admission Program", "Medical Admission Program (Online)",
+            "Engineering Admission Program", "Engineering Admission Program (Online)",
+            "Varsity 'KA' Admission Program", "Varsity 'KA' Admission Program (Online)",
+            "Varsity 'KHA' Admission Program", "Varsity 'KHA' Admission Program (Online)",
+            "2nd Time Medical Admission Program", "2nd Time Medical Admission Program (Online)",
+            "2nd Time Varsity 'KA' Admission Program (Online)", "2nd Time Varsity 'KHA' Admission Program (Online)"
+        ];
+        // Pulls the override-listed names (if present) out of `list`, sorts just that
+        // subset into the fixed serial above, and reinserts the block at the position
+        // where the first override-listed name originally appeared - every other
+        // program keeps its existing relative order untouched.
+        function applyProgramSerialOverride(list) {
+            var rank = {};
+            PROGRAM_SERIAL_OVERRIDE.forEach(function (name, i) { rank[name] = i; });
+            var firstPos = -1;
+            for (var i = 0; i < list.length; i++) {
+                if (rank.hasOwnProperty(list[i])) { firstPos = i; break; }
+            }
+            if (firstPos === -1) return list;
+            var overridden = list.filter(function (name) { return rank.hasOwnProperty(name); });
+            overridden.sort(function (a, b) { return rank[a] - rank[b]; });
+            var rest = list.filter(function (name) { return !rank.hasOwnProperty(name); });
+            var insertAt = 0;
+            for (var j = 0; j < firstPos; j++) {
+                if (!rank.hasOwnProperty(list[j])) insertAt++;
+            }
+            return rest.slice(0, insertAt).concat(overridden, rest.slice(insertAt));
+        }
+
         function rebuildProgramOptions() {
             var orgId = $('#organizationId').val();
             var type = $('#programType').val();
@@ -57390,6 +57440,7 @@ function DeselectSelectedOptionAdd(elem) {
                 var classes = PROGRAM_CLASS_MAP[name] || [];
                 return selectedClasses.some(function (c) { return classes.indexOf(c) !== -1; });
             });
+            list = applyProgramSerialOverride(list);
 
             $('#programIds').empty();
             $('#programIds').append($('<option>').text('All Program').attr('value', 0));
@@ -57402,18 +57453,33 @@ function DeselectSelectedOptionAdd(elem) {
             $('#programIds').multiselect('rebuild');
         }
 
+        // #sessionIds is a multi-select with two placeholder options - "All Session"
+        // (value 0) and "Last Session" (value -1) - alongside the real year options.
+        // Neither placeholder narrows anything by itself, so this returns only the
+        // real, explicit session years the user actually checked (their display
+        // text, e.g. "2026") - an empty array means "no restriction" (either nothing
+        // is checked, or only a placeholder is).
+        function getSelectedSessionTexts() {
+            var texts = [];
+            $('#sessionIds option:selected').each(function () {
+                var v = String($(this).val());
+                if (v === '0' || v === '-1') return;
+                texts.push($(this).text().trim());
+            });
+            return texts;
+        }
+
         function rebuildCourseOptions() {
             var orgVal = $('#organizationId').val();
             var orgIds = (!orgVal || orgVal === '0') ? Object.keys(ORG_PROGRAMS) : [String(orgVal)];
             var selectedPrograms = $('#programIds').val() || [];
-            var sessionText = $('#sessionIds option:selected').text().trim();
-            var matchSession = sessionText && sessionText !== 'All Session';
+            var sessionTexts = getSelectedSessionTexts();
             var seen = {}, names = [];
             COURSE_DATA.forEach(function (row) {
                 var org = String(row[0]), prog = COURSE_PROGRAMS[row[1]], sess = String(row[2]), name = row[3];
                 if (orgIds.indexOf(org) === -1) return;
                 if (selectedPrograms.length && selectedPrograms.indexOf(prog) === -1) return;
-                if (matchSession && sess !== sessionText) return;
+                if (sessionTexts.length && sessionTexts.indexOf(sess) === -1) return;
                 if (!seen[name]) { seen[name] = true; names.push(name); }
             });
             var prevSelected = $('#courseFilter').val() || [];
@@ -57455,6 +57521,13 @@ function DeselectSelectedOptionAdd(elem) {
 
         $(document).ready(function () {
             let isAllSession = true;
+            // Tracks the previously-selected #sessionIds values so the change handler
+            // below can tell whether "Last Session" (-1) was already checked before this
+            // change (meaning the user just added a specific session, so drop -1) or
+            // whether the user just checked "Last Session" itself (so drop any specific
+            // sessions instead) - mirrors the mutual-exclusion pattern used for the same
+            // "Last Session" option on Admission Summary Report's Session filter.
+            var prevSessionSelection = ['-1'];
 
             // Cache the real captured Session option list so it can be restored if the
             // reload AJAX (LoadSession) fails — there's no backend here, so it always
@@ -57464,8 +57537,9 @@ function DeselectSelectedOptionAdd(elem) {
             window.ORIGINAL_SESSION_OPTIONS_HTML = $('#sessionIds').html();
 
             muliselectfnc($('#classFilter'), "All Class", { includeSelectAllOption: true });
-            $('#classFilter').multiselect('selectAll', false);
-            $('#classFilter').multiselect('updateButtonText');
+            $('#classFilter').multiselect('deselectAll', false);
+            $('#classFilter').multiselect('select', 'Admission');
+            muliselectfnc($('#sessionIds'), "All Session");
             rebuildProgramOptions();
             muliselectfnc($('#branchFilter'), "All Branch");
             muliselectfnc($('#boardFilter'), "All Examination");
@@ -57488,6 +57562,8 @@ function DeselectSelectedOptionAdd(elem) {
 
                 $('#sessionIds').empty();
                 $('#sessionIds').append($('<option>').text("All Session").attr('value', 0));
+                $('#sessionIds').multiselect('rebuild');
+                prevSessionSelection = $('#sessionIds').val() || [];
 
                 var organizationId = $('#organizationId').val();
                 sessionLoadOperation(organizationId, null);
@@ -57519,6 +57595,23 @@ function DeselectSelectedOptionAdd(elem) {
             });
 
             $(document).on('change', '#sessionIds', function () {
+                var current = $(this).val() || [];
+                if ($.inArray('-1', current) !== -1 && current.length > 1) {
+                    if ($.inArray('-1', prevSessionSelection) !== -1) {
+                        // "Last Session" was already checked - the user just added a
+                        // specific session on top of it, so drop "Last Session".
+                        $('#sessionIds').multiselect('deselect', '-1');
+                        current = $.grep(current, function (v) { return v !== '-1'; });
+                    } else {
+                        // "Last Session" was just checked while specific sessions were
+                        // already selected - it takes over, drop the specific ones.
+                        $.each(current, function (i, v) {
+                            if (v !== '-1') $('#sessionIds').multiselect('deselect', v);
+                        });
+                        current = ['-1'];
+                    }
+                }
+                prevSessionSelection = current;
                 rebuildCourseOptions();
             });
 
@@ -57549,6 +57642,7 @@ function DeselectSelectedOptionAdd(elem) {
                                 $('#sessionIds').append($('<option>').text(v.Text).attr('value', v.Value));
                                 count++;
                             });
+                            $('#sessionIds').multiselect('rebuild');
                         } else {
                             $.fn.customMessage({
                                 displayMessage: response.Message,
@@ -57559,6 +57653,8 @@ function DeselectSelectedOptionAdd(elem) {
                     complete: function () { $.unblockUI(); },
                     error: function (data) {
                         $('#sessionIds').append(window.ORIGINAL_SESSION_OPTIONS_HTML);
+                        $('#sessionIds').multiselect('rebuild');
+                        prevSessionSelection = $('#sessionIds').val() || [];
                     }
                 });
 
@@ -58822,11 +58918,13 @@ function DeselectSelectedOptionAdd(elem) {
 
                                       // Picks a real Session for a program (Program Wise's and Branch Program
                                       // Wise's Session column), read straight from the COURSE_DATA rows captured
-                                      // for that program in Course Name.xlsx. If the #sessionIds filter has a specific
-                                      // session selected (not "All Session"), that session is used directly -
-                                      // "-" if this program has no real data under it - so the column always
-                                      // agrees with the Session filter instead of ignoring it. With "All
-                                      // Session" selected, falls back to a random one of the program's real
+                                      // for that program in Course Name.xlsx. #sessionIds is a multi-select with
+                                      // "All Session"/"Last Session" placeholders alongside real years (see
+                                      // getSelectedSessionTexts()). If one or more specific years are checked,
+                                      // the first one this program actually has data under is used - "-" if none
+                                      // of them match. If only "Last Session" is checked (no specific year), the
+                                      // program's own most recent real session is used. Otherwise ("All Session"
+                                      // or nothing checked) falls back to a random one of the program's real
                                       // sessions, for variety across sub-rows. Falls back to "" for a name not
                                       // in that sheet (e.g. the "Sample Program" placeholder above).
                                       function getSessionForProgram(name) {
@@ -58839,9 +58937,15 @@ function DeselectSelectedOptionAdd(elem) {
                                               if (COURSE_DATA[i][1] === idx) sessions.push(String(COURSE_DATA[i][2]));
                                           }
                                           if (!sessions.length) return "";
-                                          var sessionText = $("#sessionIds option:selected").text().trim();
-                                          if (sessionText && sessionText !== "All Session") {
-                                              return sessions.indexOf(sessionText) !== -1 ? sessionText : "-";
+                                          var sessionTexts = getSelectedSessionTexts();
+                                          if (sessionTexts.length) {
+                                              for (var j = 0; j < sessionTexts.length; j++) {
+                                                  if (sessions.indexOf(sessionTexts[j]) !== -1) return sessionTexts[j];
+                                              }
+                                              return "-";
+                                          }
+                                          if ($.inArray('-1', $('#sessionIds').val() || []) !== -1) {
+                                              return sessions.slice().sort(function (a, b) { return Number(b) - Number(a); })[0];
                                           }
                                           return sessions[Math.floor(Math.random() * sessions.length)];
                                       }
@@ -59104,7 +59208,7 @@ function DeselectSelectedOptionAdd(elem) {
                                               </li>
                                               <li style="margin-top:12px;">
                                                 <strong>ফিল্টার অপশন</strong>
-                                                <p style="margin:4px 0 0; color:#555;">Organization (মাল্টি সিলেক্ট) → Class (মাল্টি সিলেক্ট, Select All অপশনসহ) → Program Type (All/Paid/Free, ডিফল্ট Paid) (সিঙ্গেল-সিলেক্ট) → Program (মাল্টি সিলেক্ট) → Session (সিঙ্গেল-সিলেক্ট) → Course (মাল্টি সিলেক্ট) → Branch Mentor (সিঙ্গেল-সিলেক্ট) → Branch (মাল্টি সিলেক্ট) → Name of Examination (SSC/HSC) (মাল্টি সিলেক্ট) → Report Type (৫টি ভিউ)।</p>
+                                                <p style="margin:4px 0 0; color:#555;">Organization (মাল্টি সিলেক্ট) → Class (মাল্টি সিলেক্ট, Select All অপশনসহ, ডিফল্ট Admission সিলেক্টেড) → Program Type (All/Paid/Free, ডিফল্ট Paid) (সিঙ্গেল-সিলেক্ট) → Program (মাল্টি সিলেক্ট) → Session (মাল্টি সিলেক্ট, শুরুতে "Last Session" অপশন থাকে যেটা ডিফল্টে সিলেক্টেড) → Course (মাল্টি সিলেক্ট) → Branch Mentor (সিঙ্গেল-সিলেক্ট) → Branch (মাল্টি সিলেক্ট) → Name of Examination (SSC/HSC) (মাল্টি সিলেক্ট) → Report Type (৫টি ভিউ)।</p>
                                               </li>
                                               <li style="margin-top:12px;">
                                                 <strong>ডাটা টেবিল</strong>
