@@ -3,10 +3,10 @@
   ╔══════════════════════════════════════════════════════════╗
   ║           HTML Inspector & Saver — Captured Page         ║
   ╠══════════════════════════════════════════════════════════╣
-  ║  Source URL  : https://umsbd.net/Teachers/ClassPayment/CashPayment  ║
-  ║  Page Title  : UMS - Cash Payment [18:09:21] - Al Amin Anik         ║
-  ║  Captured At : 2026-07-25T12:10:02.461Z                             ║
-  ║  Elements    : 7591                                                 ║
+  ║  Source URL  : https://umsbd.net/Teachers/ClassPayment/PaymentAppro ║
+  ║  Page Title  : UMS - Payment Approval [17:53:14] - Al Amin Anik     ║
+  ║  Captured At : 2026-07-25T11:53:38.686Z                             ║
+  ║  Elements    : 4830                                                 ║
   ╚══════════════════════════════════════════════════════════╝
 -->
 <html>
@@ -16,7 +16,7 @@
     <!-- <meta http-equiv="refresh" content="0;URL='http://dev.umsbd.net/'" />
     -->
     <title>
-      UMS - Cash Payment [18:09:21] - Al Amin Anik (Demo Copy)
+      UMS - Payment Approval [17:53:14] - Al Amin Anik (Demo Copy)
     </title>
     <style>
 /* NUGET: BEGIN LICENSE TEXT
@@ -7502,14 +7502,10 @@ var BRANCH_MENTOR_DATA = [["Bandarban","6"],["Khagrachari","6"],["Rangamati","6"
           return { courses: courses, progById: progById, sessById: sessById, orgById: orgById, programsOfOrg: programsOfOrg, sessionsOf: sessionsOf, coursesOf: coursesOf };
         })();
 
-        // Branch — "Branch Mentor List.xlsx"-এর সব ১২৪টা real branch (Mentor কলাম এই পেইজে
-        // ব্যবহার হয় না)। Branch, Organization/Program/Session থেকে স্বতন্ত্র axis (xlsx-এ কোনো
-        // Organization যোগসূত্র নেই), তাই org/program/session ফিল্টার নির্বিশেষে সবসময় পুরো লিস্টই রিটার্ন হয়।
+        // Branch — "Branch Mentor List.xlsx"-এর সব ১২৪টা real branch (Mentor এই পেইজে ব্যবহার
+        // হয় না), Organization/Program/Session থেকে স্বতন্ত্র axis।
         var ALL_BRANCHES = BRANCH_MENTOR_DATA.map(function (pair) { return pair[0]; });
-
-        // Campus — কোনো ক্যানোনিক্যাল সোর্স নেই (xlsx-এ Campus নামে কোনো লেভেল ধরা নেই), তাই
-        // Branch-নির্বিশেষে একটা ছোট জেনেরিক ফিক্সড লিস্ট ব্যবহার করা হলো।
-        var ALL_CAMPUSES = ['Main Campus', 'Shift-2 Campus', 'Night Shift Campus'];
+        var ALL_CAMPUSES = ['Green Road Campus', 'Farmgate Campus', 'Uttara Campus'];
 
         var CLASS_TYPES = [
           { id: '20', name: 'Regular Class' }, { id: '30', name: 'Solve Class' }, { id: '40', name: 'Special Class' },
@@ -7519,10 +7515,11 @@ var BRANCH_MENTOR_DATA = [["Bandarban","6"],["Khagrachari","6"],["Rangamati","6"
           { id: '120', name: 'Free Class' }, { id: '130', name: 'Seminar Class' }, { id: '140', name: 'Q&A Class' },
           { id: '150', name: 'Others' }
         ];
+        var PLATFORMS = ['In-Branch', 'Online'];
 
-        // ডামি মোবাইল নম্বর — প্রজেক্টের ফিক্সড ৪-নম্বর রাউন্ড-রবিন প্যাটার্ন (Instructions.txt)
         var DUMMY_MOBILES = ['8801600000001', '8801700000001', '8801800000001', '8801900000001'];
         var BANKING_TYPES = ['Nagad', 'Bkash', 'Rocket', '-'];
+        var FAKE_STAFF_EMAILS = ['rezaul.karim@udvash.com', 'kamal.hossain@udvash.net', 'sharmin.akter@udvash.com', 'tanvir.ahmed@udvash.net'];
 
         var FAKE_TEACHERS = [
           { tpin: 118, name: 'Rafiqul Islam Rony', nick: 'Rony', batch: '2009', tin: '512034789021' },
@@ -7545,7 +7542,7 @@ var BRANCH_MENTOR_DATA = [["Bandarban","6"],["Khagrachari","6"],["Rangamati","6"
           { tpin: 717, name: 'Farhana Akter Suchona', nick: 'Suchona', batch: '2011', tin: '890127654321' }
         ].map(function (t, i) {
           t.mobile = DUMMY_MOBILES[i % DUMMY_MOBILES.length];
-          var hasBanking = (i % 3) !== 2; // প্রতি ৩ জনের মধ্যে ১ জনের মোবাইল ব্যাংকিং তথ্য নেই (real ক্যাপচারেও এমন সারি ছিল)
+          var hasBanking = (i % 3) !== 2;
           t.mobBank = hasBanking ? DUMMY_MOBILES[(i + 1) % DUMMY_MOBILES.length] : '-';
           t.mobBankType = hasBanking ? BANKING_TYPES[i % 3] : '-';
           return t;
@@ -7555,29 +7552,53 @@ var BRANCH_MENTOR_DATA = [["Bandarban","6"],["Khagrachari","6"],["Rangamati","6"
           if (v === null || v === undefined || v === '') return [];
           return Array.isArray(v) ? v : [v];
         }
-
         function matchesAxis(selected, value) {
           var sel = toArr(selected).map(String);
           if (sel.length === 0 || sel.indexOf('0') !== -1) return true;
           return sel.indexOf(String(value)) !== -1;
         }
+        function pad2(n) { return (n < 10 ? '0' : '') + n; }
+        var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        function fmtDateOnly(d) { return d.getDate() + ' ' + MONTHS[d.getMonth()] + ', ' + d.getFullYear(); }
+        function fmtDateTime(d) {
+          var h = d.getHours(), ampm = h >= 12 ? 'PM' : 'AM';
+          h = h % 12; if (h === 0) h = 12;
+          return fmtDateOnly(d) + ' ' + pad2(h) + ':' + pad2(d.getMinutes()) + ':' + pad2(d.getSeconds()) + ' ' + ampm;
+        }
+        function isoDate(d) { return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()); }
 
-        // ফেইক "পেন্ডিং ক্যাশ পেমেন্ট" সারি — DEMO.courses থেকে ছড়িয়ে-ছিটিয়ে বাছাই করা কোর্সের
-        // সাথে একজন ফেইক টিচার/ব্রাঞ্চ/ক্যাম্পাস/ক্লাস টাইপ জুড়ে দেওয়া হলো। এটা একটা পেমেন্ট-কিউ
-        // লিস্টিং (রিপোর্ট/সারাংশ না), তাই বাস্তব সিস্টেমেও প্রতিটা org-program-session-course
-        // কম্বিনেশনে পেন্ডিং পেমেন্ট থাকবে এমন কথা নেই — নির্দিষ্ট ফিল্টার কম্বিনেশনে ফলাফল খালি
-        // আসাটাও স্বাভাবিক আচরণ (কোনো coverage গ্যারান্টি ইচ্ছাকৃতভাবে রাখা হয়নি)।
+        // ফেইক "পেন্ডিং অ্যাপ্রুভাল" সারি — কোর্স-ডেটাসেট থেকে ছড়িয়ে বাছাই করা, প্রতিটার সাথে একজন
+        // ফেইক টিচার/ব্রাঞ্চ/ক্যাম্পাস/ক্লাস টাইপ/তারিখ জুড়ে দেওয়া। PaymentApproval একটা approval
+        // queue (রিপোর্ট না), তাই প্রতিটা ফিল্টার কম্বিনেশনে ফলাফল থাকার গ্যারান্টি রাখা হয়নি।
+        var BASE_TS = new Date(2026, 6, 25, 12, 0, 0).getTime();
         var FAKE_ROWS = (function () {
-          var picked = DEMO.courses.filter(function (c, i) { return i % 37 === 3; });
+          var picked = DEMO.courses.filter(function (c, i) { return i % 41 === 5; });
           return picked.map(function (c, i) {
             var teacher = FAKE_TEACHERS[i % FAKE_TEACHERS.length];
             var branch = ALL_BRANCHES[(i * 7) % ALL_BRANCHES.length];
             var campus = ALL_CAMPUSES[i % ALL_CAMPUSES.length];
             var classType = CLASS_TYPES[(i * 3) % CLASS_TYPES.length];
-            var amount = 500 + ((c.cid * 37) % 40) * 250;
+            var platform = PLATFORMS[i % PLATFORMS.length];
+            var heldTs = BASE_TS - ((i * 2654435761) % (60 * 24 * 60)) * 60000; // গত ~৬০ দিনের মধ্যে
+            var entryTs = heldTs + (30 + (i % 5) * 15) * 60000;
+            var duration = 1 + (i % 3);
+            var durationMin = (i % 2) * 30;
+            var quantity = 1 + (i % 3);
+            var amount = (500 + ((c.cid * 37) % 30) * 250) * quantity;
+            var additionalAmount = (i % 4 === 0) ? 200 : 0;
             return {
+              id: 'row-' + c.cid + '-' + i,
               orgId: c.orgId, orgName: DEMO.orgById[c.orgId], pid: c.pid, sid: c.sid, cid: c.cid,
-              branch: branch, campus: campus, classTypeId: classType.id, teacher: teacher, amount: amount
+              programSession: DEMO.progById[c.pid].name.replace(/ (Admission Program|Academic Program).*/, '') + ' ' + DEMO.sessById[c.sid],
+              courseName: c.name,
+              branch: branch, campus: campus,
+              heldDate: new Date(heldTs), platform: platform,
+              classTypeId: classType.id, classTypeName: classType.name,
+              description: DEMO.progById[c.pid].name + '-' + DEMO.sessById[c.sid] + ', ' + classType.name + ' (' + c.name.slice(0, 28) + ')',
+              entryBy: FAKE_STAFF_EMAILS[i % FAKE_STAFF_EMAILS.length], entryDate: new Date(entryTs),
+              duration: duration + 'h ' + durationMin + 'm', quantity: quantity,
+              amount: amount, additionalAmount: additionalAmount, totalAmount: amount + additionalAmount,
+              teacher: teacher, approvalStatus: 10, approvedBy: '-', approvedDate: '-', cancelledBy: '-', cancelledDate: '-'
             };
           });
         })();
@@ -7590,15 +7611,34 @@ var BRANCH_MENTOR_DATA = [["Bandarban","6"],["Khagrachari","6"],["Rangamati","6"
           '50': { label: 'Mobile Number', get: function (r) { return r.teacher.mobile; } },
           '60': { label: 'Mobile Banking Number', get: function (r) { return r.teacher.mobBank; } },
           '70': { label: 'Mobile Banking Type', get: function (r) { return r.teacher.mobBankType; } },
-          '80': { label: 'TIN', get: function (r) { return r.teacher.tin; } }
+          '80': { label: 'TIN', get: function (r) { return r.teacher.tin; } },
+          '90': { label: 'Program &amp; Session', get: function (r) { return r.programSession; } },
+          '100': { label: 'Course', get: function (r) { return r.courseName; } },
+          '110': { label: 'Held Branch', get: function (r) { return r.branch; } },
+          '120': { label: 'Held Campus', get: function (r) { return r.campus; } },
+          '130': { label: 'Held Date', get: function (r) { return fmtDateOnly(r.heldDate); } },
+          '140': { label: 'Platform', get: function (r) { return r.platform; } },
+          '150': { label: 'Class Type', get: function (r) { return r.classTypeName; } },
+          '160': { label: 'Description', get: function (r) { return r.description; } },
+          '170': { label: 'Approved By', get: function (r) { return r.approvedBy; } },
+          '180': { label: 'Approved Date-Time', get: function (r) { return r.approvedDate; } },
+          '190': { label: 'Cancelled By', get: function (r) { return r.cancelledBy; } },
+          '200': { label: 'Cancellation Date-Time', get: function (r) { return r.cancelledDate; } },
+          '210': { label: 'Entry By', get: function (r) { return r.entryBy; } },
+          '220': { label: 'Entry Date-Time', get: function (r) { return fmtDateTime(r.entryDate); } }
         };
 
         function escapeHtml(s) {
           return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         }
 
-        function buildPreparePaymentHtml(d) {
+        function buildApprovalDetailsHtml(d) {
+          var heldFrom = d.heldDateFrom ? new Date(d.heldDateFrom) : null;
+          var heldTo = d.heldDateTo ? new Date(d.heldDateTo) : null;
+          var pageSize = parseInt(d.length) || 100;
+
           var rows = FAKE_ROWS.filter(function (r) {
+            if (r.approvalStatus !== 10) return false;
             if (!matchesAxis(d.organizationIdList, r.orgId)) return false;
             if (!matchesAxis(d.programIdList, r.pid)) return false;
             if (!matchesAxis(d.sessionIdList, r.sid)) return false;
@@ -7606,43 +7646,66 @@ var BRANCH_MENTOR_DATA = [["Bandarban","6"],["Khagrachari","6"],["Rangamati","6"
             if (!matchesAxis(d.branchIdList, r.branch)) return false;
             if (!matchesAxis(d.campusIdList, r.campus)) return false;
             if (!matchesAxis(d.classTypeList, r.classTypeId)) return false;
+            if (heldFrom && r.heldDate < heldFrom) return false;
+            if (heldTo && r.heldDate > new Date(heldTo.getTime() + 24 * 60 * 60000 - 1)) return false;
             var teacherSel = toArr(d.teacherIdList).filter(function (x) { return x && x !== ''; });
             if (teacherSel.length > 0 && teacherSel.indexOf(String(r.teacher.tpin)) === -1) return false;
             return true;
-          });
+          }).slice(0, pageSize);
 
           var infoView = toArr(d.informationViewList);
           var cols = infoView.map(function (v) { return FIELD_DEFS[String(v)]; }).filter(Boolean);
           if (cols.length === 0) {
-            cols = ['10', '20', '30', '40', '50', '60', '70', '80'].map(function (v) { return FIELD_DEFS[v]; });
+            cols = Object.keys(FIELD_DEFS).map(function (k) { return FIELD_DEFS[k]; });
           }
 
-          var theadHtml = '<th>Serial</th>' + cols.map(function (c) { return '<th>' + c.label + '</th>'; }).join('') +
-            '<th>Organization</th><th>Total Amount</th><th>Action</th>';
+          var fixedTrailHeaders = '<th>Duration</th><th>Quantity</th><th>Amount</th><th>Additional Amount</th><th>Total Amount</th>' +
+            '<th class="fixed-column right3"><input type="checkbox" id="approveAll" class="check_approve_all"> Approve All</th>' +
+            '<th class="fixed-column right2"><input type="checkbox" id="cancelAll" class="check_cance_all"> Cancel All</th>' +
+            '<th class="fixed-column right1">Remarks</th>';
+
+          var theadHtml = '<th>Serial</th>' + cols.map(function (c) { return '<th>' + c.label + '</th>'; }).join('') + fixedTrailHeaders;
 
           var bodyHtml;
           if (rows.length === 0) {
-            bodyHtml = '<tr><td colspan="' + (cols.length + 3) + '" class="text-center">কোনো তথ্য পাওয়া যায়নি।</td></tr>';
+            bodyHtml = '<tr><td colspan="' + (cols.length + 9) + '" class="text-center">কোনো তথ্য পাওয়া যায়নি।</td></tr>';
           } else {
             bodyHtml = rows.map(function (r, i) {
-              var tds = '<td>' + (i + 1) + '</td>' + cols.map(function (c) { return '<td>' + escapeHtml(c.get(r)) + '</td>'; }).join('');
-              tds += '<td>' + escapeHtml(r.orgName) + '</td>';
-              tds += '<td class="text-right">' + r.amount.toLocaleString('en-US') + '</td>';
-              tds += '<td><button id="PayNowBtn" type="button" data-param="' + r.teacher.tpin + '-' + r.cid + '" class="btn btn-primary pay-now-btn">Pay Now</button></td>';
+              var tds = '<td>' + (i + 1) + '<input type="hidden" autocomplete="off" value="' + r.id + '" id="paymentEntryDetailsId" class="entry-details-id"></td>' +
+                cols.map(function (c) { return '<td>' + escapeHtml(c.get(r)) + '</td>'; }).join('');
+              tds += '<td>' + r.duration + '</td><td>' + r.quantity + '</td>';
+              tds += '<td class="text-right">' + r.amount.toLocaleString('en-US') + '.00</td>';
+              tds += '<td class="text-right">' + r.additionalAmount.toLocaleString('en-US') + '.00</td>';
+              tds += '<td class="text-right">' + r.totalAmount.toLocaleString('en-US') + '</td>';
+              tds += '<td class="fixed-column right3"><input type="checkbox" id="approve" data-serial="' + (i + 1) + '" class="check_approve"> Approve</td>';
+              tds += '<td class="fixed-column right2"><input type="checkbox" id="cancel" data-serial="' + (i + 1) + '" class="check_cancel"> Cancel</td>';
+              tds += '<td class="fixed-column right1"><textarea rows="2" name="remarks" data-serial="' + (i + 1) + '" id="remarks" class="form-control text-box single-line remarks" style="min-height:48px; min-width:300px;"></textarea></td>';
               return '<tr>' + tds + '</tr>';
             }).join('');
           }
 
           return '' +
-            '<div id="PreparePaymentDatatableSection" class="panel panel-primary" style="">' +
+            '<div class="panel panel-primary">' +
               '<div class="panel-heading"><h4 class="panel-title">Details</h4></div>' +
-              '<div class="panel-body"><div class="table-container">' +
-                '<table id="DataGrid" class="table table-bordered table-hover table-striped scrolldown" style="max-width: 100%;">' +
-                  '<thead><tr>' + theadHtml + '</tr></thead>' +
-                  '<tbody class="text-center">' + bodyHtml + '</tbody>' +
-                '</table>' +
-              '</div></div>' +
-            '</div>';
+              '<div class="panel-body">' +
+                '<div class="table-container">' +
+                  '<table id="approvalListTable" class="table table-bordered table-hover table-striped scrolldown approval_list_table" style="width: 100%;">' +
+                    '<thead><tr>' + theadHtml + '</tr></thead>' +
+                    '<tbody class="text-center">' + bodyHtml + '</tbody>' +
+                  '</table>' +
+                '</div>' +
+                '<br>' +
+                '<div class="form-group"><div class="col-md-12 text-center">' +
+                  '<input type="button" name="Submit" id="Submit" value="Submit" class="btn btn-primary" style="width: 160px;margin-top: 20px;">' +
+                '</div></div>' +
+              '</div>' +
+            '</div>' +
+            '<script>$(document).ready(function () {' +
+              'var r1 = $("#approvalListTable .fixed-column.right1").outerWidth();' +
+              'var r2 = $("#approvalListTable .fixed-column.right2").outerWidth();' +
+              '$("#approvalListTable .fixed-column.right2").css({ right: r1 });' +
+              '$("#approvalListTable .fixed-column.right3").css({ right: r1 + r2 });' +
+            '});<\/script>';
         }
 
         function demoFakeRespond(options, data) {
@@ -7659,6 +7722,7 @@ var BRANCH_MENTOR_DATA = [["Bandarban","6"],["Khagrachari","6"],["Rangamati","6"
           options = options || {};
           var url = options.url || '';
           var d = options.data || {};
+          if (typeof d === 'string') { try { d = JSON.parse(d); } catch (e) { d = {}; } }
 
           if (/GetTeamMemberNoticeCount/.test(url)) {
             return demoFakeRespond(options, { IsSuccess: true, returnResult: 0 });
@@ -7688,31 +7752,51 @@ var BRANCH_MENTOR_DATA = [["Bandarban","6"],["Khagrachari","6"],["Rangamati","6"
             });
             return demoFakeRespond(options, { IsSuccess: true, returnList: list });
           }
-          if (/ClassPayment\/PreparePaymentDetailsPartial/.test(url)) {
-            return demoFakeRespond(options, buildPreparePaymentHtml(d));
+          if (/ClassPayment\/LoadPaymentApprovalDetails\b/.test(url)) {
+            return demoFakeRespond(options, buildApprovalDetailsHtml(d));
+          }
+          if (/ClassPayment\/PaymentApprovalDetailsPost/.test(url)) {
+            var list = d;
+            if (!Array.isArray(list)) { try { list = JSON.parse(d); } catch (e) { list = []; } }
+            var now = new Date();
+            list.forEach(function (item) {
+              var row = FAKE_ROWS.filter(function (r) { return r.id === item.EncryptedString; })[0];
+              if (!row) return;
+              if (item.ApprovalStatus === 20) {
+                row.approvalStatus = 20;
+                row.approvedBy = FAKE_STAFF_EMAILS[0];
+                row.approvedDate = fmtDateTime(now);
+              } else {
+                row.approvalStatus = 30;
+                row.cancelledBy = FAKE_STAFF_EMAILS[0];
+                row.cancelledDate = fmtDateTime(now);
+              }
+            });
+            return demoFakeRespond(options, { isSuccess: true, message: list.length + 'টা এন্ট্রি সফলভাবে সাবমিট হয়েছে (ডেমো)।' });
           }
 
           return realAjax.apply(jQuery, arguments);
         };
 
-        // Export বাটন (নতুন প্রস্তাব): View-এর ফলাফল টেবিল #DataGrid-এ যা দেখা যাচ্ছে ঠিক তাই
-        // Excel-openable .xls ফাইল আকারে ডাউনলোড করে (HTML টেবিল Excel MIME টাইপ/namespace-এ
-        // মোড়ানো, MemberDirectory_Offline.html-এর Export বাটনেও একই টেকনিক ব্যবহার হয়েছে)।
+        // Export বাটন (নতুন প্রস্তাব): Details টেবিলে বর্তমানে যা দেখা যাচ্ছে তা Excel-openable .xls
+        // ফাইল আকারে ডাউনলোড করে (Approve/Cancel চেকবক্স ও Remarks বাদে)।
         $(document).on('click', '#ExportBtn', function () {
-          var $table = $('#DataGrid');
+          var $table = $('#approvalListTable');
           if ($table.length === 0 || $table.find('tbody tr td').length === 0) {
             bootbox.alert('এক্সপোর্ট করার আগে View বাটনে ক্লিক করে তথ্য দেখুন।');
             return;
           }
-          var tableHtml = "<table border='1'>" + $table.find('thead').prop('outerHTML') + $table.find('tbody').prop('outerHTML') + "</table>";
+          var $clone = $table.clone();
+          $clone.find('th.fixed-column, td.fixed-column').remove();
+          var tableHtml = "<table border='1'>" + $clone.find('thead').prop('outerHTML') + $clone.find('tbody').prop('outerHTML') + "</table>";
           var excelHtml = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:x='urn:schemas-microsoft-com:office:excel' xmlns='http://www.w3.org/TR/REC-html40'>" +
             "<head><meta charset='utf-8'><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet>" +
-            "<x:Name>Cash Payment</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head>" +
+            "<x:Name>Payment Approval</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head>" +
             "<body>" + tableHtml + "</body></html>";
           var blob = new Blob([String.fromCharCode(0xFEFF) + excelHtml], { type: 'application/vnd.ms-excel;charset=utf-8;' });
           var link = document.createElement('a');
           link.href = URL.createObjectURL(blob);
-          link.download = 'CashPayment_' + new Date().toISOString().slice(0, 10) + '.xls';
+          link.download = 'PaymentApproval_' + new Date().toISOString().slice(0, 10) + '.xls';
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
@@ -8253,17 +8337,16 @@ var BRANCH_MENTOR_DATA = [["Bandarban","6"],["Khagrachari","6"],["Rangamati","6"
             padding-left: 22%;
         }
 
-        .custom-max-width {
+        input, .ApprovalStatus {
             max-width: 100%;
         }
 
-        input {
-            max-width: 100%;
-        }
-
-        .pay-now-btn:hover {
-            background-color: red;
-            transition: 0.2s;
+        pre {
+            white-space: pre-line;
+            font-family: inherit;
+            font-size: inherit;
+            background-color: inherit;
+            border: none;
         }
           </style>
           <style>
@@ -8275,21 +8358,46 @@ var BRANCH_MENTOR_DATA = [["Bandarban","6"],["Khagrachari","6"],["Rangamati","6"
                 max-width: 100%;
                 max-height: 60vh;
             }
-            #DataGrid {
+            #approvalListTable {
                 width: auto;
                 border-collapse: collapse;
                 position: relative;
             }
-                #DataGrid thead {
+                #approvalListTable thead {
                     position: sticky;
                     top: 0;
                     z-index: 10;
                 }
-            #DataGrid th, #DataGrid td {
+            #approvalListTable th, #approvalListTable td {
+                padding: 8px;
+                border: 1px solid #ddd;
                 white-space: nowrap;
             }
-            #DataGrid th {
+            #approvalListTable th {
                 background-color: #fff;
+            }
+            #approvalListTable .fixed-column {
+                position: sticky;
+                background-color: #fff;
+                z-index: 1;
+            }
+                #approvalListTable .fixed-column::after, #approvalListTable .fixed-column::before {
+                    position: absolute;
+                    content: '';
+                    height: 100%;
+                    width: 1px;
+                    background-color: #ddd;
+                    top: 0;
+                    bottom: 0;
+                }
+                #approvalListTable .fixed-column::after {
+                    right: -1px;
+                }
+                #approvalListTable .fixed-column::before {
+                    left: -1px;
+                }
+            #approvalListTable .fixed-column.right1 {
+                right: 0;
             }
           </style>
         </head>
@@ -8482,7 +8590,7 @@ var BRANCH_MENTOR_DATA = [["Bandarban","6"],["Khagrachari","6"],["Rangamati","6"
                       </a>
                     </li>
                   </ul>
-                  <input name="__RequestVerificationToken" type="hidden" value="CfDJ8N35IQ6GAvpBvtp9ntZwaHWE5Qkx9GJpik-_-eJIqn09lIYEJYKwxEhGcnETz9qCbY_7w5mBX-KzKo9atB3AzJYvrT_3HRPUPgiOzDxE0A_cJpr8I07q-Peo0zR3r3WhPKxt3PCTc0XhpUwtYq-kHFcOUjhJY8Vb2_Rhj0FrpGgxqtMxObZT7SLZsw3s__qcbg">
+                  <input name="__RequestVerificationToken" type="hidden" value="CfDJ8N35IQ6GAvpBvtp9ntZwaHVYyXk5S-iXztSDLrVTKAylLDCBvkTRsLrRiGgSVDubH3wsoBRMR0tQRl6ruyDaXqEnYaxNVt-A4sTLCeaUgJfmBxA8htPneaOARllBZwDWn91E1VlGjRphNBmMmRc7juNKwcv3i8u9auEM0rGv8mrvOWNvEI4xjisJx5TeXF54iQ">
                 </form>
               </div>
             </div>
@@ -8811,12 +8919,12 @@ var BRANCH_MENTOR_DATA = [["Bandarban","6"],["Khagrachari","6"],["Rangamati","6"
                       <div class="panel-body">
                         <ul>
                           <li data-parent-id="884">
-                            <a href="/Teachers/ClassPayment/PaymentApproval" data-businessid="ClassPayment-PaymentApproval|" class="submenuitem">
+                            <a href="/Teachers/ClassPayment/PaymentApproval" data-businessid="ClassPayment-PaymentApproval|" class="submenuitem" style="font-weight: bold;">
                               Payment Approval
                             </a>
                           </li>
                           <li data-parent-id="884">
-                            <a href="/Teachers/ClassPayment/CashPayment" data-businessid="ClassPayment-CashPayment|ClassPayment-Details|ClassPayment-PayNow|CommonAjaxTeacher-LoadTeacherAutoComplete|" class="submenuitem" style="font-weight: bold;">
+                            <a href="/Teachers/ClassPayment/CashPayment" data-businessid="ClassPayment-CashPayment|ClassPayment-Details|ClassPayment-PayNow|CommonAjaxTeacher-LoadTeacherAutoComplete|" class="submenuitem">
                               Cash Payment
                             </a>
                           </li>
@@ -9361,7 +9469,7 @@ var BRANCH_MENTOR_DATA = [["Bandarban","6"],["Khagrachari","6"],["Rangamati","6"
                     ClassPayment
                   </li>
                   <li class="active">
-                    CashPayment
+                    PaymentApproval
                   </li>
                 </ul>
                 -->
@@ -10005,13 +10113,10 @@ span.hide-native-select{position:relative}span.hide-native-select select{border:
             box-shadow: none;
         }
 </style>
-                  <div id="VoucherSection">
-                  </div>
-                  <input id="FaidFromOrganizationId" name="FaidFromOrganizationId" type="hidden" autocomplete="off" value="">
-                  <div id="CashPaymentSection" class="panel panel-primary">
+                  <div class="panel panel-primary">
                     <div class="panel-heading" id="ShowHide" title="Colapse">
                       <h4 class="panel-title">
-                        Cash Payment
+                        Payment Approval
                         <span style="float: right;">
                           <i class="fa fa-minus" aria-hidden="true">
                           </i>
@@ -10179,6 +10284,38 @@ span.hide-native-select{position:relative}span.hide-native-select select{border:
                                 </option>
                               </select>
                           </div>
+                          <label class="control-label col-md-2" for="Approval_Status">
+                            Approval Status
+                          </label>
+                          <div class="col-md-4">
+                            <select class="form-control ApprovalStatus" id="ApprovalStatusId" name="ApprovalStatusId">
+                              <option value="10">
+                                Pending
+                              </option>
+                              <option value="20">
+                                Approved
+                              </option>
+                              <option value="30">
+                                Cancelled
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="control-label col-md-2" for="Held_Date_From">
+                            Held Date From
+                          </label>
+                          <div class="col-md-4">
+                            <input class="form-control date-from" id="HeldDateFrom" name="HeldDateFrom" readonly="readonly" type="text" value="">
+                          </div>
+                          <label class="control-label col-md-2" for="Held_Date_To">
+                            Held Date To
+                          </label>
+                          <div class="col-md-4">
+                            <input class="form-control date-to" id="HeldDateTo" name="HeldDateTo" readonly="readonly" type="text" value="">
+                          </div>
+                        </div>
+                        <div class="form-group">
                           <label class="control-label col-md-2" for="Teacher">
                             Teacher
                           </label>
@@ -10194,36 +10331,11 @@ span.hide-native-select{position:relative}span.hide-native-select select{border:
                               </ul>
                             </div>
                           </div>
-                        </div>
-                        <div class="form-group">
-                          <label class="control-label col-md-2" for="Till_Date">
-                            Till Date
+                          <label class="control-label col-md-2" for="Display_Per_Page">
+                            Display Per Page
                           </label>
                           <div class="col-md-4">
-                            <input checked="checked" class="form-check-input" id="TillDate" name="TillDate" readonly="readonly" style="min-width:30px; min-height:30px;" type="checkbox" value="true">
-                            <input name="TillDate" type="hidden" value="false">
-                          </div>
-                          <div id="ApprovalDateContainer" style="display: block;">
-                            <label class="control-label col-md-2" for="Approval_Date">
-                              Approval Date
-                            </label>
-                            <div class="col-md-4">
-                              <input class="form-control approval-date custom-max-width" id="ApprovalDate" name="ApprovalDate" readonly="readonly" type="text" value="">
-                            </div>
-                          </div>
-                        </div>
-                        <div id="ApprovalDateRangeContainer" class="form-group" style="display: none;">
-                          <label class="control-label col-md-2" for="Approval_Date_From">
-                            Approval Date From
-                          </label>
-                          <div class="col-md-4">
-                            <input class="form-control date-from custom-max-width" id="ApprovalDateFrom" name="ApprovalDateFrom" readonly="readonly" type="text" value="2026-07-25">
-                          </div>
-                          <label class="control-label col-md-2" for="Approval_Date_To">
-                            Approval Date To
-                          </label>
-                          <div class="col-md-4">
-                            <input class="form-control date-to custom-max-width" id="ApprovalDateTo" name="ApprovalDateTo" readonly="readonly" type="text" value="2026-07-25">
+                            <input type="text" id="PageSize" name="PageSize" class="form-control" value="100" onkeypress="return isNumber()">
                           </div>
                         </div>
                         <div class="row">
@@ -10236,6 +10348,7 @@ span.hide-native-select{position:relative}span.hide-native-select select{border:
                         <br>
                         <div class="row" style="padding-left: 80px">
                           <div class="col-md-12">
+                            
                             <select class="form-control valid" id="InformationViewList" multiple="multiple" name="InformationViewList">
                               <option value="10" selected="selected">
                                 TPIN
@@ -10261,6 +10374,48 @@ span.hide-native-select{position:relative}span.hide-native-select select{border:
                               <option value="80" selected="selected">
                                 TIN
                               </option>
+                              <option value="90" selected="selected">
+                                Program &amp; Session
+                              </option>
+                              <option value="100" selected="selected">
+                                Course
+                              </option>
+                              <option value="110" selected="selected">
+                                Held Branch
+                              </option>
+                              <option value="120" selected="selected">
+                                Held Campus
+                              </option>
+                              <option value="130" selected="selected">
+                                Held Date
+                              </option>
+                              <option value="140" selected="selected">
+                                Platform
+                              </option>
+                              <option value="150" selected="selected">
+                                Class Type
+                              </option>
+                              <option value="160" selected="selected">
+                                Description
+                              </option>
+                              <option value="170" selected="selected">
+                                Approved By
+                              </option>
+                              <option value="180" selected="selected">
+                                Approved Date-Time
+                              </option>
+                              <option value="190" selected="selected">
+                                Cancelled By
+                              </option>
+                              <option value="200" selected="selected">
+                                Cancellation Date-Time
+                              </option>
+                              <option value="210" selected="selected">
+                                Entry By
+                              </option>
+                              <option value="220" selected="selected">
+                                Entry Date-Time
+                              </option>
                             </select>
                           </div>
                         </div>
@@ -10277,9 +10432,7 @@ span.hide-native-select{position:relative}span.hide-native-select select{border:
                       </div>
                     </div>
                   </div>
-                  <div id="PreparePaymentDetailsSection">
-                  </div>
-                  <div id="PaymentFinalizeContainer">
+                  <div id="ApprovalDetails">
                   </div>
                 </div>
               </div>
@@ -11489,7 +11642,7 @@ function getDPI() {
             <script type="text/javascript">
               $(document).ready(function () {
                 $('#collapse_884').addClass('in');
-                $('a[href="/Teachers/ClassPayment/CashPayment"]').css('font-weight', 'bold');
+                $('a[href="/Teachers/ClassPayment/PaymentApproval"]').css('font-weight', 'bold');
               });
             </script>
             <script>
@@ -29403,19 +29556,15 @@ function updateSelectedValues() {
         const branchIdName = '#BranchId';
         const campusIdName = '#CampusId';
         const classTypeIdName = '#ClassTypeId';
-        const tillDateIdName = '#TillDate';
-        const approvalDateContainerIdName = '#ApprovalDateContainer';
-        const approvalDateRangeContainerIdName = '#ApprovalDateRangeContainer';
-        const approvalDateIdName = '#ApprovalDate';
-        const approvalDateFromIdName = '#ApprovalDateFrom';
-        const approvalDateToIdName = '#ApprovalDateTo';
+        const heldDateFromIdName = '#HeldDateFrom';
+        const heldDateToIdName = '#HeldDateTo';
         const teacherListIdName = '#uuu-selected-list-data';
+        const approvalStatusIdName = '#ApprovalStatusId';
+        const pageSizeIdName = '#PageSize';
+        const approvalDetailsIdName = '#ApprovalDetails';
         const informationViewListIdName = '#InformationViewList';
-        const preparePaymentDetailsSectionIdName = '#PreparePaymentDetailsSection';
-        const preparePaymentDatatableSectionIdName = '#PreparePaymentDatatableSection';
         const viewButtonIdName = '#View';
-        const payNowBtnIdName = '#PayNowBtn';
-
+        const submitButtonIdName = '#Submit';
         // end initialization
 
         $(document).ready(function () {
@@ -29431,73 +29580,89 @@ function updateSelectedValues() {
 
             autoSuggestWithMultiselect('#TeacherId', '#multiselectOptionList', 'Teachers/CommonAjaxTeacher/LoadTeacherAutoComplete');
 
-            $(document).on('click', '#ShowHide', ShowHide);
-
-            $(document).on('click', viewButtonIdName, function () {
+            $(document).on('click', submitButtonIdName, function (e) {
+                e.preventDefault();
+                const dataList = [];
                 let isSuccess = true;
-                const isTillDate = $(tillDateIdName).is(':checked');
-                const approvalDate = $(approvalDateIdName).val();
+                try {
+                    $("#approvalListTable tbody tr").each(function () {
+                    const row = $(this);
+                    if (row.find(".check_approve").is(":checked") || row.find(".check_cancel").is(":checked")) {
+                        const data = {};
 
-                if (isTillDate === true && (approvalDate === undefined || approvalDate === null || approvalDate === '')) {
-                    $(preparePaymentDatatableSectionIdName).hide();
-                    window.showErrorMessageBelowCtrl("ApprovalDate", "", false);
-                    window.showErrorMessageBelowCtrl("ApprovalDate", "Approval Date is required.", true);
+                        const remarks = row.find("#remarks").val();
+                        if (row.find("#cancel").is(":checked") && remarks.trim() === '') {
+                            const serial = row.find("#cancel").data('serial');
+                            $(`textarea#remarks[data-serial="${serial}"]`).css("border", "1px solid red");
+                            isSuccess = false;
+                        } else if (remarks.length > 255) {
+                            const serial = row.find("#cancel").data('serial');
+                            $(`textarea#remarks[data-serial="${serial}"]`).css("border", "1px solid red");
+                            isSuccess = false;
+                            throw "Remarks length cannot exceed 255 characters.";
+                        }
+
+                        data.EncryptedString = row.find("#paymentEntryDetailsId").val();
+                        const isApprove = row.find("#approve").is(":checked");
+                        const isCancel = row.find("#cancel").is(":checked");
+                        if (isApprove && isCancel) {
+                            throw "Invalid data found.";
+                        }
+                        data.ApprovalStatus = isApprove === true && isCancel === false ? 20 : 30;
+                        data.Remarks = remarks.trim();
+
+                        dataList.push(data);
+                    }
+                });
+
+                if (dataList.length === 0) {
                     isSuccess = false;
-                    return;
-                } else {
-                    showErrorMessageBelowCtrl("ApprovalDate", "", false);
+                    $.fn.customMessage({
+                        displayTime: 5000,
+                        displayMessage: "Select item(s) to check in.",
+                        displayMessageType: "e",
+                    });
                 }
 
                 if (isSuccess === false) {
                     return;
                 }
 
-                const organizationIdList = $(organizationIdName).val() || ['0'];
-                const programIdList = $(programIdName).val() || ['0'];
-                const sessionIdList = $(sessionIdName).val() || ['0'];
-                const courseIdList = $(courseIdName).val() || ['0'];
-                const branchIdList = $(branchIdName).val() || ['0'];
-                const campusIdList = $(campusIdName).val() || ['0'];
-                const classTypeList = $(classTypeIdName).val() || ['0']
-                const approvalDateFrom = $(approvalDateFromIdName).val();
-                const approvalDateTo = $(approvalDateToIdName).val();
-                const teacherIdList = $(teacherListIdName).val().split(",");
-                const informationViewList = $(informationViewListIdName).val();
-
-                const url = 'Teachers/ClassPayment/PreparePaymentDetailsPartial';
-                const data = {
-                    organizationIdList: organizationIdList,
-                    programIdList: checkForZero(programIdList),
-                    sessionIdList: checkForZero(sessionIdList),
-                    courseIdList: checkForZero(courseIdList),
-                    branchIdList: checkForZero(branchIdList),
-                    campusIdList: checkForZero(campusIdList),
-                    classTypeList: classTypeList,
-                    isTillDate: isTillDate,
-                    approvalDate: approvalDate,
-                    approvalDateFrom: approvalDateFrom,
-                    approvalDateTo: approvalDateTo,
-                    teacherIdList: teacherIdList,
-                    informationViewList: informationViewList,
-                };
-
-                AjaxCall({
-                    url: url, data: data, handleResponseCallback: (response) => {
-                        $(preparePaymentDetailsSectionIdName).html('');
-                        $(preparePaymentDetailsSectionIdName).html(response);
-                        if (response) {
-                            $('#FaidFromOrganizationId').val($(organizationIdName).val());
-                            $(preparePaymentDatatableSectionIdName).show();
+                bootbox.confirm({
+                    message: `
+              <div class="text-center">
+                <h4>
+                  Once submitted, it cannot be edited or deleted.
+                </h4>
+                <h4>
+                  Are you sure you want to submit?
+                </h4>
+              </div>
+              `,
+                    buttons: {
+                        confirm: {
+                            label: 'Yes',
+                            className: 'btn-success'
+                        },
+                        cancel: {
+                            label: 'No',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function (result) {
+                        if (result) {
+                            approvalOperation(dataList);
                         }
                     }
-                });
+                }).css({ 'margin-top': (($(window).height() / 4)) });
 
-                ShowHide();
-            });
-
-            $(document).on('click', payNowBtnIdName, function () {
-                $(this).css('background-color', 'red');
-                bootbox.alert('এই ফিচারটি (Pay Now) এই ডেমো ভার্সনে অন্তর্ভুক্ত নয়।');
+                } catch (e) {
+                    $.fn.customMessage({
+                        displayTime: 5000,
+                        displayMessage: e,
+                        displayMessageType: "e",
+                    });
+                }
             });
 
             // dropdown
@@ -29619,31 +29784,30 @@ function updateSelectedValues() {
             });
             // end dropdown
 
-            $(document).on('click', tillDateIdName, function () {
-                toggleInputFields(this);
+            $(document).on('click', '#ShowHide', ShowHide);
+
+            $(viewButtonIdName).on('click', function () {
+                const approvalStatus = $(approvalStatusIdName).val();
+                if (parseInt(approvalStatus) !== 10) {
+                    bootbox.alert('এই ফিচারটি (Approved/Cancelled তালিকা) এই ডেমো ভার্সনে অন্তর্ভুক্ত নয়।');
+                    return;
+                }
+                loadPartialView(approvalStatus);
+                ShowHide();
             });
 
-            $(document).on("input change", approvalDateIdName, function (event) {
-                showErrorMessageBelowCtrl("ApprovalDate", "", false);
-            });
-
-            $('.approval-date').datetimepicker({
-                format: "yyyy-mm-dd",
-                autoclose: true,
-                endDate: '+0d',
-                todayBtn: false,
-                showMeridian: true,
-                initialDate: new Date(),
-                startView: 2,
-                minView: 2,
-                maxView: 4
-            }).on('changeDate', function (ev) {
-                $("#DateTo_err_div").remove();
-                $(".approval-date").removeClass('highlight');
+            $(informationViewListIdName).bootstrapDualListbox({
+                nonselectedlistlabel: 'Non-selected',
+                selectedlistlabel: 'Selected',
+                preserveselectiononmove: 'moved',
+                moveOnSelect: false,
+                showFilterInputs: false,
+                infoText: '',
             });
 
             $('.date-from').datetimepicker({
                 format: "yyyy-mm-dd",
+                endDate: '+0d',
                 autoclose: true,
                 todayBtn: false,
                 showMeridian: true,
@@ -29656,13 +29820,13 @@ function updateSelectedValues() {
                 $(".date-from ").removeClass('highlight');
                 if (Date.parse($(".date-from").val()) > Date.parse($(".date-to").val())) {
                     $(".dtmsg").text("");
-                    $(".date-from").parent().append("<div class='dtmsg' style='color:red;'>Date to can not be less than date from</div>");
+                    $(".date-from").parent().append("<div class='dtmsg' style='color:red;'>Date from can not be greater than date to</div>");
                     $(viewButtonIdName).prop('disabled', true);
                 }
-
                 if (Date.parse($(".date-from").val())
               <= Date.parse($(".date-to").val())) {
                     $('.dtmsg').text("");
+
                     $(viewButtonIdName).removeAttr('disabled');
                 }
             });
@@ -29670,6 +29834,7 @@ function updateSelectedValues() {
             $('.date-to').datetimepicker({
                 format: "yyyy-mm-dd",
                 autoclose: true,
+                endDate: '+0d',
                 todayBtn: false,
                 showMeridian: true,
                 initialDate: new Date(),
@@ -29677,6 +29842,7 @@ function updateSelectedValues() {
                 minView: 2,
                 maxView: 4
             }).on('changeDate', function (ev) {
+
                 $("#DateTo_err_div").remove();
                 $(".date-to").removeClass('highlight');
 
@@ -29693,27 +29859,74 @@ function updateSelectedValues() {
                 }
             });
 
-            $(informationViewListIdName).bootstrapDualListbox({
-                nonselectedlistlabel: 'Non-selected',
-                selectedlistlabel: 'Selected',
-                preserveselectiononmove: 'moved',
-                moveOnSelect: false,
-                showFilterInputs: false,
-                infoText: '',
+            $(document).on('change', '.check_approve', function () {
+                toggleIndividualCheckboxes(this, '.check_approve', '#cancel', '#approveAll', '#cancelAll');
+            });
+
+            $(document).on('change', '.check_cancel', function () {
+                toggleIndividualCheckboxes(this, '.check_cancel', '#approve', '#cancelAll', '#approveAll');
+                const serial = $(this).data('serial');
+                $(`textarea#remarks[data-serial="${serial}"]`).css("border", "");
+            });
+
+            $(document).on('click', '#approveAll', function () {
+                toggleAllCheckboxes(this, '.check_approve', '#cancelAll', '.check_cancel');
+                $(`textarea#remarks`).css("border", "");
+            });
+
+            $(document).on('click', '#cancelAll', function () {
+                toggleAllCheckboxes(this, '.check_cancel', '#approveAll', '.check_approve');
+                $(`textarea#remarks`).css("border", "");
+            });
+
+            $(document).on('input', '#remarks', function () {
+                const serial = $(this).data('serial');
+                $(`textarea#remarks[data-serial="${serial}"]`).css("border", "");
             });
         });
 
-        const toggleInputFields = (elementId) =>
+        const approvalOperation = (dataList) =>
                   {
-            const tillDateChecked = $(elementId).is(':checked');
-            if (tillDateChecked === false) {
-                $(approvalDateContainerIdName).hide();
-                $(approvalDateIdName).val('');
-                $(approvalDateRangeContainerIdName).show();
-            } else {
-                $(approvalDateContainerIdName).show();
-                $(approvalDateRangeContainerIdName).hide();
-            }
+            const data = JSON.stringify(JSON.stringify(dataList));
+
+            $.ajax({
+                type: "POST",
+                url: $("body").attr("data-project-root") + "Teachers/ClassPayment/PaymentApprovalDetailsPost",
+                cache: false,
+                async: true,
+                dataType: "json",
+                contentType: "application/json",
+                data: data,
+                beforeSend: function () {
+                    $.blockUI({
+                        timeout: 0,
+                        message: '<h1><img src="data:image/gif;base64,R0lGODlhIAAgAPMAAOzz8wAAALe9vXp+fqmuro+TkzIzM09SUsjOztPa2q6zsxscHAMDAwAAAAAAAAAAACH+GkNyZWF0ZWQgd2l0aCBhamF4bG9hZC5pbmZvACH5BAAKAAAAIf8LTkVUU0NBUEUyLjADAQAAACwAAAAAIAAgAAAE5xDISWlhperN52JLhSSdRgwVo1ICQZRUsiwHpTJT4iowNS8vyW2icCF6k8HMMBkCEDskxTBDAZwuAkkqIfxIQyhBQBFvAQSDITM5VDW6XNE4KagNh6Bgwe60smQUB3d4Rz1ZBApnFASDd0hihh12BkE9kjAJVlycXIg7CQIFA6SlnJ87paqbSKiKoqusnbMdmDC2tXQlkUhziYtyWTxIfy6BE8WJt5YJvpJivxNaGmLHT0VnOgSYf0dZXS7APdpB309RnHOG5gDqXGLDaC457D1zZ/V/nmOM82XiHRLYKhKP1oZmADdEAAAh+QQACgABACwAAAAAIAAgAAAE6hDISWlZpOrNp1lGNRSdRpDUolIGw5RUYhhHukqFu8DsrEyqnWThGvAmhVlteBvojpTDDBUEIFwMFBRAmBkSgOrBFZogCASwBDEY/CZSg7GSE0gSCjQBMVG023xWBhklAnoEdhQEfyNqMIcKjhRsjEdnezB+A4k8gTwJhFuiW4dokXiloUepBAp5qaKpp6+Ho7aWW54wl7obvEe0kRuoplCGepwSx2jJvqHEmGt6whJpGpfJCHmOoNHKaHx61WiSR92E4lbFoq+B6QDtuetcaBPnW6+O7wDHpIiK9SaVK5GgV543tzjgGcghAgAh+QQACgACACwAAAAAIAAgAAAE7hDISSkxpOrN5zFHNWRdhSiVoVLHspRUMoyUakyEe8PTPCATW9A14E0UvuAKMNAZKYUZCiBMuBakSQKG8G2FzUWox2AUtAQFcBKlVQoLgQReZhQlCIJesQXI5B0CBnUMOxMCenoCfTCEWBsJColTMANldx15BGs8B5wlCZ9Po6OJkwmRpnqkqnuSrayqfKmqpLajoiW5HJq7FL1Gr2mMMcKUMIiJgIemy7xZtJsTmsM4xHiKv5KMCXqfyUCJEonXPN2rAOIAmsfB3uPoAK++G+w48edZPK+M6hLJpQg484enXIdQFSS1u6UhksENEQAAIfkEAAoAAwAsAAAAACAAIAAABOcQyEmpGKLqzWcZRVUQnZYg1aBSh2GUVEIQ2aQOE+G+cD4ntpWkZQj1JIiZIogDFFyHI0UxQwFugMSOFIPJftfVAEoZLBbcLEFhlQiqGp1Vd140AUklUN3eCA51C1EWMzMCezCBBmkxVIVHBWd3HHl9JQOIJSdSnJ0TDKChCwUJjoWMPaGqDKannasMo6WnM562R5YluZRwur0wpgqZE7NKUm+FNRPIhjBJxKZteWuIBMN4zRMIVIhffcgojwCF117i4nlLnY5ztRLsnOk+aV+oJY7V7m76PdkS4trKcdg0Zc0tTcKkRAAAIfkEAAoABAAsAAAAACAAIAAABO4QyEkpKqjqzScpRaVkXZWQEximw1BSCUEIlDohrft6cpKCk5xid5MNJTaAIkekKGQkWyKHkvhKsR7ARmitkAYDYRIbUQRQjWBwJRzChi9CRlBcY1UN4g0/VNB0AlcvcAYHRyZPdEQFYV8ccwR5HWxEJ02YmRMLnJ1xCYp0Y5idpQuhopmmC2KgojKasUQDk5BNAwwMOh2RtRq5uQuPZKGIJQIGwAwGf6I0JXMpC8C7kXWDBINFMxS4DKMAWVWAGYsAdNqW5uaRxkSKJOZKaU3tPOBZ4DuK2LATgJhkPJMgTwKCdFjyPHEnKxFCDhEAACH5BAAKAAUALAAAAAAgACAAAATzEMhJaVKp6s2nIkolIJ2WkBShpkVRWqqQrhLSEu9MZJKK9y1ZrqYK9WiClmvoUaF8gIQSNeF1Er4MNFn4SRSDARWroAIETg1iVwuHjYB1kYc1mwruwXKC9gmsJXliGxc+XiUCby9ydh1sOSdMkpMTBpaXBzsfhoc5l58Gm5yToAaZhaOUqjkDgCWNHAULCwOLaTmzswadEqggQwgHuQsHIoZCHQMMQgQGubVEcxOPFAcMDAYUA85eWARmfSRQCdcMe0zeP1AAygwLlJtPNAAL19DARdPzBOWSm1brJBi45soRAWQAAkrQIykShQ9wVhHCwCQCACH5BAAKAAYALAAAAAAgACAAAATrEMhJaVKp6s2nIkqFZF2VIBWhUsJaTokqUCoBq+E71SRQeyqUToLA7VxF0JDyIQh/MVVPMt1ECZlfcjZJ9mIKoaTl1MRIl5o4CUKXOwmyrCInCKqcWtvadL2SYhyASyNDJ0uIiRMDjI0Fd30/iI2UA5GSS5UDj2l6NoqgOgN4gksEBgYFf0FDqKgHnyZ9OX8HrgYHdHpcHQULXAS2qKpENRg7eAMLC7kTBaixUYFkKAzWAAnLC7FLVxLWDBLKCwaKTULgEwbLA4hJtOkSBNqITT3xEgfLpBtzE/jiuL04RGEBgwWhShRgQExHBAAh+QQACgAHACwAAAAAIAAgAAAE7xDISWlSqerNpyJKhWRdlSAVoVLCWk6JKlAqAavhO9UkUHsqlE6CwO1cRdCQ8iEIfzFVTzLdRAmZX3I2SfZiCqGk5dTESJeaOAlClzsJsqwiJwiqnFrb2nS9kmIcgEsjQydLiIlHehhpejaIjzh9eomSjZR+ipslWIRLAgMDOR2DOqKogTB9pCUJBagDBXR6XB0EBkIIsaRsGGMMAxoDBgYHTKJiUYEGDAzHC9EACcUGkIgFzgwZ0QsSBcXHiQvOwgDdEwfFs0sDzt4S6BK4xYjkDOzn0unFeBzOBijIm1Dgmg5YFQwsCMjp1oJ8LyIAACH5BAAKAAgALAAAAAAgACAAAATwEMhJaVKp6s2nIkqFZF2VIBWhUsJaTokqUCoBq+E71SRQeyqUToLA7VxF0JDyIQh/MVVPMt1ECZlfcjZJ9mIKoaTl1MRIl5o4CUKXOwmyrCInCKqcWtvadL2SYhyASyNDJ0uIiUd6GGl6NoiPOH16iZKNlH6KmyWFOggHhEEvAwwMA0N9GBsEC6amhnVcEwavDAazGwIDaH1ipaYLBUTCGgQDA8NdHz0FpqgTBwsLqAbWAAnIA4FWKdMLGdYGEgraigbT0OITBcg5QwPT4xLrROZL6AuQAPUS7bxLpoWidY0JtxLHKhwwMJBTHgPKdEQAACH5BAAKAAkALAAAAAAgACAAAATrEMhJaVKp6s2nIkqFZF2VIBWhUsJaTokqUCoBq+E71SRQeyqUToLA7VxF0JDyIQh/MVVPMt1ECZlfcjZJ9mIKoaTl1MRIl5o4CUKXOwmyrCInCKqcWtvadL2SYhyASyNDJ0uIiUd6GAULDJCRiXo1CpGXDJOUjY+Yip9DhToJA4RBLwMLCwVDfRgbBAaqqoZ1XBMHswsHtxtFaH1iqaoGNgAIxRpbFAgfPQSqpbgGBqUD1wBXeCYp1AYZ19JJOYgH1KwA4UBvQwXUBxPqVD9L3sbp2BNk2xvvFPJd+MFCN6HAAIKgNggY0KtEBAAh+QQACgAKACwAAAAAIAAgAAAE6BDISWlSqerNpyJKhWRdlSAVoVLCWk6JKlAqAavhO9UkUHsqlE6CwO1cRdCQ8iEIfzFVTzLdRAmZX3I2SfYIDMaAFdTESJeaEDAIMxYFqrOUaNW4E4ObYcCXaiBVEgULe0NJaxxtYksjh2NLkZISgDgJhHthkpU4mW6blRiYmZOlh4JWkDqILwUGBnE6TYEbCgevr0N1gH4At7gHiRpFaLNrrq8HNgAJA70AWxQIH1+vsYMDAzZQPC9VCNkDWUhGkuE5PxJNwiUK4UfLzOlD4WvzAHaoG9nxPi5d+jYUqfAhhykOFwJWiAAAIfkEAAoACwAsAAAAACAAIAAABPAQyElpUqnqzaciSoVkXVUMFaFSwlpOCcMYlErAavhOMnNLNo8KsZsMZItJEIDIFSkLGQoQTNhIsFehRww2CQLKF0tYGKYSg+ygsZIuNqJksKgbfgIGepNo2cIUB3V1B3IvNiBYNQaDSTtfhhx0CwVPI0UJe0+bm4g5VgcGoqOcnjmjqDSdnhgEoamcsZuXO1aWQy8KAwOAuTYYGwi7w5h+Kr0SJ8MFihpNbx+4Erq7BYBuzsdiH1jCAzoSfl0rVirNbRXlBBlLX+BP0XJLAPGzTkAuAOqb0WT5AH7OcdCm5B8TgRwSRKIHQtaLCwg1RAAAOwAAAAAAAAAAAA==" />Processing...</h1>'
+                    });
+                },
+                success: function (response) {
+                    if (response.isSuccess) {
+                        loadPartialView(10);
+
+                        $.fn.customMessage({
+                            displayTime: 5000,
+                            displayMessage: response.message,
+                            displayMessageType: "s",
+                        });
+                    } else {
+                        $.fn.customMessage({
+                            displayMessage: response.message,
+                            displayMessageType: "error",
+                        });
+                    }
+                    $.unblockUI();
+                },
+                complete: function () {
+                    $.unblockUI();
+                },
+                error: function (response) {
+                    $.unblockUI();
+                }
+            });
         }
 
         const appendAutoSuggestMultiselectOption = (elementId, name = "All", optionValue = 0, teacherIdList) => {
@@ -29756,6 +29969,32 @@ function updateSelectedValues() {
             });
         }
 
+        const toggleIndividualCheckboxes = (source, sourceClass, otherCheckbox, allCheckbox, otherAllCheckbox) => {
+            const serial = $(source).data('serial');
+            const sourceElement = $(source);
+            const otherCheckboxElement = $(`input${otherCheckbox}[data-serial="${serial}"]`);
+            if (otherCheckboxElement && sourceElement) {
+                const sourceUnchecked = sourceElement.filter(':not(:checked)').length > 0;
+                otherCheckboxElement.prop('disabled', !sourceUnchecked);
+            }
+
+            const anyUnchecked = $(sourceClass).filter(':not(:checked)').length > 0;
+            $(allCheckbox).prop('checked', !anyUnchecked);
+            if (anyUnchecked === true) {
+                $(otherAllCheckbox).prop('disabled', false);
+            }
+        }
+
+        const toggleAllCheckboxes = (source, targetClass, otherCheckbox, otherCheckboxClass) => {
+            const isChecked = $(source).prop('checked');
+            $(targetClass).prop('disabled', false);
+            $(targetClass).prop('checked', isChecked);
+            $(otherCheckbox).prop('checked', false);
+            $(otherCheckbox).prop('disabled', isChecked);
+            $(otherCheckboxClass).prop('checked', false);
+            $(otherCheckboxClass).prop('disabled', isChecked);
+        }
+
         const ShowHide = () => {
             const _this = $("#ShowHide");
             if (_this.attr('title') === 'Colapse') {
@@ -29767,6 +30006,123 @@ function updateSelectedValues() {
                 _this.attr('title', 'Colapse');
                 _this.find(".fa-plus").addClass("fa-minus").removeClass("fa-plus");
             }
+        }
+
+        const loadPartialView = (approvalStatus) => {
+
+            const informationViewList = $(informationViewListIdName).val();
+
+            const data = {
+                approvalStatus: approvalStatus,
+                informationViewList: informationViewList,
+            };
+
+            if (parseInt(approvalStatus) === 10) {
+                let pageSize = 100;
+                if ($(pageSizeIdName).val() !== "" && /^\d+$/.test($(pageSizeIdName).val()) && $(pageSizeIdName).val()
+                  <= 1000000000 && $(pageSizeIdName).val() >
+                    0) {
+                    pageSize = parseInt($(pageSizeIdName).val());
+                }
+                else {
+                    $(pageSizeIdName).val(pageSize);
+                }
+                const organizationIdList = $(organizationIdName).val() || ['0'];
+                const programIdList = $(programIdName).val() || ['0'];
+                const sessionIdList = $(sessionIdName).val() || ['0'];
+                const courseIdList = $(courseIdName).val() || ['0'];
+                const branchIdList = $(branchIdName).val() || ['0'];
+                const campusIdList = $(campusIdName).val() || ['0'];
+                const classTypeList = $(classTypeIdName).val() || ['0'];
+                const heldDateFrom = $(heldDateFromIdName).val();
+                const heldDateTo = $(heldDateToIdName).val();
+                const teacherIdList = $(teacherListIdName).val().split(",");
+
+                data.organizationIdList = organizationIdList;
+                data.programIdList = checkForZero(programIdList);
+                data.sessionIdList = checkForZero(sessionIdList);
+                data.courseIdList = checkForZero(courseIdList);
+                data.branchIdList = checkForZero(branchIdList);
+                data.campusIdList = checkForZero(campusIdList);
+                data.classTypeList = classTypeList;
+                data.heldDateFrom = heldDateFrom;
+                data.heldDateTo = heldDateTo;
+                data.teacherIdList = teacherIdList;
+                data.length = pageSize;
+            }
+
+            const url = 'Teachers/ClassPayment/LoadPaymentApprovalDetails';
+
+            AjaxCall({
+                url: url, data: data, handleResponseCallback: (response) => {
+                    $(approvalDetailsIdName).html('');
+                    $(approvalDetailsIdName).html(response);
+                    if (approvalStatus !== 10) {
+                        DataTableRender(approvalStatus);
+                    }
+                }
+            });
+        }
+
+        const DataTableRender = (approvalStatus) => {
+            let pageSize = 100;
+            if ($(pageSizeIdName).val() !== "" && /^\d+$/.test($(pageSizeIdName).val()) && $(pageSizeIdName).val()
+                    <= 1000000000 && $(pageSizeIdName).val() >
+                      0) {
+                pageSize = parseInt($(pageSizeIdName).val());
+            }
+            else {
+                $(pageSizeIdName).val(pageSize);
+            }
+
+            const organizationIdList = $(organizationIdName).val() || ['0'];
+            const programIdList = $(programIdName).val() || ['0'];
+            const sessionIdList = $(sessionIdName).val() || ['0'];
+            const courseIdList = $(courseIdName).val() || ['0'];
+            const branchIdList = $(branchIdName).val() || ['0'];
+            const campusIdList = $(campusIdName).val() || ['0'];
+            const classTypeList = $(classTypeIdName).val() || ['0'];
+            const heldDateFrom = $(heldDateFromIdName).val();
+            const heldDateTo = $(heldDateToIdName).val();
+            const teacherIdList = $(teacherListIdName).val().split(",");
+            const informationViewList = $(informationViewListIdName).val();
+
+            $('#DataGrid').dataTable({
+                destroy: true,
+                "processing": true,
+                searching: false,
+                serverSide: true,
+                "scrollX": true,
+                "bLengthChange": false,
+                "iDisplayLength": pageSize,
+                "scrollY": "60vh",
+                "bSort": false,
+                fixedColumns: {
+                    leftColumns: 0,
+                    rightColumns: 1,
+                },
+                ajax: {
+                    url: '/Teachers/ClassPayment/LoadPaymentApprovalDetailsDataTable',
+                    type: 'POST',
+                    data: function (dt) {
+                        dt.organizationIdList = organizationIdList;
+                        dt.programIdList = checkForZero(programIdList);
+                        dt.sessionIdList = checkForZero(sessionIdList);
+                        dt.courseIdList = checkForZero(courseIdList);
+                        dt.branchIdList = checkForZero(branchIdList);
+                        dt.campusIdList = checkForZero(campusIdList);
+                        dt.classTypeList = classTypeList;
+                        dt.ApprovalStatus = approvalStatus;
+                        dt.heldDateFrom = heldDateFrom;
+                        dt.heldDateTo = heldDateTo;
+                        dt.teacherIdList = teacherIdList;
+                        dt.informationViewList = informationViewList;
+                    },
+                    error: function (response) {
+                        ShowErrorMessage("data load error. Please try again.");
+                    }
+                }
+            });
         }
 
         const AjaxCall = ({ url, data, handleResponseCallback = () => { } }) => {
@@ -29854,10 +30210,10 @@ function updateSelectedValues() {
         const appendSelectedOption = (elementId, name = "All", optionValue = 0) => {
             emptySelectedOptions(elementId);
             $(elementId).append(`
-                    <option value="${optionValue}">
-                      ${name}
-                    </option>
-                    `);
+                        <option value="${optionValue}">
+                          ${name}
+                        </option>
+                        `);
         }
 
         const emptySelectedOptions = (elementId) => {
@@ -29870,9 +30226,9 @@ function updateSelectedValues() {
             $(elementId).append($('<option>').text('Common').attr('value', -1));
             resetMultiselect(elementId);
         }
-                    </script>
-                    <script type="text/javascript">
-                      $(document).ready(function () {
+                        </script>
+                        <script type="text/javascript">
+                          $(document).ready(function () {
             // Div Full Screen
             $("#full-screen-btn").on('click', function () {
                 var flag = $(this).attr("isFullScreen");
@@ -29890,1626 +30246,1112 @@ function updateSelectedValues() {
                 }
             });        
         });
-                    </script>
-                    <div class="datetimepicker datetimepicker-dropdown-bottom-right dropdown-menu" style="left: 1353.39px; z-index: 1250; display: none; top: 346.594px;">
-                      <div class="datetimepicker-minutes" style="display: none;">
-                        <table class=" table-condensed">
-                          <thead>
-                            <tr>
-                              <th class="prev" style="visibility: visible;">
-                                <span class="glyphicon glyphicon-arrow-left">
-                                </span>
-                              </th>
-                              <th colspan="5" class="switch">
-                                25 July 2026
-                              </th>
-                              <th class="next" style="visibility: hidden;">
-                                <span class="glyphicon glyphicon-arrow-right">
-                                </span>
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td colspan="7">
-                                <fieldset class="minute">
-                                  <legend>
-                                    PM
-                                  </legend>
-                                  <span class="minute">
-                                    12:00
-                                  </span>
-                                  <span class="minute active">
-                                    12:05
-                                  </span>
-                                  <span class="minute disabled">
-                                    12:10
-                                  </span>
-                                  <span class="minute disabled">
-                                    12:15
-                                  </span>
-                                  <span class="minute disabled">
-                                    12:20
-                                  </span>
-                                  <span class="minute disabled">
-                                    12:25
-                                  </span>
-                                  <span class="minute disabled">
-                                    12:30
-                                  </span>
-                                  <span class="minute disabled">
-                                    12:35
-                                  </span>
-                                  <span class="minute disabled">
-                                    12:40
-                                  </span>
-                                  <span class="minute disabled">
-                                    12:45
-                                  </span>
-                                  <span class="minute disabled">
-                                    12:50
-                                  </span>
-                                  <span class="minute disabled">
-                                    12:55
-                                  </span>
-                                </fieldset>
-                              </td>
-                            </tr>
-                          </tbody>
-                          <tfoot>
-                            <tr>
-                              <th colspan="7" class="today" style="display: none;">
-                                Today
-                              </th>
-                            </tr>
-                          </tfoot>
-                        </table>
-                      </div>
-                      <div class="datetimepicker-hours" style="display: none;">
-                        <table class=" table-condensed">
-                          <thead>
-                            <tr>
-                              <th class="prev" style="visibility: visible;">
-                                <span class="glyphicon glyphicon-arrow-left">
-                                </span>
-                              </th>
-                              <th colspan="5" class="switch">
-                                25 July 2026
-                              </th>
-                              <th class="next" style="visibility: hidden;">
-                                <span class="glyphicon glyphicon-arrow-right">
-                                </span>
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td colspan="7">
-                                <fieldset class="hour">
-                                  <legend>
-                                    AM
-                                  </legend>
-                                  <span class="hour hour_am">
-                                    12
-                                  </span>
-                                  <span class="hour hour_am">
-                                    1
-                                  </span>
-                                  <span class="hour hour_am">
-                                    2
-                                  </span>
-                                  <span class="hour hour_am">
-                                    3
-                                  </span>
-                                  <span class="hour hour_am">
-                                    4
-                                  </span>
-                                  <span class="hour hour_am">
-                                    5
-                                  </span>
-                                  <span class="hour hour_am">
-                                    6
-                                  </span>
-                                  <span class="hour hour_am">
-                                    7
-                                  </span>
-                                  <span class="hour hour_am">
-                                    8
-                                  </span>
-                                  <span class="hour hour_am">
-                                    9
-                                  </span>
-                                  <span class="hour hour_am">
-                                    10
-                                  </span>
-                                  <span class="hour hour_am">
-                                    11
-                                  </span>
-                                </fieldset>
-                                <fieldset class="hour">
-                                  <legend>
-                                    PM
-                                  </legend>
-                                  <span class="hour active hour_pm">
-                                    12
-                                  </span>
-                                  <span class="hour disabled hour_pm">
-                                    1
-                                  </span>
-                                  <span class="hour disabled hour_pm">
-                                    2
-                                  </span>
-                                  <span class="hour disabled hour_pm">
-                                    3
-                                  </span>
-                                  <span class="hour disabled hour_pm">
-                                    4
-                                  </span>
-                                  <span class="hour disabled hour_pm">
-                                    5
-                                  </span>
-                                  <span class="hour disabled hour_pm">
-                                    6
-                                  </span>
-                                  <span class="hour disabled hour_pm">
-                                    7
-                                  </span>
-                                  <span class="hour disabled hour_pm">
-                                    8
-                                  </span>
-                                  <span class="hour disabled hour_pm">
-                                    9
-                                  </span>
-                                  <span class="hour disabled hour_pm">
-                                    10
-                                  </span>
-                                  <span class="hour disabled hour_pm">
-                                    11
-                                  </span>
-                                </fieldset>
-                              </td>
-                            </tr>
-                          </tbody>
-                          <tfoot>
-                            <tr>
-                              <th colspan="7" class="today" style="display: none;">
-                                Today
-                              </th>
-                            </tr>
-                          </tfoot>
-                        </table>
-                      </div>
-                      <div class="datetimepicker-days" style="display: block;">
-                        <table class=" table-condensed">
-                          <thead>
-                            <tr>
-                              <th class="prev" style="visibility: visible;">
-                                <span class="glyphicon glyphicon-arrow-left">
-                                </span>
-                              </th>
-                              <th colspan="5" class="switch">
-                                July 2026
-                              </th>
-                              <th class="next" style="visibility: hidden;">
-                                <span class="glyphicon glyphicon-arrow-right">
-                                </span>
-                              </th>
-                            </tr>
-                            <tr>
-                              <th class="dow">
-                                Su
-                              </th>
-                              <th class="dow">
-                                Mo
-                              </th>
-                              <th class="dow">
-                                Tu
-                              </th>
-                              <th class="dow">
-                                We
-                              </th>
-                              <th class="dow">
-                                Th
-                              </th>
-                              <th class="dow">
-                                Fr
-                              </th>
-                              <th class="dow">
-                                Sa
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td class="day old">
-                                28
-                              </td>
-                              <td class="day old">
-                                29
-                              </td>
-                              <td class="day old">
-                                30
-                              </td>
-                              <td class="day">
-                                1
-                              </td>
-                              <td class="day">
-                                2
-                              </td>
-                              <td class="day">
-                                3
-                              </td>
-                              <td class="day">
-                                4
-                              </td>
-                            </tr>
-                            <tr>
-                              <td class="day">
-                                5
-                              </td>
-                              <td class="day">
-                                6
-                              </td>
-                              <td class="day">
-                                7
-                              </td>
-                              <td class="day">
-                                8
-                              </td>
-                              <td class="day">
-                                9
-                              </td>
-                              <td class="day">
-                                10
-                              </td>
-                              <td class="day">
-                                11
-                              </td>
-                            </tr>
-                            <tr>
-                              <td class="day">
-                                12
-                              </td>
-                              <td class="day">
-                                13
-                              </td>
-                              <td class="day">
-                                14
-                              </td>
-                              <td class="day">
-                                15
-                              </td>
-                              <td class="day">
-                                16
-                              </td>
-                              <td class="day">
-                                17
-                              </td>
-                              <td class="day">
-                                18
-                              </td>
-                            </tr>
-                            <tr>
-                              <td class="day">
-                                19
-                              </td>
-                              <td class="day">
-                                20
-                              </td>
-                              <td class="day">
-                                21
-                              </td>
-                              <td class="day">
-                                22
-                              </td>
-                              <td class="day">
-                                23
-                              </td>
-                              <td class="day">
-                                24
-                              </td>
-                              <td class="day active">
-                                25
-                              </td>
-                            </tr>
-                            <tr>
-                              <td class="day disabled">
-                                26
-                              </td>
-                              <td class="day disabled">
-                                27
-                              </td>
-                              <td class="day disabled">
-                                28
-                              </td>
-                              <td class="day disabled">
-                                29
-                              </td>
-                              <td class="day disabled">
-                                30
-                              </td>
-                              <td class="day disabled">
-                                31
-                              </td>
-                              <td class="day new disabled">
-                                1
-                              </td>
-                            </tr>
-                            <tr>
-                              <td class="day new disabled">
-                                2
-                              </td>
-                              <td class="day new disabled">
-                                3
-                              </td>
-                              <td class="day new disabled">
-                                4
-                              </td>
-                              <td class="day new disabled">
-                                5
-                              </td>
-                              <td class="day new disabled">
-                                6
-                              </td>
-                              <td class="day new disabled">
-                                7
-                              </td>
-                              <td class="day new disabled">
-                                8
-                              </td>
-                            </tr>
-                          </tbody>
-                          <tfoot>
-                            <tr>
-                              <th colspan="7" class="today" style="display: none;">
-                                Today
-                              </th>
-                            </tr>
-                          </tfoot>
-                        </table>
-                      </div>
-                      <div class="datetimepicker-months" style="display: none;">
-                        <table class="table-condensed">
-                          <thead>
-                            <tr>
-                              <th class="prev" style="visibility: visible;">
-                                <span class="glyphicon glyphicon-arrow-left">
-                                </span>
-                              </th>
-                              <th colspan="5" class="switch">
-                                2026
-                              </th>
-                              <th class="next" style="visibility: hidden;">
-                                <span class="glyphicon glyphicon-arrow-right">
-                                </span>
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td colspan="7">
-                                <span class="month">
-                                  Jan
-                                </span>
-                                <span class="month">
-                                  Feb
-                                </span>
-                                <span class="month">
-                                  Mar
-                                </span>
-                                <span class="month">
-                                  Apr
-                                </span>
-                                <span class="month">
-                                  May
-                                </span>
-                                <span class="month">
-                                  Jun
-                                </span>
-                                <span class="month active">
-                                  Jul
-                                </span>
-                                <span class="month disabled">
-                                  Aug
-                                </span>
-                                <span class="month disabled">
-                                  Sep
-                                </span>
-                                <span class="month disabled">
-                                  Oct
-                                </span>
-                                <span class="month disabled">
-                                  Nov
-                                </span>
-                                <span class="month disabled">
-                                  Dec
-                                </span>
-                              </td>
-                            </tr>
-                          </tbody>
-                          <tfoot>
-                            <tr>
-                              <th colspan="7" class="today" style="display: none;">
-                                Today
-                              </th>
-                            </tr>
-                          </tfoot>
-                        </table>
-                      </div>
-                      <div class="datetimepicker-years" style="display: none;">
-                        <table class="table-condensed">
-                          <thead>
-                            <tr>
-                              <th class="prev" style="visibility: visible;">
-                                <span class="glyphicon glyphicon-arrow-left">
-                                </span>
-                              </th>
-                              <th colspan="5" class="switch">
-                                2020-2029
-                              </th>
-                              <th class="next" style="visibility: hidden;">
-                                <span class="glyphicon glyphicon-arrow-right">
-                                </span>
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td colspan="7">
-                                <span class="year old">
-                                  2019
-                                </span>
-                                <span class="year">
-                                  2020
-                                </span>
-                                <span class="year">
-                                  2021
-                                </span>
-                                <span class="year">
-                                  2022
-                                </span>
-                                <span class="year">
-                                  2023
-                                </span>
-                                <span class="year">
-                                  2024
-                                </span>
-                                <span class="year">
-                                  2025
-                                </span>
-                                <span class="year active">
-                                  2026
-                                </span>
-                                <span class="year disabled">
-                                  2027
-                                </span>
-                                <span class="year disabled">
-                                  2028
-                                </span>
-                                <span class="year disabled">
-                                  2029
-                                </span>
-                                <span class="year old disabled">
-                                  2030
-                                </span>
-                              </td>
-                            </tr>
-                          </tbody>
-                          <tfoot>
-                            <tr>
-                              <th colspan="7" class="today" style="display: none;">
-                                Today
-                              </th>
-                            </tr>
-                          </tfoot>
-                        </table>
-                      </div>
-                    </div>
-                    <div class="datetimepicker datetimepicker-dropdown-bottom-right dropdown-menu" style="left: 0px; z-index: 1150;">
-                      <div class="datetimepicker-minutes" style="display: none;">
-                        <table class=" table-condensed">
-                          <thead>
-                            <tr>
-                              <th class="prev" style="visibility: visible;">
-                                <span class="glyphicon glyphicon-arrow-left">
-                                </span>
-                              </th>
-                              <th colspan="5" class="switch">
-                                25 July 2026
-                              </th>
-                              <th class="next" style="visibility: visible;">
-                                <span class="glyphicon glyphicon-arrow-right">
-                                </span>
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td colspan="7">
-                                <fieldset class="minute">
-                                  <legend>
-                                    AM
-                                  </legend>
-                                  <span class="minute active">
-                                    12:00
-                                  </span>
-                                  <span class="minute">
-                                    12:05
-                                  </span>
-                                  <span class="minute">
-                                    12:10
-                                  </span>
-                                  <span class="minute">
-                                    12:15
-                                  </span>
-                                  <span class="minute">
-                                    12:20
-                                  </span>
-                                  <span class="minute">
-                                    12:25
-                                  </span>
-                                  <span class="minute">
-                                    12:30
-                                  </span>
-                                  <span class="minute">
-                                    12:35
-                                  </span>
-                                  <span class="minute">
-                                    12:40
-                                  </span>
-                                  <span class="minute">
-                                    12:45
-                                  </span>
-                                  <span class="minute">
-                                    12:50
-                                  </span>
-                                  <span class="minute">
-                                    12:55
-                                  </span>
-                                </fieldset>
-                              </td>
-                            </tr>
-                          </tbody>
-                          <tfoot>
-                            <tr>
-                              <th colspan="7" class="today" style="display: none;">
-                                Today
-                              </th>
-                            </tr>
-                          </tfoot>
-                        </table>
-                      </div>
-                      <div class="datetimepicker-hours" style="display: none;">
-                        <table class=" table-condensed">
-                          <thead>
-                            <tr>
-                              <th class="prev" style="visibility: visible;">
-                                <span class="glyphicon glyphicon-arrow-left">
-                                </span>
-                              </th>
-                              <th colspan="5" class="switch">
-                                25 July 2026
-                              </th>
-                              <th class="next" style="visibility: visible;">
-                                <span class="glyphicon glyphicon-arrow-right">
-                                </span>
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td colspan="7">
-                                <fieldset class="hour">
-                                  <legend>
-                                    AM
-                                  </legend>
-                                  <span class="hour active hour_am">
-                                    12
-                                  </span>
-                                  <span class="hour hour_am">
-                                    1
-                                  </span>
-                                  <span class="hour hour_am">
-                                    2
-                                  </span>
-                                  <span class="hour hour_am">
-                                    3
-                                  </span>
-                                  <span class="hour hour_am">
-                                    4
-                                  </span>
-                                  <span class="hour hour_am">
-                                    5
-                                  </span>
-                                  <span class="hour hour_am">
-                                    6
-                                  </span>
-                                  <span class="hour hour_am">
-                                    7
-                                  </span>
-                                  <span class="hour hour_am">
-                                    8
-                                  </span>
-                                  <span class="hour hour_am">
-                                    9
-                                  </span>
-                                  <span class="hour hour_am">
-                                    10
-                                  </span>
-                                  <span class="hour hour_am">
-                                    11
-                                  </span>
-                                </fieldset>
-                                <fieldset class="hour">
-                                  <legend>
-                                    PM
-                                  </legend>
-                                  <span class="hour hour_pm">
-                                    12
-                                  </span>
-                                  <span class="hour hour_pm">
-                                    1
-                                  </span>
-                                  <span class="hour hour_pm">
-                                    2
-                                  </span>
-                                  <span class="hour hour_pm">
-                                    3
-                                  </span>
-                                  <span class="hour hour_pm">
-                                    4
-                                  </span>
-                                  <span class="hour hour_pm">
-                                    5
-                                  </span>
-                                  <span class="hour hour_pm">
-                                    6
-                                  </span>
-                                  <span class="hour hour_pm">
-                                    7
-                                  </span>
-                                  <span class="hour hour_pm">
-                                    8
-                                  </span>
-                                  <span class="hour hour_pm">
-                                    9
-                                  </span>
-                                  <span class="hour hour_pm">
-                                    10
-                                  </span>
-                                  <span class="hour hour_pm">
-                                    11
-                                  </span>
-                                </fieldset>
-                              </td>
-                            </tr>
-                          </tbody>
-                          <tfoot>
-                            <tr>
-                              <th colspan="7" class="today" style="display: none;">
-                                Today
-                              </th>
-                            </tr>
-                          </tfoot>
-                        </table>
-                      </div>
-                      <div class="datetimepicker-days" style="display: block;">
-                        <table class=" table-condensed">
-                          <thead>
-                            <tr>
-                              <th class="prev" style="visibility: visible;">
-                                <span class="glyphicon glyphicon-arrow-left">
-                                </span>
-                              </th>
-                              <th colspan="5" class="switch">
-                                July 2026
-                              </th>
-                              <th class="next" style="visibility: visible;">
-                                <span class="glyphicon glyphicon-arrow-right">
-                                </span>
-                              </th>
-                            </tr>
-                            <tr>
-                              <th class="dow">
-                                Su
-                              </th>
-                              <th class="dow">
-                                Mo
-                              </th>
-                              <th class="dow">
-                                Tu
-                              </th>
-                              <th class="dow">
-                                We
-                              </th>
-                              <th class="dow">
-                                Th
-                              </th>
-                              <th class="dow">
-                                Fr
-                              </th>
-                              <th class="dow">
-                                Sa
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td class="day old">
-                                28
-                              </td>
-                              <td class="day old">
-                                29
-                              </td>
-                              <td class="day old">
-                                30
-                              </td>
-                              <td class="day">
-                                1
-                              </td>
-                              <td class="day">
-                                2
-                              </td>
-                              <td class="day">
-                                3
-                              </td>
-                              <td class="day">
-                                4
-                              </td>
-                            </tr>
-                            <tr>
-                              <td class="day">
-                                5
-                              </td>
-                              <td class="day">
-                                6
-                              </td>
-                              <td class="day">
-                                7
-                              </td>
-                              <td class="day">
-                                8
-                              </td>
-                              <td class="day">
-                                9
-                              </td>
-                              <td class="day">
-                                10
-                              </td>
-                              <td class="day">
-                                11
-                              </td>
-                            </tr>
-                            <tr>
-                              <td class="day">
-                                12
-                              </td>
-                              <td class="day">
-                                13
-                              </td>
-                              <td class="day">
-                                14
-                              </td>
-                              <td class="day">
-                                15
-                              </td>
-                              <td class="day">
-                                16
-                              </td>
-                              <td class="day">
-                                17
-                              </td>
-                              <td class="day">
-                                18
-                              </td>
-                            </tr>
-                            <tr>
-                              <td class="day">
-                                19
-                              </td>
-                              <td class="day">
-                                20
-                              </td>
-                              <td class="day">
-                                21
-                              </td>
-                              <td class="day">
-                                22
-                              </td>
-                              <td class="day">
-                                23
-                              </td>
-                              <td class="day">
-                                24
-                              </td>
-                              <td class="day active">
-                                25
-                              </td>
-                            </tr>
-                            <tr>
-                              <td class="day">
-                                26
-                              </td>
-                              <td class="day">
-                                27
-                              </td>
-                              <td class="day">
-                                28
-                              </td>
-                              <td class="day">
-                                29
-                              </td>
-                              <td class="day">
-                                30
-                              </td>
-                              <td class="day">
-                                31
-                              </td>
-                              <td class="day new">
-                                1
-                              </td>
-                            </tr>
-                            <tr>
-                              <td class="day new">
-                                2
-                              </td>
-                              <td class="day new">
-                                3
-                              </td>
-                              <td class="day new">
-                                4
-                              </td>
-                              <td class="day new">
-                                5
-                              </td>
-                              <td class="day new">
-                                6
-                              </td>
-                              <td class="day new">
-                                7
-                              </td>
-                              <td class="day new">
-                                8
-                              </td>
-                            </tr>
-                          </tbody>
-                          <tfoot>
-                            <tr>
-                              <th colspan="7" class="today" style="display: none;">
-                                Today
-                              </th>
-                            </tr>
-                          </tfoot>
-                        </table>
-                      </div>
-                      <div class="datetimepicker-months" style="display: none;">
-                        <table class="table-condensed">
-                          <thead>
-                            <tr>
-                              <th class="prev" style="visibility: visible;">
-                                <span class="glyphicon glyphicon-arrow-left">
-                                </span>
-                              </th>
-                              <th colspan="5" class="switch">
-                                2026
-                              </th>
-                              <th class="next" style="visibility: visible;">
-                                <span class="glyphicon glyphicon-arrow-right">
-                                </span>
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td colspan="7">
-                                <span class="month">
-                                  Jan
-                                </span>
-                                <span class="month">
-                                  Feb
-                                </span>
-                                <span class="month">
-                                  Mar
-                                </span>
-                                <span class="month">
-                                  Apr
-                                </span>
-                                <span class="month">
-                                  May
-                                </span>
-                                <span class="month">
-                                  Jun
-                                </span>
-                                <span class="month active">
-                                  Jul
-                                </span>
-                                <span class="month">
-                                  Aug
-                                </span>
-                                <span class="month">
-                                  Sep
-                                </span>
-                                <span class="month">
-                                  Oct
-                                </span>
-                                <span class="month">
-                                  Nov
-                                </span>
-                                <span class="month">
-                                  Dec
-                                </span>
-                              </td>
-                            </tr>
-                          </tbody>
-                          <tfoot>
-                            <tr>
-                              <th colspan="7" class="today" style="display: none;">
-                                Today
-                              </th>
-                            </tr>
-                          </tfoot>
-                        </table>
-                      </div>
-                      <div class="datetimepicker-years" style="display: none;">
-                        <table class="table-condensed">
-                          <thead>
-                            <tr>
-                              <th class="prev" style="visibility: visible;">
-                                <span class="glyphicon glyphicon-arrow-left">
-                                </span>
-                              </th>
-                              <th colspan="5" class="switch">
-                                2020-2029
-                              </th>
-                              <th class="next" style="visibility: visible;">
-                                <span class="glyphicon glyphicon-arrow-right">
-                                </span>
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td colspan="7">
-                                <span class="year old">
-                                  2019
-                                </span>
-                                <span class="year">
-                                  2020
-                                </span>
-                                <span class="year">
-                                  2021
-                                </span>
-                                <span class="year">
-                                  2022
-                                </span>
-                                <span class="year">
-                                  2023
-                                </span>
-                                <span class="year">
-                                  2024
-                                </span>
-                                <span class="year">
-                                  2025
-                                </span>
-                                <span class="year active">
-                                  2026
-                                </span>
-                                <span class="year">
-                                  2027
-                                </span>
-                                <span class="year">
-                                  2028
-                                </span>
-                                <span class="year">
-                                  2029
-                                </span>
-                                <span class="year old">
-                                  2030
-                                </span>
-                              </td>
-                            </tr>
-                          </tbody>
-                          <tfoot>
-                            <tr>
-                              <th colspan="7" class="today" style="display: none;">
-                                Today
-                              </th>
-                            </tr>
-                          </tfoot>
-                        </table>
-                      </div>
-                    </div>
-                    <div class="datetimepicker datetimepicker-dropdown-bottom-right dropdown-menu" style="left: 0px; z-index: 1210;">
-                      <div class="datetimepicker-minutes" style="display: none;">
-                        <table class=" table-condensed">
-                          <thead>
-                            <tr>
-                              <th class="prev" style="visibility: visible;">
-                                <span class="glyphicon glyphicon-arrow-left">
-                                </span>
-                              </th>
-                              <th colspan="5" class="switch">
-                                25 July 2026
-                              </th>
-                              <th class="next" style="visibility: visible;">
-                                <span class="glyphicon glyphicon-arrow-right">
-                                </span>
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td colspan="7">
-                                <fieldset class="minute">
-                                  <legend>
-                                    AM
-                                  </legend>
-                                  <span class="minute active">
-                                    12:00
-                                  </span>
-                                  <span class="minute">
-                                    12:05
-                                  </span>
-                                  <span class="minute">
-                                    12:10
-                                  </span>
-                                  <span class="minute">
-                                    12:15
-                                  </span>
-                                  <span class="minute">
-                                    12:20
-                                  </span>
-                                  <span class="minute">
-                                    12:25
-                                  </span>
-                                  <span class="minute">
-                                    12:30
-                                  </span>
-                                  <span class="minute">
-                                    12:35
-                                  </span>
-                                  <span class="minute">
-                                    12:40
-                                  </span>
-                                  <span class="minute">
-                                    12:45
-                                  </span>
-                                  <span class="minute">
-                                    12:50
-                                  </span>
-                                  <span class="minute">
-                                    12:55
-                                  </span>
-                                </fieldset>
-                              </td>
-                            </tr>
-                          </tbody>
-                          <tfoot>
-                            <tr>
-                              <th colspan="7" class="today" style="display: none;">
-                                Today
-                              </th>
-                            </tr>
-                          </tfoot>
-                        </table>
-                      </div>
-                      <div class="datetimepicker-hours" style="display: none;">
-                        <table class=" table-condensed">
-                          <thead>
-                            <tr>
-                              <th class="prev" style="visibility: visible;">
-                                <span class="glyphicon glyphicon-arrow-left">
-                                </span>
-                              </th>
-                              <th colspan="5" class="switch">
-                                25 July 2026
-                              </th>
-                              <th class="next" style="visibility: visible;">
-                                <span class="glyphicon glyphicon-arrow-right">
-                                </span>
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td colspan="7">
-                                <fieldset class="hour">
-                                  <legend>
-                                    AM
-                                  </legend>
-                                  <span class="hour active hour_am">
-                                    12
-                                  </span>
-                                  <span class="hour hour_am">
-                                    1
-                                  </span>
-                                  <span class="hour hour_am">
-                                    2
-                                  </span>
-                                  <span class="hour hour_am">
-                                    3
-                                  </span>
-                                  <span class="hour hour_am">
-                                    4
-                                  </span>
-                                  <span class="hour hour_am">
-                                    5
-                                  </span>
-                                  <span class="hour hour_am">
-                                    6
-                                  </span>
-                                  <span class="hour hour_am">
-                                    7
-                                  </span>
-                                  <span class="hour hour_am">
-                                    8
-                                  </span>
-                                  <span class="hour hour_am">
-                                    9
-                                  </span>
-                                  <span class="hour hour_am">
-                                    10
-                                  </span>
-                                  <span class="hour hour_am">
-                                    11
-                                  </span>
-                                </fieldset>
-                                <fieldset class="hour">
-                                  <legend>
-                                    PM
-                                  </legend>
-                                  <span class="hour hour_pm">
-                                    12
-                                  </span>
-                                  <span class="hour hour_pm">
-                                    1
-                                  </span>
-                                  <span class="hour hour_pm">
-                                    2
-                                  </span>
-                                  <span class="hour hour_pm">
-                                    3
-                                  </span>
-                                  <span class="hour hour_pm">
-                                    4
-                                  </span>
-                                  <span class="hour hour_pm">
-                                    5
-                                  </span>
-                                  <span class="hour hour_pm">
-                                    6
-                                  </span>
-                                  <span class="hour hour_pm">
-                                    7
-                                  </span>
-                                  <span class="hour hour_pm">
-                                    8
-                                  </span>
-                                  <span class="hour hour_pm">
-                                    9
-                                  </span>
-                                  <span class="hour hour_pm">
-                                    10
-                                  </span>
-                                  <span class="hour hour_pm">
-                                    11
-                                  </span>
-                                </fieldset>
-                              </td>
-                            </tr>
-                          </tbody>
-                          <tfoot>
-                            <tr>
-                              <th colspan="7" class="today" style="display: none;">
-                                Today
-                              </th>
-                            </tr>
-                          </tfoot>
-                        </table>
-                      </div>
-                      <div class="datetimepicker-days" style="display: block;">
-                        <table class=" table-condensed">
-                          <thead>
-                            <tr>
-                              <th class="prev" style="visibility: visible;">
-                                <span class="glyphicon glyphicon-arrow-left">
-                                </span>
-                              </th>
-                              <th colspan="5" class="switch">
-                                July 2026
-                              </th>
-                              <th class="next" style="visibility: visible;">
-                                <span class="glyphicon glyphicon-arrow-right">
-                                </span>
-                              </th>
-                            </tr>
-                            <tr>
-                              <th class="dow">
-                                Su
-                              </th>
-                              <th class="dow">
-                                Mo
-                              </th>
-                              <th class="dow">
-                                Tu
-                              </th>
-                              <th class="dow">
-                                We
-                              </th>
-                              <th class="dow">
-                                Th
-                              </th>
-                              <th class="dow">
-                                Fr
-                              </th>
-                              <th class="dow">
-                                Sa
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td class="day old">
-                                28
-                              </td>
-                              <td class="day old">
-                                29
-                              </td>
-                              <td class="day old">
-                                30
-                              </td>
-                              <td class="day">
-                                1
-                              </td>
-                              <td class="day">
-                                2
-                              </td>
-                              <td class="day">
-                                3
-                              </td>
-                              <td class="day">
-                                4
-                              </td>
-                            </tr>
-                            <tr>
-                              <td class="day">
-                                5
-                              </td>
-                              <td class="day">
-                                6
-                              </td>
-                              <td class="day">
-                                7
-                              </td>
-                              <td class="day">
-                                8
-                              </td>
-                              <td class="day">
-                                9
-                              </td>
-                              <td class="day">
-                                10
-                              </td>
-                              <td class="day">
-                                11
-                              </td>
-                            </tr>
-                            <tr>
-                              <td class="day">
-                                12
-                              </td>
-                              <td class="day">
-                                13
-                              </td>
-                              <td class="day">
-                                14
-                              </td>
-                              <td class="day">
-                                15
-                              </td>
-                              <td class="day">
-                                16
-                              </td>
-                              <td class="day">
-                                17
-                              </td>
-                              <td class="day">
-                                18
-                              </td>
-                            </tr>
-                            <tr>
-                              <td class="day">
-                                19
-                              </td>
-                              <td class="day">
-                                20
-                              </td>
-                              <td class="day">
-                                21
-                              </td>
-                              <td class="day">
-                                22
-                              </td>
-                              <td class="day">
-                                23
-                              </td>
-                              <td class="day">
-                                24
-                              </td>
-                              <td class="day active">
-                                25
-                              </td>
-                            </tr>
-                            <tr>
-                              <td class="day">
-                                26
-                              </td>
-                              <td class="day">
-                                27
-                              </td>
-                              <td class="day">
-                                28
-                              </td>
-                              <td class="day">
-                                29
-                              </td>
-                              <td class="day">
-                                30
-                              </td>
-                              <td class="day">
-                                31
-                              </td>
-                              <td class="day new">
-                                1
-                              </td>
-                            </tr>
-                            <tr>
-                              <td class="day new">
-                                2
-                              </td>
-                              <td class="day new">
-                                3
-                              </td>
-                              <td class="day new">
-                                4
-                              </td>
-                              <td class="day new">
-                                5
-                              </td>
-                              <td class="day new">
-                                6
-                              </td>
-                              <td class="day new">
-                                7
-                              </td>
-                              <td class="day new">
-                                8
-                              </td>
-                            </tr>
-                          </tbody>
-                          <tfoot>
-                            <tr>
-                              <th colspan="7" class="today" style="display: none;">
-                                Today
-                              </th>
-                            </tr>
-                          </tfoot>
-                        </table>
-                      </div>
-                      <div class="datetimepicker-months" style="display: none;">
-                        <table class="table-condensed">
-                          <thead>
-                            <tr>
-                              <th class="prev" style="visibility: visible;">
-                                <span class="glyphicon glyphicon-arrow-left">
-                                </span>
-                              </th>
-                              <th colspan="5" class="switch">
-                                2026
-                              </th>
-                              <th class="next" style="visibility: visible;">
-                                <span class="glyphicon glyphicon-arrow-right">
-                                </span>
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td colspan="7">
-                                <span class="month">
-                                  Jan
-                                </span>
-                                <span class="month">
-                                  Feb
-                                </span>
-                                <span class="month">
-                                  Mar
-                                </span>
-                                <span class="month">
-                                  Apr
-                                </span>
-                                <span class="month">
-                                  May
-                                </span>
-                                <span class="month">
-                                  Jun
-                                </span>
-                                <span class="month active">
-                                  Jul
-                                </span>
-                                <span class="month">
-                                  Aug
-                                </span>
-                                <span class="month">
-                                  Sep
-                                </span>
-                                <span class="month">
-                                  Oct
-                                </span>
-                                <span class="month">
-                                  Nov
-                                </span>
-                                <span class="month">
-                                  Dec
-                                </span>
-                              </td>
-                            </tr>
-                          </tbody>
-                          <tfoot>
-                            <tr>
-                              <th colspan="7" class="today" style="display: none;">
-                                Today
-                              </th>
-                            </tr>
-                          </tfoot>
-                        </table>
-                      </div>
-                      <div class="datetimepicker-years" style="display: none;">
-                        <table class="table-condensed">
-                          <thead>
-                            <tr>
-                              <th class="prev" style="visibility: visible;">
-                                <span class="glyphicon glyphicon-arrow-left">
-                                </span>
-                              </th>
-                              <th colspan="5" class="switch">
-                                2020-2029
-                              </th>
-                              <th class="next" style="visibility: visible;">
-                                <span class="glyphicon glyphicon-arrow-right">
-                                </span>
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td colspan="7">
-                                <span class="year old">
-                                  2019
-                                </span>
-                                <span class="year">
-                                  2020
-                                </span>
-                                <span class="year">
-                                  2021
-                                </span>
-                                <span class="year">
-                                  2022
-                                </span>
-                                <span class="year">
-                                  2023
-                                </span>
-                                <span class="year">
-                                  2024
-                                </span>
-                                <span class="year">
-                                  2025
-                                </span>
-                                <span class="year active">
-                                  2026
-                                </span>
-                                <span class="year">
-                                  2027
-                                </span>
-                                <span class="year">
-                                  2028
-                                </span>
-                                <span class="year">
-                                  2029
-                                </span>
-                                <span class="year old">
-                                  2030
-                                </span>
-                              </td>
-                            </tr>
-                          </tbody>
-                          <tfoot>
-                            <tr>
-                              <th colspan="7" class="today" style="display: none;">
-                                Today
-                              </th>
-                            </tr>
-                          </tfoot>
-                        </table>
-                      </div>
-                    </div>
-                    <style>
-                      @media screen and (min-width: 768px) {
-                        #pageChangesModal .modal-dialog {
-                          width: 60%;
-                        }
-                      }
-                    </style>
-                    <div class="modal fade" id="pageChangesModal" tabindex="-1" role="dialog" aria-labelledby="pageChangesModalLabel">
-                      <div class="modal-dialog modal-lg" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header" style="background:#4338CA; color:#fff; border-top-left-radius:4px; border-top-right-radius:4px;">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:#fff; opacity:.85; text-shadow:none;"><span aria-hidden="true">&times;</span></button>
-                            <button type="button" class="pcm-copy-btn" title="সম্পূর্ণ কনটেন্ট কপি করুন" style="float:right; margin:-2px 8px 0 0; background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.5); color:#fff; border-radius:4px; padding:2px 10px; font-size:12px; line-height:1.6; cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="12" height="12" fill="currentColor" style="vertical-align:-1px; margin-right:4px;"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path></svg>Copy</button>
-                            <h4 class="modal-title" id="pageChangesModalLabel">এই পেইজে যা নতুন পরিবর্তন/আপডেট করা হয়েছে</h4>
+                        </script>
+                        <div class="datetimepicker datetimepicker-dropdown-bottom-right dropdown-menu" style="left: 527.531px; z-index: 1090;">
+                          <div class="datetimepicker-minutes" style="display: none;">
+                            <table class=" table-condensed">
+                              <thead>
+                                <tr>
+                                  <th class="prev" style="visibility: visible;">
+                                    <span class="glyphicon glyphicon-arrow-left">
+                                    </span>
+                                  </th>
+                                  <th colspan="5" class="switch">
+                                    25 July 2026
+                                  </th>
+                                  <th class="next" style="visibility: hidden;">
+                                    <span class="glyphicon glyphicon-arrow-right">
+                                    </span>
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td colspan="7">
+                                    <fieldset class="minute">
+                                      <legend>
+                                        AM
+                                      </legend>
+                                      <span class="minute">
+                                        11:00
+                                      </span>
+                                      <span class="minute">
+                                        11:05
+                                      </span>
+                                      <span class="minute">
+                                        11:10
+                                      </span>
+                                      <span class="minute">
+                                        11:15
+                                      </span>
+                                      <span class="minute">
+                                        11:20
+                                      </span>
+                                      <span class="minute">
+                                        11:25
+                                      </span>
+                                      <span class="minute">
+                                        11:30
+                                      </span>
+                                      <span class="minute">
+                                        11:35
+                                      </span>
+                                      <span class="minute">
+                                        11:40
+                                      </span>
+                                      <span class="minute">
+                                        11:45
+                                      </span>
+                                      <span class="minute active">
+                                        11:50
+                                      </span>
+                                      <span class="minute disabled">
+                                        11:55
+                                      </span>
+                                    </fieldset>
+                                  </td>
+                                </tr>
+                              </tbody>
+                              <tfoot>
+                                <tr>
+                                  <th colspan="7" class="today" style="display: none;">
+                                    Today
+                                  </th>
+                                </tr>
+                              </tfoot>
+                            </table>
                           </div>
-                          <div class="modal-body" style="height:65vh; overflow-y:auto;">
-                            <ol style="padding-left:20px; margin:0;">
-                              <li style="margin-bottom:12px;">
-                                <strong>Export বাটন যোগ করা হয়েছে</strong> — View বাটনের ঠিক পাশে নতুন Export বাটন, ক্লিক করলে Details টেবিলে বর্তমানে যা দেখা যাচ্ছে তা Excel ফাইল আকারে ডাউনলোড হবে।
-                              </li>
-                            </ol>
+                          <div class="datetimepicker-hours" style="display: none;">
+                            <table class=" table-condensed">
+                              <thead>
+                                <tr>
+                                  <th class="prev" style="visibility: visible;">
+                                    <span class="glyphicon glyphicon-arrow-left">
+                                    </span>
+                                  </th>
+                                  <th colspan="5" class="switch">
+                                    25 July 2026
+                                  </th>
+                                  <th class="next" style="visibility: hidden;">
+                                    <span class="glyphicon glyphicon-arrow-right">
+                                    </span>
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td colspan="7">
+                                    <fieldset class="hour">
+                                      <legend>
+                                        AM
+                                      </legend>
+                                      <span class="hour hour_am">
+                                        12
+                                      </span>
+                                      <span class="hour hour_am">
+                                        1
+                                      </span>
+                                      <span class="hour hour_am">
+                                        2
+                                      </span>
+                                      <span class="hour hour_am">
+                                        3
+                                      </span>
+                                      <span class="hour hour_am">
+                                        4
+                                      </span>
+                                      <span class="hour hour_am">
+                                        5
+                                      </span>
+                                      <span class="hour hour_am">
+                                        6
+                                      </span>
+                                      <span class="hour hour_am">
+                                        7
+                                      </span>
+                                      <span class="hour hour_am">
+                                        8
+                                      </span>
+                                      <span class="hour hour_am">
+                                        9
+                                      </span>
+                                      <span class="hour hour_am">
+                                        10
+                                      </span>
+                                      <span class="hour active hour_am">
+                                        11
+                                      </span>
+                                    </fieldset>
+                                    <fieldset class="hour">
+                                      <legend>
+                                        PM
+                                      </legend>
+                                      <span class="hour disabled hour_pm">
+                                        12
+                                      </span>
+                                      <span class="hour disabled hour_pm">
+                                        1
+                                      </span>
+                                      <span class="hour disabled hour_pm">
+                                        2
+                                      </span>
+                                      <span class="hour disabled hour_pm">
+                                        3
+                                      </span>
+                                      <span class="hour disabled hour_pm">
+                                        4
+                                      </span>
+                                      <span class="hour disabled hour_pm">
+                                        5
+                                      </span>
+                                      <span class="hour disabled hour_pm">
+                                        6
+                                      </span>
+                                      <span class="hour disabled hour_pm">
+                                        7
+                                      </span>
+                                      <span class="hour disabled hour_pm">
+                                        8
+                                      </span>
+                                      <span class="hour disabled hour_pm">
+                                        9
+                                      </span>
+                                      <span class="hour disabled hour_pm">
+                                        10
+                                      </span>
+                                      <span class="hour disabled hour_pm">
+                                        11
+                                      </span>
+                                    </fieldset>
+                                  </td>
+                                </tr>
+                              </tbody>
+                              <tfoot>
+                                <tr>
+                                  <th colspan="7" class="today" style="display: none;">
+                                    Today
+                                  </th>
+                                </tr>
+                              </tfoot>
+                            </table>
                           </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">বন্ধ করুন</button>
+                          <div class="datetimepicker-days" style="display: block;">
+                            <table class=" table-condensed">
+                              <thead>
+                                <tr>
+                                  <th class="prev" style="visibility: visible;">
+                                    <span class="glyphicon glyphicon-arrow-left">
+                                    </span>
+                                  </th>
+                                  <th colspan="5" class="switch">
+                                    July 2026
+                                  </th>
+                                  <th class="next" style="visibility: hidden;">
+                                    <span class="glyphicon glyphicon-arrow-right">
+                                    </span>
+                                  </th>
+                                </tr>
+                                <tr>
+                                  <th class="dow">
+                                    Su
+                                  </th>
+                                  <th class="dow">
+                                    Mo
+                                  </th>
+                                  <th class="dow">
+                                    Tu
+                                  </th>
+                                  <th class="dow">
+                                    We
+                                  </th>
+                                  <th class="dow">
+                                    Th
+                                  </th>
+                                  <th class="dow">
+                                    Fr
+                                  </th>
+                                  <th class="dow">
+                                    Sa
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td class="day old">
+                                    28
+                                  </td>
+                                  <td class="day old">
+                                    29
+                                  </td>
+                                  <td class="day old">
+                                    30
+                                  </td>
+                                  <td class="day">
+                                    1
+                                  </td>
+                                  <td class="day">
+                                    2
+                                  </td>
+                                  <td class="day">
+                                    3
+                                  </td>
+                                  <td class="day">
+                                    4
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td class="day">
+                                    5
+                                  </td>
+                                  <td class="day">
+                                    6
+                                  </td>
+                                  <td class="day">
+                                    7
+                                  </td>
+                                  <td class="day">
+                                    8
+                                  </td>
+                                  <td class="day">
+                                    9
+                                  </td>
+                                  <td class="day">
+                                    10
+                                  </td>
+                                  <td class="day">
+                                    11
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td class="day">
+                                    12
+                                  </td>
+                                  <td class="day">
+                                    13
+                                  </td>
+                                  <td class="day">
+                                    14
+                                  </td>
+                                  <td class="day">
+                                    15
+                                  </td>
+                                  <td class="day">
+                                    16
+                                  </td>
+                                  <td class="day">
+                                    17
+                                  </td>
+                                  <td class="day">
+                                    18
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td class="day">
+                                    19
+                                  </td>
+                                  <td class="day">
+                                    20
+                                  </td>
+                                  <td class="day">
+                                    21
+                                  </td>
+                                  <td class="day">
+                                    22
+                                  </td>
+                                  <td class="day">
+                                    23
+                                  </td>
+                                  <td class="day">
+                                    24
+                                  </td>
+                                  <td class="day active">
+                                    25
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td class="day disabled">
+                                    26
+                                  </td>
+                                  <td class="day disabled">
+                                    27
+                                  </td>
+                                  <td class="day disabled">
+                                    28
+                                  </td>
+                                  <td class="day disabled">
+                                    29
+                                  </td>
+                                  <td class="day disabled">
+                                    30
+                                  </td>
+                                  <td class="day disabled">
+                                    31
+                                  </td>
+                                  <td class="day new disabled">
+                                    1
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td class="day new disabled">
+                                    2
+                                  </td>
+                                  <td class="day new disabled">
+                                    3
+                                  </td>
+                                  <td class="day new disabled">
+                                    4
+                                  </td>
+                                  <td class="day new disabled">
+                                    5
+                                  </td>
+                                  <td class="day new disabled">
+                                    6
+                                  </td>
+                                  <td class="day new disabled">
+                                    7
+                                  </td>
+                                  <td class="day new disabled">
+                                    8
+                                  </td>
+                                </tr>
+                              </tbody>
+                              <tfoot>
+                                <tr>
+                                  <th colspan="7" class="today" style="display: none;">
+                                    Today
+                                  </th>
+                                </tr>
+                              </tfoot>
+                            </table>
+                          </div>
+                          <div class="datetimepicker-months" style="display: none;">
+                            <table class="table-condensed">
+                              <thead>
+                                <tr>
+                                  <th class="prev" style="visibility: visible;">
+                                    <span class="glyphicon glyphicon-arrow-left">
+                                    </span>
+                                  </th>
+                                  <th colspan="5" class="switch">
+                                    2026
+                                  </th>
+                                  <th class="next" style="visibility: hidden;">
+                                    <span class="glyphicon glyphicon-arrow-right">
+                                    </span>
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td colspan="7">
+                                    <span class="month">
+                                      Jan
+                                    </span>
+                                    <span class="month">
+                                      Feb
+                                    </span>
+                                    <span class="month">
+                                      Mar
+                                    </span>
+                                    <span class="month">
+                                      Apr
+                                    </span>
+                                    <span class="month">
+                                      May
+                                    </span>
+                                    <span class="month">
+                                      Jun
+                                    </span>
+                                    <span class="month active">
+                                      Jul
+                                    </span>
+                                    <span class="month disabled">
+                                      Aug
+                                    </span>
+                                    <span class="month disabled">
+                                      Sep
+                                    </span>
+                                    <span class="month disabled">
+                                      Oct
+                                    </span>
+                                    <span class="month disabled">
+                                      Nov
+                                    </span>
+                                    <span class="month disabled">
+                                      Dec
+                                    </span>
+                                  </td>
+                                </tr>
+                              </tbody>
+                              <tfoot>
+                                <tr>
+                                  <th colspan="7" class="today" style="display: none;">
+                                    Today
+                                  </th>
+                                </tr>
+                              </tfoot>
+                            </table>
+                          </div>
+                          <div class="datetimepicker-years" style="display: none;">
+                            <table class="table-condensed">
+                              <thead>
+                                <tr>
+                                  <th class="prev" style="visibility: visible;">
+                                    <span class="glyphicon glyphicon-arrow-left">
+                                    </span>
+                                  </th>
+                                  <th colspan="5" class="switch">
+                                    2020-2029
+                                  </th>
+                                  <th class="next" style="visibility: hidden;">
+                                    <span class="glyphicon glyphicon-arrow-right">
+                                    </span>
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td colspan="7">
+                                    <span class="year old">
+                                      2019
+                                    </span>
+                                    <span class="year">
+                                      2020
+                                    </span>
+                                    <span class="year">
+                                      2021
+                                    </span>
+                                    <span class="year">
+                                      2022
+                                    </span>
+                                    <span class="year">
+                                      2023
+                                    </span>
+                                    <span class="year">
+                                      2024
+                                    </span>
+                                    <span class="year">
+                                      2025
+                                    </span>
+                                    <span class="year active">
+                                      2026
+                                    </span>
+                                    <span class="year disabled">
+                                      2027
+                                    </span>
+                                    <span class="year disabled">
+                                      2028
+                                    </span>
+                                    <span class="year disabled">
+                                      2029
+                                    </span>
+                                    <span class="year old disabled">
+                                      2030
+                                    </span>
+                                  </td>
+                                </tr>
+                              </tbody>
+                              <tfoot>
+                                <tr>
+                                  <th colspan="7" class="today" style="display: none;">
+                                    Today
+                                  </th>
+                                </tr>
+                              </tfoot>
+                            </table>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                    <script>
-                      function pcmFeedback(btn, label) {
-                          var original = btn.innerHTML;
-                          btn.innerHTML = label;
-                          setTimeout(function () { btn.innerHTML = original; }, 1800);
-                      }
-                      function pcmSelectionFallbackCopy(btn, modalBody) {
-                          try {
-                              var range = document.createRange();
-                              range.selectNodeContents(modalBody);
-                              var sel = window.getSelection();
-                              sel.removeAllRanges();
-                              sel.addRange(range);
-                              var ok = document.execCommand('copy');
-                              sel.removeAllRanges();
-                              pcmFeedback(btn, ok ? 'Copied!' : 'সিলেক্ট হয়েছে, Ctrl+C চাপুন');
-                          } catch (err) {
-                              pcmFeedback(btn, 'কপি ব্যর্থ হয়েছে');
+                        <div class="datetimepicker datetimepicker-dropdown-bottom-right dropdown-menu" style="left: 1353.39px; z-index: 1150;">
+                          <div class="datetimepicker-minutes" style="display: none;">
+                            <table class=" table-condensed">
+                              <thead>
+                                <tr>
+                                  <th class="prev" style="visibility: visible;">
+                                    <span class="glyphicon glyphicon-arrow-left">
+                                    </span>
+                                  </th>
+                                  <th colspan="5" class="switch">
+                                    25 July 2026
+                                  </th>
+                                  <th class="next" style="visibility: hidden;">
+                                    <span class="glyphicon glyphicon-arrow-right">
+                                    </span>
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td colspan="7">
+                                    <fieldset class="minute">
+                                      <legend>
+                                        AM
+                                      </legend>
+                                      <span class="minute">
+                                        11:00
+                                      </span>
+                                      <span class="minute">
+                                        11:05
+                                      </span>
+                                      <span class="minute">
+                                        11:10
+                                      </span>
+                                      <span class="minute">
+                                        11:15
+                                      </span>
+                                      <span class="minute">
+                                        11:20
+                                      </span>
+                                      <span class="minute">
+                                        11:25
+                                      </span>
+                                      <span class="minute">
+                                        11:30
+                                      </span>
+                                      <span class="minute">
+                                        11:35
+                                      </span>
+                                      <span class="minute">
+                                        11:40
+                                      </span>
+                                      <span class="minute">
+                                        11:45
+                                      </span>
+                                      <span class="minute active">
+                                        11:50
+                                      </span>
+                                      <span class="minute disabled">
+                                        11:55
+                                      </span>
+                                    </fieldset>
+                                  </td>
+                                </tr>
+                              </tbody>
+                              <tfoot>
+                                <tr>
+                                  <th colspan="7" class="today" style="display: none;">
+                                    Today
+                                  </th>
+                                </tr>
+                              </tfoot>
+                            </table>
+                          </div>
+                          <div class="datetimepicker-hours" style="display: none;">
+                            <table class=" table-condensed">
+                              <thead>
+                                <tr>
+                                  <th class="prev" style="visibility: visible;">
+                                    <span class="glyphicon glyphicon-arrow-left">
+                                    </span>
+                                  </th>
+                                  <th colspan="5" class="switch">
+                                    25 July 2026
+                                  </th>
+                                  <th class="next" style="visibility: hidden;">
+                                    <span class="glyphicon glyphicon-arrow-right">
+                                    </span>
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td colspan="7">
+                                    <fieldset class="hour">
+                                      <legend>
+                                        AM
+                                      </legend>
+                                      <span class="hour hour_am">
+                                        12
+                                      </span>
+                                      <span class="hour hour_am">
+                                        1
+                                      </span>
+                                      <span class="hour hour_am">
+                                        2
+                                      </span>
+                                      <span class="hour hour_am">
+                                        3
+                                      </span>
+                                      <span class="hour hour_am">
+                                        4
+                                      </span>
+                                      <span class="hour hour_am">
+                                        5
+                                      </span>
+                                      <span class="hour hour_am">
+                                        6
+                                      </span>
+                                      <span class="hour hour_am">
+                                        7
+                                      </span>
+                                      <span class="hour hour_am">
+                                        8
+                                      </span>
+                                      <span class="hour hour_am">
+                                        9
+                                      </span>
+                                      <span class="hour hour_am">
+                                        10
+                                      </span>
+                                      <span class="hour active hour_am">
+                                        11
+                                      </span>
+                                    </fieldset>
+                                    <fieldset class="hour">
+                                      <legend>
+                                        PM
+                                      </legend>
+                                      <span class="hour disabled hour_pm">
+                                        12
+                                      </span>
+                                      <span class="hour disabled hour_pm">
+                                        1
+                                      </span>
+                                      <span class="hour disabled hour_pm">
+                                        2
+                                      </span>
+                                      <span class="hour disabled hour_pm">
+                                        3
+                                      </span>
+                                      <span class="hour disabled hour_pm">
+                                        4
+                                      </span>
+                                      <span class="hour disabled hour_pm">
+                                        5
+                                      </span>
+                                      <span class="hour disabled hour_pm">
+                                        6
+                                      </span>
+                                      <span class="hour disabled hour_pm">
+                                        7
+                                      </span>
+                                      <span class="hour disabled hour_pm">
+                                        8
+                                      </span>
+                                      <span class="hour disabled hour_pm">
+                                        9
+                                      </span>
+                                      <span class="hour disabled hour_pm">
+                                        10
+                                      </span>
+                                      <span class="hour disabled hour_pm">
+                                        11
+                                      </span>
+                                    </fieldset>
+                                  </td>
+                                </tr>
+                              </tbody>
+                              <tfoot>
+                                <tr>
+                                  <th colspan="7" class="today" style="display: none;">
+                                    Today
+                                  </th>
+                                </tr>
+                              </tfoot>
+                            </table>
+                          </div>
+                          <div class="datetimepicker-days" style="display: block;">
+                            <table class=" table-condensed">
+                              <thead>
+                                <tr>
+                                  <th class="prev" style="visibility: visible;">
+                                    <span class="glyphicon glyphicon-arrow-left">
+                                    </span>
+                                  </th>
+                                  <th colspan="5" class="switch">
+                                    July 2026
+                                  </th>
+                                  <th class="next" style="visibility: hidden;">
+                                    <span class="glyphicon glyphicon-arrow-right">
+                                    </span>
+                                  </th>
+                                </tr>
+                                <tr>
+                                  <th class="dow">
+                                    Su
+                                  </th>
+                                  <th class="dow">
+                                    Mo
+                                  </th>
+                                  <th class="dow">
+                                    Tu
+                                  </th>
+                                  <th class="dow">
+                                    We
+                                  </th>
+                                  <th class="dow">
+                                    Th
+                                  </th>
+                                  <th class="dow">
+                                    Fr
+                                  </th>
+                                  <th class="dow">
+                                    Sa
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td class="day old">
+                                    28
+                                  </td>
+                                  <td class="day old">
+                                    29
+                                  </td>
+                                  <td class="day old">
+                                    30
+                                  </td>
+                                  <td class="day">
+                                    1
+                                  </td>
+                                  <td class="day">
+                                    2
+                                  </td>
+                                  <td class="day">
+                                    3
+                                  </td>
+                                  <td class="day">
+                                    4
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td class="day">
+                                    5
+                                  </td>
+                                  <td class="day">
+                                    6
+                                  </td>
+                                  <td class="day">
+                                    7
+                                  </td>
+                                  <td class="day">
+                                    8
+                                  </td>
+                                  <td class="day">
+                                    9
+                                  </td>
+                                  <td class="day">
+                                    10
+                                  </td>
+                                  <td class="day">
+                                    11
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td class="day">
+                                    12
+                                  </td>
+                                  <td class="day">
+                                    13
+                                  </td>
+                                  <td class="day">
+                                    14
+                                  </td>
+                                  <td class="day">
+                                    15
+                                  </td>
+                                  <td class="day">
+                                    16
+                                  </td>
+                                  <td class="day">
+                                    17
+                                  </td>
+                                  <td class="day">
+                                    18
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td class="day">
+                                    19
+                                  </td>
+                                  <td class="day">
+                                    20
+                                  </td>
+                                  <td class="day">
+                                    21
+                                  </td>
+                                  <td class="day">
+                                    22
+                                  </td>
+                                  <td class="day">
+                                    23
+                                  </td>
+                                  <td class="day">
+                                    24
+                                  </td>
+                                  <td class="day active">
+                                    25
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td class="day disabled">
+                                    26
+                                  </td>
+                                  <td class="day disabled">
+                                    27
+                                  </td>
+                                  <td class="day disabled">
+                                    28
+                                  </td>
+                                  <td class="day disabled">
+                                    29
+                                  </td>
+                                  <td class="day disabled">
+                                    30
+                                  </td>
+                                  <td class="day disabled">
+                                    31
+                                  </td>
+                                  <td class="day new disabled">
+                                    1
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td class="day new disabled">
+                                    2
+                                  </td>
+                                  <td class="day new disabled">
+                                    3
+                                  </td>
+                                  <td class="day new disabled">
+                                    4
+                                  </td>
+                                  <td class="day new disabled">
+                                    5
+                                  </td>
+                                  <td class="day new disabled">
+                                    6
+                                  </td>
+                                  <td class="day new disabled">
+                                    7
+                                  </td>
+                                  <td class="day new disabled">
+                                    8
+                                  </td>
+                                </tr>
+                              </tbody>
+                              <tfoot>
+                                <tr>
+                                  <th colspan="7" class="today" style="display: none;">
+                                    Today
+                                  </th>
+                                </tr>
+                              </tfoot>
+                            </table>
+                          </div>
+                          <div class="datetimepicker-months" style="display: none;">
+                            <table class="table-condensed">
+                              <thead>
+                                <tr>
+                                  <th class="prev" style="visibility: visible;">
+                                    <span class="glyphicon glyphicon-arrow-left">
+                                    </span>
+                                  </th>
+                                  <th colspan="5" class="switch">
+                                    2026
+                                  </th>
+                                  <th class="next" style="visibility: hidden;">
+                                    <span class="glyphicon glyphicon-arrow-right">
+                                    </span>
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td colspan="7">
+                                    <span class="month">
+                                      Jan
+                                    </span>
+                                    <span class="month">
+                                      Feb
+                                    </span>
+                                    <span class="month">
+                                      Mar
+                                    </span>
+                                    <span class="month">
+                                      Apr
+                                    </span>
+                                    <span class="month">
+                                      May
+                                    </span>
+                                    <span class="month">
+                                      Jun
+                                    </span>
+                                    <span class="month active">
+                                      Jul
+                                    </span>
+                                    <span class="month disabled">
+                                      Aug
+                                    </span>
+                                    <span class="month disabled">
+                                      Sep
+                                    </span>
+                                    <span class="month disabled">
+                                      Oct
+                                    </span>
+                                    <span class="month disabled">
+                                      Nov
+                                    </span>
+                                    <span class="month disabled">
+                                      Dec
+                                    </span>
+                                  </td>
+                                </tr>
+                              </tbody>
+                              <tfoot>
+                                <tr>
+                                  <th colspan="7" class="today" style="display: none;">
+                                    Today
+                                  </th>
+                                </tr>
+                              </tfoot>
+                            </table>
+                          </div>
+                          <div class="datetimepicker-years" style="display: none;">
+                            <table class="table-condensed">
+                              <thead>
+                                <tr>
+                                  <th class="prev" style="visibility: visible;">
+                                    <span class="glyphicon glyphicon-arrow-left">
+                                    </span>
+                                  </th>
+                                  <th colspan="5" class="switch">
+                                    2020-2029
+                                  </th>
+                                  <th class="next" style="visibility: hidden;">
+                                    <span class="glyphicon glyphicon-arrow-right">
+                                    </span>
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td colspan="7">
+                                    <span class="year old">
+                                      2019
+                                    </span>
+                                    <span class="year">
+                                      2020
+                                    </span>
+                                    <span class="year">
+                                      2021
+                                    </span>
+                                    <span class="year">
+                                      2022
+                                    </span>
+                                    <span class="year">
+                                      2023
+                                    </span>
+                                    <span class="year">
+                                      2024
+                                    </span>
+                                    <span class="year">
+                                      2025
+                                    </span>
+                                    <span class="year active">
+                                      2026
+                                    </span>
+                                    <span class="year disabled">
+                                      2027
+                                    </span>
+                                    <span class="year disabled">
+                                      2028
+                                    </span>
+                                    <span class="year disabled">
+                                      2029
+                                    </span>
+                                    <span class="year old disabled">
+                                      2030
+                                    </span>
+                                  </td>
+                                </tr>
+                              </tbody>
+                              <tfoot>
+                                <tr>
+                                  <th colspan="7" class="today" style="display: none;">
+                                    Today
+                                  </th>
+                                </tr>
+                              </tfoot>
+                            </table>
+                          </div>
+                        </div>
+                        <style>
+                          @media screen and (min-width: 768px) {
+                            #pageChangesModal .modal-dialog {
+                              width: 60%;
+                            }
                           }
-                      }
-                      document.addEventListener('click', function (e) {
-                          var btn = e.target.closest('.pcm-copy-btn');
-                          if (!btn) return;
-                          var modalBody = btn.closest('.modal-content').querySelector('.modal-body');
-                          if (!modalBody) return;
-                          var text = modalBody.innerText || modalBody.textContent || '';
-                          if (navigator.clipboard && navigator.clipboard.writeText) {
-                              navigator.clipboard.writeText(text).then(function () {
-                                  pcmFeedback(btn, 'Copied!');
-                              }).catch(function () {
+                        </style>
+                        <div class="modal fade" id="pageChangesModal" tabindex="-1" role="dialog" aria-labelledby="pageChangesModalLabel">
+                          <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header" style="background:#4338CA; color:#fff; border-top-left-radius:4px; border-top-right-radius:4px;">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:#fff; opacity:.85; text-shadow:none;"><span aria-hidden="true">&times;</span></button>
+                                <button type="button" class="pcm-copy-btn" title="সম্পূর্ণ কনটেন্ট কপি করুন" style="float:right; margin:-2px 8px 0 0; background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.5); color:#fff; border-radius:4px; padding:2px 10px; font-size:12px; line-height:1.6; cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="12" height="12" fill="currentColor" style="vertical-align:-1px; margin-right:4px;"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path></svg>Copy</button>
+                                <h4 class="modal-title" id="pageChangesModalLabel">এই পেইজে যা নতুন পরিবর্তন/আপডেট করা হয়েছে</h4>
+                              </div>
+                              <div class="modal-body" style="height:65vh; overflow-y:auto;">
+                                <ol style="padding-left:20px; margin:0;">
+                                  <li style="margin-bottom:12px;">
+                                    <strong>Export বাটন যোগ করা হয়েছে</strong> — View বাটনের ঠিক পাশে নতুন Export বাটন, ক্লিক করলে Details টেবিলে বর্তমানে যা দেখা যাচ্ছে তা Excel ফাইল আকারে ডাউনলোড হবে।
+                                  </li>
+                                </ol>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">বন্ধ করুন</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <script>
+                          function pcmFeedback(btn, label) {
+                              var original = btn.innerHTML;
+                              btn.innerHTML = label;
+                              setTimeout(function () { btn.innerHTML = original; }, 1800);
+                          }
+                          function pcmSelectionFallbackCopy(btn, modalBody) {
+                              try {
+                                  var range = document.createRange();
+                                  range.selectNodeContents(modalBody);
+                                  var sel = window.getSelection();
+                                  sel.removeAllRanges();
+                                  sel.addRange(range);
+                                  var ok = document.execCommand('copy');
+                                  sel.removeAllRanges();
+                                  pcmFeedback(btn, ok ? 'Copied!' : 'সিলেক্ট হয়েছে, Ctrl+C চাপুন');
+                              } catch (err) {
+                                  pcmFeedback(btn, 'কপি ব্যর্থ হয়েছে');
+                              }
+                          }
+                          document.addEventListener('click', function (e) {
+                              var btn = e.target.closest('.pcm-copy-btn');
+                              if (!btn) return;
+                              var modalBody = btn.closest('.modal-content').querySelector('.modal-body');
+                              if (!modalBody) return;
+                              var text = modalBody.innerText || modalBody.textContent || '';
+                              if (navigator.clipboard && navigator.clipboard.writeText) {
+                                  navigator.clipboard.writeText(text).then(function () {
+                                      pcmFeedback(btn, 'Copied!');
+                                  }).catch(function () {
+                                      pcmSelectionFallbackCopy(btn, modalBody);
+                                  });
+                              } else {
                                   pcmSelectionFallbackCopy(btn, modalBody);
-                              });
-                          } else {
-                              pcmSelectionFallbackCopy(btn, modalBody);
-                          }
-                      });
-                    </script>
-                    <script type="text/javascript">
-                      document.addEventListener('click', function (e) {
-                        var a = e.target.closest('a[href]');
-                        if (!a) return;
-                        var href = a.getAttribute('href') || '';
-                        if (/^(https?:)?\/\//i.test(href) || href.charAt(0) === '/') {
-                          e.preventDefault();
-                        }
-                      }, true);
-                      document.addEventListener('submit', function (e) {
-                        e.preventDefault();
-                      }, true);
-                    </script>
-                  </body>
-                </html>
+                              }
+                          });
+                        </script>
+                        <script type="text/javascript">
+                          document.addEventListener('click', function (e) {
+                            var a = e.target.closest('a[href]');
+                            if (!a) return;
+                            var href = a.getAttribute('href') || '';
+                            if (/^(https?:)?\/\//i.test(href) || href.charAt(0) === '/') {
+                              e.preventDefault();
+                            }
+                          }, true);
+                          document.addEventListener('submit', function (e) {
+                            e.preventDefault();
+                          }, true);
+                        </script>
+                      </body>
+                    </html>
