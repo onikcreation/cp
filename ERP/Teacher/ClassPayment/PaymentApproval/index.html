@@ -1,14 +1,4 @@
 <!DOCTYPE html>
-<!--
-  ╔══════════════════════════════════════════════════════════╗
-  ║           HTML Inspector & Saver — Captured Page         ║
-  ╠══════════════════════════════════════════════════════════╣
-  ║  Source URL  : https://umsbd.net/Teachers/ClassPayment/PaymentAppro ║
-  ║  Page Title  : UMS - Payment Approval [17:53:14] - Al Amin Anik     ║
-  ║  Captured At : 2026-07-25T11:53:38.686Z                             ║
-  ║  Elements    : 4830                                                 ║
-  ╚══════════════════════════════════════════════════════════╝
--->
 <html>
   <head>
     <meta charset="utf-8">
@@ -7656,7 +7646,10 @@ var BRANCH_MENTOR_DATA = [["Bandarban","6"],["Khagrachari","6"],["Rangamati","6"
           var infoView = toArr(d.informationViewList);
           var cols = infoView.map(function (v) { return FIELD_DEFS[String(v)]; }).filter(Boolean);
           if (cols.length === 0) {
-            cols = Object.keys(FIELD_DEFS).map(function (k) { return FIELD_DEFS[k]; });
+            // "Select Information To View"-এ কিছু ডানপাশে সরানো না হলে ডিফল্ট কলাম সেট: TPIN, Full Name
+            // (Duration/Quantity/Amount/Additional Amount/Total Amount/Approve All/Cancel All/Remarks
+            // এমনিতেই সবসময় দেখানো হয়, নিচে যোগ হয়)
+            cols = ['10', '20'].map(function (v) { return FIELD_DEFS[v]; });
           }
 
           var fixedTrailHeaders = '<th>Duration</th><th>Quantity</th><th>Amount</th><th>Additional Amount</th><th>Total Amount</th>' +
@@ -8359,7 +8352,7 @@ var BRANCH_MENTOR_DATA = [["Bandarban","6"],["Khagrachari","6"],["Rangamati","6"
                 max-height: 60vh;
             }
             #approvalListTable {
-                width: auto;
+                width: 100%;
                 border-collapse: collapse;
                 position: relative;
             }
@@ -10350,70 +10343,70 @@ span.hide-native-select{position:relative}span.hide-native-select select{border:
                           <div class="col-md-12">
                             
                             <select class="form-control valid" id="InformationViewList" multiple="multiple" name="InformationViewList">
-                              <option value="10" selected="selected">
+                              <option value="10">
                                 TPIN
                               </option>
-                              <option value="20" selected="selected">
+                              <option value="20">
                                 Full Name
                               </option>
-                              <option value="30" selected="selected">
+                              <option value="30">
                                 Nick Name
                               </option>
-                              <option value="40" selected="selected">
+                              <option value="40">
                                 Batch
                               </option>
-                              <option value="50" selected="selected">
+                              <option value="50">
                                 Mobile Number
                               </option>
-                              <option value="60" selected="selected">
+                              <option value="60">
                                 Mobile Banking Number
                               </option>
-                              <option value="70" selected="selected">
+                              <option value="70">
                                 Mobile Banking Type
                               </option>
-                              <option value="80" selected="selected">
+                              <option value="80">
                                 TIN
                               </option>
-                              <option value="90" selected="selected">
+                              <option value="90">
                                 Program &amp; Session
                               </option>
-                              <option value="100" selected="selected">
+                              <option value="100">
                                 Course
                               </option>
-                              <option value="110" selected="selected">
+                              <option value="110">
                                 Held Branch
                               </option>
-                              <option value="120" selected="selected">
+                              <option value="120">
                                 Held Campus
                               </option>
-                              <option value="130" selected="selected">
+                              <option value="130">
                                 Held Date
                               </option>
-                              <option value="140" selected="selected">
+                              <option value="140">
                                 Platform
                               </option>
-                              <option value="150" selected="selected">
+                              <option value="150">
                                 Class Type
                               </option>
-                              <option value="160" selected="selected">
+                              <option value="160">
                                 Description
                               </option>
-                              <option value="170" selected="selected">
+                              <option value="170">
                                 Approved By
                               </option>
-                              <option value="180" selected="selected">
+                              <option value="180">
                                 Approved Date-Time
                               </option>
-                              <option value="190" selected="selected">
+                              <option value="190">
                                 Cancelled By
                               </option>
-                              <option value="200" selected="selected">
+                              <option value="200">
                                 Cancellation Date-Time
                               </option>
-                              <option value="210" selected="selected">
+                              <option value="210">
                                 Entry By
                               </option>
-                              <option value="220" selected="selected">
+                              <option value="220">
                                 Entry Date-Time
                               </option>
                             </select>

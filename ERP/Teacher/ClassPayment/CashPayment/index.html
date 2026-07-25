@@ -1,14 +1,4 @@
 <!DOCTYPE html>
-<!--
-  ╔══════════════════════════════════════════════════════════╗
-  ║           HTML Inspector & Saver — Captured Page         ║
-  ╠══════════════════════════════════════════════════════════╣
-  ║  Source URL  : https://umsbd.net/Teachers/ClassPayment/CashPayment  ║
-  ║  Page Title  : UMS - Cash Payment [18:09:21] - Al Amin Anik         ║
-  ║  Captured At : 2026-07-25T12:10:02.461Z                             ║
-  ║  Elements    : 7591                                                 ║
-  ╚══════════════════════════════════════════════════════════╝
--->
 <html>
   <head>
     <meta charset="utf-8">
@@ -7614,7 +7604,9 @@ var BRANCH_MENTOR_DATA = [["Bandarban","6"],["Khagrachari","6"],["Rangamati","6"
           var infoView = toArr(d.informationViewList);
           var cols = infoView.map(function (v) { return FIELD_DEFS[String(v)]; }).filter(Boolean);
           if (cols.length === 0) {
-            cols = ['10', '20', '30', '40', '50', '60', '70', '80'].map(function (v) { return FIELD_DEFS[v]; });
+            // "Select Information To View"-এ কিছু ডানপাশে সরানো না হলে ডিফল্ট কলাম সেট: TPIN, Full Name
+            // (Organization/Total Amount/Action এমনিতেই সবসময় দেখানো হয়, নিচে যোগ হয়)
+            cols = ['10', '20'].map(function (v) { return FIELD_DEFS[v]; });
           }
 
           var theadHtml = '<th>Serial</th>' + cols.map(function (c) { return '<th>' + c.label + '</th>'; }).join('') +
@@ -8276,7 +8268,7 @@ var BRANCH_MENTOR_DATA = [["Bandarban","6"],["Khagrachari","6"],["Rangamati","6"
                 max-height: 60vh;
             }
             #DataGrid {
-                width: auto;
+                width: 100%;
                 border-collapse: collapse;
                 position: relative;
             }
@@ -10237,28 +10229,28 @@ span.hide-native-select{position:relative}span.hide-native-select select{border:
                         <div class="row" style="padding-left: 80px">
                           <div class="col-md-12">
                             <select class="form-control valid" id="InformationViewList" multiple="multiple" name="InformationViewList">
-                              <option value="10" selected="selected">
+                              <option value="10">
                                 TPIN
                               </option>
-                              <option value="20" selected="selected">
+                              <option value="20">
                                 Full Name
                               </option>
-                              <option value="30" selected="selected">
+                              <option value="30">
                                 Nick Name
                               </option>
-                              <option value="40" selected="selected">
+                              <option value="40">
                                 Batch
                               </option>
-                              <option value="50" selected="selected">
+                              <option value="50">
                                 Mobile Number
                               </option>
-                              <option value="60" selected="selected">
+                              <option value="60">
                                 Mobile Banking Number
                               </option>
-                              <option value="70" selected="selected">
+                              <option value="70">
                                 Mobile Banking Type
                               </option>
-                              <option value="80" selected="selected">
+                              <option value="80">
                                 TIN
                               </option>
                             </select>
