@@ -14127,7 +14127,10 @@ function updateSelectedValues() {
           var grandTotal = monthlyAmount * activeMonthLabels.length;
           var paymentIds = [];
           for (var k = 0; k < activeMonthLabels.length; k++) { paymentIds.push(100 + i * 6 + k); }
-          return { teacher: t, months: months, grandTotal: grandTotal, paymentIds: paymentIds.join(',') };
+          // ক্যাপচারে (রো ১১) একজন টিচারের Action কলামে "Payment Blocked" দেখাত (Pay Now বাটনের বদলে) —
+          // ডেমোতেও একই উদাহরণ রাখতে একটা নির্দিষ্ট টিচারকে (deterministic) ব্লকড দেখানো হচ্ছে
+          var paymentBlocked = (i === 10);
+          return { teacher: t, months: months, grandTotal: grandTotal, paymentIds: paymentIds.join(','), paymentBlocked: paymentBlocked };
         });
 
         var FIELD_DEFS = {
@@ -14201,10 +14204,14 @@ function updateSelectedValues() {
                 return '<td>' + v.settingsDate + '</td><td>' + v.slot + '</td><td class="text-right">' + fmtMoney(v.amount) + '</td>';
               }).join('');
               tds += '<td class="text-right">' + r.grandTotal.toLocaleString('en-US') + '</td>';
-              tds += '<td class="fixed-column right1">' +
-                '<input type="hidden" value="' + r.teacher.tpin + '" class="teacherId">' +
-                '<input type="hidden" value="' + r.paymentIds + '" class="teacherSeniorshipPaymentIds">' +
-                '<button type="button" class="btn btn-sm btn-primary payNow">Pay Now</button></td>';
+              if (r.paymentBlocked) {
+                tds += '<td class="fixed-column right1"><strong style="color:red;">Payment Blocked</strong></td>';
+              } else {
+                tds += '<td class="fixed-column right1">' +
+                  '<input type="hidden" value="' + r.teacher.tpin + '" class="teacherId">' +
+                  '<input type="hidden" value="' + r.paymentIds + '" class="teacherSeniorshipPaymentIds">' +
+                  '<button type="button" class="btn btn-sm btn-primary payNow">Pay Now</button></td>';
+              }
               return '<tr>' + tds + '</tr>';
             }).join('');
           }
@@ -14256,10 +14263,6 @@ function updateSelectedValues() {
 
           return realAjax.apply(jQuery, arguments);
         };
-
-        // Panel heading ক্লিক করে Collapse/Expand — এই ক্যাপচারে বাইন্ডিং অনুপস্থিত ছিল (শুধু View বাটনের
-        // সাইড-ইফেক্ট হিসেবে ShowHide() কল হতো), heading-এর নিজস্ব ক্লিক-হ্যান্ডলার যোগ করা হয়েছে
-        $(document).on('click', '#ShowHide', ShowHide);
 
         // Pay Now — টার্গেট পেইজ (PrepareCashPayment) ক্যাপচার করা নেই, তাই এই ডেমোতে আসল ফর্ম-সাবমিট বাতিল করে বুটবক্স দেখানো হচ্ছে
         $(document).ready(function () {
