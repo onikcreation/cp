@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Congratulations | Udvash-Unmesh</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg-page: #f0eef5;
+    --bg-white: #fff;
+    --bg-surface: #f8f7fb;
+    --border-color: #e8e4f0;
+    --border-light: #e0dcea;
+    --text-primary: #2a1650;
+    --text-body: #444;
+    --text-muted: #888;
+    --text-faint: #aaa;
+    --topbar-shadow: rgba(58,32,96,.10);
+    --lv-total-bg: #f8f7fb;
+  }
+
+  body.dark {
+    --bg-page: #111018;
+    --bg-white: #1c1a27;
+    --bg-surface: #15131f;
+    --border-color: #2e2a40;
+    --border-light: #2e2a40;
+    --text-primary: #e8e4f8;
+    --text-body: #c8c4d8;
+    --text-muted: #8880a8;
+    --text-faint: #55507a;
+    --topbar-shadow: rgba(0,0,0,.4);
+    --lv-total-bg: #15131f;
+  }
+
+  html, body { height:100%; }
+  body { background: var(--bg-page); font-family: Arial, sans-serif; color: var(--text-body); transition: background .25s, color .25s; display:flex; flex-direction:column; min-height:100vh; }
+
+  /* ── TOPBAR (fixed) ── */
+  .uou-topbar {
+    background: var(--bg-white);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 2px 12px var(--topbar-shadow);
+    height: 56px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    gap: 12px;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 200;
+    transition: background .25s, border-color .25s;
+  }
+  .uou-logo-box { width:36px;height:36px;background:#3a2060;border-radius:6px;display:flex;align-items:center;justify-content:center; }
+  .uou-logo-text { font-size: 13px; font-weight: 700; color: #3a2060; line-height: 1.2; }
+
+  /* Notification & Profile */
+  .topbar-actions { margin-left:auto; display:flex; gap:14px; align-items:center; position:relative; }
+
+  .notif-btn, .profile-btn {
+    background: none; border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .notif-btn i { font-size: 22px; color: var(--text-muted); }
+  .profile-btn i { font-size: 24px; color: #5a3e8a; }
+
+  /* Dark Mode Toggle */
+  .dark-toggle {
+    background: none; border: 1px solid var(--border-light);
+    border-radius: 20px; cursor: pointer;
+    display: flex; align-items: center; gap: 5px;
+    padding: 4px 10px; font-size: 12px; color: var(--text-muted);
+    transition: all .2s;
+  }
+  .dark-toggle:hover { background: var(--bg-surface); }
+  .dark-toggle i { font-size: 15px; }
+
+  .notif-badge {
+    position:absolute; top:-4px; right:-4px;
+    background:#E24B4A; color:#fff;
+    font-size:9px; font-weight:700;
+    width:16px; height:16px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    border: 2px solid #fff;
+  }
+
+  /* Profile Dropdown */
+  .profile-dropdown {
+    display:none; position:absolute; top:46px; right:0;
+    background:var(--bg-white); border:1px solid var(--border-light); border-radius:14px;
+    box-shadow:0 8px 30px rgba(0,0,0,.15);
+    width:200px; z-index:999; overflow:hidden;
+  }
+  .profile-dropdown.open { display:block; }
+  .profile-top {
+    padding:20px 16px 14px;
+    background:var(--bg-surface);
+    border-bottom:1px solid var(--bg-page);
+    text-align:center;
+  }
+  .profile-name { font-size:14px; font-weight:700; color:var(--text-primary); }
+  .profile-role { font-size:12px; color:var(--text-muted); margin-top:2px; }
+
+  /* ── SIDEBAR ── */
+  .uou-sidebar {
+    width:168px; background:var(--bg-white); border-right:1px solid var(--border-color);
+    position:fixed; top:56px; left:0; bottom:0;
+    padding:8px 0; overflow-y:auto; z-index:100;
+    transition: background .25s, border-color .25s;
+  }
+  .uou-sidebar-item { display:flex; align-items:center; gap:8px; padding:9px 16px; font-size:13px; color:var(--text-body); cursor:pointer; }
+  .uou-sidebar-item:hover { background:var(--sidebar-hover, #f8f7fb); }
+  .uou-sidebar-item.active { background:#f0eef5; color:#5a3e8a; font-weight:500; }
+  body.dark .uou-sidebar-item.active { background:#2a2540; color:#c4b0f0; }
+  .uou-sidebar-item i { font-size:17px; color:var(--text-muted); }
+  .uou-sidebar-item.active i { color:inherit; }
+
+  /* ── MAIN ── */
+  .uou-main { margin-left:168px; margin-top:56px; padding:16px; flex:1 0 auto; }
+
+  .uou-card { background:var(--bg-white); border:1px solid var(--border-light); border-radius:8px; transition: background .25s; }
+
+  .uou-btn { background:#4a90d9; color:#fff; border:none; border-radius:4px; padding:7px 20px; font-size:12px; font-weight:500; cursor:pointer; white-space:nowrap; }
+  .uou-btn:hover { background:#3a7bc8; }
+
+  /* ── SUCCESS CARD ── */
+  .success-wrap { max-width:640px; margin:30px auto; }
+  .success-card { padding:50px 40px 46px; text-align:center; border-radius:28px; }
+  .success-icon { font-size:56px; line-height:1; margin-bottom:18px; }
+  .success-title { font-size:26px; font-weight:800; letter-spacing:1px; color:#5D1A7B; margin-bottom:22px; }
+  .success-msg { font-size:15px; line-height:1.9; color:#5D1A7B; max-width:520px; margin:0 auto 34px; }
+  .success-msg strong { color:#5D1A7B; }
+  .success-msg strong.hl { color:#C2185B; }
+  .success-dash-btn { display:inline-block; padding:12px 42px; border-radius:30px; background:var(--text-primary); color:#fff; font-weight:600; font-size:14px; text-decoration:none; letter-spacing:.3px; }
+  .success-dash-btn:hover { opacity:.9; }
+
+  /* Overlay to close dropdowns */
+  #overlay { display:none; position:fixed; inset:0; z-index:150; }
+  #overlay.show { display:block; }
+
+  /* ── HAMBURGER (mobile) ── */
+  .hamburger-btn {
+    display:none; background:none; border:none; cursor:pointer;
+    padding:4px; margin-right:4px;
+  }
+  .hamburger-btn i { font-size:22px; color:#3a2060; }
+
+  /* Sidebar overlay for mobile */
+  #sidebar-overlay {
+    display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:90;
+  }
+  #sidebar-overlay.show { display:block; }
+
+  /* ── FOOTER ── */
+  .uou-footer {
+    margin-left:168px;
+    background:#532355;
+    color:#e0d8f0;
+    padding:40px 32px 0;
+    transition: margin-left .25s;
+  }
+  .uou-footer a { color:#c8b8e8; text-decoration:none; font-size:13px; }
+  .uou-footer a:hover { color:#fff; text-decoration:underline; }
+  .footer-grid {
+    display:grid;
+    grid-template-columns:1.4fr 1fr 0.8fr 1.4fr;
+    gap:32px;
+    padding-bottom:32px;
+    border-bottom:1px solid rgba(255,255,255,.15);
+  }
+  .footer-brand-title { font-size:18px; font-weight:700; color:#fff; margin-bottom:6px; display:flex; align-items:center; gap:8px; }
+  .footer-brand-sub { font-size:12px; color:#c8b8e8; line-height:1.6; margin-top:8px; }
+  .footer-col-title { font-size:13px; font-weight:700; color:#fff; margin-bottom:14px; letter-spacing:0.3px; }
+  .footer-links { list-style:none; display:flex; flex-direction:column; gap:9px; }
+  .footer-contact-item { display:flex; align-items:flex-start; gap:8px; font-size:13px; color:#c8b8e8; line-height:1.5; margin-bottom:10px; }
+  .footer-contact-item i { font-size:16px; color:#c8b8e8; flex-shrink:0; margin-top:1px; }
+  .footer-social { display:flex; gap:10px; margin-top:16px; }
+  .footer-social a {
+    width:36px; height:36px; border-radius:50%;
+    border:1px solid rgba(255,255,255,.3);
+    display:flex; align-items:center; justify-content:center;
+    color:#fff; font-size:16px;
+    transition: background .2s, border-color .2s;
+  }
+  .footer-social a:hover { background:rgba(255,255,255,.15); border-color:#fff; }
+  .footer-bottom {
+    text-align:center; font-size:11px; color:rgba(255,255,255,.45);
+    padding:14px 0;
+  }
+
+  /* ── RESPONSIVE BREAKPOINTS ── */
+
+  /* ≤ 1100px: sidebar collapses to icon-only */
+  @media (max-width: 1100px) {
+    .uou-sidebar { width:52px; }
+    .uou-sidebar-item span { display:none; }
+    .uou-sidebar-item { justify-content:center; padding:10px 0; gap:0; }
+    .uou-main { margin-left:52px; }
+    .uou-footer { margin-left:52px; }
+  }
+
+  /* ≤ 768px: sidebar becomes slide-in drawer */
+  @media (max-width: 768px) {
+    .hamburger-btn { display:flex; }
+    .uou-sidebar {
+      width:200px;
+      transform: translateX(-100%);
+      transition: transform .25s ease;
+      z-index:100;
+    }
+    .uou-sidebar.open {
+      transform: translateX(0);
+    }
+    .uou-sidebar-item { justify-content:flex-start; padding:10px 16px; gap:8px; }
+    .uou-sidebar-item span { display:inline !important; }
+    .uou-main { margin-left:0; }
+    .uou-footer { margin-left:0; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .dark-toggle span { display:none; }
+  }
+
+  /* ≤ 540px: single column everything */
+  @media (max-width: 540px) {
+    .uou-main { padding:10px; }
+    .success-wrap { margin:14px auto; }
+    .success-card { padding:34px 20px 30px; }
+    .success-title { font-size:21px; }
+    .footer-grid { grid-template-columns: 1fr; gap:20px; }
+    .uou-footer { padding:28px 18px 0; }
+  }
+</style>
+</head>
+<body>
+
+<div id="overlay" onclick="closeAllDropdowns()"></div>
+<div id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+<!-- ══ TOPBAR ══ -->
+<div class="uou-topbar">
+  <button class="hamburger-btn" onclick="toggleSidebar()" aria-label="Menu">
+    <i class="ti ti-menu-2"></i>
+  </button>
+  <div class="uou-logo-box">
+    <i class="ti ti-flame" style="color:#fff;font-size:18px;"></i>
+  </div>
+  <div class="uou-logo-text">Udvash-Unmesh</div>
+
+  <div class="topbar-actions">
+
+    <!-- Dark Mode Toggle -->
+    <button class="dark-toggle" onclick="toggleDarkMode()" id="darkToggleBtn" aria-label="Toggle dark mode">
+      <i class="ti ti-moon" id="darkToggleIcon"></i>
+      <span id="darkToggleLabel">Dark</span>
+    </button>
+
+    <!-- Notification Button (no dropdown, just clickable) -->
+    <button class="notif-btn" aria-label="Notifications">
+      <i class="ti ti-bell"></i>
+      <span class="notif-badge">1</span>
+    </button>
+
+    <!-- Profile Button -->
+    <button class="profile-btn" onclick="toggleProfile(event)" aria-label="Profile">
+      <i class="ti ti-user-circle"></i>
+    </button>
+
+    <!-- Profile Dropdown -->
+    <div class="profile-dropdown" id="profileDropdown">
+      <!-- Avatar -->
+      <div class="profile-top">
+        <div style="width:72px;height:72px;border-radius:50%;background:#e8e4f0;border:2px solid #d0c8e8;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;">
+          <i class="ti ti-user" style="font-size:36px;color:#5a3e8a;"></i>
+        </div>
+        <div class="profile-name" style="text-align:center;">Al Amin</div>
+        <div class="profile-role" style="text-align:center;font-size:12px;color:#888;margin-top:2px;">Reg. No. 1997219</div>
+        <div class="profile-role" style="text-align:center;font-size:12px;color:#888;margin-top:2px;">Roll. No. 65228400070</div>
+      </div>
+      <!-- Action icons row -->
+      <div style="display:flex;justify-content:center;gap:16px;padding:14px 16px;border-top:1px solid #f0eef5;">
+        <button style="width:40px;height:40px;border-radius:50%;border:1px solid #e0dcea;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Edit Profile">
+          <i class="ti ti-pencil" style="font-size:16px;color:#5a3e8a;"></i>
+        </button>
+        <button style="width:40px;height:40px;border-radius:50%;border:1px solid #e0dcea;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="View Profile">
+          <i class="ti ti-eye" style="font-size:16px;color:#5a3e8a;"></i>
+        </button>
+        <button style="width:40px;height:40px;border-radius:50%;border:1px solid #e0dcea;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Logout">
+          <i class="ti ti-power" style="font-size:16px;color:#E24B4A;"></i>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ SIDEBAR ══ -->
+<div class="uou-sidebar" id="mainSidebar">
+  <div class="uou-sidebar-item"><i class="ti ti-layout-dashboard"></i><span>Dashboard</span></div>
+  <div class="uou-sidebar-item active"><i class="ti ti-circle-plus"></i><span>Add Course</span></div>
+  <div class="uou-sidebar-item"><i class="ti ti-book"></i><span>Course & Content</span></div>
+  <div class="uou-sidebar-item"><i class="ti ti-school"></i><span>Master Class</span></div>
+  <div class="uou-sidebar-item"><i class="ti ti-building"></i><span>Foundation Class</span></div>
+  <div class="uou-sidebar-item"><i class="ti ti-history"></i><span>Past Classes</span></div>
+  <div class="uou-sidebar-item"><i class="ti ti-file-text"></i><span>Past Exams</span></div>
+  <div class="uou-sidebar-item"><i class="ti ti-pencil"></i><span>Practice Exam</span></div>
+  <div class="uou-sidebar-item"><i class="ti ti-clipboard-list"></i><span>Solve Sheet</span></div>
+  <div class="uou-sidebar-item"><i class="ti ti-chart-bar"></i><span>Performance</span></div>
+  <div class="uou-sidebar-item"><i class="ti ti-help-circle"></i><span>Q&A Service</span></div>
+  <div class="uou-sidebar-item"><i class="ti ti-credit-card"></i><span>Due Payment</span></div>
+  <div class="uou-sidebar-item"><i class="ti ti-messages"></i><span>Discussion Group</span></div>
+  <div class="uou-sidebar-item"><i class="ti ti-users"></i><span>Community</span></div>
+</div>
+
+<!-- ══ MAIN ══ -->
+<div class="uou-main">
+
+  <div class="success-wrap">
+
+    <!-- Success Card -->
+    <div class="uou-card success-card">
+      <div class="success-icon">🎉</div>
+      <h2 class="success-title">CONGRATULATIONS!</h2>
+      <p class="success-msg">
+        Dear <strong>Al Amin,</strong><br>
+        Your admission is successful with payment of <strong class="hl">15,000 BDT</strong>. Your Roll Number is <strong class="hl">65228400070</strong> and Registration Number <strong class="hl">1997219</strong>. You have to pay your due amount <strong class="hl">5,000 BDT</strong> by 15 Apr, 2025.
+        Well wishes from Udvash-Unmesh.
+      </p>
+      <a href="javascript:void(0)" class="success-dash-btn">Dashboard</a>
+    </div>
+
+  </div>
+
+</div><!-- /uou-main -->
+
+<!-- ══ FOOTER ══ -->
+<footer class="uou-footer">
+  <div class="footer-grid">
+    <!-- Brand -->
+    <div>
+      <div class="footer-brand-title">
+        <div style="width:32px;height:32px;background:rgba(255,255,255,.15);border-radius:6px;display:flex;align-items:center;justify-content:center;">
+          <i class="ti ti-flame" style="color:#fff;font-size:16px;"></i>
+        </div>
+        Udvash-Unmesh
+      </div>
+      <div style="font-size:22px;font-weight:700;color:rgba(255,255,255,.9);margin:4px 0 0;font-family:serif;">সম্পর্ক হোক সহযোগিতার....</div>
+      <p class="footer-brand-sub">Udvash-Unmesh Online Care — HSC ও Admission প্রস্তুতির বিশ্বস্ত সঙ্গী।</p>
+      <div class="footer-social">
+        <a href="#" aria-label="YouTube"><i class="ti ti-brand-youtube"></i></a>
+        <a href="#" aria-label="Instagram"><i class="ti ti-brand-instagram"></i></a>
+        <a href="#" aria-label="LinkedIn"><i class="ti ti-brand-linkedin"></i></a>
+      </div>
+    </div>
+
+    <!-- Help -->
+    <div>
+      <p class="footer-col-title">Help</p>
+      <ul class="footer-links">
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms &amp; Conditions</a></li>
+        <li><a href="#">FAQs</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
+    </div>
+
+    <!-- Explore -->
+    <div>
+      <p class="footer-col-title">Explore</p>
+      <ul class="footer-links">
+        <li><a href="#">Udvash</a></li>
+        <li><a href="#">Unmesh</a></li>
+      </ul>
+    </div>
+
+    <!-- Get in Touch -->
+    <div>
+      <p class="footer-col-title">Get in Touch</p>
+      <div class="footer-contact-item">
+        <i class="ti ti-map-pin"></i>
+        <span>Hossain Tower (5th Floor), 75, Green Road, Farmgate; Sher-e-Bangla Nagar PS; Dhaka-1205.</span>
+      </div>
+      <div class="footer-contact-item">
+        <i class="ti ti-phone"></i>
+        <span>09666775566</span>
+      </div>
+      <div class="footer-contact-item">
+        <i class="ti ti-mail"></i>
+        <span>info@udvash-unmesh.com</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    Copyright &copy; Udvash-Unmesh Online Care. All rights reserved. 2026 &nbsp;|&nbsp; P-1 &nbsp;|&nbsp; V-line-udvash-portal-b8d6d656-hd65w.217.2
+  </div>
+</footer>
+
+<script>
+/* ── Sidebar mobile toggle ── */
+function toggleSidebar() {
+  const sb = document.getElementById('mainSidebar');
+  const so = document.getElementById('sidebar-overlay');
+  sb.classList.toggle('open');
+  so.classList.toggle('show');
+}
+function closeSidebar() {
+  document.getElementById('mainSidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('show');
+}
+
+/* ── Dropdown logic ── */
+function toggleProfile(e) {
+  e.stopPropagation();
+  const pd = document.getElementById('profileDropdown');
+  const ov = document.getElementById('overlay');
+  const isOpen = pd.classList.contains('open');
+  pd.classList.toggle('open', !isOpen);
+  ov.classList.toggle('show', !isOpen);
+}
+function closeAllDropdowns() {
+  document.getElementById('profileDropdown').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+/* ── Dark Mode ── */
+function toggleDarkMode() {
+  const body = document.body;
+  const icon  = document.getElementById('darkToggleIcon');
+  const label = document.getElementById('darkToggleLabel');
+  body.classList.toggle('dark');
+  const isDark = body.classList.contains('dark');
+  icon.className  = isDark ? 'ti ti-sun' : 'ti ti-moon';
+  label.textContent = isDark ? 'Light' : 'Dark';
+  localStorage.setItem('uou-dark', isDark ? '1' : '0');
+}
+/* Restore saved preference */
+if (localStorage.getItem('uou-dark') === '1') {
+  document.body.classList.add('dark');
+  document.getElementById('darkToggleIcon').className = 'ti ti-sun';
+  document.getElementById('darkToggleLabel').textContent = 'Light';
+}
+</script>
+</body>
+</html>
