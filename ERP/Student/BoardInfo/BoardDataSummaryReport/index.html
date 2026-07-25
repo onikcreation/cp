@@ -17846,7 +17846,7 @@ span.hide-native-select{position:relative}span.hide-native-select select{border:
                               Session:
                             </label>
                             <div class="col-md-4">
-                              <select class="form-control" id="sessionIds" multiple="multiple" name="sessionIds">
+                              <select class="form-control" id="sessionIds" name="sessionIds">
                                   <option selected="selected" value="-1">
                                     Last Session
                                   </option>
@@ -57450,12 +57450,11 @@ function DeselectSelectedOptionAdd(elem) {
             $('#programIds').multiselect('rebuild');
         }
 
-        // #sessionIds is a multi-select with one placeholder option - "Last Session"
-        // (value -1) - alongside the real year options (no "All Session" option;
-        // leaving everything unchecked serves that same "no restriction" purpose).
-        // This returns only the real, explicit session years the user actually
-        // checked (their display text, e.g. "2026") - an empty array means "no
-        // restriction" (either nothing is checked, or only "Last Session" is).
+        // #sessionIds is a single-select with one placeholder option - "Last Session"
+        // (value -1, default) - alongside the real year options. This returns an
+        // array containing the one real, explicit session year the user picked
+        // (its display text, e.g. "2026") - an empty array means "Last Session" is
+        // selected (no specific year restriction).
         function getSelectedSessionTexts() {
             var texts = [];
             $('#sessionIds option:selected').each(function () {
@@ -57518,13 +57517,6 @@ function DeselectSelectedOptionAdd(elem) {
 
         $(document).ready(function () {
             let isAllSession = true;
-            // Tracks the previously-selected #sessionIds values so the change handler
-            // below can tell whether "Last Session" (-1) was already checked before this
-            // change (meaning the user just added a specific session, so drop -1) or
-            // whether the user just checked "Last Session" itself (so drop any specific
-            // sessions instead) - mirrors the mutual-exclusion pattern used for the same
-            // "Last Session" option on Admission Summary Report's Session filter.
-            var prevSessionSelection = ['-1'];
 
             // Cache the real captured Session option list so it can be restored if the
             // reload AJAX (LoadSession) fails — there's no backend here, so it always
@@ -57536,7 +57528,6 @@ function DeselectSelectedOptionAdd(elem) {
             muliselectfnc($('#classFilter'), "All Class", { includeSelectAllOption: true });
             $('#classFilter').multiselect('deselectAll', false);
             $('#classFilter').multiselect('select', 'Admission');
-            muliselectfnc($('#sessionIds'), "Select Session");
             rebuildProgramOptions();
             muliselectfnc($('#branchFilter'), "All Branch");
             muliselectfnc($('#boardFilter'), "All Examination");
@@ -57559,8 +57550,6 @@ function DeselectSelectedOptionAdd(elem) {
 
                 $('#sessionIds').empty();
                 $('#sessionIds').append($('<option>').text("Last Session").attr('value', -1).prop('selected', true));
-                $('#sessionIds').multiselect('rebuild');
-                prevSessionSelection = $('#sessionIds').val() || [];
 
                 var organizationId = $('#organizationId').val();
                 sessionLoadOperation(organizationId, null);
@@ -57592,23 +57581,6 @@ function DeselectSelectedOptionAdd(elem) {
             });
 
             $(document).on('change', '#sessionIds', function () {
-                var current = $(this).val() || [];
-                if ($.inArray('-1', current) !== -1 && current.length > 1) {
-                    if ($.inArray('-1', prevSessionSelection) !== -1) {
-                        // "Last Session" was already checked - the user just added a
-                        // specific session on top of it, so drop "Last Session".
-                        $('#sessionIds').multiselect('deselect', '-1');
-                        current = $.grep(current, function (v) { return v !== '-1'; });
-                    } else {
-                        // "Last Session" was just checked while specific sessions were
-                        // already selected - it takes over, drop the specific ones.
-                        $.each(current, function (i, v) {
-                            if (v !== '-1') $('#sessionIds').multiselect('deselect', v);
-                        });
-                        current = ['-1'];
-                    }
-                }
-                prevSessionSelection = current;
                 rebuildCourseOptions();
             });
 
@@ -57639,7 +57611,6 @@ function DeselectSelectedOptionAdd(elem) {
                                 $('#sessionIds').append($('<option>').text(v.Text).attr('value', v.Value));
                                 count++;
                             });
-                            $('#sessionIds').multiselect('rebuild');
                         } else {
                             $.fn.customMessage({
                                 displayMessage: response.Message,
@@ -57650,8 +57621,6 @@ function DeselectSelectedOptionAdd(elem) {
                     complete: function () { $.unblockUI(); },
                     error: function (data) {
                         $('#sessionIds').append(window.ORIGINAL_SESSION_OPTIONS_HTML);
-                        $('#sessionIds').multiselect('rebuild');
-                        prevSessionSelection = $('#sessionIds').val() || [];
                     }
                 });
 
@@ -58915,15 +58884,13 @@ function DeselectSelectedOptionAdd(elem) {
 
                                       // Picks a real Session for a program (Program Wise's and Branch Program
                                       // Wise's Session column), read straight from the COURSE_DATA rows captured
-                                      // for that program in Course Name.xlsx. #sessionIds is a multi-select with
+                                      // for that program in Course Name.xlsx. #sessionIds is a single-select with
                                       // a "Last Session" placeholder alongside real years (see
-                                      // getSelectedSessionTexts()). If one or more specific years are checked,
-                                      // the first one this program actually has data under is used - "-" if none
-                                      // of them match. If only "Last Session" is checked (no specific year), the
-                                      // program's own most recent real session is used. Otherwise (nothing
-                                      // checked) falls back to a random one of the program's real
-                                      // sessions, for variety across sub-rows. Falls back to "" for a name not
-                                      // in that sheet (e.g. the "Sample Program" placeholder above).
+                                      // getSelectedSessionTexts()). If a specific year is selected, it's used if
+                                      // this program actually has data under it - "-" otherwise. If "Last Session"
+                                      // is selected (no specific year), the program's own most recent real
+                                      // session is used. Falls back to "" for a name not in that sheet (e.g. the
+                                      // "Sample Program" placeholder above).
                                       function getSessionForProgram(name) {
                                           var idx = COURSE_PROGRAMS.indexOf(name);
                                           if (idx === -1) return "";
@@ -58941,7 +58908,7 @@ function DeselectSelectedOptionAdd(elem) {
                                               }
                                               return "-";
                                           }
-                                          if ($.inArray('-1', $('#sessionIds').val() || []) !== -1) {
+                                          if ($('#sessionIds').val() === '-1') {
                                               return sessions.slice().sort(function (a, b) { return Number(b) - Number(a); })[0];
                                           }
                                           return sessions[Math.floor(Math.random() * sessions.length)];
@@ -59205,7 +59172,7 @@ function DeselectSelectedOptionAdd(elem) {
                                               </li>
                                               <li style="margin-top:12px;">
                                                 <strong>ফিল্টার অপশন</strong>
-                                                <p style="margin:4px 0 0; color:#555;">Organization (সিঙ্গেল-সিলেক্ট) → Class (মাল্টি সিলেক্ট, Select All অপশনসহ, ডিফল্ট Admission সিলেক্টেড) → Program Type (All/Paid/Free, ডিফল্ট Paid) (সিঙ্গেল-সিলেক্ট) → Program (মাল্টি সিলেক্ট) → Session (মাল্টি সিলেক্ট, শুরুতে "Last Session" এবং ডিফল্টে সিলেক্টেড) → Course (মাল্টি সিলেক্ট) → Branch Mentor (সিঙ্গেল-সিলেক্ট) → Branch (মাল্টি সিলেক্ট) → Name of Examination (SSC/HSC) (মাল্টি সিলেক্ট) → Report Type (৫টি ভিউ)।</p>
+                                                <p style="margin:4px 0 0; color:#555;">Organization (সিঙ্গেল-সিলেক্ট) → Class (মাল্টি সিলেক্ট, Select All অপশনসহ, ডিফল্ট Admission সিলেক্টেড) → Program Type (All/Paid/Free, ডিফল্ট Paid) (সিঙ্গেল-সিলেক্ট) → Program (মাল্টি সিলেক্ট) → Session (সিঙ্গেল-সিলেক্ট, "Last Session" ডিফল্ট সিলেক্টেড) → Course (মাল্টি সিলেক্ট) → Branch Mentor (সিঙ্গেল-সিলেক্ট) → Branch (মাল্টি সিলেক্ট) → Name of Examination (SSC/HSC) (মাল্টি সিলেক্ট) → Report Type (৫টি ভিউ)।</p>
                                               </li>
                                               <li style="margin-top:12px;">
                                                 <strong>ডাটা টেবিল</strong>
