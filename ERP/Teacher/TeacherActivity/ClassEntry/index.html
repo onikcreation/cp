@@ -8253,8 +8253,13 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                             </a>
                           </li>
                           <li data-parent-id="154">
-                            <a href="/Teachers/TeacherClassEntry/ManageEntry" data-businessid="TeacherClassEntry-ManageEntry|TeacherClassEntry-ClassEntryEdit|TeacherClassEntry-ClassEntryDetails|TeacherClassEntry-Details|TeacherClassEntry-Edit|" class="submenuitem">
+                            <a href="../ManageClassEntry/" data-businessid="TeacherClassEntry-ManageEntry|TeacherClassEntry-ClassEntryEdit|TeacherClassEntry-ClassEntryDetails|TeacherClassEntry-Details|TeacherClassEntry-Edit|" class="submenuitem">
                               Manage Class Entry
+                            </a>
+                          </li>
+                          <li data-parent-id="154">
+                            <a href="../ManageMultipleClassEntry/" data-businessid="TeacherClassEntry-ManageMultipleEntry|" class="submenuitem">
+                              Manage Multiple Class Entry
                             </a>
                           </li>
                           <li data-parent-id="154">
@@ -12563,46 +12568,69 @@ $(document).ready(function () {
 
         // ক্লাসটাইপ অনুযায়ী teachers টেবিলের একটা রো — Regular capture-এ যা ছিল তার ভিত্তিতে,
         // Video/Training(80/90/100) ও Others(150) টাইপের জন্য সংশ্লিষ্ট ফিল্ড অনুযায়ী variant
+        // Class Type অনুযায়ী টিচার-এন্ট্রি টেবিলের কলাম-গঠনই আলাদা (শুধু Duration সেলের ভেতরের ইনপুট-টাইপ না) —
+        // লাইভ সাইটের রেফারেন্স স্ক্রিনশট অনুযায়ী ৪ রকম (ইউজার ধরিয়ে দেওয়ার পর ঠিক করা হয়েছে, ২০২৬-০৭-২৬):
+        // টাইপ ০১ (Regular/Solve/Special/Orientation/Private Care/Review/Examiner Instruction/Free/Seminar/Q&A):
+        //   Duration(ডিসেবলড টেক্সট) + Add'l Amount + Total Amount কলাম।
+        // টাইপ ০২ (Video Class=80): Video Type + Duration — দুইটা ড্রপডাউন, Add'l/Total কলাম নেই।
+        // টাইপ ০৩ (Grooming Trainer=90/Trainee=100): শুধু Duration ড্রপডাউন (Video Type নেই), Add'l/Total কলাম নেই।
+        // টাইপ ০৪ (Others=150): Duration (Hour+Minute দুই ইনপুট) + Add'l Amount + Total Amount কলাম।
         function buildTeacherRowHtml(classType) {
-          var durationCell;
+          var durationCellsHtml;
           if (classType == '150') {
-            durationCell = '<input type="text" class="form-control durationHour" placeholder="Hour" maxlength="2" size="2" style="width:48%;display:inline-block;" onkeypress="return isNumber(event, this)">' +
-              '<input type="text" class="form-control durationMinute" placeholder="Min" maxlength="2" size="2" style="width:48%;display:inline-block;" onkeypress="return isNumber(event, this)">';
-          } else if (classType == '80' || classType == '90' || classType == '100') {
-            durationCell = '<select class="form-control videoTypeId"><option value="">--select video type--</option>' +
+            durationCellsHtml = '<th><input type="text" class="form-control durationHour" placeholder="Hour" maxlength="2" size="2" style="width:48%;display:inline-block;" onkeypress="return isNumber(event, this)">' +
+              '<input type="text" class="form-control durationMinute" placeholder="Min" maxlength="2" size="2" style="width:48%;display:inline-block;" onkeypress="return isNumber(event, this)"></th>';
+          } else if (classType == '80') {
+            // টাইপ ০২ — Video Type ও Duration হেডারে দুইটা আলাদা কলাম, তাই রো-তেও দুইটা আলাদা <th> লাগবে
+            // (আগে দুটো select একই <th>-তে গাদাগাদি করে রাখা ছিল বলে হেডারের সাথে কলাম-সংখ্যা না মিলে বাকি সব
+            // কলাম একঘর করে শিফট হয়ে যাচ্ছিল — ইউজার স্ক্রিনশট দিয়ে ধরিয়ে দেওয়ার পর ঠিক করা হয়েছে)
+            durationCellsHtml = '<th><select class="form-control videoTypeId"><option value="">--select video type--</option>' +
               VIDEO_TYPES.map(function (v) { return '<option value="' + v.id + '">' + v.name + '</option>'; }).join('') +
-              '</select><select class="form-control duration" style="margin-top:4px;"><option value="-404" data-amount="0">Select One</option></select>';
+              '</select></th>' +
+              '<th><select class="form-control duration"><option value="-404" data-amount="0">Select One</option></select></th>';
+          } else if (classType == '90' || classType == '100') {
+            durationCellsHtml = '<th><select class="form-control duration"><option value="-404" data-amount="0">select one</option></select></th>';
           } else {
-            durationCell = '<input type="hidden" class="form-control durationInMinute"><input type="text" class="form-control durationText" disabled="disabled" placeholder="Duration">';
+            durationCellsHtml = '<th><input type="hidden" class="form-control durationInMinute"><input type="text" class="form-control durationText" disabled="disabled" placeholder="Duration"></th>';
           }
+          var extraCols = (classType == '80' || classType == '90' || classType == '100') ? '' :
+            ('<th><input type="hidden" class="form-control actualAddtionalAmount"><input type="hidden" class="form-control actualInteractiveAmount"><input type="text" class="form-control addtionalAmount numericOnly" disabled="disabled" placeholder="Addtional Amount" maxlength="8" size="8"></th>' +
+              '<th><input type="text" class="form-control rowTotalAmount numericOnly" disabled="disabled" placeholder="Total Amount" maxlength="8" size="8"></th>');
           return '<tr class="tr_clone" id="commonTr">' +
             '<th><input type="hidden" class="form-control teacherId"><input type="text" class="form-control teacherTpin numericOnly" placeholder="TPIN"></th>' +
             '<th><input type="text" class="form-control teacherName" disabled="disabled" placeholder="Name"></th>' +
             '<th><textarea class="form-control description" placeholder="Description"></textarea></th>' +
-            '<th>' + durationCell + '</th>' +
+            durationCellsHtml +
             '<th><input type="text" class="form-control quantity" placeholder="Quantity" maxlength="3" size="3" onkeypress="return isNumber(event, this)"></th>' +
             '<th><input type="hidden" class="form-control actualAmount"><input type="text" class="form-control amount numericOnly" disabled="disabled" placeholder="Amount" maxlength="8" size="8"></th>' +
-            '<th><input type="hidden" class="form-control actualAddtionalAmount"><input type="hidden" class="form-control actualInteractiveAmount"><input type="text" class="form-control addtionalAmount numericOnly" disabled="disabled" placeholder="Addtional Amount" maxlength="8" size="8"></th>' +
-            '<th><input type="text" class="form-control rowTotalAmount numericOnly" disabled="disabled" placeholder="Total Amount" maxlength="8" size="8"></th>' +
+            extraCols +
             '<th><button type="button" class="btn btn-warning removeRow" name="append">-</button></th>' +
             '</tr>';
         }
 
         function buildTeachersTableHtml(classType) {
+          var isCompact = (classType == '80' || classType == '90' || classType == '100');
+          var durationHeader = (classType == '80')
+            ? '<th style="width: 10%;">Video Type</th><th style="width: 10%;">Duration</th>'
+            : '<th style="width: 10%;">Duration</th>';
+          var nameWidth = isCompact ? 18 : 20;
+          var descWidth = isCompact ? (classType == '80' ? 24 : 32) : 22;
+          var amountWidth = isCompact ? 18 : 10;
+          var extraHeaders = isCompact ? '' : '<th style="width: 10%;">Add’l Amount</th><th style="width: 10%;">Total Amount</th>';
+          var footerColspan = isCompact ? (classType == '80' ? 6 : 5) : 7;
           return '<table class="table table-bordered table-responsive regularClassTable" id="teachers">' +
             '<thead><tr>' +
             '<th style="width: 8%;min-width: 100px;">TPIN</th>' +
-            '<th style="width: 20%;">Teacher Name</th>' +
-            '<th style="width: 22%;">Job Description</th>' +
-            '<th style="width: 10%;">Duration</th>' +
+            '<th style="width: ' + nameWidth + '%;">Teacher Name</th>' +
+            '<th style="width: ' + descWidth + '%;">Job Description</th>' +
+            durationHeader +
             '<th style="width: 8%;">Quantity</th>' +
-            '<th style="width: 10%; min-width: 100px;">Amount</th>' +
-            '<th style="width: 10%;">Add’l Amount</th>' +
-            '<th style="width: 10%;">Total Amount</th>' +
+            '<th style="width: ' + amountWidth + '%; min-width: 100px;">Amount</th>' +
+            extraHeaders +
             '<th style="width: 2%;"><button type="button" class="btn btn-primary btn-sm dynamicRowGenerate" name="append" id="newAction" style="cursor:pointer">+</button></th>' +
             '</tr></thead>' +
             '<tbody>' + buildTeacherRowHtml(classType) + '</tbody>' +
-            '<tfoot><tr><th colspan="7" style="text-align:right;">Total Amount</th><th id="totalAmount">0</th><th>&nbsp;</th></tr></tfoot>' +
+            '<tfoot><tr><th colspan="' + footerColspan + '" style="text-align:right;">Total Amount</th><th id="totalAmount">0</th><th>&nbsp;</th></tr></tfoot>' +
             '</table>';
         }
 
@@ -12627,10 +12655,18 @@ $(document).ready(function () {
           };
           if (classType != '150' && classType != '80' && classType != '90' && classType != '100') {
             var mins = 30 + (h1 % 4) * 15;
-            resp.durationText = mins + ' মিনিট';
+            resp.durationText = formatDuration(mins);
             resp.duration = mins;
           }
           return resp;
+        }
+
+        // Duration ঘণ্টা+মিনিট বাংলায় না, ইংরেজি ফরম্যাটে ("2h 30m") দেখানো হয় (ইউজারের অনুরোধে)
+        function formatDuration(mins) {
+          var h = Math.floor(mins / 60), m = mins % 60;
+          if (h === 0) return m + 'm';
+          if (m === 0) return h + 'h';
+          return h + 'h ' + m + 'm';
         }
 
         var realAjax = jQuery.ajax;
@@ -12671,9 +12707,9 @@ $(document).ready(function () {
           }
           if (/TeacherClassEntry\/GetPaymentVideoTypeDuration/.test(url)) {
             var durationList = [
-              { Id: 1, DisplayName: '30 মিনিট', Amount: 300 },
-              { Id: 2, DisplayName: '60 মিনিট', Amount: 500 },
-              { Id: 3, DisplayName: '90 মিনিট', Amount: 700 }
+              { Id: 1, DisplayName: '30 min', Amount: 300 },
+              { Id: 2, DisplayName: '60 min', Amount: 500 },
+              { Id: 3, DisplayName: '90 min', Amount: 700 }
             ];
             return demoFakeRespond(options, { IsSuccess: true, durationList: durationList });
           }
