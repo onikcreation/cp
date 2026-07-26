@@ -7529,7 +7529,10 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
           }
           var grandTotal = 0;
           Object.keys(months).forEach(function (m) { grandTotal += months[m].totalAmount; });
-          return { teacher: t, months: months, grandTotal: grandTotal };
+          // ক্যাপচারে (একাধিক রো-তে) কিছু টিচারের Action কলামে "Payment Blocked" দেখাত (Pay Now বাটনের বদলে) —
+          // ডেমোতেও একই উদাহরণ রাখতে একটা নির্দিষ্ট (deterministic, ১১তম) টিচারকে ব্লকড দেখানো হচ্ছে
+          var paymentBlocked = (i === 10);
+          return { teacher: t, months: months, grandTotal: grandTotal, paymentBlocked: paymentBlocked };
         });
 
         var FIELD_DEFS = {
@@ -7601,7 +7604,11 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                 return '<td>' + v.noOfClass + '</td><td style="text-align:end;">' + fmtMoney(v.totalAmount) + '</td><td style="text-align:end;">' + fmtMoney(v.incentive) + '</td>';
               }).join('');
               tds += '<td style="text-align:end;">' + fmtMoney(r.grandTotal) + '</td>';
-              tds += '<td><a href="javascript:void(0)" class="btn btn-success payNowBtn" role="button">Pay Now</a></td>';
+              if (r.paymentBlocked) {
+                tds += '<td><p class="text-danger">Payment Blocked</p></td>';
+              } else {
+                tds += '<td><a href="javascript:void(0)" class="btn btn-success payNowBtn" role="button">Pay Now</a></td>';
+              }
               return '<tr>' + tds + '</tr>';
             }).join('');
           }

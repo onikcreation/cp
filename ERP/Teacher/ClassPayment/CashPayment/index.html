@@ -7565,9 +7565,13 @@ var BRANCH_MENTOR_DATA = [["Bandarban","6"],["Khagrachari","6"],["Rangamati","6"
             var campus = ALL_CAMPUSES[i % ALL_CAMPUSES.length];
             var classType = CLASS_TYPES[(i * 3) % CLASS_TYPES.length];
             var amount = 500 + ((c.cid * 37) % 40) * 250;
+            // ক্যাপচারে (একাধিক রো-তে) কিছু টিচারের Action কলামে "Payment Blocked" লেবেল দেখাত (Pay Now বাটনের বদলে) —
+            // ডেমোতেও একই উদাহরণ রাখতে একটা নির্দিষ্ট (deterministic, ১১তম) রো-কে ব্লকড দেখানো হচ্ছে
+            var paymentBlocked = (i === 10);
             return {
               orgId: c.orgId, orgName: DEMO.orgById[c.orgId], pid: c.pid, sid: c.sid, cid: c.cid,
-              branch: branch, campus: campus, classTypeId: classType.id, teacher: teacher, amount: amount
+              branch: branch, campus: campus, classTypeId: classType.id, teacher: teacher, amount: amount,
+              paymentBlocked: paymentBlocked
             };
           });
         })();
@@ -7620,7 +7624,11 @@ var BRANCH_MENTOR_DATA = [["Bandarban","6"],["Khagrachari","6"],["Rangamati","6"
               var tds = '<td>' + (i + 1) + '</td>' + cols.map(function (c) { return '<td>' + escapeHtml(c.get(r)) + '</td>'; }).join('');
               tds += '<td>' + escapeHtml(r.orgName) + '</td>';
               tds += '<td class="text-right">' + r.amount.toLocaleString('en-US') + '</td>';
-              tds += '<td><button id="PayNowBtn" type="button" data-param="' + r.teacher.tpin + '-' + r.cid + '" class="btn btn-primary pay-now-btn">Pay Now</button></td>';
+              if (r.paymentBlocked) {
+                tds += '<td><label style="color: red;">Payment Blocked</label></td>';
+              } else {
+                tds += '<td><button id="PayNowBtn" type="button" data-param="' + r.teacher.tpin + '-' + r.cid + '" class="btn btn-primary pay-now-btn">Pay Now</button></td>';
+              }
               return '<tr>' + tds + '</tr>';
             }).join('');
           }
