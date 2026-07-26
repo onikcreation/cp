@@ -9748,6 +9748,35 @@ a.ui-button:active,
                 </li>
               </div>
               <div class="navbar-collapse collapse">
+                <style>
+                    #pageChangesBtn {
+                        display: inline-block;
+                        position: absolute;
+                        left: 50%;
+                        top: 11px;
+                        transform: translateX(-50%);
+                        z-index: 1031;
+                        padding: 6px 12px;
+                        line-height: 1.2;
+                        text-align: center;
+                        border-radius: 6px;
+                        border: 2px solid #fff;
+                        background: #F59E0B;
+                        color: #fff !important;
+                        font-size: 12.5px;
+                        font-weight: bold;
+                        white-space: nowrap;
+                        animation: pageChangesPulse 1.6s infinite;
+                    }
+                    @keyframes pageChangesPulse {
+                        0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, .7); }
+                        70% { box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); }
+                        100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+                    }
+                </style>
+                <a href="#" id="pageChangesBtn" data-toggle="modal" data-target="#pageChangesModal" title="এই পেইজে যা নতুন পরিবর্তন/আপডেট করা হয়েছে">
+                  New Updates
+                </a>
                 <ul class="nav navbar-nav" id="menuGroup">
                   <li>
                     <a href="/Student">
@@ -17331,6 +17360,63 @@ span.hide-native-select{position:relative}span.hide-native-select select{border:
                                         Nagad Payment
                                       </div>
                                     </div>
+                                  </div>
+                                </div>
+                              </fieldset>
+                            </section>
+                            <section>
+                              <fieldset>
+                                <legend>
+                                  Bank Account Information
+                                </legend>
+                                <div class="form-group">
+                                  <label class="control-label col-md-2" for="BankAccountTitle">
+                                    Account Title (As Per Bank)
+                                  </label>
+                                  <div class="col-md-4">
+                                    <input class="form-control text-box single-line" id="BankAccountTitle" name="BankAccountTitle" placeholder="Account Title (As Per Bank)" type="text" value="">
+                                  </div>
+                                  <label class="control-label col-md-2" for="BankAccountNumber">
+                                    Account Number
+                                  </label>
+                                  <div class="col-md-4">
+                                    <input class="form-control text-box single-line" id="BankAccountNumber" name="BankAccountNumber" placeholder="Account Number" type="text" value="">
+                                  </div>
+                                </div>
+                                <div class="form-group">
+                                  <label class="control-label col-md-2" for="BankName">
+                                    Bank Name
+                                  </label>
+                                  <div class="col-md-4">
+                                    <input class="form-control text-box single-line" id="BankName" name="BankName" placeholder="Bank Name" type="text" value="">
+                                  </div>
+                                  <label class="control-label col-md-2" for="BankBranch">
+                                    Branch
+                                  </label>
+                                  <div class="col-md-4">
+                                    <input class="form-control text-box single-line" id="BankBranch" name="BankBranch" placeholder="Branch" type="text" value="">
+                                  </div>
+                                </div>
+                                <div class="form-group">
+                                  <label class="control-label col-md-2" for="BankRoutingNumber">
+                                    Routing Number
+                                  </label>
+                                  <div class="col-md-4">
+                                    <input class="form-control text-box single-line" id="BankRoutingNumber" name="BankRoutingNumber" placeholder="Routing Number" type="text" value="">
+                                  </div>
+                                  <label class="control-label col-md-2" for="BankMobileNumber">
+                                    Mobile Number (As Per Bank)
+                                  </label>
+                                  <div class="col-md-4">
+                                    <input class="form-control text-box single-line" id="BankMobileNumber" name="BankMobileNumber" placeholder="Mobile Number (As Per Bank)" type="text" value="">
+                                  </div>
+                                </div>
+                                <div class="form-group">
+                                  <label class="control-label col-md-2" for="BankPaymentPerMonth">
+                                    Bank Payment (Per Month)
+                                  </label>
+                                  <div class="col-md-4">
+                                    <input class="form-control text-box single-line" id="BankPaymentPerMonth" name="BankPaymentPerMonth" placeholder="Bank Payment (Per Month)" type="text" value="">
                                   </div>
                                 </div>
                               </fieldset>
@@ -29342,6 +29428,72 @@ function checkPassingYear(value) {
                   </div>
                 </div>
               
+<style>
+  @media screen and (min-width: 768px) {
+    #pageChangesModal .modal-dialog {
+      width: 60%;
+    }
+  }
+</style>
+<div class="modal fade" id="pageChangesModal" tabindex="-1" role="dialog" aria-labelledby="pageChangesModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="background:#4338CA; color:#fff; border-top-left-radius:4px; border-top-right-radius:4px;">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:#fff; opacity:.85; text-shadow:none;"><span aria-hidden="true">&times;</span></button>
+        <button type="button" class="pcm-copy-btn" title="সম্পূর্ণ কনটেন্ট কপি করুন" style="float:right; margin:-2px 8px 0 0; background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.5); color:#fff; border-radius:4px; padding:2px 10px; font-size:12px; line-height:1.6; cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="12" height="12" fill="currentColor" style="vertical-align:-1px; margin-right:4px;"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path></svg>Copy</button>
+        <h4 class="modal-title" id="pageChangesModalLabel">এই পেইজে যা নতুন পরিবর্তন/আপডেট করা হয়েছে</h4>
+      </div>
+      <div class="modal-body" style="height:65vh; overflow-y:auto;">
+        <ol style="padding-left:20px; margin:0;">
+          <li style="margin-bottom:12px;">
+            <strong>Bank Account Information সেকশন যোগ করা হয়েছে</strong> — TPIN সাবমিটের পর Edit Teacher Profile ফর্মে "Monthly Teacher Information" সেকশনের ঠিক আগে নতুন একটা "Bank Account Information" সেকশন যোগ হয়েছে। এতে ইনপুট করা যাবে: Account Title (As Per Bank), Account Number, Bank Name, Branch, Routing Number, Mobile Number (As Per Bank), Bank Payment (Per Month)।
+          </li>
+        </ol>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">বন্ধ করুন</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  function pcmFeedback(btn, label) {
+      var original = btn.innerHTML;
+      btn.innerHTML = label;
+      setTimeout(function () { btn.innerHTML = original; }, 1800);
+  }
+  function pcmSelectionFallbackCopy(btn, modalBody) {
+      try {
+          var range = document.createRange();
+          range.selectNodeContents(modalBody);
+          var sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+          var ok = document.execCommand('copy');
+          sel.removeAllRanges();
+          pcmFeedback(btn, ok ? 'Copied!' : 'সিলেক্ট হয়েছে, Ctrl+C চাপুন');
+      } catch (err) {
+          pcmFeedback(btn, 'কপি ব্যর্থ হয়েছে');
+      }
+  }
+  document.addEventListener('click', function (e) {
+      var btn = e.target.closest('.pcm-copy-btn');
+      if (!btn) return;
+      var modalBody = btn.closest('.modal-content').querySelector('.modal-body');
+      if (!modalBody) return;
+      var text = modalBody.innerText || modalBody.textContent || '';
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function () {
+              pcmFeedback(btn, 'Copied!');
+          }).catch(function () {
+              pcmSelectionFallbackCopy(btn, modalBody);
+          });
+      } else {
+          pcmSelectionFallbackCopy(btn, modalBody);
+      }
+  });
+</script>
+
 <script>
 /* ===== Offline demo behavior (added for offline copy) ===== */
 $(function () {
