@@ -30494,7 +30494,7 @@ function teacherViewLogRows(masterContentId, comboId, subjectId) {
     var day = 27 - (i % 3);
     rows.push({
       serial: i + 1, dateTime: day + ' Jul, 2026 ' + (1 + (rh % 11)) + ':' + (10 + (rh % 49)) + ' ' + (rh % 2 === 0 ? 'PM' : 'AM'),
-      reg: String(2600000 + (rh % 90000)), name: pick(FAKE_FIRST_NAMES, rh),
+      reg: String(1000 + (rh % 9000)), name: pick(FAKE_FIRST_NAMES, rh),
       programName: combo.programName, courseName: combo.courseName, subjectName: subject.name,
       contentTypeName: contentRow ? contentRow.contentTypeName : TP_CONTENT_TYPES[rh % TP_CONTENT_TYPES.length].name,
       lectureName: contentRow ? contentRow.lectureName : lectureDisplayName(subject.name, rh % 3),
@@ -30595,8 +30595,14 @@ installFakeAjax({
     var start = data.start || 0, length = data.length > 0 ? data.length : rows.length;
     var page = rows.slice(start, start + length);
     var out = page.map(function (r, i) {
-      var actionHtml = '<a target="_blank" href="../IndividualTeacherwiseReport/index.html?tpin=' + r.reg + '" class="btn btn-primary">Details</a>';
-      return [String(start + i + 1), r.reg, r.nick, r.mobileStudent, r.institute, String(r.videoViewed), String(r.noteViewed), actionHtml];
+      // generateStudentRows() is shared with the frozen StudentwiseSummaryReport and generates
+      // a Reg.No.-shaped value (7 digits) in r.reg — kept as-is there, but this page renamed
+      // the column to TPin, which is 4 digits, so derive a TPin-shaped value here instead of
+      // reusing r.reg verbatim. Same derived value is used for the Details link's ?tpin=
+      // query param so the two stay consistent (still just a deterministic hash either way).
+      var tpin = String(1000 + (parseInt(r.reg, 10) % 9000));
+      var actionHtml = '<a target="_blank" href="../IndividualTeacherwiseReport/index.html?tpin=' + tpin + '" class="btn btn-primary">Details</a>';
+      return [String(start + i + 1), tpin, r.nick, r.mobileStudent, r.institute, String(r.videoViewed), String(r.noteViewed), actionHtml];
     });
     return { draw: data.draw, recordsTotal: rows.length, recordsFiltered: rows.length, data: out };
   },
