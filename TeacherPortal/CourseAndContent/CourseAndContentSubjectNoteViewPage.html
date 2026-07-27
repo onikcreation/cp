@@ -6237,6 +6237,20 @@ function programById(programId) {
   return out;
 }
 function courseNameForProgram(name) { return name.replace('Program', 'Course'); }
+var EXTRA_COURSES = ["UNMESH Biology Course 2026","UDVASH Varsity Math Course 2026","Varsity 'KHA' Special Course 2026"];
+function coursesForProgram(programName) { return [courseNameForProgram(programName)].concat(EXTRA_COURSES); }
+function allProgramCourses() {
+  var out = [];
+  PROGRAMS.forEach(function (p) {
+    coursesForProgram(p.name).forEach(function (courseName, idx) { out.push({ id: p.id * 10 + idx, programId: p.id, programName: p.name, courseName: courseName }); });
+  });
+  return out;
+}
+function programCourseById(id) {
+  var out = null;
+  allProgramCourses().forEach(function (c) { if (c.id === Number(id)) out = c; });
+  return out;
+}
 function subjectById(programId, subjectId) {
   var out = null;
   subjectsForProgram(programId).forEach(function (s) { if (s.id === Number(subjectId)) out = s; });

@@ -5033,10 +5033,14 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
   }
   .uuu-cc-menu-card:hover { box-shadow: 0 4px 14px rgba(0,0,0,.14); }
   .uuu-cc-menu-card h3 { margin: 0; font-size: 16px; color: #3B3849; }
-  /* Matches the 380px height of .uuu-cc-video-thumb/.uuu-cc-note-preview on the left —
-     without this the card was noticeably shorter once the star-rating section was removed. */
-  .uuu-cc-card { background: #fff; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,.08); min-height: 380px; display: flex; flex-direction: column; }
-  .uuu-cc-card .card-header { border: 0; }
+  /* Matches the 380px height of .uuu-cc-video-thumb/.uuu-cc-note-preview on the left. The
+     leftover space is spread as generous padding across header/body/footer (via space-between
+     on the card itself, plus bigger padding + taller buttons in each section) rather than
+     dumped as one empty block — the earlier "center the tab-pills" attempt still read as a
+     big dead gap even though the space was technically "used". */
+  .uuu-cc-card { background: #fff; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,.08); min-height: 380px; display: flex; flex-direction: column; justify-content: space-between; }
+  .uuu-cc-card .card-header { border: 0; padding: 20px 20px 16px; }
+  .uuu-cc-card .card-body.pb-0 { padding: 16px 20px; }
   /* Two-segment capsule switch showing both language options at once — replaces the old
      absolutely-positioned single-label toggle, which overlapped the Program/Course label
      added below it once that text started wrapping to two lines. Content Type badge and
@@ -5048,16 +5052,19 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
   /* Selected Content Type (Ideal Class / Teacher Content / ...), on the opposite end of the
      row from the language capsule. */
   .uuu-cc-contenttype-badge { padding: 4px 10px; border-radius: 999px; background: #EEF0FF; color: #4338CA; font-size: 12px; font-weight: 600; white-space: nowrap; }
-  /* Program/Course/Subject/Lecture breadcrumb lines — one consistent (larger, h4-sized) font
-     for all four, and each forced to a single line (ellipsis instead of wrap) so a long name
-     can never collide with the language capsule above it again. */
-  .uuu-cc-crumb-block { margin-bottom: 8px; }
-  .uuu-cc-crumb-line { font-size: 18px; font-weight: 700; color: #772397; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 2px 0; }
-  .uuu-cc-tabpills { display: flex; gap: 8px; padding: 0 20px; list-style: none; margin: 10px 0 0; }
+  /* Program/Course/Subject/Lecture info: Program and Course get their own small muted lines
+     (combining them into one "Program › Course" line truncated Course off-screen for long
+     names), then Subject as the main heading and Lecture as its purple subheading. Every
+     line still gets ellipsis instead of wrap, so a long name can't collide with the capsule row. */
+  .uuu-cc-crumb-block { margin: 10px 0 4px; }
+  .uuu-cc-crumb-line { font-size: 16px; color: #667085; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 1px 0; }
+  .uuu-cc-subject-title { margin: 6px 0 0; font-size: 20px; font-weight: 700; color: #3B3849; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .uuu-cc-lecture-sub { margin: 3px 0 0; font-size: 16px; font-weight: 600; color: #772397; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .uuu-cc-tabpills { display: flex; gap: 8px; list-style: none; margin: 0; }
   .uuu-cc-tabpills li { flex: 1; }
-  .uuu-cc-tabpills a { display: flex; align-items: center; justify-content: center; padding: 8px 10px; border-radius: 8px; background: #F7F8FA; color: #772397; text-decoration: none; font-size: 14px; }
+  .uuu-cc-tabpills a { display: flex; align-items: center; justify-content: center; padding: 14px 10px; border-radius: 8px; background: #F7F8FA; color: #772397; text-decoration: none; font-size: 15px; font-weight: 600; }
   .uuu-cc-tabpills a.active { background: #772397; color: #fff; }
-  .uuu-cc-footer-nav { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; margin-top: auto; }
+  .uuu-cc-footer-nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 20px 24px; }
   .uuu-cc-footer-nav .disabled { opacity: .45; pointer-events: none; }
   .uuu-cc-return { display: block; text-align: right; margin-top: 14px; color: #532356; text-decoration: none; font-size: 14px; }
   .uuu-cc-video-thumb { height: 380px; border-radius: 10px; background: #F4F1F8; display: flex; align-items: center; justify-content: center; cursor: pointer; }
@@ -6204,6 +6211,20 @@ function programById(programId) {
   return out;
 }
 function courseNameForProgram(name) { return name.replace('Program', 'Course'); }
+var EXTRA_COURSES = ["UNMESH Biology Course 2026","UDVASH Varsity Math Course 2026","Varsity 'KHA' Special Course 2026"];
+function coursesForProgram(programName) { return [courseNameForProgram(programName)].concat(EXTRA_COURSES); }
+function allProgramCourses() {
+  var out = [];
+  PROGRAMS.forEach(function (p) {
+    coursesForProgram(p.name).forEach(function (courseName, idx) { out.push({ id: p.id * 10 + idx, programId: p.id, programName: p.name, courseName: courseName }); });
+  });
+  return out;
+}
+function programCourseById(id) {
+  var out = null;
+  allProgramCourses().forEach(function (c) { if (c.id === Number(id)) out = c; });
+  return out;
+}
 function subjectById(programId, subjectId) {
   var out = null;
   subjectsForProgram(programId).forEach(function (s) { if (s.id === Number(subjectId)) out = s; });
