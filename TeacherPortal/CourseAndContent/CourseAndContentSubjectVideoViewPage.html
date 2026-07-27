@@ -5069,6 +5069,15 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
   .uuu-cc-return { display: block; text-align: right; margin-top: 14px; color: #532356; text-decoration: none; font-size: 14px; }
   .uuu-cc-video-thumb { height: 380px; border-radius: 10px; background: #F4F1F8; display: flex; align-items: center; justify-content: center; cursor: pointer; }
   .uuu-cc-note-preview { height: 380px; border-radius: 10px; background: #F7F8FA; display: flex; align-items: center; justify-content: center; text-align: center; }
+  /* Content Details page — one card per uploaded part under a Content Type, grey header
+     with the uploader's Extra Title + white body holding the Video/Note pill buttons. */
+  .uuu-cc-details-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin-top: 10px; }
+  .uuu-cc-details-card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+  .uuu-cc-details-card .details-header { background: #EFECF1; padding: 18px 20px; border-bottom: 1px solid #E3DEE7; }
+  .uuu-cc-details-card .details-header h3 { margin: 0; font-size: 16px; font-weight: 700; color: #772397; }
+  .uuu-cc-details-card .details-body { padding: 26px 20px; display: flex; align-items: center; justify-content: center; gap: 12px; }
+  .uuu-cc-pill-btn { background: #211A40; color: #fff; text-decoration: none; padding: 9px 22px; border-radius: 999px; font-size: 14px; font-weight: 600; }
+  .uuu-cc-pill-btn:hover { background: #34285F; color: #fff; }
 </style>
 <div class="container" style="max-width: 1100px;">
   <div id="notFoundMsg" class="alert alert-danger text-center" style="display:none;">লেকচার পাওয়া যায়নি।</div>
@@ -6282,6 +6291,31 @@ function lectureDisplayName(subjectName, idx) {
   var num = (idx + 1 < 10 ? '0' : '') + (idx + 1);
   return subjectName + ' Lecture ' + num;
 }
+function hash(str) {
+  str = String(str);
+  var h = 0;
+  for (var i = 0; i < str.length; i++) { h = (h * 31 + str.charCodeAt(i)) >>> 0; }
+  return h;
+}
+function contentItemTitle(contentTypeKey, subjectName, partNum) {
+  var num = (partNum < 10 ? '0' : '') + partNum;
+  var label = contentTypeKey === 'marathon' ? 'Marathon Live Class'
+    : contentTypeKey === 'ideal' ? 'Ideal Class'
+    : contentTypeKey === 'teacher' ? 'Teacher Content'
+    : 'Archive Class';
+  return label + ' ' + subjectName + ' (Part-' + num + ')';
+}
+function contentItemsFor(programId, subjectId, lectureId, contentTypeKey) {
+  var subject = subjectById(programId, subjectId);
+  var subjectName = subject ? subject.name : '';
+  var count = 1 + (hash(programId + '-' + subjectId + '-' + lectureId + '-' + contentTypeKey) % 3);
+  var hasVideo = contentTypeKey !== 'teacher';
+  var items = [];
+  for (var i = 1; i <= count; i++) {
+    items.push({ index: i, title: contentItemTitle(contentTypeKey, subjectName, i), hasVideo: hasVideo, hasNote: true });
+  }
+  return items;
+}
 
 $(document).ready(function () {
   var qs = new URLSearchParams(window.location.search);
@@ -6289,6 +6323,7 @@ $(document).ready(function () {
   var subjectId = qs.get('subjectId');
   var masterContentId = qs.get('masterContentId') || '0';
   var contentType = qs.get('contentType') || 'ideal';
+  var itemIndex = qs.get('itemIndex');
 
   var list = lecturesFor(masterCourseId, subjectId);
   var lecture = (masterContentId === '0') ? list[0] : lookupLecture(masterCourseId, subjectId, masterContentId);
@@ -6306,19 +6341,33 @@ $(document).ready(function () {
   }
   if (subject) {
     $('#subjectNameLine').text(subject.name);
-    $('#lectureTitle').text(lectureDisplayName(subject.name, idx));
+    // When opened from the Content Details page (one of several uploaded parts under this
+    // Content Type), show that part's own title instead of the generic lecture name.
+    if (itemIndex) {
+      var items = contentItemsFor(masterCourseId, subjectId, lecture.id, contentType);
+      var item = items[Number(itemIndex) - 1];
+      $('#lectureTitle').text(item ? item.title : lectureDisplayName(subject.name, idx));
+    } else {
+      $('#lectureTitle').text(lectureDisplayName(subject.name, idx));
+    }
   }
   $('#contentTypeBadge').text(contentTypeName(contentType));
 
   function lectureUrl(page, l) {
     return page + '.html?masterCourseId=' + masterCourseId + '&subjectId=' + subjectId + '&masterContentId=' + l.id + '&contentType=' + contentType;
   }
-  $('#notesTabLink').attr('href', lectureUrl('CourseAndContentSubjectNoteViewPage', lecture));
+  var notesUrl = lectureUrl('CourseAndContentSubjectNoteViewPage', lecture);
+  if (itemIndex) { notesUrl += '&itemIndex=' + itemIndex; }
+  $('#notesTabLink').attr('href', notesUrl);
   if (prev) { $('#prevLectureBtn').attr('href', lectureUrl('CourseAndContentSubjectVideoViewPage', prev)); }
   else { $('#prevLectureBtn').addClass('disabled'); }
   if (next) { $('#nextLectureBtn').attr('href', lectureUrl('CourseAndContentSubjectVideoViewPage', next)); }
   else { $('#nextLectureBtn').addClass('disabled'); }
-  $('#returnToChapterBtn').attr('href', 'CourseAndContentContentTypePage.html?masterCourseId=' + masterCourseId + '&subjectId=' + subjectId + '&masterContentId=' + lecture.id);
+  if (itemIndex) {
+    $('#returnToChapterBtn').attr('href', 'CourseAndContentContentDetailsPage.html?masterCourseId=' + masterCourseId + '&subjectId=' + subjectId + '&masterContentId=' + lecture.id + '&contentType=' + contentType).text('Return to Content Details');
+  } else {
+    $('#returnToChapterBtn').attr('href', 'CourseAndContentContentTypePage.html?masterCourseId=' + masterCourseId + '&subjectId=' + subjectId + '&masterContentId=' + lecture.id);
+  }
 
   $(document).on('click', '#videoThumb', function () {
     bootbox.alert('<h4>ভিডিও প্লেব্যাক এই ডেমো ভার্সনে অন্তর্ভুক্ত নয়।</h4>');

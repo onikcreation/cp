@@ -5088,16 +5088,17 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
         <h5 id="courseName" style="color:#772397; margin-top:2px;"></h5>
         <h6 id="subjectName" style="color:#772397; margin-top:2px;"></h6>
         <div id="lectureName" style="color:#772397; margin-top:2px; font-size:13px;"></div>
+        <div id="contentTypeLabel" style="color:#772397; margin-top:2px; font-size:13px; font-weight:600;"></div>
       </div>
     </div>
   </div>
 </div>
 <div id="notFoundMsg" class="alert alert-danger text-center" style="display:none;">লেকচার পাওয়া যায়নি।</div>
-<div class="container" id="contentTypeCard" style="max-width: 720px;">
-  <div id="contentTypeGrid"></div>
+<div class="container" id="detailsCard" style="max-width: 900px;">
+  <div class="uuu-cc-details-grid" id="detailsGrid"></div>
 </div>
-<div style="max-width: 720px; margin: 0 auto;">
-  <a href="#" id="backLink" class="uuu-cc-return">Back to Lectures</a>
+<div style="max-width: 900px; margin: 0 auto;">
+  <a href="#" id="backLink" class="uuu-cc-return">Back to Content Type</a>
 </div>
 
                                                           </div>
@@ -6296,32 +6297,34 @@ $(document).ready(function () {
   var masterCourseId = qs.get('masterCourseId');
   var subjectId = qs.get('subjectId');
   var masterContentId = qs.get('masterContentId');
+  var contentType = qs.get('contentType') || 'ideal';
   var program = programById(masterCourseId);
   var subject = subjectById(masterCourseId, subjectId);
   var list = lecturesFor(masterCourseId, subjectId);
   var idx = list.findIndex(function (l) { return l.id === Number(masterContentId); });
-  if (!program || !subject || idx === -1) { $('#contentTypeCard').hide(); $('#notFoundMsg').show(); return; }
+  var items = (program && subject && idx !== -1) ? contentItemsFor(masterCourseId, subjectId, masterContentId, contentType) : [];
+  if (!program || !subject || idx === -1 || !items.length) { $('#detailsCard').hide(); $('#notFoundMsg').show(); return; }
 
   $('#programName').text(program.name);
   $('#courseName').text(courseNameForProgram(program.name));
   $('#subjectName').text(subject.name);
   $('#lectureName').text(lectureDisplayName(subject.name, idx));
-  $('#backLink').attr('href', 'CourseAndContentLecturePage.html?masterCourseId=' + masterCourseId + '&subjectId=' + subjectId);
+  $('#contentTypeLabel').text(contentTypeName(contentType));
+  $('#backLink').attr('href', 'CourseAndContentContentTypePage.html?masterCourseId=' + masterCourseId + '&subjectId=' + subjectId + '&masterContentId=' + masterContentId);
 
-  var html = CONTENT_TYPES.map(function (ct) {
-    var items = contentItemsFor(masterCourseId, subjectId, masterContentId, ct.key);
-    var href;
-    if (items.length > 1) {
-      // Multiple parts uploaded under this Content Type — list them first instead of
-      // jumping straight into the first one.
-      href = 'CourseAndContentContentDetailsPage.html?masterCourseId=' + masterCourseId + '&subjectId=' + subjectId + '&masterContentId=' + masterContentId + '&contentType=' + ct.key;
-    } else {
-      var page = ct.key === 'teacher' ? 'CourseAndContentSubjectNoteViewPage' : 'CourseAndContentSubjectVideoViewPage';
-      href = page + '.html?masterCourseId=' + masterCourseId + '&subjectId=' + subjectId + '&masterContentId=' + masterContentId + '&contentType=' + ct.key;
-    }
-    return '<a href="' + href + '" class="uuu-cc-menu-card"><h3>' + ct.name + '</h3></a>';
+  function itemUrl(page, item) {
+    return page + '.html?masterCourseId=' + masterCourseId + '&subjectId=' + subjectId + '&masterContentId=' + masterContentId + '&contentType=' + contentType + '&itemIndex=' + item.index;
+  }
+  var html = items.map(function (item) {
+    var btns = '';
+    if (item.hasVideo) { btns += '<a href="' + itemUrl('CourseAndContentSubjectVideoViewPage', item) + '" class="uuu-cc-pill-btn">Video</a>'; }
+    if (item.hasNote) { btns += '<a href="' + itemUrl('CourseAndContentSubjectNoteViewPage', item) + '" class="uuu-cc-pill-btn">Note</a>'; }
+    return '<div class="uuu-cc-details-card">' +
+      '<div class="details-header"><h3>' + item.title + '</h3></div>' +
+      '<div class="details-body">' + btns + '</div>' +
+      '</div>';
   }).join('');
-  $('#contentTypeGrid').html(html);
+  $('#detailsGrid').html(html);
 });
 </script>
 <script type="text/javascript">
