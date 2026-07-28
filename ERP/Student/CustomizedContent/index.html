@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customized Content — ChangeProposal</title>
+<style>
+  :root { --indigo:#4338CA; --ink:#1F2430; --muted:#667085; --border:#E4E7EC; --bg:#F7F8FA; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:-apple-system,"Segoe UI","Noto Sans Bengali",Arial,sans-serif; color:var(--ink); background:var(--bg); }
+  .topbar { background:#fff; border-bottom:1px solid var(--border); padding:14px 28px; display:flex; align-items:center; gap:10px; }
+  .logo { width:26px; height:26px; border-radius:7px; background:var(--indigo); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:13px; flex-shrink:0; }
+  .crumb { display:flex; align-items:center; gap:6px; font-size:13px; color:var(--muted); flex-wrap:wrap; }
+  .crumb a { color:var(--muted); text-decoration:none; display:flex; align-items:center; gap:4px; }
+  .crumb a:hover { color:var(--indigo); }
+  .sep { color:#C0C4CC; }
+  .current { color:var(--ink); font-weight:600; }
+  main { max-width:1040px; margin:0 auto; padding:34px 28px 70px; }
+  .page-head { margin-bottom:22px; display:flex; align-items:center; gap:12px; }
+  .back-icon { width:34px; height:34px; border-radius:10px; background:#fff; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--muted); text-decoration:none; flex-shrink:0; }
+  .back-icon:hover { background:var(--indigo); color:#fff; border-color:transparent; }
+  h1 { margin:0; font-size:24px; font-weight:800; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; }
+  a.card { display:block; background:#fff; border:1px solid var(--border); border-radius:16px; padding:20px; text-decoration:none; color:inherit; position:relative; box-shadow:0 1px 2px rgba(16,24,40,.04); transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease; }
+  a.card:hover { transform:translateY(-4px); box-shadow:0 14px 28px rgba(31,36,48,.12); border-color:transparent; }
+  .thumb { width:56px; height:56px; border-radius:14px; display:flex; align-items:center; justify-content:center; margin-bottom:16px; }
+  .card h2 { margin:0; font-size:15.5px; font-weight:700; }
+  .foot { display:flex; align-items:center; justify-content:flex-end; margin-top:16px; }
+  .arrow { width:26px; height:26px; border-radius:8px; background:var(--bg); display:flex; align-items:center; justify-content:center; color:var(--muted); }
+  a.card:hover .arrow { background:var(--indigo); color:#fff; }
+  .live-badge { position:absolute; top:16px; right:16px; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:.05em; color:#12B76A; background:#ECFDF3; padding:3px 9px; border-radius:999px; display:flex; align-items:center; gap:4px; }
+  .live-dot { width:6px; height:6px; border-radius:50%; background:#12B76A; }
+  footer { text-align:center; padding:24px; color:var(--muted); font-size:12px; }
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="logo">CP</div>
+    <div class="crumb">
+      <a href="../../../" aria-label="Home">Home</a><span class="sep">›</span>
+      <a href="../../">ERP</a><span class="sep">›</span>
+      <a href="../">Student</a><span class="sep">›</span>
+      <span class="current">Customized Content</span>
+    </div>
+  </div>
+  <main>
+    <div class="page-head"><a class="back-icon" href="../" title="আগের পেইজে ফিরে যান">‹</a><h1>Customized Content</h1></div>
+    <div class="grid">
+      <a class="card" href="IndividualStudentwiseReport/">
+        <span class="live-badge"><span class="live-dot"></span>Live</span>
+        <div class="thumb" style="background:#EEF0FF;color:#4338CA;">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19h16M6 16V8m4 8V5m4 11v-6m4 6V3"></path></svg>
+        </div>
+        <h2>Individual Studentwise Report</h2>
+        <div class="foot"><span class="arrow">›</span></div>
+      </a>
+      <a class="card" href="ContentViewSummary/">
+        <span class="live-badge"><span class="live-dot"></span>Live</span>
+        <div class="thumb" style="background:#F0FDFA;color:#0D9488;">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M7 9h10M7 13h10M7 17h6"></path></svg>
+        </div>
+        <h2>Content View Summary</h2>
+        <div class="foot"><span class="arrow">›</span></div>
+      </a>
+      <a class="card" href="StudentwiseSummaryReport/">
+        <span class="live-badge"><span class="live-dot"></span>Live</span>
+        <div class="thumb" style="background:#FEF3C7;color:#D97706;">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        </div>
+        <h2>Studentwise Summary Report</h2>
+        <div class="foot"><span class="arrow">›</span></div>
+      </a>
+    </div>
+  </main>
+  <footer>ChangeProposal For ERP/Portal</footer>
+</body>
+</html>
