@@ -10310,6 +10310,104 @@ table.dataTable td {
                 </li>
               </div>
               <div class="navbar-collapse collapse">
+                <style>
+                  #pageChangesBtn {
+                    display:inline-block; position:absolute; left:50%; top:11px;
+                    transform:translateX(-50%); z-index:1031; padding:6px 12px;
+                    line-height:1.2; text-align:center; border-radius:6px;
+                    border:2px solid #fff; background:#F59E0B; color:#fff !important;
+                    font-size:12.5px; font-weight:bold; white-space:nowrap;
+                    animation:pageChangesPulse 1.6s infinite;
+                  }
+                  @keyframes pageChangesPulse {
+                    0% { box-shadow:0 0 0 0 rgba(245,158,11,.7); }
+                    70% { box-shadow:0 0 0 10px rgba(245,158,11,0); }
+                    100% { box-shadow:0 0 0 0 rgba(245,158,11,0); }
+                  }
+                  #individualViewByWrap {
+                    display:block;
+                    position:relative;
+                    width:100%;
+                  }
+                  #individualViewByWrap > select {
+                    border:0 !important;
+                    clip:rect(0 0 0 0) !important;
+                    height:1px !important;
+                    margin:-1px !important;
+                    overflow:hidden !important;
+                    padding:0 !important;
+                    position:absolute !important;
+                    width:1px !important;
+                  }
+                  #individualViewByWrap .btn-group,
+                  #individualViewByWrap .multiselect {
+                    width:100%;
+                  }
+                  #individualViewByWrap .multiselect {
+                    background-color:#fff;
+                    background-image:linear-gradient(to bottom,#fff 0,#e6e6e6 100%);
+                    background-repeat:repeat-x;
+                    border-color:#ccc;
+                    color:#333;
+                    height:34px;
+                    overflow:hidden;
+                    padding:6px 12px;
+                    text-align:left;
+                  }
+                  #individualViewByWrap .multiselect .caret {
+                    float:right;
+                    margin-top:8px;
+                  }
+                  #individualViewByWrap .multiselect-container {
+                    background:#fff;
+                    border:1px solid rgba(0,0,0,.15);
+                    border-radius:0 0 4px 4px;
+                    box-shadow:0 6px 12px rgba(0,0,0,.175);
+                    margin-top:1px;
+                    max-height:260px;
+                    min-width:100%;
+                    overflow-y:auto;
+                    padding:5px 0;
+                    width:100%;
+                  }
+                  #individualViewByWrap .multiselect-filter {
+                    padding:0 5px 5px;
+                  }
+                  #individualViewByWrap .multiselect-filter .input-group {
+                    margin:0;
+                    width:100%;
+                  }
+                  #individualViewByWrap .multiselect-filter .input-group-addon {
+                    background:#f5f5f5;
+                    border-color:#ccc;
+                    color:#222;
+                    min-width:40px;
+                    padding:6px 12px;
+                  }
+                  #individualViewByWrap .multiselect-filter .multiselect-search {
+                    border-color:#ccc;
+                    box-shadow:inset 0 1px 1px rgba(0,0,0,.075);
+                    height:34px;
+                  }
+                  #individualViewByWrap .multiselect-container > li > a > label {
+                    color:#222;
+                    display:block;
+                    font-size:14px;
+                    font-weight:400;
+                    line-height:22px;
+                    margin:0;
+                    min-height:28px;
+                    padding:3px 20px 3px 40px;
+                  }
+                  #individualViewByWrap .multiselect-container > li > a {
+                    padding:0;
+                  }
+                  #individualViewByWrap .multiselect-container input[type="radio"] {
+                    margin-left:-20px;
+                    margin-top:6px;
+                  }
+                </style>
+                <a href="javascript:void(0)" id="pageChangesBtn" data-toggle="modal" data-target="#pageChangesModal" title="এই পেইজে যা নতুন পরিবর্তন/আপডেট করা হয়েছে">New Updates</a>
                 <ul class="nav navbar-nav" id="menuGroup">
                   <li>
                     <a href="/Student">
@@ -11319,6 +11417,43 @@ table.dataTable td {
                                 <option value="">All Session</option>
                               </select>
                             </div>
+                            <label class="control-label col-md-2" for="View_By">
+                              View By
+                            </label>
+                            <div class="col-md-4">
+                              <span class="hide-native-select" id="individualViewByWrap">
+                                <select class="form-control" id="ViewBy" name="ViewBy">
+                                  <option value="dateLecture" selected>Date Lacture Wise</option>
+                                  <option value="dateLectureBranch">Date Lacture Branch Wise</option>
+                                </select>
+                                <div class="btn-group" style="width:100%;">
+                                  <button type="button" class="multiselect dropdown-toggle btn btn-default" data-toggle="dropdown" title="Date Lacture Wise">
+                                    <span class="multiselect-selected-text">Date Lacture Wise</span>
+                                    <b class="caret"></b>
+                                  </button>
+                                  <ul class="multiselect-container dropdown-menu">
+                                    <li class="multiselect-item multiselect-filter">
+                                      <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                                        <input class="form-control multiselect-search" type="text" placeholder="Search" autocomplete="off">
+                                      </div>
+                                    </li>
+                                    <li data-value="dateLecture">
+                                      <a href="javascript:void(0)" class="individual-viewby-option">
+                                        <label class="radio"><input type="radio" name="individualViewByChoice" value="dateLecture"> Date Lacture Wise</label>
+                                      </a>
+                                    </li>
+                                    <li data-value="dateLectureBranch">
+                                      <a href="javascript:void(0)" class="individual-viewby-option">
+                                        <label class="radio"><input type="radio" name="individualViewByChoice" value="dateLectureBranch"> Date Lacture Branch Wise</label>
+                                      </a>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </span>
+                            </div>
+                          </div>
+                          <div class="form-group">
                             <label class="control-label col-md-2" for="View_Data">
                               View Data
                             </label>
@@ -13304,6 +13439,58 @@ function getDPI() {
 
   var SUBJECTS = ['Bangla', 'English', 'H.Math', 'Physics', 'Chemistry', 'Biology', 'ICT'];
 
+  // এই পেইজে bootstrap-multiselect লাইব্রেরি নেই, তাই Combine Performance
+  // Report-এর একই Bootstrap dropdown pattern-টি dependency-free রাখা হয়েছে।
+  function initIndividualViewBy() {
+    var $wrap = $('#individualViewByWrap');
+    var $select = $('#ViewBy');
+
+    function syncViewByControl() {
+      var selectedValue = String($select.val() || 'dateLecture');
+      var selectedLabel = $select.find('option:selected').text() || 'Date Lacture Wise';
+
+      $wrap.find('.multiselect-selected-text').text(selectedLabel);
+      $wrap.find('.multiselect').attr('title', selectedLabel);
+      $wrap.find('li[data-value]').each(function () {
+        var value = String($(this).data('value'));
+        var checked = value === selectedValue;
+        $(this).toggleClass('active', checked).find('input[type="radio"]').prop('checked', checked);
+      });
+    }
+
+    $wrap.on('click', '.individual-viewby-option', function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      var value = String($(this).closest('li').data('value'));
+      $select.val(value).trigger('change');
+      syncViewByControl();
+      $wrap.find('.btn-group').removeClass('open');
+      $wrap.find('.multiselect-search').val('');
+      $wrap.find('li[data-value]').show();
+    });
+
+    $wrap.on('click', '.multiselect-filter', function (event) {
+      event.stopPropagation();
+    });
+
+    $wrap.on('input', '.multiselect-search', function () {
+      var query = $(this).val().toLowerCase().trim();
+      $wrap.find('li[data-value]').each(function () {
+        var label = $(this).find('label').text().toLowerCase();
+        $(this).toggle(label.indexOf(query) !== -1);
+      });
+    });
+
+    $wrap.find('.btn-group').on('hidden.bs.dropdown', function () {
+      $wrap.find('.multiselect-search').val('');
+      $wrap.find('li[data-value]').show();
+    });
+
+    syncViewByControl();
+  }
+
+  initIndividualViewBy();
+
   function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
   function pick(arr) { return arr[rand(0, arr.length - 1)]; }
 
@@ -13402,10 +13589,12 @@ function getDPI() {
       var subject = pick(SUBJECTS);
       var good = rand(0, 40), avg = rand(0, 5), bad = rand(0, 3), notAttended = rand(0, 5), blank = rand(0, 6);
       var total = good + avg + bad;
+      var contentGood = rand(0, 50), contentAvg = rand(0, 5), contentBad = rand(0, 3);
       rows.push({
         date: randomDateWithin(150),
         good: good, avg: avg, bad: bad, notAttended: notAttended, blank: blank, total: total,
         tLate: pick([0, 0, 0, 9]),
+        contentGood: contentGood, contentAvg: contentAvg, contentBad: contentBad,
         lecture: buildLectureName(subject),
         branch: pick(FULL_BRANCH_LIST) + ' ' + ORG_BRANCH_SUFFIX[combo.oid],
         programSession: combo.program + ' ' + SESSION_TEXT_BY_VALUE[combo.session],
@@ -13418,57 +13607,141 @@ function getDPI() {
   function pct(part, total) { return total > 0 ? Math.round(part * 100 / total) + '%' : '0%'; }
   function escapeAttr(s) { return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
 
-  function renderResult(teacher, rows) {
-    var sumGood = 0, sumAvg = 0, sumBad = 0;
-    rows.forEach(function (r) { sumGood += r.good; sumAvg += r.avg; sumBad += r.bad; });
-    var sumTotal = sumGood + sumAvg + sumBad;
+  var INDIVIDUAL_VIEW_MODES = {
+    dateLecture: {
+      label: 'Date Lacture Wise',
+      axes: ['date', 'lecture']
+    },
+    dateLectureBranch: {
+      label: 'Date Lacture Branch Wise',
+      axes: ['date', 'lecture', 'branch']
+    }
+  };
+
+  function aggregateRows(rows, axes) {
+    if (!axes.length) return rows;
+    var groups = {}, order = [];
+    rows.forEach(function (row) {
+      var keyParts = [];
+      if (axes.indexOf('date') !== -1) keyParts.push('D:' + row.date);
+      if (axes.indexOf('lecture') !== -1) keyParts.push('L:' + row.lecture);
+      if (axes.indexOf('branch') !== -1) keyParts.push('B:' + row.branch);
+      var key = keyParts.join('|');
+      if (!groups[key]) {
+        groups[key] = {
+          date: axes.indexOf('date') !== -1 ? row.date : '',
+          lecture: axes.indexOf('lecture') !== -1 ? row.lecture : '',
+          branch: axes.indexOf('branch') !== -1 ? row.branch : '',
+          programSession: row.programSession,
+          organization: row.organization,
+          good: 0, avg: 0, bad: 0, notAttended: 0, blank: 0, total: 0, tLate: 0,
+          contentGood: 0, contentAvg: 0, contentBad: 0
+        };
+        order.push(key);
+      }
+      var group = groups[key];
+      group.good += row.good;
+      group.avg += row.avg;
+      group.bad += row.bad;
+      group.notAttended += row.notAttended;
+      group.blank += row.blank;
+      group.total += row.total;
+      group.tLate += row.tLate;
+      group.contentGood += row.contentGood;
+      group.contentAvg += row.contentAvg;
+      group.contentBad += row.contentBad;
+    });
+    return order.map(function (key) { return groups[key]; });
+  }
+
+  function currentProgramSessionLabel() {
+    var programText = $('#ProgramId').val() ? $('#ProgramId option:selected').text() : 'All Program';
+    var sessionText = $('#SessionId').val() ? $('#SessionId option:selected').text() : 'All Session';
+    return programText + ' - ' + sessionText;
+  }
+
+  function renderResult(teacher, rows, viewMode) {
+    var selectedMode = INDIVIDUAL_VIEW_MODES[viewMode] || INDIVIDUAL_VIEW_MODES.dateLecture;
+    var axes = selectedMode.axes;
+    var showDate = true;
+    var showLecture = true;
+    var showBranch = axes.indexOf('branch') !== -1;
+    var displayRows = aggregateRows(rows, axes);
+    var viewLabel = selectedMode.label;
+    var organizationText = $('#OrganizationId').val()
+      ? $('#OrganizationId option:selected').text()
+      : 'All Organization';
+    var programSessionText = currentProgramSessionLabel();
+    var dataGridMinWidth = 930 + (showDate ? 110 : 0) + (showLecture ? 190 : 0) + (showBranch ? 170 : 0);
 
     var html = '';
-    html += '<div class="panel panel-primary">';
-    html += '<div class="panel-heading"><h4 class="panel-title">Details</h4></div>';
-    html += '<div class="panel-body" style="overflow-x:scroll;">';
-    html += '<table class="display" cellspacing="0" width="100%"><tbody><tr>';
-    html += '<td style="width: 83%"><table class="display" cellspacing="0" width="100%"><tbody>';
-    html += '<tr><td class="text-right" style="width:15%">Teacher</td><td class="text-center" style="width:2%">:</td><td class="text-left">' + teacher.label + '</td></tr>';
-    html += '<tr><td class="text-right" style="width:15%">Institute</td><td class="text-center" style="width:2%">:</td><td class="text-left">' + teacher.institute + '</td></tr>';
-    html += '<tr><td class="text-right" style="width:15%">Mobile Number</td><td class="text-center" style="width:2%">:</td><td class="text-left">' + teacher.mobile + '</td></tr>';
-    html += '</tbody></table></td>';
-    html += '<td><table class="display" cellspacing="0" width="100%"><tbody>';
-    html += '<tr><td class="text-center" colspan="3">Performance Summary</td></tr>';
-    html += '<tr><td class="text-center">' + pct(sumGood, sumTotal) + '</td><td class="text-center">Good</td><td class="text-center">' + sumGood + '</td></tr>';
-    html += '<tr><td class="text-center">' + pct(sumAvg, sumTotal) + '</td><td class="text-center">Average</td><td class="text-center">' + sumAvg + '</td></tr>';
-    html += '<tr><td class="text-center">' + pct(sumBad, sumTotal) + '</td><td class="text-center">Bad</td><td class="text-center">' + sumBad + '</td></tr>';
-    html += '</tbody></table></td>';
-    html += '</tr></tbody></table><br>';
+    html += '<div class="panel panel-primary"><div class="panel-heading"><h4 class="panel-title">Details Report</h4></div>';
+    html += '<div class="panel-body">';
+    html += '<div class="text-center"><h4>' + organizationText + '</h4>';
+    html += '<h5>' + programSessionText + '</h5>';
+    html += '<h5>Teacher Performance Report(' + viewLabel + ')</h5></div>';
 
-    html += '<table class="display table table-striped table-bordered table-condensed table-hover" cellspacing="0" width="100%">';
-    html += '<thead><tr><th>Serial</th><th>Date</th><th>Good</th><th>Average</th><th>Bad</th><th>Not Attended</th><th>Blank</th><th>Total</th><th>T. Late</th><th>Lecture Name</th><th style="white-space:nowrap;">Branch Name</th><th>Program &amp; Session</th><th>Organization</th><th>Details</th></tr></thead>';
+    html += '<table class="table table-bordered" style="margin-bottom:15px;"><tbody>';
+    html += '<tr><td><strong>Teacher PIN</strong> : ' + teacher.pin + '</td><td><strong>Teacher</strong> : ' + teacher.label + '</td></tr>';
+    html += '<tr><td><strong>Institute</strong> : ' + teacher.institute + '</td><td><strong>Mobile Number</strong> : ' + teacher.mobile + '</td></tr>';
+    html += '</tbody></table>';
+
+    html += '<div class="individual-performance-grid" style="max-height:60vh; overflow:auto; width:100%;">';
+    html += '<table id="DataGrid" class="display table table-striped table-bordered table-condensed table-hover" cellspacing="0" width="100%" style="min-width:' + dataGridMinWidth + 'px; margin-bottom:0;">';
+    html += '<thead><tr><th rowspan="2">Sl</th>';
+    if (showDate) html += '<th rowspan="2">Date</th>';
+    if (showLecture) html += '<th rowspan="2">Lecture Name</th>';
+    if (showBranch) html += '<th rowspan="2" style="white-space:nowrap;">Branch Name</th>';
+    html += '<th colspan="7" style="text-align:center;">Class Performance</th>';
+    html += '<th colspan="3" style="text-align:center;">Content Alignment</th>';
+    html += '<th rowspan="2">Details</th></tr><tr>';
+    html += '<th>Good</th><th>Average</th><th>Bad</th><th>Not Attended</th><th>Blank</th><th>Total</th><th>T.Late</th>';
+    html += '<th>Good</th><th>Average</th><th>Bad</th>';
+    html += '</tr></thead>';
     html += '<tbody>';
-    rows.forEach(function (r, idx) {
+    displayRows.forEach(function (r, idx) {
       html += '<tr>';
-      html += '<td class="text-center">' + String(idx + 1).padStart(2, '0') + '</td>';
-      html += '<td class="text-center" style="white-space:nowrap;">' + r.date + '</td>';
-      html += '<td class="text-center">' + r.good + '(' + pct(r.good, r.total) + ')</td>';
-      html += '<td class="text-center">' + r.avg + '(' + pct(r.avg, r.total) + ')</td>';
-      html += '<td class="text-center">' + r.bad + '(' + pct(r.bad, r.total) + ')</td>';
+      html += '<td class="text-center">' + (idx + 1) + '</td>';
+      if (showDate) html += '<td class="text-center" style="white-space:nowrap;">' + r.date + '</td>';
+      if (showLecture) html += '<td class="text-center">' + (r.lecture || 'All Lectures') + '</td>';
+      if (showBranch) html += '<td class="text-center">' + (r.branch || 'All Branches') + '</td>';
+      html += '<td class="text-center">' + r.good + ' (' + pct(r.good, r.total) + ')</td>';
+      html += '<td class="text-center">' + r.avg + ' (' + pct(r.avg, r.total) + ')</td>';
+      html += '<td class="text-center">' + r.bad + ' (' + pct(r.bad, r.total) + ')</td>';
       html += '<td class="text-center">' + r.notAttended + '</td>';
       html += '<td class="text-center">' + r.blank + '</td>';
       html += '<td class="text-center">' + r.total + '</td>';
       html += '<td class="text-center">' + r.tLate + '</td>';
-      html += '<td class="text-center">' + r.lecture + '</td>';
-      html += '<td class="text-center">' + r.branch + '</td>';
-      html += '<td class="text-center">' + r.programSession + '</td>';
-      html += '<td class="text-center">' + r.organization + '</td>';
+      html += '<td class="text-center">' + r.contentGood + '</td>';
+      html += '<td class="text-center">' + r.contentAvg + '</td>';
+      html += '<td class="text-center">' + r.contentBad + '</td>';
+      var detailProgram = currentProgramSessionLabel();
+      var detailLecture = r.lecture || 'All Lectures';
+      var detailBranch = r.branch || 'All Branches';
       html += '<td class="text-center"><a title="Details" href="javascript:void(0)" class="glyphicon glyphicon-th-list individual-detail-link"' +
         ' data-teacher="' + escapeAttr(teacher.label) + '" data-institute="' + escapeAttr(teacher.institute) + '" data-mobile="' + escapeAttr(teacher.mobile) + '"' +
-        ' data-program="' + escapeAttr(r.programSession) + '" data-lecture="' + escapeAttr(r.lecture) + '" data-branch="' + escapeAttr(r.branch) + '"' +
+        ' data-program="' + escapeAttr(detailProgram) + '" data-lecture="' + escapeAttr(detailLecture) + '" data-branch="' + escapeAttr(detailBranch) + '"' +
         ' data-good="' + r.good + '" data-avg="' + r.avg + '" data-bad="' + r.bad + '" data-notattended="' + r.notAttended + '" data-blank="' + r.blank + '"' +
         '></a></td>';
       html += '</tr>';
     });
     html += '</tbody></table>';
+    html += '</div>';
+    html += '<div class="text-right" style="margin-top:6px;">Showing 1 to ' + displayRows.length + ' of ' + displayRows.length + ' entries</div>';
     html += '</div></div>';
     $('#reportResult').html(html);
+    if ($.fn.DataTable) {
+      $('#DataGrid').DataTable({
+        destroy: true,
+        searching: false,
+        paging: displayRows.length > 20,
+        scrollX: true,
+        scrollY: '60vh',
+        bLengthChange: false,
+        order: [],
+        bSort: false
+      });
+    }
   }
 
   $(document).on('click', '.individual-detail-link', function () {
@@ -13508,7 +13781,8 @@ function getDPI() {
     setTimeout(function () {
       $.unblockUI();
       var rows = generateRows(teacher, organizationId, programName, sessionValue, Math.max(1, Math.min(viewData, 60)));
-      renderResult(teacher, rows);
+      var viewMode = $('#ViewBy').val() || 'dateLecture';
+      renderResult(teacher, rows, viewMode);
     }, 300 + Math.random() * 300);
   });
 
@@ -13535,6 +13809,31 @@ function getDPI() {
   });
 })();
 </script>
+<style>
+  #pageChangesModal .modal-dialog { width:60%; }
+  #pageChangesModal .modal-content { height:65vh; overflow:hidden; }
+  #pageChangesModal .modal-body { height:calc(65vh - 120px); overflow-y:auto; }
+</style>
+<div class="modal fade" id="pageChangesModal" tabindex="-1" role="dialog" aria-labelledby="pageChangesModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="background:#4338CA; color:#fff;">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:#fff; opacity:1;"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="pageChangesModalLabel">এই পেইজে যা যা পরিবর্তন/আপডেট করা হয়েছে</h4>
+      </div>
+      <div class="modal-body">
+        <ol>
+          <li><strong>নতুন View By ফিল্টার:</strong> আগের Group By এবং Datewise/Lecturewise/Branchwise multi-select বাদ দিয়ে View Data-এর আগে single-select View By যোগ হয়েছে। অপশন দুটি হলো Date Lacture Wise ও Date Lacture Branch Wise।</li>
+          <li><strong>ফিল্টার অনুযায়ী ফলাফল:</strong> Date Lacture Wise নির্বাচন করলে Date+Lecture combination অনুযায়ী এবং Date Lacture Branch Wise নির্বাচন করলে Date+Lecture+Branch combination অনুযায়ী Class Performance ও Content Alignment aggregate হয়।</li>
+          <li><strong>Combine-style result:</strong> Teacher PIN দিয়ে Search করার পর ফলাফল Details Report panel, Organization/Program–Session/report heading ও teacher summary-সহ দেখায়। একই data table-এ Class Performance-এর পাশাপাশি Content Alignment-এর শুধু Good, Average ও Bad তথ্য থাকে।</li>
+        </ol>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 <script>
 /* ===== Offline demo behavior (added for offline copy) ===== */
 $(function () {
