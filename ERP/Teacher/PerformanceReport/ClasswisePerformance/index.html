@@ -30149,13 +30149,22 @@ function DeselectSelectedOptionAdd(elem) {
     bootbox.alert('এই ফিচারটি (ক্লাস ইভালুয়েশন বিস্তারিত) এই ডেমো ভার্সনে অন্তর্ভুক্ত নয়।');
   });
 
+  // বাধ্যতামূলক multiselect ফিল্ড খালি থাকলে popup না দেখিয়ে শুধু বক্সের বর্ডার লাল করে দেখানো হয়
+  function setFieldInvalid($select, invalid) {
+    $select.closest('.hide-native-select').find('button.multiselect').css('border-color', invalid ? 'red' : '');
+  }
+  $('#SelectedOrganizationIds, #SelectedProgramIds, #SelectedSessionIds').on('change', function () {
+    setFieldInvalid($(this), false);
+  });
+
   $('#Submit').on('click', function () {
     var orgIds = $('#SelectedOrganizationIds').val() || [];
-    if (!orgIds.length) { bootbox.alert('অনুগ্রহ করে Organization সিলেক্ট করুন।'); return; }
     var programs = $('#SelectedProgramIds').val() || [];
-    if (!programs.length) { bootbox.alert('অনুগ্রহ করে Program সিলেক্ট করুন।'); return; }
     var sessions = $('#SelectedSessionIds').val() || [];
-    if (!sessions.length) { bootbox.alert('অনুগ্রহ করে Session সিলেক্ট করুন।'); return; }
+    setFieldInvalid($('#SelectedOrganizationIds'), !orgIds.length);
+    setFieldInvalid($('#SelectedProgramIds'), !programs.length);
+    setFieldInvalid($('#SelectedSessionIds'), !sessions.length);
+    if (!orgIds.length || !programs.length || !sessions.length) return;
 
     $.blockUI({ message: '<h1>Processing...</h1>' });
     setTimeout(function () {
