@@ -13174,7 +13174,7 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                   <style>
                     .teacher thead { height: 3em; }
                     .teacher th { position: sticky; top: 0; background: #c1c1c1; text-align: center; }
-                    .tccpRequiredError { border: 2px solid red !important; }
+                    .tccpRequiredError { border-color: red !important; }
                   </style>
                   <div class="panel panel-primary">
                     <div class="panel-heading">Examiner Permission</div>
@@ -15381,7 +15381,8 @@ function GetCheckedValues() {
     return teacherIds;
 }
 function markRequiredField(id, message, isInvalid) {
-    window.showErrorMessageBelowCtrl(id, isInvalid ? message : "", isInvalid);
+    // popup/message-এর বদলে শুধু বক্সের লাল বর্ডার (রেড-বর্ডার ভ্যালিডেশন) — showErrorMessageBelowCtrl-এর
+    // মেসেজ-ডিভ ইচ্ছাকৃতভাবে বাদ দেওয়া হয়েছে, নিচের বর্ডার-টগল যথেষ্ট
     var $el = $('#' + id);
     // Belt-and-suspenders, using only mechanisms with unambiguous specificity:
     // (a) toggled CSS class (".tccpRequiredError", !important, defined in this page's own
@@ -15395,11 +15396,9 @@ function markRequiredField(id, message, isInvalid) {
     //     can leave the expanded longhands in place) — setting the longhands directly has
     //     no such residue risk in either direction.
     $el.toggleClass('tccpRequiredError', isInvalid);
-    if (isInvalid) {
-        $el.css({ 'border-width': '2px', 'border-style': 'solid', 'border-color': 'red' });
-    } else {
-        $el.css({ 'border-width': '', 'border-style': '', 'border-color': '' });
-    }
+    // শুধু border-color — width/style অপরিবর্তিত রাখা হয় যাতে অন্য মেনুর (যেমন ExaminerPermission)
+    // রেড-বর্ডার ভ্যালিডেশনের সাথে বর্ডার-পুরুত্ব মিলে যায় (আগে 2px জোর করে ভিন্ন দেখাচ্ছিল)
+    $el.css('border-color', isInvalid ? 'red' : '');
 }
 function CheckValidation() {
     let result = true;
@@ -15423,7 +15422,7 @@ function LoadTeacher() {
     let tPinCommaSeparated = $(tpinsIdName).val();
     let tPinArray = tPinCommaSeparated ? tPinCommaSeparated.split(',').map(function (s) { return s.trim(); }).filter(Boolean) : [];
 
-    if (organizationId != 0) {
+    if (CheckValidation()) {
         $.ajax({
             type: "POST", url: "LoadTeacher",
             data: { organizationId: organizationId, programId: programId, sessionId: sessionId, courseIds: courseIds, subjectIds: subjectIds, permissionStatus: permissionStatus, tPinList: tPinArray },
@@ -15433,8 +15432,6 @@ function LoadTeacher() {
                 $('#teacherTable').show();
             }
         });
-    } else {
-        window.showErrorMessageBelowCtrl("OrganizationId", "Please Select Organization", true);
     }
 }
 
@@ -15520,8 +15517,7 @@ $(document).ready(function () {
     $(document).on('change', 'input.checkBox', function () { CountCheckedTeacher(); });
 
     $(document).on('click', '#btnSubmit', function (e) {
-        let orgId = $("#OrganizationId").val();
-        if (orgId) { ClearTeachers(); clearTeacherPermission(); LoadTeacher(); }
+        ClearTeachers(); clearTeacherPermission(); LoadTeacher();
     });
 
     $(document).on('click', '#btnView', function (e) {
