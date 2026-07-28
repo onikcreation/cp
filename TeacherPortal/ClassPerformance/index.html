@@ -337,7 +337,7 @@
                                       <div class="col-md-9 col-6 text-right uu-mobile-menu">
                                         <ul class="uu-main-menu uuu-new-menu">
                                           <li>
-                                             <a href="../MyRoutinePage/index.html">
+                                            <a href="../MyRoutinePage/index.html">
                                               Routine
                                             </a>
                                           </li>
@@ -543,7 +543,7 @@
                                             </span>
                                             <div class="row">
                                               <div class="col-6 d-flex">
-                                                 <a href="../MyRoutinePage/index.html" title="Routine">
+                                                <a href="../MyRoutinePage/index.html" title="Routine">
                                                   <img src="https://teacher.udvash-unmesh.com/Content/Image/AppIcon/Routine-menu.svg" alt="img" class="">
                                                   <span class="menu-text">
                                                     Routine
@@ -5073,21 +5073,23 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
 <style>
   .cp-wrap { padding: 30px 0 42px; }
   .cp-filter-card { background: #fff; padding: 28px 34px; margin-bottom: 20px; }
-  .cp-filter-grid { max-width: 560px; margin: 0 auto; }
+  .cp-filter-grid { max-width: 620px; margin: 0 auto; }
   .cp-filter-row { display: flex; align-items: center; margin-bottom: 16px; }
   .cp-filter-row label { width: 135px; margin: 0; padding-right: 22px; text-align: right; font-weight: 700; color: #111; }
   .cp-filter-row select { flex: 1; height: 40px; border: 1px solid #ced4da; border-radius: 4px; padding: 7px 12px; color: #495057; background: #fff; }
   .cp-view-row { padding-top: 12px; text-align: center; }
   .cp-view-btn { color: #fff; background: #007bff; border: 1px solid #007bff; border-radius: 4px; padding: 8px 17px; cursor: pointer; }
-  .cp-result { display: none; background: #fff; padding: 24px 0 0; }
-  .cp-summary { width: 66%; margin: 0 auto 25px; border-collapse: collapse; }
-  .cp-summary th, .cp-summary td { padding: 12px 14px; border: 1px solid #dee2e6; text-align: center; font-weight: 400; }
-  .cp-summary th:first-child { vertical-align: middle; }
+  .cp-result { display: none; background: #fff; padding: 24px; }
+  .cp-result-heading { margin-bottom: 20px; text-align: center; }
+  .cp-result-heading h4 { margin: 0 0 6px; color: #3B3849; font-size: 20px; font-weight: 700; }
+  .cp-result-heading h5 { margin: 0 0 5px; color: #667085; font-size: 14px; font-weight: 600; }
   .cp-table-scroll { width: 100%; overflow-x: auto; }
-  .cp-table { width: 100%; min-width: 970px; border-collapse: collapse; }
-  .cp-table th, .cp-table td { padding: 15px 9px; border: 1px solid #dee2e6; text-align: center; vertical-align: middle; }
+  .cp-table { width: 100%; min-width: 1180px; border-collapse: collapse; }
+  .cp-table th, .cp-table td { padding: 12px 9px; border: 1px solid #dee2e6; text-align: center; vertical-align: middle; }
   .cp-table th { font-weight: 700; color: #222; background: #fff; }
+  .cp-table thead tr:first-child th { background: #F4F1F8; color: #532356; }
   .cp-table tbody tr:nth-child(odd) { background: rgba(0,0,0,.05); }
+  .cp-result-count { margin-top: 8px; color: #667085; text-align: right; font-size: 13px; }
   .cp-empty { display: none; padding: 32px; text-align: center; color: #777; }
   @media (max-width: 767px) {
     .cp-wrap { padding-top: 20px; }
@@ -5095,7 +5097,8 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
     .cp-filter-row { display: block; }
     .cp-filter-row label { display: block; width: auto; padding: 0; margin-bottom: 6px; text-align: left; }
     .cp-filter-row select { width: 100%; }
-    .cp-summary { width: calc(100% - 30px); font-size: 12px; }
+    .cp-result { padding: 18px 15px; }
+    .cp-table { min-width: 1100px; }
   }
 </style>
 <div class="cp-wrap">
@@ -5121,6 +5124,13 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
             </select>
           </div>
           <div class="cp-filter-row">
+            <label for="ViewBy">View By :</label>
+            <select id="ViewBy">
+              <option value="dateLecture">Date Lacture Wise</option>
+              <option value="dateLectureBranch">Date Lacture Branch Wise</option>
+            </select>
+          </div>
+          <div class="cp-filter-row">
             <label for="ViewData">View Data :</label>
             <select id="ViewData">
               <option value="10">10</option>
@@ -5137,41 +5147,18 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
     </div>
 
     <div id="classPerformanceResult" class="cp-result">
-      <table class="cp-summary">
-        <tbody>
-          <tr>
-            <th rowspan="2">Performance Summary</th>
-            <th>Good</th>
-            <th>Average</th>
-            <th>Bad</th>
-          </tr>
-          <tr>
-            <td id="cpGoodSummary"></td>
-            <td id="cpAverageSummary"></td>
-            <td id="cpBadSummary"></td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="cp-result-heading">
+        <h4 id="cpResultScope"></h4>
+        <h5 id="cpResultTitle"></h5>
+      </div>
       <div class="cp-table-scroll" id="cpTableScroll">
         <table class="cp-table">
-          <thead>
-            <tr>
-              <th>Serial</th>
-              <th>Date</th>
-              <th>Good</th>
-              <th>Average</th>
-              <th>Bad</th>
-              <th>Total</th>
-              <th>Late</th>
-              <th>Lecture Name</th>
-              <th>Branch Name</th>
-              <th>Program &amp;<br>Session</th>
-            </tr>
-          </thead>
+          <thead id="cpTableHead"></thead>
           <tbody id="cpRows"></tbody>
         </table>
       </div>
       <div id="cpEmpty" class="cp-empty">No data found.</div>
+      <div id="cpResultCount" class="cp-result-count"></div>
     </div>
   </div>
 </div>
@@ -5190,33 +5177,127 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
     {date:"20 Feb, 2026",good:0,average:0,bad:0,total:1,late:9,lecture:"Regular Live Class<br>Chemistry-21",branch:"Jhenaidah<br>Udvash-Unmesh",program:"HSC A to Z Final Revision<br>Course (Online) 2026",programKey:"hsc",session:"2026"},
     {date:"18 Feb, 2026",good:18,average:4,bad:1,total:26,late:2,lecture:"Biology Final<br>Model Class",branch:"Mirpur<br>Unmesh",program:"Medical Admission<br>Program 2026",programKey:"medical",session:"2026"}
   ];
-  function pct(value, base) { return base ? Math.round((value * 100) / base) : 0; }
+
+  var viewModes = {
+    dateLecture: {
+      label: "Date Lacture Wise",
+      axes: ["date", "lecture"]
+    },
+    dateLectureBranch: {
+      label: "Date Lacture Branch Wise",
+      axes: ["date", "lecture", "branch"]
+    }
+  };
+
+  function cleanText(value) {
+    return String(value || "").replace(/<br\s*\/?>/gi, " ").replace(/\s+/g, " ").trim();
+  }
+
+  data.forEach(function (item, index) {
+    var feedback = item.good + item.average + item.bad;
+    var outsideFeedback = Math.max(0, item.total - feedback);
+    item.notAttended = Math.ceil(outsideFeedback / 2);
+    item.blank = outsideFeedback - item.notAttended;
+    item.total = feedback;
+    item.contentGood = Math.max(0, item.good - (index % 4));
+    item.contentAverage = item.average + (index % 3);
+    item.contentBad = item.bad + (index % 2);
+    item.lectureText = cleanText(item.lecture);
+    item.branchText = cleanText(item.branch);
+    item.programText = cleanText(item.program);
+  });
+
+  function pct(value, base) {
+    return base ? Math.round((value * 100) / base) : 0;
+  }
+
+  function aggregateRows(rows, axes) {
+    var groups = {};
+    var order = [];
+    rows.forEach(function (item) {
+      var keyParts = ["D:" + item.date, "L:" + item.lectureText];
+      if (axes.indexOf("branch") !== -1) keyParts.push("B:" + item.branchText);
+      var key = keyParts.join("|");
+      if (!groups[key]) {
+        groups[key] = {
+          date: item.date,
+          lectureText: item.lectureText,
+          branchText: axes.indexOf("branch") !== -1 ? item.branchText : "",
+          good: 0,
+          average: 0,
+          bad: 0,
+          notAttended: 0,
+          blank: 0,
+          total: 0,
+          late: 0,
+          contentGood: 0,
+          contentAverage: 0,
+          contentBad: 0
+        };
+        order.push(key);
+      }
+      var group = groups[key];
+      group.good += item.good;
+      group.average += item.average;
+      group.bad += item.bad;
+      group.notAttended += item.notAttended;
+      group.blank += item.blank;
+      group.total += item.total;
+      group.late += item.late;
+      group.contentGood += item.contentGood;
+      group.contentAverage += item.contentAverage;
+      group.contentBad += item.contentBad;
+    });
+    return order.map(function (key) { return groups[key]; });
+  }
+
+  function renderTableHead(showBranch) {
+    var firstRow = '<tr><th rowspan="2">Sl</th><th rowspan="2">Date</th><th rowspan="2">Lecture Name</th>';
+    if (showBranch) firstRow += '<th rowspan="2">Branch Name</th>';
+    firstRow += '<th colspan="7">Class Performance</th><th colspan="3">Content Alignment</th></tr>';
+    var secondRow = '<tr><th>Good</th><th>Average</th><th>Bad</th><th>Not Attended</th><th>Blank</th><th>Total</th><th>T.Late</th>';
+    secondRow += '<th>Good</th><th>Average</th><th>Bad</th></tr>';
+    document.getElementById("cpTableHead").innerHTML = firstRow + secondRow;
+  }
+
   document.getElementById("classPerformanceForm").addEventListener("submit", function (event) {
     event.preventDefault();
     var program = document.getElementById("ProgramId").value;
     var session = document.getElementById("SessionId").value;
+    var viewModeKey = document.getElementById("ViewBy").value;
+    var selectedMode = viewModes[viewModeKey] || viewModes.dateLecture;
     var limit = Number(document.getElementById("ViewData").value);
     var filtered = data.filter(function (item) {
       return (!program || item.programKey === program) && (!session || item.session === session);
-    }).slice(0, limit);
-    var good = 0, average = 0, bad = 0;
-    var html = filtered.map(function (item, index) {
-      var feedback = item.good + item.average + item.bad;
-      good += item.good; average += item.average; bad += item.bad;
-      return "<tr><td>" + String(index + 1).padStart(2, "0") + "</td><td>" + item.date +
-        "</td><td>" + item.good + " (" + pct(item.good, feedback) + "%)</td><td>" +
-        item.average + " (" + pct(item.average, feedback) + "%)</td><td>" +
-        item.bad + " (" + pct(item.bad, feedback) + "%)</td><td>" + item.total +
-        "</td><td>" + item.late + "</td><td>" + item.lecture + "</td><td>" +
-        item.branch + "</td><td>" + item.program + "</td></tr>";
+    });
+    var groupedRows = aggregateRows(filtered, selectedMode.axes);
+    var displayRows = groupedRows.slice(0, limit);
+    var showBranch = selectedMode.axes.indexOf("branch") !== -1;
+    renderTableHead(showBranch);
+
+    var html = displayRows.map(function (item, index) {
+      var row = "<tr><td>" + String(index + 1).padStart(2, "0") + "</td><td>" + item.date +
+        "</td><td>" + item.lectureText + "</td>";
+      if (showBranch) row += "<td>" + item.branchText + "</td>";
+      row += "<td>" + item.good + " (" + pct(item.good, item.total) + "%)</td><td>" +
+        item.average + " (" + pct(item.average, item.total) + "%)</td><td>" +
+        item.bad + " (" + pct(item.bad, item.total) + "%)</td><td>" + item.notAttended +
+        "</td><td>" + item.blank + "</td><td>" + item.total + "</td><td>" + item.late +
+        "</td><td>" + item.contentGood + "</td><td>" + item.contentAverage +
+        "</td><td>" + item.contentBad + "</td></tr>";
+      return row;
     }).join("");
-    var totalFeedback = good + average + bad;
+
+    var programText = document.getElementById("ProgramId").options[document.getElementById("ProgramId").selectedIndex].text;
+    var sessionText = document.getElementById("SessionId").options[document.getElementById("SessionId").selectedIndex].text;
     document.getElementById("cpRows").innerHTML = html;
-    document.getElementById("cpGoodSummary").textContent = good + " (" + pct(good, totalFeedback) + "%)";
-    document.getElementById("cpAverageSummary").textContent = average + " (" + pct(average, totalFeedback) + "%)";
-    document.getElementById("cpBadSummary").textContent = bad + " (" + pct(bad, totalFeedback) + "%)";
-    document.getElementById("cpTableScroll").style.display = filtered.length ? "block" : "none";
-    document.getElementById("cpEmpty").style.display = filtered.length ? "none" : "block";
+    document.getElementById("cpResultScope").textContent = programText + " - " + sessionText;
+    document.getElementById("cpResultTitle").textContent = "Class Performance Report (" + selectedMode.label + ")";
+    document.getElementById("cpTableScroll").style.display = displayRows.length ? "block" : "none";
+    document.getElementById("cpEmpty").style.display = displayRows.length ? "none" : "block";
+    document.getElementById("cpResultCount").textContent = displayRows.length
+      ? "Showing 1 to " + displayRows.length + " of " + groupedRows.length + " entries"
+      : "";
     document.getElementById("classPerformanceResult").style.display = "block";
   });
 }());
