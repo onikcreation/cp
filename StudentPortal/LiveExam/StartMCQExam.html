@@ -8816,7 +8816,7 @@ label.btn {
                                                                 <span>Full Marks:</span>
                                                                 10 |
                                                                 <span>Time:</span>
-                                                                0 h 45 min
+                                                                0 h 10 min
                                                               </h5>
                                                             </div>
                                                           </div>
@@ -8825,10 +8825,10 @@ label.btn {
                                                               <div class="toClockBox">
                                                                 <div>
                                                                   Remaining:
-                                                                  <span id="clock">43:32</span>
+                                                                  <span id="clock">10:00</span>
                                                                 </div>
                                                                 <div>
-                                                                  <span style="color:white; font-size:16px; line-height:1.0; ">Start: 11:43 AM&nbsp;&nbsp;-&nbsp;&nbsp;End: 12:28 PM</span>
+                                                                  <span style="color:white; font-size:16px; line-height:1.0; ">Start: 10:15 AM&nbsp;&nbsp;-&nbsp;&nbsp;End: 10:25 AM</span>
                                                                 </div>
                                                               </div>
                                                             </div>
@@ -17613,11 +17613,10 @@ $(document).ready(function () {
             return false;
         });
 
-        history.pushState(null, null, location.href);
-        window.onpopstate = function () {
-            history.go(1);
-        };
-
+        // Browser back button now works: it triggers a normal navigation away from
+        // the page, so the onbeforeunload warning below (Save-before-leaving) still
+        // protects the student, instead of trapping them here with a forward-forced
+        // popstate loop that made Back appear broken.
         window.onbeforeunload = function (event) {
             var message = 'Important: Please click on \'Save\' button to leave this page.';
             if (typeof event == 'undefined') {
@@ -17676,7 +17675,7 @@ $(document).ready(function () {
                             '<div style="font-size:12px; color:#475569; margin-top:2px;">স্কিপ করা হয়েছে</div>' +
                         '</div>' +
                     '</div>';
-                bootbox.questionSubmitConfirm(summaryLine + "<h5 style='text-align:center;'>Are you sure you want to submit?</h5>", function (result) {
+                var $submitDialog = bootbox.questionSubmitConfirm(summaryLine + "<h5 style='text-align:center;'>Are you sure you want to submit?</h5>", function (result) {
                     if (result) {
                         $.blockUI({
                             timeout: 0,
@@ -17687,12 +17686,15 @@ $(document).ready(function () {
                     } else {
                         isSubmitting = false;
                     }
-                }).on('shown.bs.modal', function () {
-                    $(".bootbox").css("padding-right", "17px;");
-                    $(".bootbox").find(".modal-dialog").css("max-width", "460px").css("width", "90%").css("margin", "1.75rem auto");
-                    $(".bootbox").find(".modal-content").css("width", "100%").css("margin", "0 auto");
-                    $(".bootbox").find(".modal-footer").css("justify-content", "center");
-                }).on('hidden.bs.modal', function () {
+                });
+                // Apply sizing synchronously (before first paint) instead of waiting for
+                // 'shown.bs.modal', which fires only after the fade transition and caused
+                // the dialog to flash at its default small size for ~1s before resizing.
+                $submitDialog.css("padding-right", "17px;");
+                $submitDialog.find(".modal-dialog").css("max-width", "460px").css("width", "90%").css("margin", "1.75rem auto");
+                $submitDialog.find(".modal-content").css("width", "100%").css("margin", "0 auto");
+                $submitDialog.find(".modal-footer").css("justify-content", "center");
+                $submitDialog.on('hidden.bs.modal', function () {
                     isSubmitting = false;
                 });
             }
@@ -17771,8 +17773,8 @@ $(document).ready(function () {
                 }
             });
 
-            // Set the date we're counting down to: a fresh 45-minute window from page load (demo)
-            var countDownDate = new Date(serverDate + 45 * 60 * 1000).getTime();
+            // Set the date we're counting down to: a fresh 10-minute window from page load (demo)
+            var countDownDate = new Date(serverDate + 10 * 60 * 1000).getTime();
             var waitForSubmit = 0;
             var countDownTimer = setInterval(function () {
                 serverDate = serverDate + 1000;

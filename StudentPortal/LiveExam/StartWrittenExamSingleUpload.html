@@ -8787,7 +8787,7 @@ label.btn {
                                                                 <span>Full Marks:</span>
                                                                 5 |
                                                                 <span>Time:</span>
-                                                                0 h  45 min
+                                                                0 h 10 min
                                                               </h5>
                                                             </div>
                                                           </div>
@@ -8797,17 +8797,17 @@ label.btn {
                                                               <div class="toClockBox">
                                                                 <div>
                                                                   <span id="clockLabel" style="color:#fff;">Remaining:</span>
-                                                                  <span id="clock">44:53</span>
+                                                                  <span id="clock">10:00</span>
                                                                 </div>
                                                                 <div>
-                                                                  <span style="color:white; font-size:16px; line-height:1.0; ">Start: 12:55 PM&nbsp;&nbsp;-&nbsp;&nbsp;End: 01:40 PM</span>
+                                                                  <span style="color:white; font-size:16px; line-height:1.0; ">Start: 10:15 AM&nbsp;&nbsp;-&nbsp;&nbsp;End: 10:25 AM</span>
                                                                 </div>
                                                               </div>
                                                             </div>
                                                           </div>
                                                           <div class="col-md-12 d-none" id="uploadPhaseNotice" style="margin-top:10px;">
                                                             <div style="background:#FEF3C7;border:1px solid #F59E0B;color:#92400E;text-align:center;padding:12px;border-radius:8px;font-weight:bold;">
-                                                              উত্তর দেওয়ার সময় শেষ হয়ে গেছে। এখন শুধু ছবি আপলোড করার জন্য অতিরিক্ত ১০ মিনিট সময় দেওয়া হচ্ছে।
+                                                              উত্তর লিখার সময় শেষ। এখন শুধু ছবি আপলোড করার জন্য অতিরিক্ত ১০ মিনিট সময় দেওয়া হচ্ছে।
                                                             </div>
                                                           </div>
                                                           <div class="col-md-12" id="examInstructionsBlock" style="margin-top:10px;">
@@ -16968,7 +16968,7 @@ $(document).ready(function () {
 
         function demoGoToResult() {
             setTimeout(function () {
-                window.location.href = 'ExamResult_Offline.html?flow=written';
+                window.location.href = 'ExamResultWrittenPending.html?flow=written';
             }, 900);
         }
 
@@ -16978,7 +16978,7 @@ $(document).ready(function () {
             isSubmitting = true;
 
             if (imageProcessingArray.length == 0) {
-                bootbox.questionSubmitConfirm("<h5 style='text-align:center;'>Are you sure you want to submit?</h5>", function (result) {
+                var $submitDialog = bootbox.questionSubmitConfirm("<h5 style='text-align:center;'>Are you sure you want to submit?</h5>", function (result) {
                     if (result) {
                         $.blockUI({
                             timeout: 0,
@@ -16989,12 +16989,15 @@ $(document).ready(function () {
                     } else {
                         isSubmitting = false;
                     }
-                }).on('shown.bs.modal', function () {
-                    $(".bootbox").css("padding-right", "17px;");
-                    $(".bootbox").find(".modal-dialog").css("max-width", "460px").css("width", "90%").css("margin", "1.75rem auto");
-                    $(".bootbox").find(".modal-content").css("width", "100%").css("margin", "0 auto");
-                    $(".bootbox").find(".modal-footer").css("justify-content", "center");
-                }).on('hidden.bs.modal', function () {
+                });
+                // Apply sizing synchronously (before first paint) instead of waiting for
+                // 'shown.bs.modal', which fires only after the fade transition and caused
+                // the dialog to flash at its default small size for ~1s before resizing.
+                $submitDialog.css("padding-right", "17px;");
+                $submitDialog.find(".modal-dialog").css("max-width", "460px").css("width", "90%").css("margin", "1.75rem auto");
+                $submitDialog.find(".modal-content").css("width", "100%").css("margin", "0 auto");
+                $submitDialog.find(".modal-footer").css("justify-content", "center");
+                $submitDialog.on('hidden.bs.modal', function () {
                     isSubmitting = false;
                 });
             }
@@ -17063,8 +17066,8 @@ $(document).ready(function () {
                 }
             });
 
-            // Set the date we're counting down to: a fresh 45-minute window from page load (demo)
-            var countDownDate = new Date(serverDate + 45 * 60 * 1000).getTime();
+            // Set the date we're counting down to: a fresh 10-minute window from page load (demo)
+            var countDownDate = new Date(serverDate + 10 * 60 * 1000).getTime();
             var waitForSubmit = 0;
             var uploadPhaseActive = false;
             var uploadCountDownDate = null;
