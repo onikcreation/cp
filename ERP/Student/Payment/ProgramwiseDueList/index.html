@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- <meta http-equiv="refresh" content="0;URL='http://dev.umsbd.net/'" />
     -->
-    <title>UMS - Due List - Al Amin Anik (Demo Copy)</title>
+    <title>UMS - Programwise Due List - Al Amin Anik (Demo Copy)</title>
     <style>
 /* NUGET: BEGIN LICENSE TEXT
  *
@@ -8024,12 +8024,12 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                             </a>
                           </li>
                           <li data-parent-id="53">
-                            <a href="../DueList/" data-businessid="Payment-DueList|Payment-GenerateDueListReport|Payment-ExportDueListExcel|" class="submenuitem" style="font-weight: bold;">
+                            <a href="../DueList/" data-businessid="Payment-DueList|Payment-GenerateDueListReport|Payment-ExportDueListExcel|" class="submenuitem">
                               Due List
                             </a>
                           </li>
                           <li data-parent-id="53">
-                            <a href="../ProgramwiseDueList/" class="submenuitem">
+                            <a href="../ProgramwiseDueList/" class="submenuitem" style="font-weight: bold;">
                               Programwise Due List
                             </a>
                           </li>
@@ -9891,7 +9891,7 @@ span.hide-native-select{position:relative}span.hide-native-select select{border:
                     <div class="panel panel-primary">
                       <div class="panel-heading" id="ShowHide" title="Colapse">
                         <h4 class="panel-title">
-                          Due List
+                          Programwise Due List
                           <span style="float:right;">
                             <i class="fa fa-minus" aria-hidden="true">
                             </i>
@@ -9922,22 +9922,14 @@ span.hide-native-select{position:relative}span.hide-native-select select{border:
                             <label class="control-label col-md-2" for="Session">
                               Session
                             </label>
-                            <div class="col-md-4">
+                            <div class="col-md-10">
                               <select class="form-control" id="SessionId" name="SessionId">
                                 <option value="">
                                   Select Session
                                 </option>
                               </select>
                             </div>
-                            <label class="control-label col-md-2" for="ViewBy">
-                              View By
-                            </label>
-                            <div class="col-md-4">
-                              <select class="form-control" id="ViewBy" name="ViewBy">
-                                <option value="Programwise" selected="selected">Programwise</option>
-                                <option value="Coursewise">Coursewise</option>
-                              </select>
-                            </div>
+                            <input type="hidden" id="ViewBy" name="ViewBy" value="Programwise">
                           </div>
                           <div class="form-group">
                             <label class="control-label col-md-2" for="Course">
@@ -29287,7 +29279,7 @@ function DeselectSelectedOptionAdd(elem) {
     var header = ['Sl.'].concat(fields).concat(['Due','History']);
     return '<style>.due-demo-table-wrap{width:100%;overflow-x:auto}.due-demo-table-wrap th,.due-demo-table-wrap td{white-space:nowrap;vertical-align:middle!important}.due-demo-summary td{width:50%}</style>' +
       '<div class="panel panel-primary"><div class="panel-heading"><h4 class="panel-title">Details Information</h4></div><div class="panel-body">' +
-      '<div id="printable"><div class="row text-center"><h3>' + esc(orgName()) + ' Academic &amp; Admission Care</h3><h4>' + esc(programName() + ' ' + sessionName()) + '</h4><h4>Due List</h4></div><div class="row">&nbsp;</div>' +
+      '<div id="printable"><div class="row text-center"><h3>' + esc(orgName()) + ' Academic &amp; Admission Care</h3><h4>' + esc(programName() + ' ' + sessionName()) + '</h4><h4>Programwise Due List</h4></div><div class="row">&nbsp;</div>' +
       '<div class="row"><div class="col-md-6"><table class="table table-bordered due-demo-summary"><tr><td><strong>Branch:</strong></td><td>' + esc(selectedOrAll('#BranchId','All Branch')) + '</td></tr><tr><td><strong>Batch Type:</strong></td><td>' + esc(selectedOrAll('#BatchDay','All Batch Type')) + '</td></tr><tr><td><strong>Physical Branch:</strong></td><td>' + esc(selectedOrAll('#PhysicalBranchId','All Physical Branch')) + '</td></tr><tr><td><strong>View By:</strong></td><td>' + esc($('#ViewBy').val()) + '</td></tr></table></div>' +
       '<div class="col-md-6"><table class="table table-bordered due-demo-summary"><tr><td><strong>Campus:</strong></td><td>' + esc(selectedOrAll('#CampusId','All Campus')) + '</td></tr><tr><td><strong>Batch Name:</strong></td><td>' + esc(selectedOrAll('#BatchId','All Batch')) + '</td></tr><tr><td><strong>Service Block:</strong></td><td>' + esc($('#ServiceBlock option:selected').text().trim()) + '</td></tr><tr><td><strong>Due Type:</strong></td><td>' + esc($('#DueType option:selected').text().trim()) + '</td></tr></table></div></div>' +
       '<div class="due-demo-table-wrap"><table id="DataGrid" class="display table table-striped table-bordered table-condensed table-hover" cellspacing="0" width="100%"><thead><tr>' + header.map(function (h) { return '<th>' + esc(h) + '</th>'; }).join('') + '</tr></thead><tbody></tbody></table></div>' +
@@ -29350,13 +29342,13 @@ function DeselectSelectedOptionAdd(elem) {
     if (!table) return;
     var blob = new Blob(['<html><head><meta charset="utf-8"></head><body>' + table.outerHTML + '</body></html>'], {type:'application/vnd.ms-excel'});
     var url = URL.createObjectURL(blob), link = document.createElement('a');
-    link.href = url; link.download = 'DueList.xls'; document.body.appendChild(link); link.click(); document.body.removeChild(link);
+    link.href = url; link.download = 'ProgramwiseDueList.xls'; document.body.appendChild(link); link.click(); document.body.removeChild(link);
     setTimeout(function () { URL.revokeObjectURL(url); }, 0);
   }
 
   $(function () {
     $('#collapse_53').addClass('in');
-    $('#collapse_53 a').filter(function () { return $(this).text().trim() === 'Due List'; }).css('font-weight','bold');
+    $('#collapse_53 a').filter(function () { return $(this).text().trim() === 'Programwise Due List'; }).css('font-weight','bold');
     var today = new Date(), iso = today.getFullYear() + '-' + String(today.getMonth()+1).padStart(2,'0') + '-' + String(today.getDate()).padStart(2,'0');
     $('#tillDate').val(iso).datetimepicker({format:'yyyy-mm-dd',autoclose:true,todayBtn:false,startView:2,minView:2,maxView:4});
     ['#CourseId','#GenderList','#VersionOfStudyList','#BranchId','#CampusId','#BatchDay','#BatchTime','#BatchId','#PhysicalBranchId'].forEach(initMulti);
@@ -29437,7 +29429,7 @@ function DeselectSelectedOptionAdd(elem) {
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <button type="button" class="btn btn-warning btn-sm pull-right pcm-copy-btn" id="copyPageChanges"><span class="glyphicon glyphicon-copy"></span> Copy</button>
-        <h4 class="modal-title" id="pageChangesModalLabel">Due List — New Updates</h4>
+        <h4 class="modal-title" id="pageChangesModalLabel">Programwise Due List — New Updates</h4>
       </div>
       <div class="modal-body">
         <div id="pageChangesText"></div>
