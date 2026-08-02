@@ -8807,18 +8807,12 @@ label.btn {
                                                           <div class="col-md-12" style="margin-top:10px;">
                                                             <div class="TakeExamHeader">
                                                               <h5>
-                                                                দ্রষ্টব্যঃ ডান পাশের সংখ্যা প্রশ্নের পূর্ণমান জ্ঞাপক। সংশ্লিষ্ট প্রশ্নগুলোর উত্তর দাও। সবগুলো প্রশ্নের উত্তর দিতে হবে।
-
-
-বি.দ্রঃ  নির্দিষ্ট উত্তরের বক্সে শুধু সেই প্রশ্নের উত্তরের ছবি তুলে আপলোড দিতে হবে। একই সাথে অনেকগুলো উত্তর লিখে আপলোড দিলে সেই উত্তর বাতিল বলে গণ্য হবে।
-
-
-(i) প্রশ্নের উত্তর খাতায় লিখে ছবি তুলে নির্দিষ্ট প্রশ্নের নিচে আপলোড দিতে হবে।  অন্য প্রশ্নের উত্তর বা একই প্রশ্নে একাধিক প্রশ্নের উত্তর গ্রহণযোগ্য নয়।
-(ii) ছবি তোলার সময় খেয়াল রাখতে হবে ছবিগুলো যেন স্পষ্ট হয়। 
-(iii) অবশ্যই প্রশ্নে উল্লিখিত সময়ের মধ্যে পরীক্ষা সম্পন্ন করে ছবি আপলোড দিতে হবে। 
+                                                                দ্রষ্টব্যঃ ডান পাশের সংখ্যা প্রশ্নের পূর্ণমান জ্ঞাপক। সংশ্লিষ্ট প্রশ্নগুলোর উত্তর দাও।
+(i) প্রশ্নের উত্তর খাতায় লিখে ছবি তুলে আপলোড করতে হবে।
+(ii) ছবি তোলার সময় খেয়াল রাখতে হবে ছবিগুলো যেন স্পষ্ট হয়।
+(iii) অবশ্যই প্রশ্নে উল্লিখিত সময়ের মধ্যে পরীক্ষা সম্পন্ন করে ছবি আপলোড দিতে হবে।
 (iv) কোনো প্রকার পিডিএফ, স্ক্রিনশট, টাইপ করা উত্তর ইত্যাদি আপলোড দেওয়া যাবে না।
-
-বি.দ্র. ছবি তুলে আপলোড করার জন্য মূল সময়ের সাথে অতিরিক্ত ১০ মিনিট যোগ করা হল।
+বি.দ্র. ছবি তুলে আপলোড করার জন্য মূল সময়ের সাথে অতিরিক্ত সময় পাওয়া যাবে, ঐ সময়ে প্রশ্নগুলো হাইড হয়ে যাবে অর্থাৎ প্রশ্নগুলো তখন দেখা যাবে না।
                                                               </h5>
                                                             </div>
                                                           </div>
@@ -17366,33 +17360,12 @@ $(document).ready(function () {
         }
 
         var isSubmitting = false;
-        function getAnswerSummary() {
-            var total = $('.questionBlock[data-question-serial]').length;
-            var answered = Object.keys(window.__answeredQSerials || {}).length;
-            return { total: total, answered: answered, skipped: total - answered };
-        }
         function FormSubmit() {
             if (isSubmitting) return;
             isSubmitting = true;
 
             if (imageProcessingArray.length == 0) {
-                var summary = getAnswerSummary();
-                var summaryLine =
-                    '<div style="display:flex; gap:10px; margin-bottom:18px;">' +
-                        '<div style="flex:1; background:#EAF2FD; border-radius:12px; padding:14px 6px; text-align:center;">' +
-                            '<div style="font-size:26px; font-weight:700; color:#1D4ED8; line-height:1.2;">' + summary.total + '</div>' +
-                            '<div style="font-size:12px; color:#475569; margin-top:2px;">মোট প্রশ্ন</div>' +
-                        '</div>' +
-                        '<div style="flex:1; background:#E9F9EA; border-radius:12px; padding:14px 6px; text-align:center;">' +
-                            '<div style="font-size:26px; font-weight:700; color:#15803D; line-height:1.2;">✓ ' + summary.answered + '</div>' +
-                            '<div style="font-size:12px; color:#475569; margin-top:2px;">উত্তর করা হয়েছে</div>' +
-                        '</div>' +
-                        '<div style="flex:1; background:#FFF3E0; border-radius:12px; padding:14px 6px; text-align:center;">' +
-                            '<div style="font-size:26px; font-weight:700; color:#C2410C; line-height:1.2;">⚠ ' + summary.skipped + '</div>' +
-                            '<div style="font-size:12px; color:#475569; margin-top:2px;">স্কিপ করা হয়েছে</div>' +
-                        '</div>' +
-                    '</div>';
-                var $submitDialog = bootbox.questionSubmitConfirm(summaryLine + "<h5 style='text-align:center;'>Are you sure you want to submit?</h5>", function (result) {
+                var $submitDialog = bootbox.questionSubmitConfirm("<h5 style='text-align:center;'>Are you sure you want to submit?</h5>", function (result) {
                     if (result) {
                         $.blockUI({
                             timeout: 0,
