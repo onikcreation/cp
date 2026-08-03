@@ -10138,7 +10138,7 @@ body { font-family: "Open Sans", Arial, sans-serif; }
                               <div class="col-md-2 text-center isUploadOmrSheetFromApp" style="padding: 0px;">
                                 Enable Upload OMR Sheet from App
                               </div>
-                              <div class="col-md-2 text-center timeAllowedForUploadInMin" style="padding: 0px;">
+                              <div class="col-md-2 text-center timeAllowedForUploadInMin" style="padding: 0px; display: none;">
                                 Time Allowed for Upload
                               </div>
                               <div class="col-md-2 text-center includeExtraTimeForOmrExam" style="padding: 0px; display: none;">
@@ -10164,7 +10164,7 @@ body { font-family: "Open Sans", Arial, sans-serif; }
                               <div class="col-md-2 text-center isUploadOmrSheetFromApp" style="">
                                 <input type="checkbox" name="isUploadOmrSheetFromApp" id="isUploadOmrSheetFromApp" value="1">
                               </div>
-                              <div class="col-md-2 text-center timeAllowedForUploadInMin" style="">
+                              <div class="col-md-2 text-center timeAllowedForUploadInMin" style="display: none;">
                                 <input type="number" name="timeAllowedForUploadInMin" id="timeAllowedForUploadInMin" placeholder="0" value="0" class="form-control numeric" min="0">
                               </div>
                               <div class="col-md-2 text-center includeExtraTimeForOmrExam" style="display: none;">
@@ -10331,7 +10331,7 @@ body { font-family: "Open Sans", Arial, sans-serif; }
                                   <div class="col-md-3 text-center isUploadOmrSheetFromApp" style="padding: 0px;">
                                     Enable Upload OMR Sheet from App
                                   </div>
-                                  <div class="col-md-3 text-center timeAllowedForUploadInMin" style="padding: 0px;">
+                                  <div class="col-md-3 text-center timeAllowedForUploadInMin" style="padding: 0px; display: none;">
                                     Time Allowed for Upload
                                   </div>
                                   <div class="col-md-3 text-center includeExtraTimeForOmrExam" style="padding: 0px; display: none;">
@@ -10351,7 +10351,7 @@ body { font-family: "Open Sans", Arial, sans-serif; }
                                   <div class="col-md-3 text-center isUploadOmrSheetFromApp" style="margin-bottom: 20px;">
                                     <input type="checkbox" name="isUploadOmrSheetFromApp" id="isUploadOmrSheetFromApp" value="1">
                                   </div>
-                                  <div class="col-md-3 text-center timeAllowedForUploadInMin" style="margin-bottom: 20px;">
+                                  <div class="col-md-3 text-center timeAllowedForUploadInMin" style="margin-bottom: 20px; display: none;">
                                     <input type="number" name="timeAllowedForUploadInMin" id="timeAllowedForUploadInMin" placeholder="0" value="0" class="form-control numeric" min="0">
                                   </div>
                                   <div class="col-md-3 text-center includeExtraTimeForOmrExam" style="margin-bottom: 20px; display: none;">
@@ -11489,7 +11489,7 @@ body { font-family: "Open Sans", Arial, sans-serif; }
 
   <div class="update-section">
     <p class="update-title">📌 ৩. Include Extra Time for OMR Exam</p>
-    <p>MCQ সেকশনে <strong>Enable Upload OMR Sheet from App</strong> টিক দিলে <strong>Time Allowed for Upload</strong>-এর পাশে এই নতুন ইনপুট বক্সটি দেখা যাবে। টিক তুলে দিলে বক্সটি লুকিয়ে যাবে এবং এর মান ০ হয়ে যাবে।</p>
+    <p>MCQ সেকশনে <strong>Time Allowed for Upload</strong> ও <strong>Include Extra Time for OMR Exam</strong>—দুইটি ইনপুট শুরুতে লুকানো থাকবে। <strong>Enable Upload OMR Sheet from App</strong> টিক দিলে দুইটি বক্স পাশাপাশি দেখা যাবে; টিক তুলে দিলে দুইটি বক্সই লুকিয়ে যাবে এবং তাদের মান ০ হয়ে যাবে।</p>
   </div>
 </div>
 </div>
@@ -11850,19 +11850,22 @@ body { font-family: "Open Sans", Arial, sans-serif; }
     });
   });
   var examPlatform = q("#examPlatform");
-  function updateExtraTimeForOmrExamField() {
+  function updateOmrUploadTimeFields() {
     var uploadOmr = q("#mcqPartialView #isUploadOmrSheetFromApp");
+    var uploadTime = q("#mcqPartialView #timeAllowedForUploadInMin");
     var extraTime = q("#mcqPartialView #includeExtraTimeForOmrExam");
     var isOnlinePlatform = examPlatform && (examPlatform.value === "2" || examPlatform.value === "3");
     var shouldShow = !!(isOnlinePlatform && uploadOmr && uploadOmr.checked);
+    displayAll("#mcqPartialView .timeAllowedForUploadInMin", shouldShow);
     displayAll("#mcqPartialView .includeExtraTimeForOmrExam", shouldShow);
+    if (!shouldShow && uploadTime) uploadTime.value = "0";
     if (!shouldShow && extraTime) extraTime.value = "0";
   }
   var mcqPartialView = q("#mcqPartialView");
   if (mcqPartialView) {
     mcqPartialView.addEventListener("change", function (event) {
       if (event.target && event.target.name === "isUploadOmrSheetFromApp") {
-        updateExtraTimeForOmrExamField();
+        updateOmrUploadTimeFields();
       }
     });
   }
@@ -11873,7 +11876,6 @@ body { font-family: "Open Sans", Arial, sans-serif; }
     display(".instructionTemplateDiv", isOnlinePlatform);
     display(".import_from_word_class", isOnlinePlatform);
     displayAll(".isUploadOmrSheetFromApp", isOnlinePlatform);
-    displayAll(".timeAllowedForUploadInMin", isOnlinePlatform);
     displayAll(".isSingleSet", isInBranchPlatform);
     displayAll(".isInsideQuestion", isInBranchPlatform);
     displayAll(".isPrintFromUploadedPdf", isInBranchPlatform);
@@ -11886,7 +11888,7 @@ body { font-family: "Open Sans", Arial, sans-serif; }
       if (q("#isInsideQuestion")) q("#isInsideQuestion").checked = false;
       if (q("#isPrintFromUploadedPdf")) q("#isPrintFromUploadedPdf").checked = false;
     }
-    updateExtraTimeForOmrExamField();
+    updateOmrUploadTimeFields();
   }
   if (examPlatform) {
     examPlatform.addEventListener("change", updateExamPlatformFields);
