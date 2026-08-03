@@ -9129,6 +9129,9 @@ body { font-family: "Open Sans", Arial, sans-serif; }
                               <div class="col-md-3 text-center timeAllowedForUploadInMin" style="padding:0px; display:none;">
                                 Time Allowed for Upload
                               </div>
+                              <div class="col-md-3 text-center includeExtraTimeForOmrExam" style="padding:0px; display:none;">
+                                Include Extra Time for OMR Exam
+                              </div>
                               <div class="col-md-3 text-center isSingleSet" style="padding:0px; display:none;">
                                 Is Single Set
                               </div>
@@ -9161,6 +9164,9 @@ body { font-family: "Open Sans", Arial, sans-serif; }
                               </div>
                               <div class="col-md-3 text-center timeAllowedForUploadInMin" style="display:none;">
                                 <input type="number" name="timeAllowedForUploadInMin" id="timeAllowedForUploadInMin" placeholder="0" value="0" class="form-control numeric" min="0">
+                              </div>
+                              <div class="col-md-3 text-center includeExtraTimeForOmrExam" style="display:none;">
+                                <input type="number" name="includeExtraTimeForOmrExam" id="includeExtraTimeForOmrExam" placeholder="0" value="0" class="form-control numeric" min="0">
                               </div>
                               <div class="col-md-3 text-center isSingleSet" style="display:none;">
                                 <input type="checkbox" name="isSingleSet" id="isSingleSet" value="1">
@@ -9777,6 +9783,9 @@ body { font-family: "Open Sans", Arial, sans-serif; }
                               <div class="col-md-3 text-center timeAllowedForUploadInMin" style="padding:0px; display:none;">
                                 Time Allowed for Upload
                               </div>
+                              <div class="col-md-3 text-center includeExtraTimeForOmrExam" style="padding:0px; display:none;">
+                                Include Extra Time for OMR Exam
+                              </div>
                               <div class="col-md-3 text-center isSingleSet" style="padding:0px; display:none;">
                                 Is Single Set
                               </div>
@@ -9809,6 +9818,9 @@ body { font-family: "Open Sans", Arial, sans-serif; }
                               </div>
                               <div class="col-md-3 text-center timeAllowedForUploadInMin" style="display:none;">
                                 <input type="number" name="timeAllowedForUploadInMin" id="timeAllowedForUploadInMin" placeholder="0" value="0" class="form-control numeric" min="0">
+                              </div>
+                              <div class="col-md-3 text-center includeExtraTimeForOmrExam" style="display:none;">
+                                <input type="number" name="includeExtraTimeForOmrExam" id="includeExtraTimeForOmrExam" placeholder="0" value="0" class="form-control numeric" min="0">
                               </div>
                               <div class="col-md-3 text-center isSingleSet" style="display:none;">
                                 <input type="checkbox" name="isSingleSet" id="isSingleSet" value="1">
@@ -10111,10 +10123,10 @@ body { font-family: "Open Sans", Arial, sans-serif; }
                               </div>
                             </div>
                             <div class="row col-md-12">
-                              <div class="col-md-3 text-center">
+                              <div class="col-md-2 text-center">
                                 Max. Subject Count
                               </div>
-                              <div class="col-md-3 text-center">
+                              <div class="col-md-2 text-center">
                                 Total Unique Set
                               </div>
                               <div class="col-md-2 text-center" style="display:none;">
@@ -10129,15 +10141,18 @@ body { font-family: "Open Sans", Arial, sans-serif; }
                               <div class="col-md-2 text-center timeAllowedForUploadInMin" style="padding: 0px;">
                                 Time Allowed for Upload
                               </div>
+                              <div class="col-md-2 text-center includeExtraTimeForOmrExam" style="padding: 0px; display: none;">
+                                Include Extra Time for OMR Exam
+                              </div>
                             </div>
                             <div class="row col-md-12" style="margin-bottom: 20px;">
                               <div>
                                 <input type="hidden" id="sc" value="4">
                               </div>
-                              <div class="col-md-3" id="uniqerrmsg">
+                              <div class="col-md-2" id="uniqerrmsg">
                                 <input type="text" name="mcqMaxSubCount" id="mcqMaxSubCount" placeholder="Max. Subject Count" class="form-control">
                               </div>
-                              <div class="col-md-3">
+                              <div class="col-md-2">
                                 <input type="text" class="form-control totalUniqueSet numeric" id="totalUniqueSet" name="totalUniqueSet" placeholder="Total unique set" min="1">
                               </div>
                               <div class="col-md-2 text-center" style="display:none;">
@@ -10151,6 +10166,9 @@ body { font-family: "Open Sans", Arial, sans-serif; }
                               </div>
                               <div class="col-md-2 text-center timeAllowedForUploadInMin" style="">
                                 <input type="number" name="timeAllowedForUploadInMin" id="timeAllowedForUploadInMin" placeholder="0" value="0" class="form-control numeric" min="0">
+                              </div>
+                              <div class="col-md-2 text-center includeExtraTimeForOmrExam" style="display: none;">
+                                <input type="number" name="includeExtraTimeForOmrExam" id="includeExtraTimeForOmrExam" placeholder="0" value="0" class="form-control numeric" min="0">
                               </div>
                             </div>
                             <div class="row col-md-12">
@@ -10316,6 +10334,9 @@ body { font-family: "Open Sans", Arial, sans-serif; }
                                   <div class="col-md-3 text-center timeAllowedForUploadInMin" style="padding: 0px;">
                                     Time Allowed for Upload
                                   </div>
+                                  <div class="col-md-3 text-center includeExtraTimeForOmrExam" style="padding: 0px; display: none;">
+                                    Include Extra Time for OMR Exam
+                                  </div>
                                   <div class="col-md-3 text-center isSingleSet" style="padding:0px; display: none;">
                                     Is Single Set
                                   </div>
@@ -10332,6 +10353,9 @@ body { font-family: "Open Sans", Arial, sans-serif; }
                                   </div>
                                   <div class="col-md-3 text-center timeAllowedForUploadInMin" style="margin-bottom: 20px;">
                                     <input type="number" name="timeAllowedForUploadInMin" id="timeAllowedForUploadInMin" placeholder="0" value="0" class="form-control numeric" min="0">
+                                  </div>
+                                  <div class="col-md-3 text-center includeExtraTimeForOmrExam" style="margin-bottom: 20px; display: none;">
+                                    <input type="number" name="includeExtraTimeForOmrExam" id="includeExtraTimeForOmrExam" placeholder="0" value="0" class="form-control numeric" min="0">
                                   </div>
                                   <div class="col-md-3 text-center isSingleSet" style="margin-bottom: 20px; display: none;">
                                     <input type="checkbox" name="isSingleSet" id="isSingleSet" value="1">
@@ -11462,6 +11486,11 @@ body { font-family: "Open Sans", Arial, sans-serif; }
       <li>🔹 Upload সময় শেষ হলে পরীক্ষা অটো Submit হয়ে যাবে</li>
     </ul>
   </div>
+
+  <div class="update-section">
+    <p class="update-title">📌 ৩. Include Extra Time for OMR Exam</p>
+    <p>MCQ সেকশনে <strong>Enable Upload OMR Sheet from App</strong> টিক দিলে <strong>Time Allowed for Upload</strong>-এর পাশে এই নতুন ইনপুট বক্সটি দেখা যাবে। টিক তুলে দিলে বক্সটি লুকিয়ে যাবে এবং এর মান ০ হয়ে যাবে।</p>
+  </div>
 </div>
 </div>
       <div class="modal-footer">
@@ -11821,6 +11850,22 @@ body { font-family: "Open Sans", Arial, sans-serif; }
     });
   });
   var examPlatform = q("#examPlatform");
+  function updateExtraTimeForOmrExamField() {
+    var uploadOmr = q("#mcqPartialView #isUploadOmrSheetFromApp");
+    var extraTime = q("#mcqPartialView #includeExtraTimeForOmrExam");
+    var isOnlinePlatform = examPlatform && (examPlatform.value === "2" || examPlatform.value === "3");
+    var shouldShow = !!(isOnlinePlatform && uploadOmr && uploadOmr.checked);
+    displayAll("#mcqPartialView .includeExtraTimeForOmrExam", shouldShow);
+    if (!shouldShow && extraTime) extraTime.value = "0";
+  }
+  var mcqPartialView = q("#mcqPartialView");
+  if (mcqPartialView) {
+    mcqPartialView.addEventListener("change", function (event) {
+      if (event.target && event.target.name === "isUploadOmrSheetFromApp") {
+        updateExtraTimeForOmrExamField();
+      }
+    });
+  }
   function updateExamPlatformFields() {
     if (!examPlatform) return;
     var isOnlinePlatform = examPlatform.value === "2" || examPlatform.value === "3";
@@ -11841,6 +11886,7 @@ body { font-family: "Open Sans", Arial, sans-serif; }
       if (q("#isInsideQuestion")) q("#isInsideQuestion").checked = false;
       if (q("#isPrintFromUploadedPdf")) q("#isPrintFromUploadedPdf").checked = false;
     }
+    updateExtraTimeForOmrExamField();
   }
   if (examPlatform) {
     examPlatform.addEventListener("change", updateExamPlatformFields);
