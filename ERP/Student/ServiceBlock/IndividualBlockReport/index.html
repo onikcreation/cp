@@ -7832,6 +7832,64 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
   #reportResult .status-blocked { color: #b91c1c; font-weight: 600; }
   #reportResult .status-active { color: #15803d; font-weight: 600; }
   #reportResult .table-responsive { margin-bottom: 0; }
+  #reportResult .dataTables_wrapper::after {
+    display: table;
+    clear: both;
+    content: "";
+  }
+  #reportResult .dataTables_info {
+    float: left;
+    padding: 14px 0 10px 2px;
+    color: #555;
+  }
+  #reportResult .dataTables_paginate {
+    float: right;
+    padding: 8px 0 10px;
+    text-align: right;
+    white-space: nowrap;
+  }
+  #reportResult .dataTables_paginate .paginate_button {
+    display: inline-block;
+    min-width: 34px;
+    margin-left: 4px;
+    padding: 6px 10px;
+    border: 1px solid #D1D5DB;
+    border-radius: 4px;
+    background: #fff;
+    color: #337AB7 !important;
+    line-height: 1.35;
+    text-align: center;
+    text-decoration: none !important;
+    cursor: pointer;
+  }
+  #reportResult .dataTables_paginate .paginate_button:hover,
+  #reportResult .dataTables_paginate .paginate_button:focus {
+    border-color: #4338CA;
+    background: #EEF2FF;
+    color: #312E81 !important;
+  }
+  #reportResult .dataTables_paginate .paginate_button.current,
+  #reportResult .dataTables_paginate .paginate_button.current:hover {
+    border-color: #4338CA;
+    background: #4338CA;
+    color: #fff !important;
+    cursor: default;
+  }
+  #reportResult .dataTables_paginate .paginate_button.disabled,
+  #reportResult .dataTables_paginate .paginate_button.disabled:hover {
+    border-color: #E5E7EB;
+    background: #F9FAFB;
+    color: #9CA3AF !important;
+    cursor: not-allowed;
+  }
+  @media screen and (max-width: 767px) {
+    #reportResult .dataTables_info,
+    #reportResult .dataTables_paginate {
+      float: none;
+      width: 100%;
+      text-align: center;
+    }
+  }
   #IndividualBlockReportForm .hide-native-select {
     position: relative;
     display: block;
@@ -9581,7 +9639,7 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                               Display Per Page
                             </label>
                             <div class="col-md-4">
-                              <input type="number" name="DisplayPerPage" value="100" id="DisplayPerPage" class="form-control control-label col-md-2" onkeypress="return event.charCode &gt;= 48" min="1" style="text-align: left">
+                              <input type="number" name="DisplayPerPage" value="10" id="DisplayPerPage" class="form-control control-label col-md-2" onkeypress="return event.charCode &gt;= 48" min="1" style="text-align: left">
                             </div>
                           </div>
                         </div>
@@ -27966,6 +28024,14 @@ var DEMO_BRANCHES = ["Bandarban","Khagrachari","Rangamati","Donia","Jatrabari","
     ['dynamic-1', 'Master Class', '1', true], ['dynamic-2', 'Course & Content', '2', true],
     ['dynamic-3', 'Foundation Class', '3', true]
   ];
+  var AMOUNT_TYPES = ['Fixed Amount', 'Percentage'];
+  var DISCOUNT_TYPES = ['No Discount', 'Special Discount', 'Sibling Discount'];
+  var MODIFIED_BY_USERS = [
+    'rezaul.karim@udvash.com',
+    'kamal.hossain@udvash.net',
+    'sharmin.akter@udvash.com',
+    'tanvir.ahmed@udvash.net'
+  ];
   var LATEST_SESSIONS = DEMO_SESSIONS.slice(0, 3);
   var currentRows = [];
   var dataTable = null;
@@ -28000,10 +28066,12 @@ var DEMO_BRANCHES = ["Bandarban","Khagrachari","Rangamati","Donia","Jatrabari","
         var block = BLOCK_TYPES[(programIndex + sessionIndex) % BLOCK_TYPES.length];
         var service = SERVICE_TYPES[(programIndex * 2 + sessionIndex) % SERVICE_TYPES.length];
         var statusId = (programIndex + sessionIndex) % 2 === 0 ? 'block' : 'active';
+        var effectiveDay = String(1 + (serial % 24)).padStart(2, '0');
+        var modificationDay = String(2 + (serial % 24)).padStart(2, '0');
         rows.push({
           sl: serial,
-          registration: 'REG-DEMO-' + String(serial).padStart(5, '0'),
-          roll: 'ROLL-' + String(260000 + serial),
+          registration: String(1000000 + serial),
+          roll: String(26000000000 + serial),
           nick: 'Demo Student ' + String((serial % 24) + 1).padStart(2, '0'),
           orgId: String(program[1]),
           organization: org ? org.n : '',
@@ -28014,11 +28082,19 @@ var DEMO_BRANCHES = ["Bandarban","Khagrachari","Rangamati","Donia","Jatrabari","
           branch: branches[(programIndex * LATEST_SESSIONS.length + sessionIndex) % branches.length],
           blockId: block[0],
           blockWhen: block[1],
+          amountType: AMOUNT_TYPES[(programIndex + sessionIndex) % AMOUNT_TYPES.length],
+          minimumAmount: 500 * (1 + (serial % 6)),
+          discountType: DISCOUNT_TYPES[(programIndex + sessionIndex) % DISCOUNT_TYPES.length],
           serviceId: service[0],
           serviceType: service[1],
+          effectiveDateTime: effectiveDay + ' Aug 2026, ' + String(9 + (serial % 8)).padStart(2, '0') + ':30 AM',
+          noticePeriod: (3 + (serial % 5)) + ' Days',
+          noticePeriodCloseable: serial % 2 === 0 ? 'Yes' : 'No',
+          blockPeriodCloseable: serial % 3 === 0 ? 'Yes' : 'No',
           serviceStatusId: statusId,
           serviceStatus: statusId === 'block' ? 'Block' : 'Active',
-          blockedOn: statusId === 'block' ? String(5 + (serial % 24)).padStart(2, '0') + ' Jul 2026' : ''
+          modifiedBy: MODIFIED_BY_USERS[(serial - 1) % MODIFIED_BY_USERS.length],
+          modificationDate: modificationDay + ' Aug 2026, ' + String(10 + (serial % 7)).padStart(2, '0') + ':15 AM'
         });
         serial += 1;
       });
@@ -28056,25 +28132,33 @@ var DEMO_BRANCHES = ["Bandarban","Khagrachari","Rangamati","Donia","Jatrabari","
   }
   function renderReport() {
     currentRows = filteredRows();
-    var body = currentRows.map(function (row, index) {
+    var body = currentRows.map(function (row) {
       return '<tr>' +
-        '<td>' + (index + 1) + '</td>' +
-        '<td><span class="student-name">' + escapeHtml(row.nick) + '</span><br><small>' + escapeHtml(row.registration) + '<br>' + escapeHtml(row.roll) + '</small></td>' +
         '<td>' + escapeHtml(row.organization) + '</td>' +
-        '<td>' + escapeHtml(row.program) + '</td>' +
-        '<td>' + escapeHtml(row.session) + '</td>' +
+        '<td>' + escapeHtml(row.program + ' - ' + row.session) + '</td>' +
+        '<td>' + escapeHtml(row.registration) + '</td>' +
+        '<td>' + escapeHtml(row.roll) + '</td>' +
+        '<td class="student-name">' + escapeHtml(row.nick) + '</td>' +
         '<td>' + escapeHtml(row.branch) + '</td>' +
         '<td>' + escapeHtml(row.blockWhen) + '</td>' +
+        '<td>' + escapeHtml(row.amountType) + '</td>' +
+        '<td class="text-right">' + escapeHtml(row.minimumAmount.toLocaleString('en-US')) + '</td>' +
+        '<td>' + escapeHtml(row.discountType) + '</td>' +
         '<td>' + escapeHtml(row.serviceType) + '</td>' +
+        '<td>' + escapeHtml(row.effectiveDateTime) + '</td>' +
+        '<td>' + escapeHtml(row.noticePeriod) + '</td>' +
+        '<td>' + escapeHtml(row.noticePeriodCloseable) + '</td>' +
+        '<td>' + escapeHtml(row.blockPeriodCloseable) + '</td>' +
         '<td class="' + (row.serviceStatusId === 'block' ? 'status-blocked' : 'status-active') + '">' + escapeHtml(row.serviceStatus) + '</td>' +
-        '<td>' + escapeHtml(row.blockedOn || '—') + '</td>' +
+        '<td>' + escapeHtml(row.modifiedBy) + '</td>' +
+        '<td>' + escapeHtml(row.modificationDate) + '</td>' +
       '</tr>';
     }).join('');
     var html = '<div class="table-responsive"><table id="IndividualBlockDataTable" class="display table table-striped table-bordered table-condensed table-hover" width="100%">' +
-      '<thead><tr><th>SL</th><th>Student</th><th>Organization</th><th>Program</th><th>Session</th><th>Branch</th><th>Block When</th><th>Service Type</th><th>Status</th><th>Blocked On</th></tr></thead>' +
+      '<thead><tr><th>Organization</th><th>Program-Session</th><th>Registration No.</th><th>Roll No.</th><th>Nick Name</th><th>Branch</th><th>Block When</th><th>Amount Type</th><th>Minimum Amount</th><th>Discount Type</th><th>Service Type</th><th>Effective Date-Time</th><th>Notice Period</th><th>Notice Period Closeable</th><th>Block Period Closeable</th><th>Service Status</th><th>Modified By</th><th>Modification Date</th></tr></thead>' +
       '<tbody>' + body + '</tbody></table></div>';
     $('#reportResult').html(html);
-    var pageSize = Math.max(1, parseInt($('#DisplayPerPage').val(), 10) || 100);
+    var pageSize = Math.max(1, parseInt($('#DisplayPerPage').val(), 10) || 10);
     dataTable = $('#IndividualBlockDataTable').DataTable({
       pageLength: pageSize,
       lengthChange: false,
@@ -28090,10 +28174,10 @@ var DEMO_BRANCHES = ["Bandarban","Khagrachari","Rangamati","Donia","Jatrabari","
   }
   function exportCsv() {
     if (!currentRows.length) currentRows = filteredRows();
-    var header = ['SL','Nick Name','Registration Number','Roll Number','Organization','Program','Session','Branch','Block When','Service Type','Status','Blocked On'];
+    var header = ['Organization','Program-Session','Registration No.','Roll No.','Nick Name','Branch','Block When','Amount Type','Minimum Amount','Discount Type','Service Type','Effective Date-Time','Notice Period','Notice Period Closeable','Block Period Closeable','Service Status','Modified By','Modification Date'];
     var lines = [header.map(csvCell).join(',')];
-    currentRows.forEach(function (row, index) {
-      lines.push([index + 1,row.nick,row.registration,row.roll,row.organization,row.program,row.session,row.branch,row.blockWhen,row.serviceType,row.serviceStatus,row.blockedOn].map(csvCell).join(','));
+    currentRows.forEach(function (row) {
+      lines.push([row.organization,row.program + ' - ' + row.session,row.registration,row.roll,row.nick,row.branch,row.blockWhen,row.amountType,row.minimumAmount,row.discountType,row.serviceType,row.effectiveDateTime,row.noticePeriod,row.noticePeriodCloseable,row.blockPeriodCloseable,row.serviceStatus,row.modifiedBy,row.modificationDate].map(csvCell).join(','));
     });
     var blob = new Blob(['\uFEFF' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' });
     var link = document.createElement('a');
@@ -28178,6 +28262,8 @@ var DEMO_BRANCHES = ["Bandarban","Khagrachari","Rangamati","Donia","Jatrabari","
         <ol>
           <li><strong>Service Type মাল্টি-সিলেক্ট:</strong> একসঙ্গে এক বা একাধিক Service Type নির্বাচন করে রিপোর্ট Search ও Export করা যাবে। একটি নির্বাচন হলে নাম এবং একাধিক হলে নির্বাচিত সংখ্যাটি দেখাবে।</li>
           <li><strong>Service Status ফিল্টার:</strong> বাম কলামে Block When-এর নিচে নতুন All/Active/Block অপশন যোগ করা হয়েছে; তার নিচে Display Per Page থাকবে। ডান কলামে Service Type-এর নিচে Keyword থাকবে। নির্বাচিত status অনুযায়ী রিপোর্ট ও export data ফিল্টার হবে।</li>
+          <li><strong>DataTable ও Export কলাম:</strong> Organization থেকে Modification Date পর্যন্ত নির্ধারিত ১৮টি কলাম একই ক্রমে দেখানো হয়েছে; Program ও Session একত্রে এবং Registration/Roll/Nick Name পৃথক কলামে থাকবে।</li>
+          <li><strong>Display, student number ও pagination:</strong> Display Per Page default ১০, Registration No. ৭ সংখ্যা এবং Roll No. ১১ সংখ্যা করা হয়েছে। Pagination-এ পৃথক bordered button, active page highlight ও responsive alignment যোগ হয়েছে।</li>
         </ol>
       </div>
       <div class="modal-footer">
