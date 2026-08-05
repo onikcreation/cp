@@ -17824,6 +17824,52 @@ span.hide-native-select{position:relative}span.hide-native-select select{border:
                               <span class="text-danger field-validation-valid" data-valmsg-for="OrganizationId" data-valmsg-replace="true">
                               </span>
                             </div>
+                            <label class="control-label col-md-2" for="Class">
+                              Class
+                            </label>
+                            <div class="col-md-4">
+                              <select class="form-control" id="classFilter" name="ClassFilter">
+                                <option value="0">
+                                  All
+                                </option>
+                                <option value="Five">
+                                  Five
+                                </option>
+                                <option value="Six">
+                                  Six
+                                </option>
+                                <option value="Seven">
+                                  Seven
+                                </option>
+                                <option value="Eight">
+                                  Eight
+                                </option>
+                                <option value="Nine">
+                                  Nine
+                                </option>
+                                <option value="Ten">
+                                  Ten
+                                </option>
+                                <option value="Eleven">
+                                  Eleven
+                                </option>
+                                <option value="Twelve">
+                                  Twelve
+                                </option>
+                                <option value="Model Test">
+                                  Model Test
+                                </option>
+                                <option value="Admission">
+                                  Admission
+                                </option>
+                                <option value="Graduate">
+                                  Graduate
+                                </option>
+                                <option value="Undergrad">
+                                  Undergrad
+                                </option>
+                              </select>
+                            </div>
                           </div>
                           <div class="form-group">
                             <label class="control-label col-md-2" for="Program">
@@ -58568,9 +58614,171 @@ function DeselectSelectedOptionAdd(elem) {
                   $("html, body").animate({ scrollTop: $("#reportResult").offset().top - 80 }, 300);
               }
 
+              // Demo-only: the real checkFormSubmit() (see further up this file) also
+              // requires Branch/Campus/Course/Mother Course/Batch Day/Batch Time/Batch/
+              // Exam - fields whose own cascades are still real/unfaked here (out of
+              // scope for now, see GenerateMeritList_Changes.txt), so they can never
+              // actually be filled in this offline demo. Enforcing those here would make
+              // the Generate button permanently non-functional. This checks only the
+              // fields that ARE genuinely fillable offline (static dropdowns + the real
+              // Organization/Program/Session cascade), reusing the exact same
+              // showErrorMessageBelowCtrl() red-border+message behavior and wording as
+              // checkFormSubmit() for each of those fields.
+              function checkDemoFormSubmit() {
+                  var isSuccess = true;
+
+                  var organizationId = $("#organizationId").val();
+                  if (organizationId == "" || organizationId == null) {
+                      showErrorMessageBelowCtrl("organizationId", "", false);
+                      showErrorMessageBelowCtrl("organizationId", "Organization field required.", true);
+                      isSuccess = false;
+                  }
+
+                  var programId = $("#ProgramId").val();
+                  if (programId == "" || programId == null) {
+                      showErrorMessageBelowCtrl("ProgramId", "", false);
+                      showErrorMessageBelowCtrl("ProgramId", "Program field required.", true);
+                      isSuccess = false;
+                  }
+
+                  var sessionId = $("#SessionId").val();
+                  if (sessionId == "" || sessionId == null) {
+                      showErrorMessageBelowCtrl("SessionId", "", false);
+                      showErrorMessageBelowCtrl("SessionId", "Session field required.", true);
+                      isSuccess = false;
+                  }
+
+                  var selectedExamType = $("#SelectedExampTypes").val();
+                  if (selectedExamType == "" || selectedExamType == null) {
+                      showErrorMessageBelowCtrl("SelectedExampTypes", "", false);
+                      showErrorMessageBelowCtrl("SelectedExampTypes", "Exam Type field required.", true);
+                      isSuccess = false;
+                  }
+
+                  var gender = $("#SelectedGender").val();
+                  if (gender == null || gender == "0" || gender == "undefined") {
+                      showErrorMessageBelowCtrl("SelectedGender", "", false);
+                      showErrorMessageBelowCtrl("SelectedGender", "Please Select Gender.", true);
+                      isSuccess = false;
+                  }
+
+                  var orderBy = $("#SelectedOrderBy").val();
+                  if (orderBy == null || orderBy == "" || orderBy == "0" || orderBy == "undefined") {
+                      showErrorMessageBelowCtrl("SelectedOrderBy", "", false);
+                      showErrorMessageBelowCtrl("SelectedOrderBy", "Please Select Order.", true);
+                      isSuccess = false;
+                  }
+
+                  var generateBy = $("#SelectedGenerateBy").val();
+                  if (generateBy == null || generateBy == "0" || generateBy == "undefined") {
+                      showErrorMessageBelowCtrl("SelectedGenerateBy", "", false);
+                      showErrorMessageBelowCtrl("SelectedGenerateBy", "Please Select Generate.", true);
+                      isSuccess = false;
+                  }
+
+                  var informationViewList = $("#informationViewList").val();
+                  if (informationViewList == "" || informationViewList == null) {
+                      showErrorMessageBelowCtrl("informationViewList", "", false);
+                      showErrorMessageBelowCtrl("informationViewList", "Option field required.", true);
+                      isSuccess = false;
+                  }
+
+                  return isSuccess;
+              }
+
               $(document).on("click", "#meritListGenerationBtn", function () {
-                  renderFakeMeritList();
+                  if (checkDemoFormSubmit()) {
+                      renderFakeMeritList();
+                  }
               });
+            </script>
+            <script>
+                // Demo-only: real Organization -> Program cascade normally calls
+                // Administration/CommonAjax/LoadProgram on the live server (no backend
+                // here). Faked using the same real Program list already captured for
+                // Admission Summary Report / Board Data Summary Report, so the new
+                // "Class" filter (added to the right of Organization) can actually
+                // narrow real programs. Class options and mapping reused verbatim from
+                // those pages' PROGRAM_CLASS_MAP.
+                var ORG_PROGRAMS = {"1":["Class 11 Academic Program","Engineering Admission Program","HSC Bangla-English Full Program","SSC ChemiStar","SSC Model Test","Varsity 'KA' Admission Program","Varsity 'KHA' Admission Program","11 Academic Free Class","12 Academic Free Class","Cadet College Vorti Shomvabona","Class 10 Academic Program","Class 10 Bangla-English Program","Class 12 Academic Program","Class 9 Academic Program","Class 9 Bangla-English Program","College Admission Program","Employee Training Program (ETP)","HSC ChemiStar","HSC CIVICS STAR","HSC Model Test","SSC Udvashito Mukh","Udvash-Unmesh-Uttoron Recruitment Test","Varsity 'KHA' Talent Hunt","Class 5 MCQ Math Olympiad","Class 6 MCQ Math Olympiad","Class 7 MCQ Math Olympiad","Class 8 MCQ Math Olympiad","Class 9 MCQ Math Olympiad","10 Academic Free Class","8 Academic Free Class","9 Academic Free class","Class 8 Academic Program","DU 'KHA' Shomvabona","HSC 1st Year Basic Course (Top 100 Topics)","HSC Science Foundation Program","HSC Udvashito Mukh","Varsity 'KHA'/Bivag Poriborton Free Program","Class 9 Academic Program (Online New)","Class 9 Academic Program (Online)","Class 9-10 Bangla-English Full Course","Class 11 Academic Program (New Batch 4th Porbo)"],"2":["Medical Admission Program","2nd Time Medical Admission Program","UNMESH Botany Brilliant","UNMESH Medi Chemistry"],"12":["BCS Free Course","BCS Preli Program","BCS Preli Written Combined Program","BCS Written Program","BCS Preli Live Exam (Free)","BCS Viva Program","Special BCS Program","BCS Preli Shomvabona","General BCS Program","Primary Job Preparation","BCS Foundation Program","BCS Quiz Contest Program","BCS Foundation Free Course","BCS Advance Program"],"13":["Cadet College Vorti Prostuti (Online)","Cadet College Vorti Prostuti Free Program","Class 11 Academic Free Program","Class 11 Academic Program (Online)","Engineering Admission Program (Online)","HSC Bangla-English Full Program (Online)","HSC ICT Online Program","Medical Admission Program (Online)","SSC A to Z Final Revision Course (Online)","SSC Model Test (Online)","Varsity 'KA' Admission Program (Online)","Varsity 'KHA' Admission Program (Online)","2nd Time Medical Admission Program (Online)","2nd Time Varsity 'KA' Admission Program (Online)","2nd Time Varsity 'KHA' Admission Program (Online)","Class 10 Academic Free Program","Class 10 Academic Online Program","Class 10 Bangla-English Program (Online)","Class 12 Academic Free Program","Class 12 Academic Program Online","Class 6 Academic Free Program","Class 6 Academic Program (Online)","Class 7 Academic Free Program","Class 7 Academic Program (Online)","Class 8 Academic Free Program","Class 8 Academic Online Program","Class 9 Academic Free Program","Class 9 Academic Online Program","Class 9 Bangla-English Program (Online)","College Admission Program (Online)","HSC A to Z Final Revision Course (Online)","HSC Model Test (Online)","Junior Britti Porikkha Prostuti","Primary Britti Porikkha Prostuti","HSC Final Revision & Pre-Admission Program","Class 9-10 Bangla-English Full Course (Online)","SSC MCQ Booster Program","Class 8 Bangla-English Full Course","HSC 1st Year Crash Course","HSC Science Foundation Program (Online)","Udvash-Unmesh Service","HSC Special Program (Online)"]};
+                var PROGRAM_CLASS_MAP = {"Medical Admission Program":["Admission"],"Medical Admission Program (Online)":["Admission"],"2nd Time Medical Admission Program (Online)":["Admission"],"Engineering Admission Program":["Admission"],"Engineering Admission Program (Online)":["Admission"],"Varsity 'KA' Admission Program":["Admission"],"Varsity 'KA' Admission Program (Online)":["Admission"],"2nd Time Varsity 'KA' Admission Program (Online)":["Admission"],"Varsity 'KHA' Admission Program":["Admission"],"Varsity 'KHA' Admission Program (Online)":["Admission"],"2nd Time Varsity 'KHA' Admission Program (Online)":["Admission"],"College Admission Program":[],"College Admission Program (Online)":[],"SSC Model Test":["Model Test"],"SSC Model Test (Online)":["Model Test"],"SSC A to Z Final Revision Course (Online)":["Model Test"],"HSC Model Test":["Model Test"],"HSC Model Test (Online)":["Model Test"],"HSC A to Z Final Revision Course (Online)":["Model Test"],"Cadet College Vorti Prostuti (Online)":[],"Class 6 Academic Program (Online)":["Six"],"Class 7 Academic Program (Online)":["Seven"],"Class 8 Academic Online Program":["Eight"],"Class 9 Academic Program":["Nine"],"Class 9 Academic Online Program":["Nine"],"Class 9 Bangla-English Program":["Nine"],"Class 9 Bangla-English Program (Online)":["Nine"],"Class 10 Academic Online Program":["Ten"],"Class 10 Academic Program":["Ten"],"Class 10 Bangla-English Program":["Ten"],"Class 10 Bangla-English Program (Online)":["Ten"],"2nd Time Medical Admission Program":["Admission"],"HSC ICT Online Program":["Eleven","Twelve"],"HSC Bangla-English Full Program":["Eleven","Twelve"],"Class 11 Academic Program":["Eleven"],"HSC Bangla-English Full Program (Online)":["Eleven","Twelve"],"Class 11 Academic Program (Online)":["Eleven"],"Class 12 Academic Program":["Twelve"],"Class 12 Academic Program Online":["Twelve"],"HSC Final Revision & Pre-Admission Program":["Eleven","Twelve"],"Primary Britti Porikkha Prostuti":[],"Junior Britti Porikkha Prostuti":[],"Class 9-10 Bangla-English Full Course (Online)":["Nine","Ten"],"Class 8 Bangla-English Full Course":["Eight"],"HSC Science Foundation Program":["Eleven","Twelve"],"HSC Science Foundation Program (Online)":["Eleven","Twelve"],"HSC 1st Year Basic Course (Top 100 Topics)":["Eleven"],"HSC 1st Year Crash Course":["Eleven"],"SSC MCQ Booster Program":["Model Test"],"Class 9-10 Bangla-English Full Course":["Nine","Ten"],"Class 9 Academic Program (Online New)":["Nine"],"Class 9 Academic Program (Online)":["Nine"],"Class 8 Academic Program":["Eight"],"Cadet College Vorti Prostuti Free Program":[],"Class 12 Academic Free Program":["Twelve"],"Class 11 Academic Free Program":["Eleven"],"Class 10 Academic Free Program":["Ten"],"Class 9 Academic Free Program":["Nine"],"Class 8 Academic Free Program":["Eight"],"Class 7 Academic Free Program":["Seven"],"Class 6 Academic Free Program":["Six"],"12 Academic Free Class":["Twelve"],"11 Academic Free Class":["Eleven"],"10 Academic Free Class":["Ten"],"9 Academic Free class":["Nine"],"8 Academic Free Class":["Eight"],"Varsity 'KHA'/Bivag Poriborton Free Program":["Admission"],"Udvash-Unmesh Service":[],"HSC Special Program (Online)":["Eleven","Twelve"],"SSC ChemiStar":["Nine","Ten"],"Cadet College Vorti Shomvabona":[],"Employee Training Program (ETP)":[],"HSC ChemiStar":["Eleven","Twelve"],"HSC CIVICS STAR":["Eleven","Twelve"],"SSC Udvashito Mukh":["Nine","Ten"],"Udvash-Unmesh-Uttoron Recruitment Test":[],"Varsity 'KHA' Talent Hunt":[],"Class 5 MCQ Math Olympiad":["Five"],"Class 6 MCQ Math Olympiad":["Six"],"Class 7 MCQ Math Olympiad":["Seven"],"Class 8 MCQ Math Olympiad":["Eight"],"Class 9 MCQ Math Olympiad":["Nine"],"DU 'KHA' Shomvabona":[],"HSC Udvashito Mukh":["Eleven","Twelve"],"Class 11 Academic Program (New Batch 4th Porbo)":["Eleven"],"UNMESH Botany Brilliant":[],"UNMESH Medi Chemistry":[],"BCS Free Course":["Graduate"],"BCS Preli Program":["Graduate"],"BCS Preli Written Combined Program":["Graduate"],"BCS Written Program":["Graduate"],"BCS Preli Live Exam (Free)":["Graduate"],"BCS Viva Program":["Graduate"],"Special BCS Program":["Graduate"],"BCS Preli Shomvabona":["Graduate"],"General BCS Program":["Graduate"],"Primary Job Preparation":["Graduate"],"BCS Foundation Program":["Graduate"],"BCS Quiz Contest Program":["Graduate"],"BCS Foundation Free Course":["Graduate"],"BCS Advance Program":["Graduate"]};
+
+                // Real Session list + Program->Session availability, same source
+                // ("Course Name.xlsx") and same derivation as Board Data Summary
+                // Report - powers the Program -> Session cascade below (also real
+                // AJAX on the live server, previously unfaked here).
+                var REAL_SESSIONS = [{"value":"70","text":"2027"},{"value":"66","text":"2026"},{"value":"65","text":"2025"},{"value":"63","text":"2024"},{"value":"61","text":"2023"},{"value":"58","text":"2022"},{"value":"54","text":"2021"},{"value":"53","text":"2020"},{"value":"52","text":"2019"},{"value":"51","text":"2018"},{"value":"46","text":"2017"},{"value":"45","text":"2016"},{"value":"44","text":"2015"},{"value":"43","text":"2014"},{"value":"50","text":"2013"},{"value":"49","text":"2012"},{"value":"48","text":"2011"},{"value":"47","text":"2010"},{"value":"55","text":"41st"},{"value":"56","text":"42nd"},{"value":"57","text":"43rd"},{"value":"59","text":"44th"},{"value":"60","text":"45th"},{"value":"62","text":"46th"},{"value":"64","text":"47th"},{"value":"67","text":"48th"},{"value":"68","text":"49th"},{"value":"69","text":"50th"},{"value":"71","text":"51st"}];
+                var PROGRAM_SESSIONS = {"13|Cadet College Vorti Prostuti (Online)":["2027","2026"],"13|Cadet College Vorti Prostuti Free Program":["2027"],"13|Class 11 Academic Free Program":["2027","2025","2022"],"13|Class 11 Academic Program (Online)":["2027","2026","2025","2024","2023"],"13|Engineering Admission Program (Online)":["2027","2026","2025","2024","2023","2022"],"13|HSC Bangla-English Full Program (Online)":["2027","2026","2025","2024","2023","2022"],"13|HSC ICT Online Program":["2027","2026","2025","2024","2023","2022"],"13|Medical Admission Program (Online)":["2027","2026","2025","2024","2023","2022"],"13|SSC A to Z Final Revision Course (Online)":["2027","2026","2025"],"13|SSC Model Test (Online)":["2027","2026","2025","2024","2023","2022"],"13|Varsity 'KA' Admission Program (Online)":["2027","2026","2025","2024","2023","2022"],"13|Varsity 'KHA' Admission Program (Online)":["2027","2026","2025","2024"],"13|2nd Time Medical Admission Program (Online)":["2026","2025"],"13|2nd Time Varsity 'KA' Admission Program (Online)":["2026"],"13|2nd Time Varsity 'KHA' Admission Program (Online)":["2026"],"13|Class 10 Academic Free Program":["2026","2025"],"13|Class 10 Academic Online Program":["2026","2025","2024","2023","2022"],"13|Class 10 Bangla-English Program (Online)":["2026"],"13|Class 12 Academic Free Program":["2026"],"13|Class 12 Academic Program Online":["2026","2025","2024","2023","2022"],"13|Class 6 Academic Free Program":["2026","2025","2024"],"13|Class 6 Academic Program (Online)":["2026","2025","2024"],"13|Class 7 Academic Free Program":["2026","2025","2024"],"13|Class 7 Academic Program (Online)":["2026","2025","2024"],"13|Class 8 Academic Free Program":["2026","2025"],"13|Class 8 Academic Online Program":["2026","2025","2024","2023","2022"],"13|Class 9 Academic Free Program":["2026","2025"],"13|Class 9 Academic Online Program":["2026","2025","2024","2023","2022"],"13|Class 9 Bangla-English Program (Online)":["2026"],"13|College Admission Program (Online)":["2026","2025","2024","2023","2022"],"13|HSC A to Z Final Revision Course (Online)":["2026"],"13|HSC Model Test (Online)":["2026","2025","2024","2023"],"13|Junior Britti Porikkha Prostuti":["2026","2025"],"13|Primary Britti Porikkha Prostuti":["2026","2025"],"13|HSC Final Revision & Pre-Admission Program":["2025","2024"],"13|Class 9-10 Bangla-English Full Course (Online)":["2024","2023","2022"],"13|SSC MCQ Booster Program":["2024","2023"],"13|Class 8 Bangla-English Full Course":["2023"],"13|HSC 1st Year Crash Course":["2023"],"13|HSC Science Foundation Program (Online)":["2023","2022"],"13|Udvash-Unmesh Service":["2023","2022"],"13|HSC Special Program (Online)":["2022"],"1|Class 11 Academic Program":["2027","2026","2025","2024","2023","2022"],"1|Engineering Admission Program":["2027","2026","2025","2024","2023","2022"],"1|HSC Bangla-English Full Program":["2027","2026"],"1|SSC ChemiStar":["2027","2026","2025","2024","2022"],"1|SSC Model Test":["2027","2026","2025","2024","2023","2022"],"1|Varsity 'KA' Admission Program":["2027","2026","2025","2024","2023","2022"],"1|Varsity 'KHA' Admission Program":["2027","2026","2025","2024"],"1|11 Academic Free Class":["2026","2024"],"1|12 Academic Free Class":["2026","2025","2024","2023"],"1|Cadet College Vorti Shomvabona":["2026"],"1|Class 10 Academic Program":["2026","2025","2024","2023"],"1|Class 10 Bangla-English Program":["2026"],"1|Class 12 Academic Program":["2026","2025","2024","2023","2022"],"1|Class 9 Academic Program":["2026","2025","2024","2023","2022","2019"],"1|Class 9 Bangla-English Program":["2026"],"1|College Admission Program":["2026","2025","2024","2023","2022"],"1|Employee Training Program (ETP)":["2026","2021","2018"],"1|HSC ChemiStar":["2026","2025","2024"],"1|HSC CIVICS STAR":["2026","2025","2024"],"1|HSC Model Test":["2026","2025","2024","2023"],"1|SSC Udvashito Mukh":["2026","2025","2024","2023","2022"],"1|Udvash-Unmesh-Uttoron Recruitment Test":["2026"],"1|Varsity 'KHA' Talent Hunt":["2026","2025","2024"],"1|Class 5 MCQ Math Olympiad":["2025"],"1|Class 6 MCQ Math Olympiad":["2025","2024"],"1|Class 7 MCQ Math Olympiad":["2025","2024"],"1|Class 8 MCQ Math Olympiad":["2025","2024","2023"],"1|Class 9 MCQ Math Olympiad":["2025","2024","2023"],"1|10 Academic Free Class":["2024","2023"],"1|8 Academic Free Class":["2024","2023"],"1|9 Academic Free class":["2024","2023"],"1|Class 8 Academic Program":["2023"],"1|DU 'KHA' Shomvabona":["2023"],"1|HSC 1st Year Basic Course (Top 100 Topics)":["2023"],"1|HSC Science Foundation Program":["2023","2022"],"1|HSC Udvashito Mukh":["2023","2022"],"1|Varsity 'KHA'/Bivag Poriborton Free Program":["2023"],"1|Class 9 Academic Program (Online New)":["2021"],"1|Class 9 Academic Program (Online)":["2021"],"1|Class 9-10 Bangla-English Full Course":["2021"],"1|Class 11 Academic Program (New Batch 4th Porbo)":["2020"],"2|Medical Admission Program":["2027","2026","2025","2024","2023","2022"],"2|2nd Time Medical Admission Program":["2025"],"2|UNMESH Botany Brilliant":["2023"],"2|UNMESH Medi Chemistry":["2023","2021"],"12|BCS Free Course":["2024","2023","2022","46th","47th","48th","49th","50th","51st"],"12|BCS Preli Program":["43rd","44th","45th","46th","47th","48th","49th","50th","51st"],"12|BCS Preli Written Combined Program":["51st"],"12|BCS Written Program":["41st","43rd","44th","45th","46th","47th","50th","51st"],"12|BCS Preli Live Exam (Free)":["46th","47th","50th"],"12|BCS Viva Program":["41st","43rd","44th","45th","46th","47th","50th"],"12|Special BCS Program":["48th","49th"],"12|BCS Preli Shomvabona":["45th","46th","47th"],"12|General BCS Program":["41st","43rd","44th","45th","46th"],"12|Primary Job Preparation":["2025"],"12|BCS Foundation Program":["2024","2023","2022"],"12|BCS Quiz Contest Program":["2024"],"12|BCS Foundation Free Course":["2023","2022"],"12|BCS Advance Program":["2021"]};
+                var SESSION_TEXT_TO_VALUE = {};
+                REAL_SESSIONS.forEach(function (s) { SESSION_TEXT_TO_VALUE[s.text] = s.value; });
+
+                function sessionsForOrgProgram(orgId, programName) {
+                    var texts = PROGRAM_SESSIONS[String(orgId) + "|" + programName] || [];
+                    return texts.map(function (t) { return { Text: t, Value: SESSION_TEXT_TO_VALUE[t] }; });
+                }
+
+                function programsForOrgAndClass(orgId, cls) {
+                    var names = ORG_PROGRAMS[String(orgId)] || [];
+                    if (cls && cls !== "0") {
+                        names = names.filter(function (name) {
+                            return (PROGRAM_CLASS_MAP[name] || []).indexOf(cls) !== -1;
+                        });
+                    }
+                    return names.map(function (name) { return { Text: name, Value: name }; });
+                }
+
+                var realAjax = jQuery.ajax;
+                jQuery.ajax = function (options) {
+                    options = options || {};
+                    var url = options.url || "";
+                    var d = options.data || {};
+                    if (/CommonAjax\/LoadProgram/.test(url)) {
+                        var programList = programsForOrgAndClass(d.organizationIds, $("#classFilter").val());
+                        if (typeof options.beforeSend === "function") { try { options.beforeSend(); } catch (e) { } }
+                        setTimeout(function () {
+                            if (typeof options.success === "function") { try { options.success({ IsSuccess: true, returnProgramList: programList }); } catch (e) { } }
+                            if (typeof options.complete === "function") { try { options.complete(); } catch (e) { } }
+                        }, 200);
+                        return jQuery.Deferred().promise();
+                    }
+                    if (/CommonAjax\/LoadSession/.test(url)) {
+                        var sessionList = sessionsForOrgProgram(d.organizationIds, d.programIds);
+                        if (typeof options.beforeSend === "function") { try { options.beforeSend(); } catch (e) { } }
+                        setTimeout(function () {
+                            if (typeof options.success === "function") { try { options.success({ IsSuccess: true, returnSessionList: sessionList }); } catch (e) { } }
+                            if (typeof options.complete === "function") { try { options.complete(); } catch (e) { } }
+                        }, 200);
+                        return jQuery.Deferred().promise();
+                    }
+                    return realAjax.call(jQuery, options);
+                };
+
+                // Class filter has no cascading change handler of its own in the real
+                // captured script (it did not exist there) - re-run the same LoadProgram
+                // call the Organization handler uses, now scoped by the selected Class too.
+                $(document).on("change", "#classFilter", function () {
+                    var organizationId = $("#organizationId").val();
+                    if (organizationId == "") { return; }
+                    var prevProgram = $("#ProgramId").val();
+                    $("#ProgramId option").remove();
+                    $.ajax({
+                        url: $("body").attr("data-project-root") + "Administration/CommonAjax/LoadProgram",
+                        type: "POST",
+                        data: { organizationIds: organizationId, isAuthorized: true },
+                        success: function (response) {
+                            if (response.IsSuccess) {
+                                $("#ProgramId").append('<option value="">Select Program</option>');
+                                if (response.returnProgramList != null && response.returnProgramList.length > 0) {
+                                    $.each(response.returnProgramList, function (i, v) {
+                                        $("#ProgramId").append($('<option>').text(v.Text).attr("value", v.Value));
+                                    });
+                                    var stillValid = $("#ProgramId option[value='" + prevProgram + "']").length > 0;
+                                    $("#ProgramId").val(stillValid ? prevProgram : "");
+                                }
+                            }
+                        }
+                    });
+                });
             </script>
           </body>
         </html>
