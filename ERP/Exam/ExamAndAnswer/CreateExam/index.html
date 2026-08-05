@@ -9582,7 +9582,7 @@ body { font-family: "Open Sans", Arial, sans-serif; }
                             </div>
                           </div>
                           
-<div class="row col-md-12 offline-script-upload-row" style="margin-bottom: 20px;">
+<div class="row col-md-12 offline-script-upload-row" style="margin-bottom: 20px; display: none;">
   <div class="col-md-6">
     <div style="font-weight: 600; margin-bottom: 8px;">Script Upload Type</div>
     <label class="radio-inline" for="onlineWrittenQuestionWise">
@@ -11150,7 +11150,7 @@ body { font-family: "Open Sans", Arial, sans-serif; }
                             </div>
                           </div>
                           
-<div class="row col-md-12 offline-script-upload-row" style="margin-bottom: 20px;">
+<div class="row col-md-12 offline-script-upload-row" style="margin-bottom: 20px; display: none;">
   <div class="col-md-6">
     <div style="font-weight: 600; margin-bottom: 8px;">Script Upload Type</div>
     <label class="radio-inline" for="onlineWrittenQuestionWise">
@@ -11414,7 +11414,7 @@ body { font-family: "Open Sans", Arial, sans-serif; }
                             </div>
                           </div>
                           
-<div class="row col-md-12 offline-script-upload-row" style="margin-bottom: 20px;">
+<div class="row col-md-12 offline-script-upload-row" style="margin-bottom: 20px; display: none;">
   <div class="col-md-6">
     <div style="font-weight: 600; margin-bottom: 8px;">Script Upload Type</div>
     <label class="radio-inline" for="onlineWrittenQuestionWise">
@@ -11490,6 +11490,11 @@ body { font-family: "Open Sans", Arial, sans-serif; }
   <div class="update-section">
     <p class="update-title">📌 ৩. Include Extra Time for OMR Exam</p>
     <p>MCQ সেকশনে <strong>Time Allowed for Upload</strong> ও <strong>Include Extra Time for OMR Exam</strong>—দুইটি ইনপুট শুরুতে লুকানো থাকবে। <strong>Enable Upload OMR Sheet from App</strong> টিক দিলে দুইটি বক্স পাশাপাশি দেখা যাবে; টিক তুলে দিলে দুইটি বক্সই লুকিয়ে যাবে এবং তাদের মান ০ হয়ে যাবে।</p>
+  </div>
+
+  <div class="update-section">
+    <p class="update-title">📌 ৪. Online Written-এর Upload Option</p>
+    <p><strong>Exam Type: Online Written</strong> নির্বাচিত হলে <strong>Script Upload Type</strong> ও <strong>Time Allowed for Upload</strong> শুধু <strong>Exam Platform: Live Exam</strong> অথবা <strong>Practice Exam</strong>-এ দেখা যাবে। <strong>In-Branch Exam</strong> নির্বাচন করলে option দুইটি দেখাবে না।</p>
   </div>
 </div>
 </div>
@@ -11682,6 +11687,7 @@ body { font-family: "Open Sans", Arial, sans-serif; }
     if (saq && !q('input[name="saqsubType"]:checked')) q("#singleSaqSubType").checked = true;
     if (written && !q('input[name="writtensubType"]:checked')) q("#singleWrittenSubType").checked = true;
     if (online && !q('input[name="onlineWrittensubType"]:checked')) q("#singleOnlineWrittenSubType").checked = true;
+    updateOnlineWrittenUploadFields();
   }
   function isValidExamTypeSelection() {
     var selected = examTypes.filter(function (checkbox) { return checkbox.checked; });
@@ -11828,6 +11834,7 @@ body { font-family: "Open Sans", Arial, sans-serif; }
     if (!template || !target) return;
     target.innerHTML = template.innerHTML;
     if (value === "2") initializeMultipleOnlineWrittenRows();
+    updateOnlineWrittenUploadFields();
   }
   qa('input[name="mcqsubType"]').forEach(function (radio) {
     radio.addEventListener("change", function () {
@@ -11850,6 +11857,15 @@ body { font-family: "Open Sans", Arial, sans-serif; }
     });
   });
   var examPlatform = q("#examPlatform");
+  function updateOnlineWrittenUploadFields() {
+    var onlineWritten = q("#onlineWrittenExamType");
+    var isOnlinePlatform = examPlatform && (examPlatform.value === "2" || examPlatform.value === "3");
+    var shouldShow = !!(onlineWritten && onlineWritten.checked && isOnlinePlatform);
+    displayAll("#onlineWrittenPartialView .offline-script-upload-row", shouldShow);
+    qa("#onlineWrittenPartialView .offline-script-upload-row input").forEach(function (input) {
+      input.disabled = !shouldShow;
+    });
+  }
   function updateOmrUploadTimeFields() {
     var uploadOmr = q("#mcqPartialView #isUploadOmrSheetFromApp");
     var uploadTime = q("#mcqPartialView #timeAllowedForUploadInMin");
@@ -11889,6 +11905,7 @@ body { font-family: "Open Sans", Arial, sans-serif; }
       if (q("#isPrintFromUploadedPdf")) q("#isPrintFromUploadedPdf").checked = false;
     }
     updateOmrUploadTimeFields();
+    updateOnlineWrittenUploadFields();
   }
   if (examPlatform) {
     examPlatform.addEventListener("change", updateExamPlatformFields);
