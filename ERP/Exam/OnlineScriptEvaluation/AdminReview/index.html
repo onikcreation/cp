@@ -9514,22 +9514,6 @@ table.DTFC_Cloned thead,table.DTFC_Cloned tfoot{background-color:white}div.DTFC_
                               </div>
                             </div>
                             <div class="form-group">
-                              <label class="control-label col-md-2" for="Evaluation_Status">
-                                Evaluation Status
-                              </label>
-                              <div class="col-md-4">
-                                <select class="form-control" id="EvaluationStatus" name="EvaluationStatus">
-                                  <option value="">
-                                    All
-                                  </option>
-                                  <option value="Evaluated">
-                                    Evaluated
-                                  </option>
-                                  <option value="Blank">
-                                    Blank
-                                  </option>
-                                </select>
-                              </div>
                               <label class="control-label col-md-2" for="Display_Per_Page">
                                 Display Per Page
                               </label>
@@ -26613,11 +26597,7 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
             var maxMarks = maxOptions[seed2 % maxOptions.length];
             if (minMarks >= maxMarks) minMarks = 0;
             var totalScript = 5 + (seed2 % 130);
-            // এই এক্সাম-ভার্সন-সিরিয়ালের মোট স্ক্রিপ্টের কত অংশ শিক্ষক দ্বারা
-            // মূল্যায়িত (Evaluated) হয়েছে, বাকিটা Blank (Auto/Manually Blank —
-            // শিক্ষার্থী উত্তর করেনি, তাই কখনো শিক্ষকের কাছে যায়নি)।
-            var evaluatedFraction = 0.65 + ((seed2 % 30) / 100); // ~0.65–0.94
-            return { minMarks: minMarks, maxMarks: maxMarks, totalScript: totalScript, evaluatedFraction: evaluatedFraction };
+            return { minMarks: minMarks, maxMarks: maxMarks, totalScript: totalScript };
         }
 
         function rowsForCombo(combo, detailLevel, filters) {
@@ -26647,7 +26627,6 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                         minMarks: mm.minMarks,
                         maxMarks: mm.maxMarks,
                         totalScript: mm.totalScript,
-                        evaluatedFraction: mm.evaluatedFraction,
                         orgId: combo.orgId, program: combo.program, session: combo.session,
                         courseName: combo.course, examCode: exam.code, subj: exam.subj, serial: serial
                     });
@@ -26743,15 +26722,6 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                 rows = rows.map(function (r) { return Object.assign({}, r, { totalScript: Math.max(1, Math.round(r.totalScript * 0.55)) }); });
             }
 
-            // Evaluation Status — Evaluated: শিক্ষক দ্বারা মূল্যায়িত খাতা; Blank:
-            // Auto Blank/Manually Blank (শিক্ষার্থী উত্তর করেনি, কখনো শিক্ষকের
-            // কাছে যায়নি) — Total Script কলামের সংখ্যা সেই অনুযায়ী ভাগ হয়।
-            if (filters.evaluationStatus === "Evaluated") {
-                rows = rows.map(function (r) { return Object.assign({}, r, { totalScript: Math.max(1, Math.round(r.totalScript * r.evaluatedFraction)) }); });
-            } else if (filters.evaluationStatus === "Blank") {
-                rows = rows.map(function (r) { return Object.assign({}, r, { totalScript: Math.max(1, Math.round(r.totalScript * (1 - r.evaluatedFraction))) }); });
-            }
-
             rows.forEach(function (r, i) { r.sl = i + 1; });
             return rows;
         }
@@ -26795,8 +26765,7 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                 maxMarks: $('#MaxMarks').val(),
                 rollNumber: $('#selectRollNumber').val() || "",
                 teacherTpin: $('#TeacherId').val() || "",
-                reviewStatus: $('#ReviewStatus').val() || "",
-                evaluationStatus: $('#EvaluationStatus').val() || ""
+                reviewStatus: $('#ReviewStatus').val() || ""
             };
         }
 
@@ -28043,21 +28012,7 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                         <button type="button" class="pcm-copy-btn" title="সম্পূর্ণ কনটেন্ট কপি করুন" style="float:right; margin:-2px 8px 0 0; background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.5); color:#fff; border-radius:4px; padding:2px 10px; font-size:12px; line-height:1.6; cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="12" height="12" fill="currentColor" style="vertical-align:-1px; margin-right:4px;"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path></svg>Copy</button>
                         <h4 class="modal-title" id="pageChangesModalLabel">এই পেইজে যা নতুন পরিবর্তন/আপডেট করা হয়েছে</h4>
                       </div>
-                      <div class="modal-body" style="height:65vh; overflow-y:auto;">
-                        <ol style="padding-left:20px; margin:0;">
-                          <li style="margin-bottom:12px;">
-                            এই মেনুতে নতুন "Evaluation Status" ফিল্টার ড্রপডাউন যোগ করতে হবে।
-                            <br>
-                            ড্রপডাউনে যা থাকবে: All / Evaluated / Blank।
-                            <br>
-                            All সিলেক্ট করলে: বর্তমান লজিক অনুযায়ি সকল খাতাগুলো দেখাবে।
-                            <br>
-                            Evaluated সিলেক্ট করলে: শুধু টিচার দ্বারা মূল্যায়িত খাতাগুলো দেখাবে।
-                            <br>
-                            Blank সিলেক্ট করলে: যে খাতাগুলো টিচারের কাছে যায়নি (Auto Blank বা Manually Blank — অর্থাৎ শিক্ষার্থী উত্তর করেনি) সেই খাতাগুলো দেখাবে।
-                          </li>
-                        </ol>
-                      </div>
+                      <div class="modal-body" style="height:65vh; overflow-y:auto;"></div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">বন্ধ করুন</button>
                       </div>
