@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UMS - Add Course - Al Amin Anik (Demo Copy)</title>
+  <style>
+    :root{--brand:#2f1031;--brand-2:#461748;--line:#d9d9d9;--soft:#f6f6f6;--blue:#428bca;--green:#10b981;--text:#333}
+    *{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:"Open Sans",Arial,sans-serif;color:var(--text);font-size:14px;background:#fff}
+    a{color:var(--brand);text-decoration:none}button,input,select{font:inherit}.topbar{position:fixed;z-index:50;top:0;left:0;right:0;height:50px;background:#4338CA;color:#fff;display:flex;align-items:center;padding:0 15px;box-shadow:0 1px 3px #999}
+    .brand{display:flex;align-items:center;margin-right:0}.menu-toggle{display:none;width:40px;height:50px;font-size:19px;color:#fff;background:transparent;border:0;cursor:pointer}.demo-pill{display:flex;align-items:center;height:50px;margin-left:-15px;padding:0 15px;color:#fff}.demo-pill::after{content:"Demo Design";display:inline-block;padding:6px 12px;line-height:1.2;text-align:center;border-radius:6px;background:var(--green);border:2px solid #fff;color:#fff;font-size:12.5px;font-weight:700;white-space:nowrap}.demo-pill{font-size:0}.modules{display:flex;align-items:center;gap:0;margin-left:0}.modules a{display:block;padding:15px;color:#ddd;line-height:20px}.modules a.active,.modules a:hover{color:#fff}.profile{margin-left:auto;display:flex;align-items:center;gap:0;height:50px}.profile>span{padding:15px}.power{height:50px;padding:0 18px;font-size:22px;color:#fff;border:0;background:none;cursor:pointer}
+    .layout{display:grid;grid-template-columns:11% minmax(0,89%);padding-top:50px;min-height:100vh}.sidebar{max-width:210px;border-right:1px solid #cfcfcf;padding:10px 0 0;background:#fff}.menu-search{position:relative;margin-bottom:5px}.menu-search input{width:100%;height:34px;border:1px solid #ccc;border-radius:4px;padding:6px 34px 6px 12px}.clear-search{position:absolute;right:3px;top:4px;width:26px;height:26px;line-height:22px;padding:0;border-radius:50%;color:#999;border:0;background:#ddd;font-size:20px;cursor:pointer}.side-title{background:var(--brand);color:#fff;padding:10px 15px;line-height:20px;border-radius:4px;margin:0 0 5px;font-size:14px}.menu-group{border:1px solid #ddd;border-radius:4px;background:#f5f5f5;margin-bottom:5px;box-shadow:0 1px 1px rgba(0,0,0,.05)}.menu-group>button{width:100%;text-align:left;padding:10px 15px;line-height:20px;border:0;background:transparent;cursor:pointer}.submenu{display:none;background:#fff;padding:4px 11px 7px}.menu-group.open .submenu{display:block}.submenu a{display:block;padding:5px 0;border-bottom:1px solid #eee;color:#3d2b3e}.submenu a:last-child{border:0}.submenu a.active{font-weight:700}.content{padding:10px 0 70px 15px;min-width:0}.panel{border:1px solid var(--brand);border-radius:4px;background:#fff;box-shadow:0 1px 1px rgba(0,0,0,.05)}.panel-heading{background:var(--brand);color:#fff;font-weight:700;padding:10px 15px;border-radius:3px 3px 0 0;font-size:14px}.panel-body{padding:15px}
+    .course-form{display:grid;grid-template-columns:1fr 1fr;column-gap:45px;row-gap:14px}.field{display:grid;grid-template-columns:260px minmax(190px,1fr);gap:12px;align-items:center}.field label{text-align:right;font-weight:700}.control{width:100%;height:34px;border:1px solid #ccc;border-radius:3px;padding:6px 10px;background:#fff}.control[readonly]{background:#eee}.wide{grid-column:1/-1}.check-row{display:flex;align-items:center;gap:42px;min-height:28px}.check-row .main-label{width:248px;text-align:right;font-weight:700;margin-right:0}.check{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}.check input{margin:0}.section-title{font-weight:700;border-bottom:1px solid #ddd;padding:5px 0 8px;margin:4px 0}.portal-grid{display:grid;grid-template-columns:1fr 1fr;gap:34px}.setting-box .field{grid-template-columns:220px minmax(170px,1fr);margin:11px 0}.setting-box .field label{font-size:12px}.setting-box .section-title{text-align:left}.submit-row{text-align:center;padding-top:18px}.btn{display:inline-block;border:1px solid transparent;border-radius:3px;padding:7px 13px;cursor:pointer}.btn-primary{background:var(--blue);border-color:#357ebd;color:#fff}.btn-link{border:0;background:none;color:var(--brand);cursor:pointer}.back-link{display:inline-block;margin-top:14px}.footer{text-align:center;color:#666;padding:40px 10px 12px}
+    .modal-backdrop{position:fixed;z-index:100;inset:0;background:rgba(0,0,0,.46);display:none;align-items:center;justify-content:center;padding:18px}.modal-backdrop.show{display:flex}.modal{width:min(480px,100%);background:#fff;border-radius:5px;box-shadow:0 5px 22px rgba(0,0,0,.35);overflow:hidden}.modal-head{padding:13px 17px;background:var(--brand);color:#fff;font-weight:700}.modal-body{padding:24px 18px;font-size:15px}.modal-foot{text-align:right;border-top:1px solid #ddd;padding:10px 15px}.toast{position:fixed;top:65px;left:50%;transform:translateX(-50%);z-index:120;background:#dff0d8;border:1px solid #b2dba1;color:#3c763d;border-radius:4px;padding:10px 16px;box-shadow:0 2px 8px #999;display:none}
+    .conditional-sections{display:none;grid-column:1/-1;margin:1px 0 4px}.conditional-sections.show{display:block}.subject-panel{border:1px solid #ddd;border-radius:4px;padding:15px;background:#fff}.table-wrap{width:100%;overflow:auto;border:1px solid #ccc}.subject-panel .table-wrap{border:0}.subject-panel .data-table{margin-bottom:20px}.data-table{width:100%;min-width:1100px;border-collapse:collapse;font-size:14px}.data-table th,.data-table td{height:51px;border:1px solid #ddd;padding:8px;text-align:center;vertical-align:middle}.data-table th{height:59px;background:#f7f7f7}.data-table td.subject-name{text-align:left}.fee-input{width:100%;min-width:82px;height:34px;border:1px solid #ccc;border-radius:3px;padding:6px 12px}.fee-input:disabled{background:#eee;color:#999}.fee-input.group-select:disabled{background:#fff;color:#333}.total-row{height:38px;font-weight:700;background:#fff}.total-row td{height:38px}.materials-panel{margin-top:18px;border:0}.materials-heading{width:100%;height:41px;display:flex;justify-content:space-between;align-items:center;background:var(--brand);color:#fff;font-weight:700;padding:9px 15px;border:0;border-radius:3px;text-align:left;cursor:pointer}.materials-heading:hover,.materials-heading:focus{background:#421744;outline:0}.materials-state{font-size:18px;line-height:1}.materials-content{display:none;margin-top:1px}.materials-content.expanded{display:block}.materials-table{min-width:760px}.materials-table td:nth-child(1){text-align:left}.materials-table td:nth-child(2){width:120px;text-align:right}.materials-table td:nth-child(3){width:260px;text-align:left}.material-category td{font-weight:700;background:#f3f3f3}
+    @media(max-width:1600px){.layout{grid-template-columns:13% minmax(0,87%)}}
+    @media(max-width:1000px){.menu-toggle{display:block}.demo-pill{margin-left:0}.modules,.profile{display:none}.layout{grid-template-columns:1fr}.sidebar{display:block;position:fixed;z-index:45;left:-220px;top:50px;bottom:0;width:210px;max-width:210px;overflow:auto;transition:.2s}.layout.sidebar-open .sidebar{left:0;box-shadow:3px 0 12px #999}.content{padding:10px 0 70px}.course-form,.portal-grid{grid-template-columns:1fr}.wide{grid-column:auto}.field{grid-template-columns:165px 1fr}.setting-box .field{grid-template-columns:190px 1fr}}
+    @media(max-width:760px){.content{padding:5px 0 70px}.course-form{display:block}.field,.setting-box .field{grid-template-columns:1fr;gap:5px;margin-bottom:12px}.field label,.setting-box .field label{text-align:left}.check-row{flex-wrap:wrap;gap:12px}.check-row .main-label{width:100%;text-align:left}.portal-grid{display:block}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button><a class="demo-pill" href="https://onikcreation.com/cp" target="_blank" rel="noopener">Demo Design</a></div>
+    <nav class="modules" aria-label="Main modules"><a href="#">Student</a><a href="#">CRM</a><a href="#">Exam</a><a href="#">Teacher</a><a href="#">Team</a><a href="#">Inventory</a><a class="active" href="#">Administration</a></nav>
+    <div class="profile"><span>Al Amin Anik ▾</span><button class="power" data-demo-message="Log off is disabled in this demo copy." aria-label="Log off">⏻</button></div>
+  </header>
+
+  <div class="layout" id="layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="menu-search"><input id="menuSearch" placeholder="Search By Menu.."><button class="clear-search" id="clearSearch" aria-label="Clear">×</button></div>
+      <div class="side-title">Administration</div>
+      <div id="sideMenu">
+        <div class="menu-group"><button>Bank</button></div><div class="menu-group"><button>Branch</button></div><div class="menu-group"><button>Program</button></div><div class="menu-group"><button>Session</button></div><div class="menu-group"><button>Campus</button></div><div class="menu-group"><button>Batch</button></div><div class="menu-group"><button>Subject</button></div>
+        <div class="menu-group open"><button>Courses &amp; Fees</button><div class="submenu">
+          <a class="active" href="index.html">Add Course</a><a href="#" data-demo-message="Course Log is not included in this demo copy.">Course Log</a><a href="#" data-demo-message="Course Batch Assign is not included in this demo copy.">Course Batch Assign</a><a href="#" data-demo-message="Course Batch Assign Log is not included in this demo copy.">Course Batch Assign Log</a><a href="../ManageCourse/index.html">Manage Course</a><a href="#" data-demo-message="Course Subject View is not included in this demo copy.">Course Subject View</a><a href="#" data-demo-message="Assign Materials Log is not included in this demo copy.">Assign Materials Log</a><a href="../CourseMapping/index.html">Course Mapping</a><a href="#" data-demo-message="Course Compare is not included in this demo copy.">Course Compare</a>
+        </div></div>
+        <div class="menu-group"><button>Lecture Plan</button></div><div class="menu-group"><button>Offered Discount</button></div><div class="menu-group"><button>Previous Student Discount</button></div><div class="menu-group"><button>Special Discount</button></div><div class="menu-group"><button>Materials</button></div><div class="menu-group"><button>Institute</button></div><div class="menu-group"><button>Auto SMS Setting</button></div><div class="menu-group"><button>Survey</button></div><div class="menu-group"><button>User Management</button></div><div class="menu-group"><button>Menu Management</button></div><div class="menu-group"><button>External Application</button></div><div class="menu-group"><button>Visited Institute</button></div><div class="menu-group"><button>Teacher Management</button></div><div class="menu-group"><button>Student Management</button></div><div class="menu-group"><button>Zone</button></div><div class="menu-group"><button>Student Class &amp; Program</button></div><div class="menu-group"><button>Routine</button></div><div class="menu-group"><button>Zoom</button></div><div class="menu-group"><button>Software Settings</button></div><div class="menu-group"><button>Customized Content</button></div><div class="menu-group"><button>Interactive Class</button></div><div class="menu-group"><button>Q&amp;A2 Service</button></div><div class="menu-group"><button>Mobile App</button></div><div class="menu-group"><button>Community</button></div><div class="menu-group"><button>Cache Manage</button></div>
+      </div>
+    </aside>
+
+    <main class="content">
+      <section class="panel">
+        <div class="panel-heading" id="pageHeading">Add Course</div>
+        <div class="panel-body">
+          <form id="courseForm" novalidate>
+            <div class="course-form">
+              <div class="field"><label for="organization">Organization</label><select class="control" id="organization" required><option value="">Select Organization</option><option>UDVASH</option><option>UNMESH</option><option>ONLINE CARE</option><option>UTTORON</option></select></div>
+              <div class="field"><label for="program">Program</label><select class="control" id="program" required><option value="">Select Program</option><option>Engineering Admission Program</option><option>Medical Admission Program (Online)</option><option>Varsity 'KA' Admission Program</option><option>Class 12 Academic Program Online</option></select></div>
+              <div class="field"><label for="session">Session</label><select class="control" id="session" required><option value="">Select Session</option><option>2027</option><option>2026</option><option>2025</option><option>51st</option></select></div>
+              <div class="field"><label for="fullName">Full Name</label><input class="control" id="fullName" placeholder="Course Name" required></div>
+              <div class="field"><label for="shortName">Short Name</label><input class="control" id="shortName" placeholder="Short Name" required></div>
+              <div class="field"><label for="displayName">Display Name</label><input class="control" id="displayName" placeholder="Display Name" required></div>
+              <div class="conditional-sections" id="courseAssignmentSections">
+                <div class="subject-panel">
+                  <div class="table-wrap"><table class="data-table" aria-label="Assign Subject">
+                    <colgroup><col style="width:4%"><col style="width:20%"><col style="width:11%"><col style="width:11%"><col style="width:11%"><col style="width:11%"><col style="width:11%"><col style="width:14%"><col style="width:7%"></colgroup>
+                    <thead><tr><th>Sl</th><th><label class="check"><input type="checkbox" id="checkAllSubjects"> Assign Subject</label></th><th>Tuition Fee</th><th>e-Learning Fee</th><th>Digital Content</th><th>Study Materials (Printed)</th><th>Payment</th><th>Group</th><th><label class="check"><input type="checkbox" id="checkAllMr"> Show in MR</label></th></tr></thead>
+                    <tbody id="subjectRows"></tbody>
+                    <tfoot><tr class="total-row"><td></td><td>Total</td><td id="tuitionTotal"></td><td id="elearningTotal"></td><td id="digitalTotal"></td><td id="printedTotal"></td><td id="paymentTotal"></td><td></td><td></td></tr></tfoot>
+                  </table></div>
+                </div>
+                <div class="materials-panel">
+                  <button class="materials-heading" type="button" id="materialsToggle" aria-expanded="false" aria-controls="materialsContent"><span>Assign Materials (<span id="selectedMaterialPrice">0.00</span>)</span><span>Log Details <span class="materials-state" aria-hidden="true">+</span></span></button>
+                  <div class="materials-content" id="materialsContent"><div class="table-wrap"><table class="data-table materials-table" aria-label="Assign Materials"><thead><tr><th>Materials</th><th>Price</th><th>Already Assigned Course</th></tr></thead><tbody id="materialRows"></tbody></table></div></div>
+                </div>
+              </div>
+              <div class="field"><label for="startDate">Start Date</label><input class="control" id="startDate" type="text" readonly required></div>
+              <div class="field"><label for="endDate">End Date</label><input class="control" id="endDate" type="text" readonly required></div>
+              <div class="field"><label for="maximumSubject">Maximum subject</label><input class="control" id="maximumSubject" type="number" min="1" max="100" placeholder="Maximum Subject" required></div>
+              <div></div>
+              <div class="wide check-row"><span class="main-label">Course Prerequisite?</span><label class="check"><input type="checkbox"> Yes</label></div>
+              <div class="wide check-row"><span class="main-label">Is Complementary?</span><label class="check"><input type="checkbox"> Yes</label></div>
+              <div class="wide check-row"><span class="main-label">Merit Calculation Based On</span><label class="check"><input type="checkbox"> In-Branch Exam</label><label class="check"><input type="checkbox"> Live Exam</label><label class="check"><input type="checkbox"> Practice Exam</label></div>
+              <div class="wide section-title">For Student Portal</div>
+              <div class="wide check-row"><span class="main-label">Enable Q&amp;A</span><label class="check"><input type="checkbox" checked> Yes</label></div>
+              <div class="wide check-row"><span class="main-label">Allow New Q&amp;A</span><label class="check"><input type="checkbox"> Yes</label></div>
+              <div class="wide check-row"><span class="main-label">Enable Master Class</span><label class="check"><input type="checkbox"> Yes</label></div>
+              <div class="wide portal-grid">
+                <div class="setting-box"><div class="section-title">In-Branch Settings</div>
+                  <div class="field"><label>Allow Admission?</label><label class="check"><input type="checkbox"> Yes</label></div>
+                  <div class="field"><label for="officeMinSubject">Minimum subject</label><input class="control" id="officeMinSubject" type="number" min="0" max="100" placeholder="Minimum Subject"></div>
+                  <div class="field"><label for="officeAmountType">Admission Amount Type</label><select class="control" id="officeAmountType"><option value="">Select Amount Type</option><option>Percentage</option><option>Fixed Amount</option></select></div>
+                  <div class="field"><label for="officeMinPayment">Minimum Admission payment</label><input class="control" id="officeMinPayment" type="number" placeholder="Minimum Admission Payment"></div>
+                  <div class="field"><label for="officeDueType">Due Amount Type</label><select class="control" id="officeDueType"><option value="">Select Amount Type</option><option>Percentage</option><option>Fixed Amount</option></select></div>
+                  <div class="field"><label for="officeDuePayment">Minimum Due payment</label><input class="control" id="officeDuePayment" type="number" placeholder="Minimum Due Payment"></div>
+                  <div class="field"><label>Compulsory</label><label class="check"><input type="checkbox"> Yes</label></div>
+                </div>
+                <div class="setting-box"><div class="section-title">Online Settings</div>
+                  <div class="field"><label>Allow Admission?</label><label class="check"><input type="checkbox"> Yes</label></div>
+                  <div class="field"><label for="publicMinSubject">Minimum subject</label><input class="control" id="publicMinSubject" type="number" min="0" max="100" placeholder="Minimum Subject"></div>
+                  <div class="field"><label for="publicAmountType">Admission Amount Type</label><select class="control" id="publicAmountType"><option value="">Select Amount Type</option><option>Percentage</option><option>Fixed Amount</option></select></div>
+                  <div class="field"><label for="publicMinPayment">Minimum Admission payment</label><input class="control" id="publicMinPayment" type="number" placeholder="Minimum Admission Payment"></div>
+                  <div class="field"><label for="publicDueType">Due Amount Type</label><select class="control" id="publicDueType"><option value="">Select Amount Type</option><option>Percentage</option><option>Fixed Amount</option></select></div>
+                  <div class="field"><label for="publicDuePayment">Minimum Due payment</label><input class="control" id="publicDuePayment" type="number" placeholder="Minimum Due Payment"></div>
+                  <div class="field"><label>Compulsory</label><label class="check"><input type="checkbox"> Yes</label></div>
+                  <div class="field"><label>Hide From Admission</label><label class="check"><input type="checkbox"> Yes</label></div>
+                </div>
+              </div>
+            </div>
+            <div class="submit-row"><button class="btn btn-primary" type="submit" id="submitButton">Submit</button></div>
+          </form>
+        </div>
+      </section>
+      <a class="back-link" href="../ManageCourse/index.html">Back to Manage</a>
+      <footer class="footer">© 2026 - UMS</footer>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+  <div class="modal-backdrop" id="messageModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal"><div class="modal-head" id="modalTitle">Demo Copy</div><div class="modal-body" id="modalMessage"></div><div class="modal-foot"><button class="btn btn-primary" id="modalOk">OK</button></div></div>
+  </div>
+
+  <script>
+    (function(){
+      'use strict';
+      var layout=document.getElementById('layout'), modal=document.getElementById('messageModal'), modalMessage=document.getElementById('modalMessage');
+      function showModal(message){modalMessage.textContent=message;modal.classList.add('show');document.getElementById('modalOk').focus();}
+      document.getElementById('modalOk').addEventListener('click',function(){modal.classList.remove('show');});
+      modal.addEventListener('click',function(e){if(e.target===modal)modal.classList.remove('show');});
+      document.getElementById('menuToggle').addEventListener('click',function(){layout.classList.toggle('sidebar-open');});
+      document.querySelectorAll('.menu-group>button').forEach(function(button){button.addEventListener('click',function(){button.parentElement.classList.toggle('open');});});
+      document.querySelectorAll('[data-demo-message]').forEach(function(el){el.addEventListener('click',function(e){e.preventDefault();showModal(el.dataset.demoMessage);});});
+      document.getElementById('materialsToggle').addEventListener('click',function(){
+        var expanded=this.getAttribute('aria-expanded')==='true',next=!expanded;this.setAttribute('aria-expanded',String(next));document.getElementById('materialsContent').classList.toggle('expanded',next);this.querySelector('.materials-state').textContent=next?'−':'+';
+      });
+      var menuSearch=document.getElementById('menuSearch');
+      function filterMenu(){var q=menuSearch.value.trim().toLowerCase();document.querySelectorAll('#sideMenu .menu-group').forEach(function(item){item.style.display=!q||item.textContent.toLowerCase().indexOf(q)>-1?'':'none';});}
+      menuSearch.addEventListener('input',filterMenu);document.getElementById('clearSearch').addEventListener('click',function(){menuSearch.value='';filterMenu();menuSearch.focus();});
+      var subjectsByProgram={
+        'Engineering Admission Program':['English','Physics','Chemistry','Higher Mathematics'],
+        'Medical Admission Program (Online)':['Bangla','English','Biology','Physics','Chemistry'],
+        "Varsity 'KA' Admission Program":['Bangla','English','ICT','Physics','Chemistry','Higher Mathematics'],
+        'Class 12 Academic Program Online':['Bangla','English','ICT','Biology','Physics','Chemistry','Higher Mathematics']
+      };
+      var materials=[
+        {category:'কনসেপ্ট বুক'},
+        {name:'ইঞ্জিনিয়ারিং কনসেপ্ট বুক উচ্চতর গণিত ১ম পত্র',price:850},{name:'ইঞ্জিনিয়ারিং কনসেপ্ট বুক উচ্চতর গণিত ২য় পত্র',price:875},{name:'ইঞ্জিনিয়ারিং কনসেপ্ট বুক পদার্থবিজ্ঞান ১ম পত্র',price:450},{name:'ইঞ্জিনিয়ারিং কনসেপ্ট বুক পদার্থবিজ্ঞান ২য় পত্র',price:450},{name:'ইঞ্জিনিয়ারিং কনসেপ্ট বুক রসায়ন ১ম পত্র',price:495},{name:'ইঞ্জিনিয়ারিং কনসেপ্ট বুক রসায়ন ২য় পত্র',price:575},{name:'Engineering English Concept Book',price:675},
+        {category:'প্র্যাকটিস বুক'},{name:'আর্কিটেকচার ড্রইং প্র্যাকটিস বুক',price:2000,assigned:'Architecture 2026 [Combo]'},
+        {category:'প্রশ্নব্যাংক'},{name:'BUET প্রিলি প্রশ্নব্যাংক With Model Test',price:325},{name:'KUET প্রশ্নব্যাংক With Model Test',price:450},{name:'CUET প্রশ্নব্যাংক With Model Test',price:275},{name:'RUET প্রশ্নব্যাংক With Model Test',price:425},{name:"ঢাবি 'ক' প্রশ্নব্যাংক With Model Test",price:495},{name:'BUET Written প্রশ্নব্যাংক With Model Test',price:350},{name:'BUET প্রশ্নব্যাংক With Model Test Book',price:450},{name:'BUTEX, IUT, SUST, MIST প্রশ্নব্যাংক উইথ মডেল টেস্ট',price:650},
+        {category:'Gift'},{name:'Back Pack',price:0},{name:'T-shirt',price:0},{name:'Zipper File',price:0},{name:'Pen',price:0},
+        {category:'মাস্টার প্রশ্নব্যাংক'},{name:'ইঞ্জিনিয়ারিং মাস্টার প্রশ্নব্যাংক পদার্থবিজ্ঞান অংশ',price:975},{name:'ইঞ্জিনিয়ারিং মাস্টার প্রশ্নব্যাংক উচ্চতর গণিত অংশ',price:1195},{name:'ইঞ্জিনিয়ারিং মাস্টার প্রশ্নব্যাংক রসায়ন অংশ',price:765}
+      ];
+      function renderSubjectRows(){
+        var program=document.getElementById('program').value,subjectNames=subjectsByProgram[program]||subjectsByProgram['Engineering Admission Program'];
+        document.getElementById('subjectRows').innerHTML=subjectNames.map(function(name,index){return '<tr><td>'+(index+1)+'</td><td class="subject-name"><label class="check"><input type="checkbox" class="subject-check"> '+name+'</label></td><td><input class="fee-input fee tuition" type="number" min="0" step="0.01" placeholder="0.00" disabled></td><td><input class="fee-input fee elearning" type="number" min="0" step="0.01" placeholder="0.00" disabled></td><td><input class="fee-input fee digital" type="number" min="0" step="0.01" placeholder="0.00" disabled></td><td><input class="fee-input fee printed" type="number" min="0" step="0.01" placeholder="0.00" disabled></td><td><input class="fee-input payment" type="text" placeholder="0.00" disabled></td><td><select class="fee-input group-select" disabled><option>N/A</option><option>Group 1</option><option>Group 2</option><option>Group 3</option><option>Group 4</option><option>Group 5</option></select></td><td><label class="check"><input type="checkbox" class="mr-check" disabled> No</label></td></tr>';}).join('');
+      }
+      function renderMaterialRows(){
+        document.getElementById('materialRows').innerHTML=materials.map(function(item){if(item.category)return '<tr class="material-category"><td colspan="3"><label class="check"><input type="checkbox" class="category-check"> '+item.category+'</label></td></tr>';return '<tr class="material-item"><td><label class="check"><input type="checkbox" class="material-check" data-price="'+item.price+'"> '+item.name+'</label></td><td>'+item.price.toLocaleString('en-US')+'</td><td>'+(item.assigned||'-')+'</td></tr>';}).join('');
+      }
+      function updateSubjectTotals(){
+        var totals={tuition:0,elearning:0,digital:0,printed:0,payment:0};
+        document.querySelectorAll('#subjectRows tr').forEach(function(row){var active=row.querySelector('.subject-check').checked,rowPayment=0;['tuition','elearning','digital','printed'].forEach(function(key){var value=active?Number(row.querySelector('.'+key).value)||0:0;totals[key]+=value;rowPayment+=value;});row.querySelector('.payment').value=rowPayment?rowPayment.toFixed(2):'';totals.payment+=rowPayment;});
+        Object.keys(totals).forEach(function(key){document.getElementById(key+'Total').textContent=totals[key]?totals[key].toFixed(2):'';});
+      }
+      function updateMaterialTotal(){var total=0;document.querySelectorAll('.material-check:checked').forEach(function(box){total+=Number(box.dataset.price)||0;});document.getElementById('selectedMaterialPrice').textContent=total.toFixed(2);}
+      function toggleAssignmentSections(){var ready=document.getElementById('organization').value&&document.getElementById('program').value&&document.getElementById('session').value;if(ready)renderSubjectRows();document.getElementById('courseAssignmentSections').classList.toggle('show',Boolean(ready));}
+      renderSubjectRows();renderMaterialRows();
+      ['organization','program','session'].forEach(function(id){document.getElementById(id).addEventListener('change',toggleAssignmentSections);});
+      document.getElementById('subjectRows').addEventListener('change',function(e){if(e.target.classList.contains('subject-check')){var row=e.target.closest('tr');row.querySelectorAll('input.fee,select,.mr-check').forEach(function(input){input.disabled=!e.target.checked;});}updateSubjectTotals();});
+      document.getElementById('subjectRows').addEventListener('input',updateSubjectTotals);
+      document.getElementById('checkAllSubjects').addEventListener('change',function(){var checked=this.checked;document.querySelectorAll('.subject-check').forEach(function(box){box.checked=checked;box.dispatchEvent(new Event('change',{bubbles:true}));});});
+      document.getElementById('checkAllMr').addEventListener('change',function(){var checked=this.checked;document.querySelectorAll('.mr-check:not(:disabled)').forEach(function(box){box.checked=checked;});});
+      document.getElementById('materialRows').addEventListener('change',function(e){if(e.target.classList.contains('category-check')){var row=e.target.closest('tr').nextElementSibling;while(row&&!row.classList.contains('material-category')){row.querySelector('.material-check').checked=e.target.checked;row=row.nextElementSibling;}}updateMaterialTotal();});
+      var params=new URLSearchParams(location.search), isEdit=params.get('mode')==='edit';
+      if(isEdit){
+        document.title='UMS - Edit Course - Al Amin Anik (Demo Copy)';document.getElementById('pageHeading').textContent='Edit Course';document.getElementById('submitButton').textContent='Update';
+        document.getElementById('organization').value='ONLINE CARE';document.getElementById('program').value='Medical Admission Program (Online)';document.getElementById('session').value='2026';document.getElementById('fullName').value='Medical Offline Exam Batch (Varsity Same Syllabus) 2026';document.getElementById('shortName').value='Medical Offline Exam Batch 2026';document.getElementById('displayName').value='Medical Offline Exam Batch 2026';document.getElementById('startDate').value='2026-01-28';document.getElementById('endDate').value='2026-12-31';document.getElementById('maximumSubject').value='10';
+        toggleAssignmentSections();
+      }
+      document.getElementById('courseForm').addEventListener('submit',function(e){
+        e.preventDefault();
+        if(!e.currentTarget.checkValidity()){e.currentTarget.reportValidity();return;}
+        showModal(isEdit?'Course information updated successfully in this demo copy.':'Course added successfully in this demo copy.');
+      });
+      document.addEventListener('click',function(e){var a=e.target.closest('a[href]');if(!a)return;var href=a.getAttribute('href');if(/^https?:/i.test(href)&&!href.startsWith('https://onikcreation.com/cp'))e.preventDefault();},true);
+    }());
+  </script>
+</body>
+</html>
