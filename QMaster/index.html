@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<title>QMaster v10.0.2.0 (Demo Copy)</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; padding: 0; }
+  body {
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    font-size: 12px;
+    color: #1f2937;
+    background: #fff;
+    overflow: hidden;
+  }
+  button { font-family: inherit; font-size: inherit; cursor: pointer; }
+
+  /* ===== App window ===== */
+  .app-window { height: 100vh; display: flex; flex-direction: column; }
+
+  .titlebar {
+    height: 24px;
+    flex: 0 0 24px;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(to bottom, #5AA8EA, #2E7FCB);
+    color: #fff;
+    padding: 0 4px 0 6px;
+  }
+  .titlebar-left { display: flex; align-items: center; flex: 1; min-width: 0; }
+  .titlebar-icon { flex: 0 0 auto; margin-right: 6px; }
+  .titlebar-text { font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .demo-badge {
+    display: inline-block; margin-right: 10px; padding: 2px 8px; line-height: 1.3;
+    background: #10B981; border: 1px solid #fff; border-radius: 4px;
+    color: #fff; font-size: 10px; font-weight: bold; white-space: nowrap; cursor: pointer;
+  }
+  .titlebar-controls { display: flex; align-items: center; }
+  .win-btn {
+    width: 26px; height: 18px; border: none; background: transparent;
+    display: flex; align-items: center; justify-content: center; color: #fff;
+  }
+  .win-btn:hover { background: rgba(255,255,255,0.25); }
+  .win-btn.win-close:hover { background: #E0473B; }
+
+  .menubar {
+    height: 20px; flex: 0 0 20px;
+    background: #FAFBFC; border-bottom: 1px solid #B8D4EA;
+    display: flex; align-items: center;
+  }
+  .menu-item { padding: 2px 10px; font-size: 12px; }
+  .menu-item:hover { background: #CFE4F7; }
+
+  .app-body { flex: 1; display: flex; position: relative; min-height: 0; }
+
+  /* ===== Rail ===== */
+  .rail {
+    width: 24px; flex: 0 0 24px;
+    border-right: 1px solid #B8D4EA;
+    background: linear-gradient(to bottom, #FFFFFF, #EAF2FA);
+    display: none; flex-direction: column; align-items: center; position: relative;
+  }
+  .rail-toggle {
+    width: 18px; height: 18px; margin-top: 6px;
+    border: 1px solid #9CC3E8; background: #fff;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .rail-toggle:hover { background: #DDEEFB; }
+  .rail-label {
+    writing-mode: vertical-rl; transform: rotate(180deg);
+    color: #2E7FCB; font-weight: bold; font-size: 12.5px;
+    margin-top: 14px; letter-spacing: 0.5px; cursor: pointer;
+  }
+  .rail-bottom { position: absolute; bottom: 0; left: 0; width: 100%; display: flex; flex-direction: column; align-items: center; padding-bottom: 4px; }
+  .rail-sep { width: 18px; border-top: 1px dotted #9CA3AF; margin: 4px 0; }
+  .rail-gear {
+    width: 22px; height: 22px; border: 1px solid #1E6BB8; background: #3B8FD9;
+    display: flex; align-items: center; justify-content: center; margin-bottom: 4px;
+  }
+  .rail-gear:hover { background: #2E7FCB; }
+  .rail-collapse { width: 16px; height: 14px; border: 1px solid #B8D4EA; background: #fff; display: flex; align-items: center; justify-content: center; }
+
+  /* ===== Flyout ===== */
+  .flyout {
+    display: none; position: absolute; top: 8px; left: 25px; width: 188px;
+    background: #fff; border: 1px solid #5B9BD5; box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+    z-index: 20;
+  }
+  .tile {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 10px 4px; border-bottom: 1px solid #EEF3F8; text-align: center;
+  }
+  .tile:last-of-type { border-bottom: none; }
+  .tile:hover { background: #EAF2FA; }
+  .tile.selected { background: #CFE4F7; border-top: 1px solid #7FB2E0; border-bottom: 1px solid #7FB2E0; }
+  .tile-label { margin-top: 4px; font-size: 12px; }
+  .flyout-grip {
+    position: absolute; right: 2px; bottom: 2px; width: 8px; height: 8px;
+    background: repeating-linear-gradient(135deg, #9CC3E8 0, #9CC3E8 1px, transparent 1px, transparent 3px);
+  }
+
+  /* ===== Content / tabs ===== */
+  .content-area { flex: 1; display: flex; flex-direction: column; min-width: 0; background: #fff; }
+  .tabstrip { display: none; height: 24px; background: #EAF2FA; border-bottom: 1px solid #B8D4EA; align-items: flex-end; padding-left: 4px; }
+  .tab {
+    display: flex; align-items: center; height: 22px; padding: 0 6px 0 8px;
+    background: #fff; border: 1px solid #B8D4EA; border-bottom: none;
+    border-radius: 3px 3px 0 0; margin-right: 2px;
+  }
+  .tab span { margin: 0 6px; }
+  .tab-close {
+    width: 14px; height: 14px; border: none; background: transparent;
+    display: flex; align-items: center; justify-content: center; color: #6B7280; font-size: 12px; line-height: 1;
+  }
+  .tab-close:hover { background: #E0473B; color: #fff; border-radius: 2px; }
+
+  .page { display: none; flex: 1; min-height: 0; padding: 10px; }
+
+  /* ===== Image Reading page ===== */
+  #pageImageReading { flex-direction: column; }
+  .ir-toolbar { display: flex; justify-content: flex-end; align-items: center; margin-bottom: 4px; padding-right: 4px; }
+  .ir-toolbar .error-title { flex: 1; font-weight: bold; font-size: 13px; }
+  .btn-icon-text {
+    display: inline-flex; align-items: center; height: 22px; padding: 0 10px;
+    border: 1px solid #9CA3AF; background: linear-gradient(#fff, #EDEDED); border-radius: 2px;
+  }
+  .btn-icon-text:hover { background: #DDEEFB; border-color: #5B9BD5; }
+  .btn-icon-text svg { margin-right: 5px; }
+  .btn-icon-text[disabled] { opacity: 0.5; cursor: default; }
+  .btn-icon-text[disabled]:hover { background: linear-gradient(#fff, #EDEDED); border-color: #9CA3AF; }
+
+  .ir-layout { flex: 1; display: flex; gap: 10px; min-height: 0; }
+  .ir-left { flex: 0 0 480px; overflow-y: auto; padding-right: 4px; }
+  .ir-right { flex: 1; min-width: 300px; display: flex; flex-direction: column; }
+
+  .panel { border: 1px solid #B8D4EA; margin-bottom: 8px; }
+  .panel.panel-disabled { opacity: 0.55; pointer-events: none; }
+  .panel-header { background: linear-gradient(#F3F9FE, #E4F0FA); border-bottom: 1px solid #B8D4EA; padding: 5px 8px; font-weight: bold; font-size: 13px; }
+  .panel-body { padding: 8px; }
+
+  .form-row { display: flex; align-items: center; margin-bottom: 6px; }
+  .form-row label { flex: 0 0 108px; text-align: right; padding-right: 6px; }
+  .form-row .plain-input { flex: 1; height: 20px; border: 1px solid #ACACAC; padding: 0 4px; }
+  .form-row.plain label { text-align: left; flex: 0 0 auto; padding-right: 8px; }
+
+  .combo {
+    flex: 1; display: flex; align-items: center; height: 20px; border: 1px solid #ACACAC;
+    background: #fff; position: relative; cursor: pointer;
+  }
+  .combo:hover { border-color: #5B9BD5; }
+  .combo-text { flex: 1; padding: 0 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .combo-text.placeholder { color: #7A7A7A; }
+  .combo-arrow-btn {
+    flex: 0 0 16px; height: 100%; display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(#F7F7F7, #E4E4E4); border-left: 1px solid #ACACAC;
+  }
+  .combo-list {
+    display: none; position: absolute; top: 20px; left: -1px; right: -1px; z-index: 30;
+    background: #fff; border: 1px solid #5B9BD5; max-height: 160px; overflow-y: auto;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+  }
+  .combo-list-item { padding: 3px 6px; }
+  .combo-list-item:hover { background: #CFE4F7; }
+
+  .upload-online-row { display: flex; align-items: center; margin: 4px 0 8px; }
+  .upload-online-row input { margin-right: 6px; }
+
+  .stat-panel { border: 1px solid #B8D4EA; margin-bottom: 8px; }
+  .stat-header { background: linear-gradient(#F3F9FE, #E4F0FA); border-bottom: 1px solid #B8D4EA; padding: 4px 8px; font-weight: bold; }
+  .stat-grid { display: flex; }
+  .stat-cell { flex: 1; text-align: center; padding: 6px 4px; border-right: 1px solid #EEF3F8; }
+  .stat-cell:last-child { border-right: none; }
+  .stat-label { font-weight: bold; margin-bottom: 4px; }
+  .stat-box { border: 1px solid #ACACAC; background: #F5F5F5; height: 20px; line-height: 20px; }
+  .stat-box.orange { color: #D97706; font-weight: bold; }
+
+  .browse-row { display: flex; align-items: center; margin-bottom: 6px; }
+  .browse-row label { flex: 0 0 60px; }
+  .browse-row input { flex: 1; height: 20px; border: 1px solid #ACACAC; padding: 0 4px; margin-right: 4px; background: #fff; }
+  .browse-row button { width: 26px; height: 22px; border: 1px solid #9CA3AF; background: linear-gradient(#fff, #EDEDED); }
+  .browse-row button:hover { background: #DDEEFB; border-color: #5B9BD5; }
+
+  .progress-wrap { height: 16px; border: 1px solid #ACACAC; background: #EFEFEF; margin-bottom: 2px; }
+  .progress-bar { height: 100%; width: 0%; background: linear-gradient(#7FC97F, #4CAF50); }
+  .progress-text { text-align: center; margin-bottom: 8px; color: #4B5563; }
+
+  .action-buttons { display: flex; gap: 6px; }
+
+  .error-header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+  .error-header-row .error-title { font-weight: bold; font-size: 13px; }
+  .error-grid-wrap { flex: 1; border: 1px solid #B8D4EA; overflow: auto; min-height: 0; }
+  table.error-grid { border-collapse: collapse; width: 100%; min-width: 900px; }
+  table.error-grid th {
+    position: sticky; top: 0; background: linear-gradient(#F3F9FE, #E4F0FA);
+    border-bottom: 1px solid #B8D4EA; border-right: 1px solid #E5EDF5; padding: 5px 8px; text-align: left; font-weight: bold; white-space: nowrap;
+  }
+  table.error-grid td { border-bottom: 1px solid #EEF3F8; border-right: 1px solid #EEF3F8; padding: 4px 8px; white-space: nowrap; }
+  table.error-grid tbody tr:hover { background: #EAF2FA; }
+
+  .statusbar { height: 6px; flex: 0 0 6px; background: #F5F5F5; border-top: 1px solid #E0E0E0; }
+
+  /* ===== Login dialog ===== */
+  .login-overlay {
+    position: absolute; top: 44px; left: 0; right: 0; bottom: 0;
+    display: flex; align-items: center; justify-content: center; z-index: 100;
+  }
+  .login-dialog { width: 430px; border: 1px solid #B8D4EA; box-shadow: 3px 3px 10px rgba(0,0,0,0.25); background: #fff; }
+  .login-titlebar {
+    height: 22px; background: linear-gradient(#7C8B9A, #5F6B7A); color: #fff;
+    display: flex; align-items: center; justify-content: space-between; padding: 0 4px 0 8px; font-weight: bold;
+  }
+  .login-close {
+    width: 18px; height: 16px; border: none; background: transparent; color: #fff;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .login-close:hover { background: #E0473B; }
+  .login-body { display: flex; align-items: center; padding: 24px 20px; }
+  .login-fields { flex: 1; margin-left: 16px; }
+  .login-fields .field-row { display: flex; align-items: center; margin-bottom: 10px; }
+  .login-fields label { flex: 0 0 76px; text-align: right; padding-right: 8px; }
+  .login-fields input { flex: 1; height: 20px; border: 1px solid #ACACAC; padding: 0 4px; }
+  .login-buttons { display: flex; gap: 6px; margin-top: 14px; justify-content: flex-start; padding-left: 84px; }
+
+  /* ===== Message box ===== */
+  .msgbox-overlay {
+    display: none; position: fixed; inset: 0; align-items: center; justify-content: center; z-index: 500;
+  }
+  .msgbox { width: 340px; border: 1px solid #B8D4EA; box-shadow: 3px 3px 10px rgba(0,0,0,0.3); background: #fff; }
+  .msgbox-titlebar {
+    height: 22px; background: linear-gradient(#5AA8EA, #2E7FCB); color: #fff;
+    display: flex; align-items: center; justify-content: space-between; padding: 0 4px 0 8px; font-weight: bold;
+  }
+  #msgboxClose { width: 18px; height: 16px; border: none; background: transparent; color: #fff; }
+  #msgboxClose:hover { background: #E0473B; }
+  .msgbox-body { display: flex; align-items: center; padding: 18px 16px; }
+  .msgbox-body svg { flex: 0 0 auto; margin-right: 12px; }
+  .msgbox-footer { display: flex; justify-content: flex-end; padding: 8px 12px 12px; }
+  .msgbox-footer button { min-width: 64px; height: 22px; border: 1px solid #9CA3AF; background: linear-gradient(#fff, #EDEDED); }
+  .msgbox-footer button:hover { background: #DDEEFB; border-color: #5B9BD5; }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="ic-app" viewBox="0 0 16 16"><rect x="1" y="2" width="14" height="10" rx="1" fill="#fff" opacity="0.9"/><rect x="1" y="2" width="14" height="10" rx="1" fill="none" stroke="#2E7FCB" stroke-width="1"/><rect x="4" y="13" width="8" height="1.4" fill="#fff" opacity="0.9"/></symbol>
+    <symbol id="ic-min" viewBox="0 0 12 12"><line x1="2" y1="9" x2="10" y2="9" stroke="currentColor" stroke-width="1.4"/></symbol>
+    <symbol id="ic-max" viewBox="0 0 12 12"><rect x="2.5" y="2.5" width="7" height="7" fill="none" stroke="currentColor" stroke-width="1.3"/></symbol>
+    <symbol id="ic-close" viewBox="0 0 12 12"><line x1="2.5" y1="2.5" x2="9.5" y2="9.5" stroke="currentColor" stroke-width="1.4"/><line x1="9.5" y1="2.5" x2="2.5" y2="9.5" stroke="currentColor" stroke-width="1.4"/></symbol>
+    <symbol id="ic-gear" viewBox="0 0 20 20"><path fill="#fff" d="M10 6.2a3.8 3.8 0 100 7.6 3.8 3.8 0 000-7.6zm7.4 3.8a7.3 7.3 0 01-.13 1.36l1.86 1.45-1.8 3.12-2.2-.88a7.4 7.4 0 01-2.35 1.36l-.33 2.34H8.55l-.33-2.34a7.4 7.4 0 01-2.35-1.36l-2.2.88-1.8-3.12 1.86-1.45A7.3 7.3 0 013.6 10c0-.46.05-.92.13-1.36L1.87 7.19l1.8-3.12 2.2.88a7.4 7.4 0 012.35-1.36L8.55.25h2.9l.33 2.34a7.4 7.4 0 012.35 1.36l2.2-.88 1.8 3.12-1.86 1.45c.08.44.13.9.13 1.36z"/></symbol>
+    <symbol id="ic-chevron-r" viewBox="0 0 10 10"><path d="M2 1 L7 5 L2 9" stroke="#2E7FCB" stroke-width="1.4" fill="none"/></symbol>
+    <symbol id="ic-chevron-d" viewBox="0 0 10 6"><path d="M1 1 L5 5 L9 1" stroke="#2E7FCB" stroke-width="1.3" fill="none"/></symbol>
+    <symbol id="ic-dropdown" viewBox="0 0 10 6"><path d="M1 1 L5 5 L9 1" stroke="#444" stroke-width="1.3" fill="none"/></symbol>
+    <symbol id="ic-printer" viewBox="0 0 32 32">
+      <rect x="6" y="12" width="20" height="11" fill="#5B9BD5" stroke="#2E5F94" stroke-width="1"/>
+      <rect x="9" y="4" width="14" height="9" fill="#EAF2FA" stroke="#2E5F94" stroke-width="1"/>
+      <rect x="9" y="21" width="14" height="7" fill="#fff" stroke="#2E5F94" stroke-width="1"/>
+      <rect x="21" y="15" width="3" height="2" fill="#fff"/>
+    </symbol>
+    <symbol id="ic-printer-doc" viewBox="0 0 32 32">
+      <rect x="4" y="12" width="18" height="11" fill="#5B9BD5" stroke="#2E5F94" stroke-width="1"/>
+      <rect x="7" y="4" width="12" height="9" fill="#EAF2FA" stroke="#2E5F94" stroke-width="1"/>
+      <rect x="7" y="21" width="12" height="7" fill="#fff" stroke="#2E5F94" stroke-width="1"/>
+      <rect x="20" y="17" width="9" height="12" fill="#fff" stroke="#D97706" stroke-width="1"/>
+      <line x1="22" y1="20" x2="27" y2="20" stroke="#D97706" stroke-width="1"/>
+      <line x1="22" y1="23" x2="27" y2="23" stroke="#D97706" stroke-width="1"/>
+      <line x1="22" y1="26" x2="25" y2="26" stroke="#D97706" stroke-width="1"/>
+    </symbol>
+    <symbol id="ic-printer-check" viewBox="0 0 32 32">
+      <rect x="5" y="13" width="19" height="11" fill="#5B9BD5" stroke="#2E5F94" stroke-width="1"/>
+      <rect x="8" y="5" width="13" height="9" fill="#EAF2FA" stroke="#2E5F94" stroke-width="1"/>
+      <rect x="8" y="22" width="13" height="7" fill="#fff" stroke="#2E5F94" stroke-width="1"/>
+      <circle cx="24" cy="8" r="6" fill="#4CAF50" stroke="#2E7D32" stroke-width="1"/>
+      <path d="M21.3 8.1 L23.2 10 L27 6" stroke="#fff" stroke-width="1.5" fill="none"/>
+    </symbol>
+    <symbol id="ic-clipboard" viewBox="0 0 32 32">
+      <rect x="7" y="4" width="18" height="25" rx="1.5" fill="#FDF0DA" stroke="#C77B0E" stroke-width="1"/>
+      <rect x="12" y="2" width="8" height="4" rx="1" fill="#C77B0E"/>
+      <line x1="10" y1="12" x2="22" y2="12" stroke="#C77B0E" stroke-width="1.3"/>
+      <line x1="10" y1="16" x2="22" y2="16" stroke="#C77B0E" stroke-width="1.3"/>
+      <line x1="10" y1="20" x2="18" y2="20" stroke="#C77B0E" stroke-width="1.3"/>
+      <path d="M9 24 L11.5 26.5 L17 21" stroke="#4CAF50" stroke-width="2" fill="none"/>
+    </symbol>
+    <symbol id="ic-scanner" viewBox="0 0 32 32">
+      <rect x="3" y="16" width="26" height="10" rx="1" fill="#94A3B8" stroke="#475569" stroke-width="1"/>
+      <rect x="6" y="4" width="20" height="14" fill="#fff" stroke="#475569" stroke-width="1"/>
+      <rect x="8" y="7" width="16" height="8" fill="#DCEBFB"/>
+      <rect x="1" y="24" width="30" height="3" fill="#64748B"/>
+    </symbol>
+    <symbol id="ic-keys" viewBox="0 0 64 64">
+      <circle cx="20" cy="20" r="10" fill="none" stroke="#B0862A" stroke-width="4"/>
+      <circle cx="20" cy="20" r="4" fill="#fff"/>
+      <line x1="27" y1="27" x2="52" y2="52" stroke="#D4AF37" stroke-width="4"/>
+      <line x1="42" y1="42" x2="48" y2="36" stroke="#D4AF37" stroke-width="4"/>
+      <line x1="47" y1="47" x2="53" y2="41" stroke="#D4AF37" stroke-width="4"/>
+      <line x1="52" y1="52" x2="58" y2="58" stroke="#D4AF37" stroke-width="4"/>
+      <circle cx="26" cy="14" r="9" fill="none" stroke="#9CA3AF" stroke-width="3.6"/>
+      <circle cx="26" cy="14" r="3.4" fill="#fff"/>
+      <line x1="32" y1="20" x2="50" y2="38" stroke="#B0B0B0" stroke-width="3.6"/>
+      <line x1="44" y1="32" x2="49" y2="27" stroke="#B0B0B0" stroke-width="3.6"/>
+    </symbol>
+    <symbol id="ic-login" viewBox="0 0 16 16"><circle cx="8" cy="5" r="3" fill="#2E7FCB"/><path d="M2 14c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5" fill="#2E7FCB"/></symbol>
+    <symbol id="ic-close-red" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="#D9342B"/><line x1="5" y1="5" x2="11" y2="11" stroke="#fff" stroke-width="1.6"/><line x1="11" y1="5" x2="5" y2="11" stroke="#fff" stroke-width="1.6"/></symbol>
+    <symbol id="ic-reset" viewBox="0 0 16 16"><path d="M13 8a5 5 0 11-1.6-3.68" fill="none" stroke="#2E7FCB" stroke-width="1.6"/><path d="M13 2v4h-4" fill="none" stroke="#2E7FCB" stroke-width="1.6"/></symbol>
+    <symbol id="ic-play" viewBox="0 0 16 16"><path d="M4 2.5 L13 8 L4 13.5 Z" fill="#2E9E44"/></symbol>
+    <symbol id="ic-stop" viewBox="0 0 16 16"><rect x="3.5" y="3.5" width="9" height="9" fill="#6B7280"/></symbol>
+    <symbol id="ic-warn" viewBox="0 0 32 32"><path d="M16 3 L30 27 L2 27 Z" fill="#F59E0B" stroke="#B45309" stroke-width="1"/><rect x="14.7" y="12" width="2.6" height="8" fill="#fff"/><rect x="14.7" y="21.5" width="2.6" height="2.6" fill="#fff"/></symbol>
+  </defs>
+</svg>
+
+<div class="app-window">
+  <div class="titlebar">
+    <div class="titlebar-left">
+      <span class="titlebar-icon"><svg width="16" height="16"><use href="#ic-app"></use></svg></span>
+      <span class="titlebar-text" id="titlebarText">QMaster v10.0.2.0</span>
+    </div>
+    <a class="demo-badge" href="javascript:void(0)" onclick="window.open('https://onikcreation.com/cp','_blank')" title="cp হোমপেইজে যান">Demo Design</a>
+    <div class="titlebar-controls">
+      <button class="win-btn" title="মিনিমাইজ (ডেমোতে নিষ্ক্রিয়)"><svg width="12" height="12"><use href="#ic-min"></use></svg></button>
+      <button class="win-btn" title="ম্যাক্সিমাইজ (ডেমোতে নিষ্ক্রিয়)"><svg width="12" height="12"><use href="#ic-max"></use></svg></button>
+      <button class="win-btn win-close" title="ক্লোজ (ডেমোতে নিষ্ক্রিয়)"><svg width="12" height="12"><use href="#ic-close"></use></svg></button>
+    </div>
+  </div>
+
+  <div class="menubar">
+    <span class="menu-item" id="fileMenu">File</span>
+  </div>
+
+  <div class="app-body">
+    <div class="rail" id="rail">
+      <button class="rail-toggle" id="railToggle" title="Operation মেনু দেখাও/লুকাও">
+        <svg width="10" height="10"><use href="#ic-chevron-r"></use></svg>
+      </button>
+      <div class="rail-label" id="railLabel">Operation</div>
+      <div class="rail-bottom">
+        <div class="rail-sep"></div>
+        <button class="rail-gear" id="railGear" title="Settings">
+          <svg width="15" height="15"><use href="#ic-gear"></use></svg>
+        </button>
+        <button class="rail-collapse" title="প্যানেল কোলাপ্স">
+          <svg width="9" height="5"><use href="#ic-chevron-d"></use></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="flyout" id="flyout">
+      <div class="tile" data-page="questionPrint">
+        <svg width="32" height="32"><use href="#ic-printer"></use></svg>
+        <div class="tile-label">Question Print</div>
+      </div>
+      <div class="tile" data-page="writtenQuestionPrint">
+        <svg width="32" height="32"><use href="#ic-printer-doc"></use></svg>
+        <div class="tile-label">Written Question Print</div>
+      </div>
+      <div class="tile" data-page="testQuestionPrint">
+        <svg width="32" height="32"><use href="#ic-printer-check"></use></svg>
+        <div class="tile-label">Test Question Print</div>
+      </div>
+      <div class="tile" data-page="printSettings">
+        <svg width="32" height="32"><use href="#ic-clipboard"></use></svg>
+        <div class="tile-label">Print Settings</div>
+      </div>
+      <div class="tile" data-page="imageReading">
+        <svg width="32" height="32"><use href="#ic-scanner"></use></svg>
+        <div class="tile-label">Image Reading</div>
+      </div>
+      <div class="flyout-grip"></div>
+    </div>
+
+    <div class="content-area">
+      <div class="tabstrip" id="tabstrip">
+        <div class="tab">
+          <svg width="14" height="14"><use href="#ic-scanner"></use></svg>
+          <span>Image Reading</span>
+          <button class="tab-close" id="tabClose" title="বন্ধ করো">&times;</button>
+        </div>
+      </div>
+
+      <div class="page" id="pageImageReading">
+        <div class="ir-layout">
+          <div class="ir-left">
+            <div class="panel">
+              <div class="panel-header">Image Reading + Exam Attendance</div>
+              <div class="panel-body">
+                <div class="form-row"><label>Organization :</label>
+                  <div class="combo" data-field="organization"><span class="combo-text placeholder">Select Organization</span><span class="combo-arrow-btn"><svg width="9" height="5"><use href="#ic-dropdown"></use></svg></span></div>
+                </div>
+                <div class="form-row"><label>Program :</label>
+                  <div class="combo" data-field="program"><span class="combo-text placeholder">Select Program</span><span class="combo-arrow-btn"><svg width="9" height="5"><use href="#ic-dropdown"></use></svg></span></div>
+                </div>
+                <div class="form-row"><label>Session :</label>
+                  <div class="combo" data-field="session"><span class="combo-text placeholder">Select Session</span><span class="combo-arrow-btn"><svg width="9" height="5"><use href="#ic-dropdown"></use></svg></span></div>
+                </div>
+                <div class="form-row"><label>Held Date :</label>
+                  <div class="combo"><span class="combo-text">2026-08-09</span><span class="combo-arrow-btn"><svg width="9" height="5"><use href="#ic-dropdown"></use></svg></span></div>
+                </div>
+                <div class="form-row"><label>Course :</label>
+                  <div class="combo" data-field="course"><span class="combo-text placeholder">Select Course</span><span class="combo-arrow-btn"><svg width="9" height="5"><use href="#ic-dropdown"></use></svg></span></div>
+                </div>
+                <div class="form-row"><label>Exam :</label>
+                  <div class="combo" data-field="exam"><span class="combo-text placeholder">Select Exam</span><span class="combo-arrow-btn"><svg width="9" height="5"><use href="#ic-dropdown"></use></svg></span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="upload-online-row" style="margin-top:0;">
+              <input type="checkbox" id="uploadClassEvaluation" checked><label for="uploadClassEvaluation">Upload Class Evaluation</label>
+            </div>
+
+            <div class="panel" id="teacherEvalPanel">
+              <div class="panel-header">Teacher Evaluation + Class Attendance</div>
+              <div class="panel-body">
+                <div class="form-row"><label>Branch :</label>
+                  <div class="combo" data-field="branch"><span class="combo-text placeholder">Select Branch</span><span class="combo-arrow-btn"><svg width="9" height="5"><use href="#ic-dropdown"></use></svg></span></div>
+                </div>
+                <div class="form-row"><label>Course :</label>
+                  <div class="combo" data-field="course"><span class="combo-text placeholder">Select Course</span><span class="combo-arrow-btn"><svg width="9" height="5"><use href="#ic-dropdown"></use></svg></span></div>
+                </div>
+                <div class="form-row"><label>Subject :</label>
+                  <div class="combo" data-field="subject"><span class="combo-text placeholder">Select Subject</span><span class="combo-arrow-btn"><svg width="9" height="5"><use href="#ic-dropdown"></use></svg></span></div>
+                </div>
+                <div class="form-row"><label>Lecture Name :</label>
+                  <div class="combo" data-field="lecture"><span class="combo-text placeholder">Select Lecture</span><span class="combo-arrow-btn"><svg width="9" height="5"><use href="#ic-dropdown"></use></svg></span></div>
+                </div>
+                <div class="form-row"><label>Teacher:</label>
+                  <div class="combo" data-field="teacher"><span class="combo-text placeholder">Select Teacher</span><span class="combo-arrow-btn"><svg width="9" height="5"><use href="#ic-dropdown"></use></svg></span></div>
+                </div>
+                <div class="form-row"><label>Batch Time :</label>
+                  <div class="combo" data-field="batchTime"><span class="combo-text placeholder">Select Batch Time</span><span class="combo-arrow-btn"><svg width="9" height="5"><use href="#ic-dropdown"></use></svg></span></div>
+                </div>
+                <div class="form-row plain"><label>Teacher Late (Min):</label><input type="text" class="plain-input" id="teacherLate"></div>
+              </div>
+            </div>
+
+            <div class="upload-online-row">
+              <input type="checkbox" id="uploadOnline" checked><label for="uploadOnline">Upload Online</label>
+            </div>
+
+            <div class="stat-panel">
+              <div class="stat-header">MCQ</div>
+              <div class="stat-grid">
+                <div class="stat-cell"><div class="stat-label">Total</div><div class="stat-box" id="mcqTotal">0</div></div>
+                <div class="stat-cell"><div class="stat-label">Data Error</div><div class="stat-box orange" id="mcqDataError">0</div></div>
+                <div class="stat-cell"><div class="stat-label">Uploaded</div><div class="stat-box orange" id="mcqUploaded">0</div></div>
+                <div class="stat-cell"><div class="stat-label">Upload Failed</div><div class="stat-box orange" id="mcqUploadFailed">0</div></div>
+              </div>
+            </div>
+
+            <div class="stat-panel">
+              <div class="stat-header">Templated Written</div>
+              <div class="stat-grid">
+                <div class="stat-cell"><div class="stat-label">Total</div><div class="stat-box" id="twTotal">0</div></div>
+                <div class="stat-cell"><div class="stat-label">Data Error</div><div class="stat-box orange" id="twDataError">0</div></div>
+                <div class="stat-cell"><div class="stat-label">Uploaded</div><div class="stat-box orange" id="twUploaded">0</div></div>
+                <div class="stat-cell"><div class="stat-label">Upload Failed</div><div class="stat-box orange" id="twUploadFailed">0</div></div>
+              </div>
+            </div>
+
+            <div class="browse-row">
+              <label>Browse :</label>
+              <input type="text" id="browsePath" readonly>
+              <button id="browseBtn" title="ব্রাউজ">...</button>
+            </div>
+
+            <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+            <div class="progress-text" id="progressText">0%</div>
+
+            <div class="action-buttons">
+              <button class="btn-icon-text" id="startBtn"><svg width="14" height="14"><use href="#ic-play"></use></svg>Start</button>
+              <button class="btn-icon-text" id="stopBtn" disabled><svg width="14" height="14"><use href="#ic-stop"></use></svg>Stop</button>
+              <button class="btn-icon-text" id="closeIrBtn"><svg width="14" height="14"><use href="#ic-close-red"></use></svg>Close</button>
+            </div>
+          </div>
+
+          <div class="ir-right">
+            <div class="error-header-row">
+              <span class="error-title">Error</span>
+              <button class="btn-icon-text" id="irReset"><svg width="14" height="14"><use href="#ic-reset"></use></svg>Reset</button>
+            </div>
+            <div class="error-grid-wrap">
+              <table class="error-grid">
+                <thead>
+                  <tr>
+                    <th>Sl</th><th>Roll No</th><th>Print Code</th><th>Image Name</th>
+                    <th>Message Detail</th><th>Message Type</th><th>Registration No</th><th>Omr Sheet Answer</th>
+                  </tr>
+                </thead>
+                <tbody id="errorGridBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="statusbar"></div>
+</div>
+
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-dialog">
+    <div class="login-titlebar">
+      <span>User Login</span>
+      <button class="login-close" id="loginDialogClose" title="ক্লোজ"><svg width="12" height="12"><use href="#ic-close"></use></svg></button>
+    </div>
+    <div class="login-body">
+      <svg width="90" height="90"><use href="#ic-keys"></use></svg>
+      <div class="login-fields">
+        <div class="field-row"><label>User Name :</label><input type="text" id="loginUser"></div>
+        <div class="field-row"><label>Password :</label><input type="password" id="loginPass"></div>
+        <div class="login-buttons">
+          <button class="btn-icon-text" id="loginBtn"><svg width="14" height="14"><use href="#ic-login"></use></svg>Login</button>
+          <button class="btn-icon-text" id="loginCloseBtn"><svg width="14" height="14"><use href="#ic-close-red"></use></svg>Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="msgbox-overlay" id="msgboxOverlay">
+  <div class="msgbox">
+    <div class="msgbox-titlebar"><span id="msgboxTitle">QMaster</span><button id="msgboxClose"><svg width="12" height="12"><use href="#ic-close"></use></svg></button></div>
+    <div class="msgbox-body">
+      <svg width="32" height="32"><use href="#ic-warn"></use></svg>
+      <div id="msgboxText"></div>
+    </div>
+    <div class="msgbox-footer"><button id="msgboxOk">OK</button></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var loginOverlay = document.getElementById('loginOverlay');
+  var titlebarText = document.getElementById('titlebarText');
+  var rail = document.getElementById('rail');
+  var flyout = document.getElementById('flyout');
+  var tabstrip = document.getElementById('tabstrip');
+  var pageImageReading = document.getElementById('pageImageReading');
+
+  function showMsg(text, title) {
+    document.getElementById('msgboxTitle').textContent = title || 'QMaster';
+    document.getElementById('msgboxText').textContent = text;
+    document.getElementById('msgboxOverlay').style.display = 'flex';
+  }
+  document.getElementById('msgboxOk').addEventListener('click', function () { document.getElementById('msgboxOverlay').style.display = 'none'; });
+  document.getElementById('msgboxClose').addEventListener('click', function () { document.getElementById('msgboxOverlay').style.display = 'none'; });
+
+  document.getElementById('loginBtn').addEventListener('click', function () {
+    loginOverlay.style.display = 'none';
+    titlebarText.textContent = 'QMaster v10.0.2.0 :: anik@udvash.com';
+    rail.style.display = 'flex';
+  });
+  document.getElementById('loginDialogClose').addEventListener('click', function () {});
+  document.getElementById('loginCloseBtn').addEventListener('click', function () {});
+
+  document.getElementById('fileMenu').addEventListener('click', function () {
+    showMsg('এই ফিচারটি (File মেনু) এই ডেমো ভার্সনে অন্তর্ভুক্ত নয়।');
+  });
+  document.getElementById('railGear').addEventListener('click', function () {
+    showMsg('এই ফিচারটি (Settings) এই ডেমো ভার্সনে অন্তর্ভুক্ত নয়।');
+  });
+
+  function toggleFlyout() {
+    flyout.style.display = (flyout.style.display === 'block') ? 'none' : 'block';
+  }
+  document.getElementById('railToggle').addEventListener('click', toggleFlyout);
+  document.getElementById('railLabel').addEventListener('click', toggleFlyout);
+
+  var selectedTile = null;
+  document.querySelectorAll('.tile').forEach(function (tile) {
+    tile.addEventListener('click', function () {
+      if (selectedTile) selectedTile.classList.remove('selected');
+      selectedTile = tile;
+      tile.classList.add('selected');
+
+      var page = tile.dataset.page;
+      if (page === 'imageReading') {
+        flyout.style.display = 'none';
+        tabstrip.style.display = 'flex';
+        pageImageReading.style.display = 'flex';
+      } else {
+        showMsg('এই ফিচারটি (' + tile.querySelector('.tile-label').textContent + ') এই ডেমো ভার্সনে অন্তর্ভুক্ত নয়।');
+      }
+    });
+  });
+
+  function closeImageReadingTab() {
+    tabstrip.style.display = 'none';
+    pageImageReading.style.display = 'none';
+  }
+  document.getElementById('tabClose').addEventListener('click', closeImageReadingTab);
+  document.getElementById('closeIrBtn').addEventListener('click', closeImageReadingTab);
+
+  var comboOptions = {
+    organization: ['Udvash', 'Unmesh', 'Rokomari', 'UCC', 'Uttoron'],
+    program: ['HSC Bighatpoti Batch', 'Admission Bighatpoti Batch', 'SSC Bighatpoti Batch', 'Job Prep Course'],
+    session: ['2026', '2025', '2024'],
+    course: ['Physics 1st Paper', 'Chemistry 1st Paper', 'Higher Math 1st Paper', 'Biology 1st Paper'],
+    exam: ['Weekly Exam-01', 'Weekly Exam-02', 'Model Test-01', 'Final Exam'],
+    branch: ['Dhanmondi Branch', 'Mirpur Branch', 'Uttara Branch', 'Chittagong Branch'],
+    subject: ['Physics', 'Chemistry', 'Higher Math', 'Biology', 'Bangla', 'English'],
+    lecture: ['Lecture-01', 'Lecture-02', 'Lecture-03'],
+    teacher: ['Rezaul Karim', 'Kamal Hossain', 'Sharmin Akter', 'Tanvir Ahmed'],
+    batchTime: ['08:00 AM - 10:00 AM', '10:00 AM - 12:00 PM', '02:00 PM - 04:00 PM', '04:00 PM - 06:00 PM']
+  };
+
+  document.querySelectorAll('.combo[data-field]').forEach(function (combo) {
+    var field = combo.dataset.field;
+    var options = comboOptions[field];
+    if (!options) return;
+    var list = document.createElement('div');
+    list.className = 'combo-list';
+    options.forEach(function (opt) {
+      var item = document.createElement('div');
+      item.className = 'combo-list-item';
+      item.textContent = opt;
+      item.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var textEl = combo.querySelector('.combo-text');
+        textEl.textContent = opt;
+        textEl.classList.remove('placeholder');
+        list.style.display = 'none';
+      });
+      list.appendChild(item);
+    });
+    combo.appendChild(list);
+    combo.addEventListener('click', function () {
+      document.querySelectorAll('.combo-list').forEach(function (l) { if (l !== list) l.style.display = 'none'; });
+      list.style.display = (list.style.display === 'block') ? 'none' : 'block';
+    });
+  });
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('.combo')) {
+      document.querySelectorAll('.combo-list').forEach(function (l) { l.style.display = 'none'; });
+    }
+  });
+
+  document.getElementById('uploadClassEvaluation').addEventListener('change', function () {
+    var panel = document.getElementById('teacherEvalPanel');
+    var disabled = !this.checked;
+    panel.classList.toggle('panel-disabled', disabled);
+    panel.querySelectorAll('input').forEach(function (el) { el.disabled = disabled; });
+  });
+
+  document.getElementById('browseBtn').addEventListener('click', function () {
+    document.getElementById('browsePath').value = 'D:\\OMR Scan\\Batch_20260809';
+  });
+
+  document.getElementById('startBtn').addEventListener('click', function () {
+    var browsePath = document.getElementById('browsePath').value;
+    if (!browsePath) {
+      showMsg('অনুগ্রহ করে Browse করে ইমেজ ফোল্ডার/ফাইল নির্বাচন করুন।', 'সতর্কতা');
+      return;
+    }
+    showMsg('এই ফিচারটি (Image Processing) এই ডেমো ভার্সনে অন্তর্ভুক্ত নয়।');
+  });
+
+  document.getElementById('irReset').addEventListener('click', function () {
+    document.getElementById('errorGridBody').innerHTML = '';
+    ['mcqTotal', 'mcqDataError', 'mcqUploaded', 'mcqUploadFailed', 'twTotal', 'twDataError', 'twUploaded', 'twUploadFailed'].forEach(function (id) {
+      document.getElementById(id).textContent = '0';
+    });
+    document.getElementById('browsePath').value = '';
+    document.getElementById('progressBar').style.width = '0%';
+    document.getElementById('progressText').textContent = '0%';
+  });
+})();
+</script>
+
+</body>
+</html>
