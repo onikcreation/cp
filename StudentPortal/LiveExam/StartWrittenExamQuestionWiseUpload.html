@@ -6477,6 +6477,14 @@ mjx-c.mjx-c29.TEX-S2::before {
                                     clear: both;
                                     margin-bottom: 12px;
                                   }
+
+                                  .TakeExamBody .questionBlock .question-edit-update {
+                                    display: none;
+                                  }
+
+                                  .TakeExamBody.upload-phase-mode .questionBlock .question-edit-update {
+                                    display: block;
+                                  }
                                 </style>
                               </head>
                               <body class="uu-routine-page uu-login-page uu-course-page uu-due-payment-page uu-congratulations-2 uu-profile-page" data-project-root="/" cz-shortcut-listen="true">
@@ -9509,7 +9517,7 @@ label.btn {
                                                                                                                                                                                                                                                                                                                                                     <div class="TakeExamAction">
                                                                                                                                                                                                                                                                                                                                                       <div class="text-center">
                                                                                                                                                                                                                                                                                                                                                         <button type="button" id="examSubmission" class="uu-button-style-4">
-                                                                                                                                                                                                                                                                                                                                                          Submit
+                                                                                                                                                                                                                                                                                                                                                          End Exam &amp; Upload Image
                                                                                                                                                                                                                                                                                                                                                         </button>
                                                                                                                                                                                                                                                                                                                                                       </div>
                                                                                                                                                                                                                                                                                                                                                     </div>
@@ -17060,11 +17068,6 @@ function SortingStudentAnsweredImage(questionSerial) {
     });
 }
 
-$(document).on("click", "#examSubmission", function (event) {
-    //window.onbeforeunload = null;
-    //FormSubmit();
-});
-
 $(document).on("change", ".question-attachment-input", function () {
     let idField = $(this).attr("id");
     let questionSerial = $(this).parents('.questionBlock').attr("data-question-serial");
@@ -17413,11 +17416,6 @@ $(document).ready(function () {
             }
         }
 
-        $(document).on("click", "#examSubmission", function (event) {
-            window.onbeforeunload = null;
-            FormSubmit();
-        });
-
         $(document).ready(function () {
             var studentAnswerData = [];
             $('#TakeExamHeader').trigger('click');
@@ -17467,8 +17465,12 @@ $(document).ready(function () {
 
             $('body').keydown(function (e) {
                 if (e.keyCode == 13) {
-                    window.onbeforeunload = null;
-                    FormSubmit();
+                    if (uploadPhaseActive) {
+                        window.onbeforeunload = null;
+                        FormSubmit();
+                    } else {
+                        EndExamConfirm();
+                    }
                 }
             });
 
@@ -17487,7 +17489,31 @@ $(document).ready(function () {
                 $("#uploadPhaseNotice").removeClass("d-none");
                 $("#clockLabel").text("ছবি আপলোডের জন্য সময় বাকি:");
                 $("#demoSkipToUploadPhase").remove();
+                $("#examSubmission").text("Submit");
             }
+
+            function EndExamConfirm() {
+                var $endDialog = bootbox.questionSubmitConfirm("<h5 style='text-align:center;color:#F00;'>আপনি কি সত্যিই পরীক্ষা শেষ করতে চান? এরপর আর পরীক্ষা পুনরায় শুরু করা যাবে না। এখন থেকে আপনি শুধু উত্তরপত্রের ছবি আপলোড করার সময় পাবেন।</h5>", function (result) {
+                    if (result) {
+                        enterUploadPhase();
+                    }
+                });
+                $endDialog.find(".btn-submit-answer").text("হ্যাঁ");
+                $endDialog.find(".btn-not-submit-answer").text("না");
+                $endDialog.css("padding-right", "17px;");
+                $endDialog.find(".modal-dialog").css("max-width", "460px").css("width", "90%").css("margin", "1.75rem auto");
+                $endDialog.find(".modal-content").css("width", "100%").css("margin", "0 auto");
+                $endDialog.find(".modal-footer").css("justify-content", "center");
+            }
+
+            $(document).on("click", "#examSubmission", function () {
+                if (uploadPhaseActive) {
+                    window.onbeforeunload = null;
+                    FormSubmit();
+                } else {
+                    EndExamConfirm();
+                }
+            });
 
             $(document).on("click", "#demoSkipToUploadPhase", function () {
                 if (!uploadPhaseActive) {
