@@ -7790,14 +7790,7 @@ var BRANCH_MENTOR_DATA = [["Bandarban","6"],["Khagrachari","6"],["Rangamati","6"
               if (r.paymentBlocked) {
                 tds += '<td class="fixed-column right1"><label style="color: red;">Payment Blocked</label></td>';
               } else {
-                tds += '<td class="fixed-column right1"><button type="button"' +
-                  ' data-tpin="' + escapeHtml(r.teacher.tpin) + '"' +
-                  ' data-teacher-name="' + escapeHtml(r.teacher.name) + '"' +
-                  ' data-organization="' + escapeHtml(r.orgName) + '"' +
-                  ' data-branch="' + escapeHtml(r.branchName) + '"' +
-                  ' data-amount="' + escapeHtml(r.amount) + '"' +
-                  ' data-cid="' + escapeHtml(r.cid) + '"' +
-                  ' class="btn btn-primary pay-now-btn">Pay Now</button></td>';
+                tds += '<td class="fixed-column right1"><button id="PayNowBtn" type="button" data-param="' + r.teacher.tpin + '-' + r.cid + '" class="btn btn-primary pay-now-btn">Pay Now</button></td>';
               }
               return '<tr>' + tds + '</tr>';
             }).join('');
@@ -29626,7 +29619,7 @@ function updateSelectedValues() {
         const preparePaymentDetailsSectionIdName = '#PreparePaymentDetailsSection';
         const preparePaymentDatatableSectionIdName = '#PreparePaymentDatatableSection';
         const viewButtonIdName = '#View';
-        const payNowBtnIdName = '.pay-now-btn';
+        const payNowBtnIdName = '#PayNowBtn';
 
         function setCashPaymentFixedColumnOffsets() {
             const $actionColumn = $('#DataGrid .fixed-column.right1').first();
@@ -29719,15 +29712,8 @@ function updateSelectedValues() {
             });
 
             $(document).on('click', payNowBtnIdName, function () {
-                const query = [
-                    'tpin=' + encodeURIComponent($(this).attr('data-tpin') || ''),
-                    'name=' + encodeURIComponent($(this).attr('data-teacher-name') || ''),
-                    'organization=' + encodeURIComponent($(this).attr('data-organization') || ''),
-                    'branch=' + encodeURIComponent($(this).attr('data-branch') || ''),
-                    'amount=' + encodeURIComponent($(this).attr('data-amount') || ''),
-                    'cid=' + encodeURIComponent($(this).attr('data-cid') || '')
-                ].join('&');
-                window.location.href = 'PaymentFinalize.html?' + query;
+                $(this).css('background-color', 'red');
+                bootbox.alert('এই ফিচারটি (Pay Now) এই ডেমো ভার্সনে অন্তর্ভুক্ত নয়।');
             });
 
             // dropdown
@@ -30100,6 +30086,275 @@ function updateSelectedValues() {
             $(elementId).append($('<option>').text('Common').attr('value', -1));
             resetMultiselect(elementId);
         }
+                    </script>
+                    <style>
+                      #PaymentFinalizeSection .payment-teacher-summary {
+                        margin-bottom: 20px;
+                      }
+                      #PaymentFinalizeSection .payment-teacher-summary td:first-child {
+                        width: 16%;
+                        min-width: 145px;
+                        font-weight: 700;
+                        text-align: right;
+                      }
+                      #PaymentFinalizeSection .teacher-demo-avatar {
+                        width: 86px;
+                        height: 96px;
+                        margin-left: auto;
+                        border: 1px solid #d4d4d4;
+                        border-radius: 2px;
+                        background: #f2f2f2;
+                        color: #310b31;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 30px;
+                        font-weight: 700;
+                      }
+                      #PaymentFinalizeSection .payment-finalize-table-wrap {
+                        max-height: 385px;
+                        overflow: auto;
+                        margin-bottom: 12px;
+                      }
+                      #PaymentFinalizeSection .payment-finalize-table-wrap table {
+                        min-width: 980px;
+                        margin-bottom: 0;
+                      }
+                      #PaymentFinalizeSection .payment-finalize-table-wrap thead th {
+                        position: sticky;
+                        top: 0;
+                        z-index: 2;
+                        background: #fff;
+                        text-align: center;
+                      }
+                      #PaymentFinalizeSection .paid-from-row th:first-child {
+                        width: 82%;
+                        vertical-align: middle;
+                      }
+                      #PaymentFinalizeSection .payment-finalize-message {
+                        display: none;
+                        margin-bottom: 15px;
+                      }
+                      #PaymentFinalizeBackLink {
+                        display: inline-block;
+                        margin: 3px 0 12px;
+                      }
+                      @media (max-width: 767px) {
+                        #PaymentFinalizeSection .payment-teacher-summary td:first-child {
+                          width: 40%;
+                          min-width: 120px;
+                        }
+                        #PaymentFinalizeSection .teacher-demo-avatar {
+                          margin: 0 auto 15px;
+                        }
+                        #PaymentFinalizeSection .paid-from-row th:first-child {
+                          width: 45%;
+                        }
+                      }
+                    </style>
+                    <script>
+                      $(window).on('load', function () {
+                        var finalizeDemoContexts = {
+                          '463|UDVASH': {
+                            tpin: '463',
+                            name: 'Jahidul Islam Emon',
+                            mobile: '8801800000001',
+                            organization: 'UDVASH',
+                            branch: 'Science Lab Udvash',
+                            paidFrom: ['Science Lab Udvash'],
+                            branches: ['Science Lab Udvash', 'Science Lab Udvash', 'Science Lab Udvash'],
+                            total: 3800,
+                            amounts: [1600, 1200, 1000],
+                            initials: 'JE',
+                            descriptions: ['Higher Math (Lecture 07-08)', 'Problem Solving Class', 'Higher Math Review Class']
+                          },
+                          '505|UNMESH': {
+                            tpin: '505',
+                            name: 'Rumana Akter Mitu',
+                            mobile: '8801900000001',
+                            organization: 'UNMESH',
+                            branch: 'Rajshahi Kadirganj Unmesh, Khulna Shantidham Mor Unmesh',
+                            paidFrom: ['Rajshahi Kadirganj Unmesh', 'Khulna Shantidham Mor Unmesh'],
+                            branches: ['Rajshahi Kadirganj Unmesh', 'Khulna Shantidham Mor Unmesh', 'Rajshahi Kadirganj Unmesh'],
+                            total: 7600,
+                            amounts: [3000, 2600, 2000],
+                            initials: 'RM',
+                            descriptions: ['Medical Biology (Lecture 03-04)', 'Medical Admission Solve Class', 'Medical Biology Review Class']
+                          }
+                        };
+
+                        function buildAdditionalFranchiseFinalizeContext(tpin, organization) {
+                          var teachers = {
+                            '541': {
+                              name: 'Nazmul Huda Shanto', mobile: '8801600000001', initials: 'NS',
+                              branch: 'Khulna Shantidham Mor',
+                              descriptions: ['Physics (Lecture 09-10)', 'Physics Problem Solving Class', 'Physics Review Class']
+                            },
+                            '578': {
+                              name: 'Ishrat Jahan Toma', mobile: '8801700000001', initials: 'IT',
+                              branch: 'Uttara House Building',
+                              descriptions: ['Chemistry (Lecture 05-06)', 'Chemistry Problem Solving Class', 'Chemistry Review Class']
+                            }
+                          };
+                          var teacher = teachers[String(tpin)];
+                          var orgName = organization === 'UNMESH' ? 'UNMESH' : 'UDVASH';
+                          if (!teacher) return null;
+                          var branchDisplay = teacher.branch + (orgName === 'UNMESH' ? ' Unmesh' : ' Udvash');
+                          return {
+                            tpin: String(tpin), name: teacher.name, mobile: teacher.mobile,
+                            organization: orgName, branch: branchDisplay, paidFrom: [branchDisplay],
+                            branches: [branchDisplay, branchDisplay, branchDisplay],
+                            total: 3800, amounts: [1600, 1200, 1000],
+                            initials: teacher.initials, descriptions: teacher.descriptions
+                          };
+                        }
+
+                        var query = new URLSearchParams(window.location.search || '');
+                        var requestedKey = (query.get('tpin') || '') + '|' + (query.get('organization') || '').toUpperCase();
+                        var context = finalizeDemoContexts[requestedKey] ||
+                          buildAdditionalFranchiseFinalizeContext(query.get('tpin'), (query.get('organization') || '').toUpperCase()) ||
+                          finalizeDemoContexts['463|UDVASH'];
+                        var mainContent = document.getElementById('main-body-content');
+                        if (!mainContent) return;
+
+                        document.title = 'Payment Finalize - UMS';
+                        mainContent.innerHTML = '' +
+                          '<div id="PaymentFinalizeSection" class="panel panel-primary">' +
+                            '<div class="panel-heading"><h4 class="panel-title">Payment Finalize</h4></div>' +
+                            '<div class="panel-body">' +
+                              '<div id="PaymentFinalizeMessage" class="alert alert-success payment-finalize-message" role="alert"></div>' +
+                              '<div class="row payment-teacher-summary">' +
+                                '<div class="col-md-11">' +
+                                  '<table class="table table-striped table-bordered table-condensed table-hover">' +
+                                    '<tbody>' +
+                                      '<tr><td>Teacher PIN</td><td id="FinalizeTeacherPin"></td></tr>' +
+                                      '<tr><td>Teacher Name</td><td id="FinalizeTeacherName"></td></tr>' +
+                                      '<tr><td>Organization</td><td id="FinalizeOrganization"></td></tr>' +
+                                      '<tr><td>Branch</td><td id="FinalizeBranch"></td></tr>' +
+                                      '<tr><td>Mode of Payment</td><td>Cash</td></tr>' +
+                                    '</tbody>' +
+                                  '</table>' +
+                                '</div>' +
+                                '<div class="col-md-1"><div id="FinalizeTeacherAvatar" class="teacher-demo-avatar" aria-label="Demo teacher avatar"></div></div>' +
+                              '</div>' +
+                              '<div class="payment-finalize-table-wrap">' +
+                                '<table class="table table-striped table-bordered table-condensed table-hover">' +
+                                  '<thead><tr>' +
+                                    '<th>Date</th><th>Description</th><th>Program &amp; Session</th><th>Branch</th><th>Duration</th>' +
+                                    '<th>Quantity</th><th>Amount</th><th>Additional Amount</th><th>Total Amount</th>' +
+                                  '</tr></thead>' +
+                                  '<tbody id="FinalizePaymentRows" class="text-center"></tbody>' +
+                                  '<tfoot><tr><th colspan="8" class="text-right">Total</th><th id="FinalizeTotal" class="text-right"></th></tr></tfoot>' +
+                                '</table>' +
+                              '</div>' +
+                              '<div class="form-group" style="margin-bottom:15px">' +
+                                '<label for="FinalizeRemarks" style="margin-bottom:5px">Remarks</label>' +
+                                '<textarea id="FinalizeRemarks" class="form-control" rows="2" style="resize:vertical" placeholder="Optional remarks"></textarea>' +
+                              '</div>' +
+                              '<table class="table table-striped table-bordered">' +
+                                '<tbody>' +
+                                  '<tr class="paid-from-row"><th class="text-right">Paid From</th><th>' +
+                                    '<select id="FinalizePaidFrom" class="form-control"><option value="">Select Branch</option></select>' +
+                                    '<span id="FinalizePaidFromError" class="help-block" style="display:none;color:#a94442;margin-bottom:0">Please Select Branch.</span>' +
+                                  '</th></tr>' +
+                                  '<tr><th colspan="2" class="text-right"><button type="button" id="FinalizePaymentBtn" class="btn btn-success">Finalize</button></th></tr>' +
+                                '</tbody>' +
+                              '</table>' +
+                            '</div>' +
+                          '</div>' +
+                          '<a id="PaymentFinalizeBackLink" href="index.html">Back</a>';
+
+                        function setText(id, value) {
+                          var element = document.getElementById(id);
+                          if (element) element.textContent = value;
+                        }
+
+                        setText('FinalizeTeacherPin', context.tpin + ' (' + context.mobile + ')');
+                        setText('FinalizeTeacherName', context.name);
+                        setText('FinalizeOrganization', context.organization);
+                        setText('FinalizeBranch', context.branch);
+                        setText('FinalizeTeacherAvatar', context.initials);
+                        setText('FinalizeTotal', context.total.toLocaleString('en-US'));
+
+                        var demoRows = [
+                          { date: '08 Aug, 2026', program: 'CAP 2026', branch: context.branches[0], duration: '1h 15m', quantity: '2', amount: context.amounts[0] },
+                          { date: '09 Aug, 2026', program: '12 AP 2026', branch: context.branches[1], duration: '1h 15m', quantity: '1', amount: context.amounts[1] },
+                          { date: '10 Aug, 2026', program: '12 AP 2026', branch: context.branches[2], duration: '1h 15m', quantity: '1', amount: context.amounts[2] }
+                        ];
+                        var paymentRows = document.getElementById('FinalizePaymentRows');
+                        demoRows.forEach(function (row, index) {
+                          var tr = document.createElement('tr');
+                          [row.date, context.descriptions[index], row.program, row.branch, row.duration, row.quantity].forEach(function (value) {
+                            var td = document.createElement('td');
+                            td.textContent = value;
+                            tr.appendChild(td);
+                          });
+                          [row.amount.toLocaleString('en-US') + '.00', '0.00', row.amount.toLocaleString('en-US') + '.00'].forEach(function (value) {
+                            var td = document.createElement('td');
+                            td.className = 'text-right';
+                            td.textContent = value;
+                            tr.appendChild(td);
+                          });
+                          paymentRows.appendChild(tr);
+                        });
+
+                        var paidFromSelect = document.getElementById('FinalizePaidFrom');
+                        context.paidFrom.forEach(function (branchName, index) {
+                          var option = document.createElement('option');
+                          option.value = String(index + 1);
+                          option.textContent = branchName;
+                          paidFromSelect.appendChild(option);
+                        });
+
+                        paidFromSelect.addEventListener('change', function () {
+                          var hasValue = !!this.value;
+                          document.getElementById('FinalizePaidFromError').style.display = hasValue ? 'none' : 'block';
+                          this.parentNode.classList.toggle('has-error', !hasValue);
+                        });
+
+                        document.getElementById('FinalizePaymentBtn').addEventListener('click', function () {
+                          var button = this;
+                          if (!paidFromSelect.value) {
+                            document.getElementById('FinalizePaidFromError').style.display = 'block';
+                            paidFromSelect.parentNode.classList.add('has-error');
+                            paidFromSelect.focus();
+                            return;
+                          }
+
+                          function completeDemoFinalize() {
+                            button.disabled = true;
+                            button.textContent = 'Finalized';
+                            paidFromSelect.disabled = true;
+                            document.getElementById('FinalizeRemarks').disabled = true;
+                            var message = document.getElementById('PaymentFinalizeMessage');
+                            message.textContent = 'Payment finalized successfully. Demo voucher: CP-' + context.tpin + '-' + context.organization;
+                            message.style.display = 'block';
+                            window.scrollTo(0, 0);
+                          }
+
+                          if (window.bootbox && typeof window.bootbox.confirm === 'function') {
+                            window.bootbox.confirm({
+                              message: '<div class="text-center"><h4>Once submitted, it cannot be edited or deleted.</h4><h4>Are you sure, you want to proceed with the payment?</h4></div>',
+                              buttons: {
+                                confirm: { label: 'Yes', className: 'btn-success' },
+                                cancel: { label: 'No', className: 'btn-danger' }
+                              },
+                              callback: function (result) {
+                                if (result) completeDemoFinalize();
+                              }
+                            });
+                          } else if (window.confirm('Once submitted, it cannot be edited or deleted. Proceed with the payment?')) {
+                            completeDemoFinalize();
+                          }
+                        });
+
+                        document.getElementById('PaymentFinalizeBackLink').addEventListener('click', function (event) {
+                          if (window.history.length > 1) {
+                            event.preventDefault();
+                            window.history.back();
+                          }
+                        });
+                      });
                     </script>
                     <script type="text/javascript">
                       $(document).ready(function () {
