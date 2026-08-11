@@ -6784,8 +6784,42 @@ input.form-control:focus {
     }
 }
 </style>
+<style id="pageChangesStyles">
+#pageChangesBtn { position:fixed; top:12px; left:50%; z-index:1100; padding:6px 12px; border:2px solid #fff; border-radius:6px; color:#fff; background:#F59E0B; font-size:13px; font-weight:700; line-height:1.2; transform:translateX(-50%); animation:practiceUpdatesPulse 1.6s infinite; }
+#pageChangesBtn:hover, #pageChangesBtn:focus { color:#fff; background:#D97706; outline:0; }
+@keyframes practiceUpdatesPulse { 0% { box-shadow:0 0 0 0 rgba(245,158,11,.7); } 70% { box-shadow:0 0 0 10px rgba(245,158,11,0); } 100% { box-shadow:0 0 0 0 rgba(245,158,11,0); } }
+#pageChangesModal .modal-dialog { width:60%; max-width:60%; }
+#pageChangesModal .modal-content { height:65vh; }
+#pageChangesModal .modal-header { color:#fff; background:#4338CA; }
+#pageChangesModal .modal-header .close { color:#fff; opacity:1; }
+#pageChangesModal .modal-body { overflow-y:auto; }
+#pageChangesModal .modal-body li { margin-bottom:12px; line-height:1.55; }
+@media (max-width:767px) { #pageChangesBtn { top:10px; font-size:11px; } #pageChangesModal .modal-dialog { width:94%; max-width:94%; margin-right:auto; margin-left:auto; } }
+</style>
 </head>
                               <body class="uu-routine-page uu-login-page uu-course-page uu-due-payment-page uu-congratulations-2 uu-profile-page" data-project-root="/" cz-shortcut-listen="true">
+  <button type="button" id="pageChangesBtn" data-toggle="modal" data-target="#pageChangesModal">New Updates</button>
+  <div class="modal fade" id="pageChangesModal" tabindex="-1" role="dialog" aria-labelledby="pageChangesModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="pageChangesModalTitle">এই পেইজে যা যা পরিবর্তন/আপডেট করা হয়েছে</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body" id="pageChangesText">
+          <ol>
+            <li><strong>নতুন Demo Course:</strong> Course view-তে <strong>Medical &amp; Dental Full Course 2026 [Offline]</strong> যোগ করা হয়েছে।</li>
+            <li><strong>নতুন Combined Subject:</strong> Medical Course-এ আগের ছয়টি Subject-এর সঙ্গে <strong>Combined</strong> যোগ হয়েছে। Combined নির্বাচন করলে সব Subject-এর demo Exam Card একসঙ্গে দেখাবে এবং status filter কাজ করবে।</li>
+            <li><strong>Dynamic Course Heading:</strong> Subject ও Card view-এর heading-এ নির্বাচিত Course-এর নাম দেখাবে। HCC Admission Course [Combo]-এর আগের ছয়টি Subject অপরিবর্তিত থাকবে।</li>
+          </ol>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-copy-updates>Copy</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
                                 <a class="scroll-to-top" href="javascript:void(0)">
                                   <i class="fas fa-chevron-circle-up">
                                   </i>
@@ -7170,6 +7204,13 @@ input.form-control:focus {
               </span>
               <span class="arrow-icon d-middle"><i class="fas fa-chevron-right" aria-hidden="true"></i></span>
             </button>
+            <button type="button" class="d-between-middle btn-menu py-3 px-4 mb-3 practice-v2-menu-button" data-course="medical-dental-full-course">
+              <span class="d-flex align-items-center practice-v2-menu-main">
+                <span class="d-middle mr-2 practice-v2-course-icon"><i class="fas fa-graduation-cap" aria-hidden="true"></i></span>
+                <span class="practice-v2-menu-title">Medical &amp; Dental Full Course 2026 [Offline]</span>
+              </span>
+              <span class="arrow-icon d-middle"><i class="fas fa-chevron-right" aria-hidden="true"></i></span>
+            </button>
           </div>
         </div>
       </div>
@@ -7181,7 +7222,7 @@ input.form-control:focus {
         <div class="d-middle">
           <div class="head p-4 text-center">
             <h3 class="mb-md-3 mb-1">Practice Exam</h3>
-            <h1>HCC Admission Course [Combo]</h1>
+            <h1 id="practiceCourseTitle">HCC Admission Course [Combo]</h1>
           </div>
         </div>
         <div class="card course-and-content mb-3">
@@ -7198,7 +7239,7 @@ input.form-control:focus {
         <div class="d-middle">
           <div class="head p-4 text-center">
             <h3 class="mb-2">Practice Exam</h3>
-            <h2 class="practice-v2-card-course">HCC Admission Course [Combo]</h2>
+            <h2 class="practice-v2-card-course" id="practiceCardCourseTitle">HCC Admission Course [Combo]</h2>
             <h1 id="practiceSubjectTitle">Subject</h1>
           </div>
         </div>
@@ -9585,7 +9626,7 @@ $(document).ready(function () {
 (function () {
     'use strict';
 
-    var subjects = [
+    var commonSubjects = [
         { key: 'bangla', label: 'Bangla', icon: 'fa-book-open' },
         { key: 'biology', label: 'Biology', icon: 'fa-book-open' },
         { key: 'chemistry', label: 'Chemistry', icon: 'fa-book-open' },
@@ -9593,6 +9634,18 @@ $(document).ready(function () {
         { key: 'higher-mathematics', label: 'Higher Mathematics', icon: 'fa-book-open' },
         { key: 'physics', label: 'Physics', icon: 'fa-book-open' }
     ];
+    var courses = {
+        'hcc-admission-course': {
+            label: 'HCC Admission Course [Combo]',
+            subjects: commonSubjects
+        },
+        'medical-dental-full-course': {
+            label: 'Medical & Dental Full Course 2026 [Offline]',
+            subjects: commonSubjects.concat([
+                { key: 'combined', label: 'Combined', icon: 'fa-book-open' }
+            ])
+        }
+    };
     var syllabusBySubject = {
         'bangla': 'Bangla Grammar, Literature and Reading Comprehension',
         'biology': 'Cell Biology, Genetics and Human Physiology',
@@ -9603,6 +9656,7 @@ $(document).ready(function () {
     };
     var cards = Array.prototype.slice.call(document.querySelectorAll('#exam .exam-item'));
     var currentView = 'courses';
+    var currentCourse = 'hcc-admission-course';
     var currentSubject = '';
 
     function subjectFromTitle(title) {
@@ -9628,12 +9682,16 @@ $(document).ready(function () {
     }
 
     function subjectLabel(key) {
-        var match = subjects.filter(function (subject) { return subject.key === key; })[0];
+        var match = courses[currentCourse].subjects.filter(function (subject) { return subject.key === key; })[0];
         return match ? match.label : 'Practice Exams';
     }
 
+    function courseLabel(key) {
+        return courses[key] ? courses[key].label : courses['hcc-admission-course'].label;
+    }
+
     function renderSubjects() {
-        document.getElementById('practiceSubjectGrid').innerHTML = subjects.map(function (subject) {
+        document.getElementById('practiceSubjectGrid').innerHTML = courses[currentCourse].subjects.map(function (subject) {
             return '<div class="col-xl-4 col-lg-6 d-flex">' +
                 '<button type="button" class="d-between-middle btn-menu practice-v2-subject-button" data-subject="' + subject.key + '">' +
                 '<span class="d-flex align-items-center practice-v2-menu-main">' +
@@ -9649,7 +9707,8 @@ $(document).ready(function () {
         var statuses = selectedStatuses();
         var shown = 0;
         cards.forEach(function (card) {
-            var visible = currentView === 'cards' && card.dataset.subject === currentSubject && statuses.indexOf(card.dataset.status) !== -1;
+            var subjectMatches = currentSubject === 'combined' || card.dataset.subject === currentSubject;
+            var visible = currentView === 'cards' && subjectMatches && statuses.indexOf(card.dataset.status) !== -1;
             card.style.display = visible ? '' : 'none';
             if (visible) shown += 1;
         });
@@ -9662,10 +9721,39 @@ $(document).ready(function () {
         document.getElementById('practiceCourseView').hidden = view !== 'courses';
         document.getElementById('practiceSubjectView').hidden = view !== 'subjects';
         document.getElementById('practiceCardView').hidden = view !== 'cards';
+        if (view === 'subjects') {
+            document.getElementById('practiceCourseTitle').textContent = courseLabel(currentCourse);
+            renderSubjects();
+        }
         if (view === 'cards') {
+            document.getElementById('practiceCardCourseTitle').textContent = courseLabel(currentCourse);
             document.getElementById('practiceSubjectTitle').textContent = subjectLabel(currentSubject);
         }
         applyCardFilter();
+    }
+
+    function copyUpdatesText(button) {
+        var source = document.getElementById('pageChangesText');
+        var value = source ? source.innerText.trim() : '';
+        var copied = function () {
+            var original = button.textContent;
+            button.textContent = 'Copied';
+            window.setTimeout(function () { button.textContent = original; }, 1400);
+        };
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(value).then(copied);
+            return;
+        }
+        var fallback = document.createElement('textarea');
+        fallback.value = value;
+        fallback.setAttribute('readonly', '');
+        fallback.style.position = 'fixed';
+        fallback.style.opacity = '0';
+        document.body.appendChild(fallback);
+        fallback.select();
+        document.execCommand('copy');
+        document.body.removeChild(fallback);
+        copied();
     }
 
     function showPracticeMessage(message) {
@@ -9704,8 +9792,18 @@ $(document).ready(function () {
     });
 
     document.addEventListener('click', function (event) {
+        var copyButton = event.target.closest('[data-copy-updates]');
+        if (copyButton) {
+            copyUpdatesText(copyButton);
+            return;
+        }
+
         var courseButton = event.target.closest('[data-course]');
-        if (courseButton) { setView('subjects'); return; }
+        if (courseButton) {
+            currentCourse = courseButton.dataset.course;
+            setView('subjects');
+            return;
+        }
 
         var subjectButton = event.target.closest('[data-subject]');
         if (subjectButton) { setView('cards', subjectButton.dataset.subject); return; }
