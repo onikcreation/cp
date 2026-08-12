@@ -7889,6 +7889,21 @@ mjx-c.mjx-c29.TEX-S2::before {
     margin-right: 20px;
 }
 
+#uploadPhaseStickyStack.upload-phase-sticky-stack {
+    position: fixed;
+    z-index: 5000;
+    margin: 0;
+    padding-bottom: 10px;
+    background-color: #e5dce6;
+}
+
+#uploadPhaseStickyStack.upload-phase-sticky-stack #uploadPhaseNotice {
+    margin-top: 10px !important;
+}
+
+#uploadPhaseStickySpacer {
+    width: 100%;
+}
 
 .question_form_attachment .modal-content {
     margin-top: 60px;
@@ -8812,7 +8827,7 @@ label.btn {
                                                               </h5>
                                                             </div>
                                                           </div>
-                                                          <div class="col-md-12">
+                                                          <div class="col-md-12" id="uploadPhaseStickyStack">
                                                             <div class="ExamReminder" id="slickyElement">
                                                               <button type="button" id="demoSkipToUploadPhase" style="position:fixed;top:74px;right:16px;z-index:1050;font-size:11px;padding:4px 12px;border-radius:20px;background:#10B981;color:#fff;border:2px solid #fff;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.25);">ডেমো আপলোড</button>
                                                               <div class="toClockBox">
@@ -8820,17 +8835,18 @@ label.btn {
                                                                   <span id="clockLabel" style="color:#fff;">Remaining:</span>
                                                                   <span id="clock">10:00</span>
                                                                 </div>
-                                                                <div>
+                                                                <div id="examScheduleRange">
                                                                   <span style="color:white; font-size:16px; line-height:1.0; ">Start: 10:30 AM&nbsp;&nbsp;-&nbsp;&nbsp;End: 10:40 AM</span>
                                                                 </div>
                                                               </div>
                                                             </div>
-                                                          </div>
-                                                          <div class="col-md-12 d-none" id="uploadPhaseNotice" style="margin-top:10px;">
+                                                            <div class="d-none" id="uploadPhaseNotice" style="margin-top:10px;">
                                                             <div style="background:#FEF3C7;border:1px solid #F59E0B;color:#92400E;text-align:center;padding:12px;border-radius:8px;font-weight:bold;">
                                                               উত্তর লিখার সময় শেষ। এখন শুধু ছবি আপলোড করার জন্য অতিরিক্ত সময় দেওয়া হচ্ছে।
                                                             </div>
+                                                            </div>
                                                           </div>
+                                                          <div class="col-md-12 d-none" id="uploadPhaseStickySpacer" aria-hidden="true"></div>
                                                           <div class="col-md-12" id="examInstructionsBlock" style="margin-top:10px;">
                                                             <div class="TakeExamHeader">
                                                               <h5>
@@ -17377,7 +17393,7 @@ $(document).ready(function () {
 
         function demoGoToResult() {
             setTimeout(function () {
-                window.location.href = 'ExamResult.html?flow=written';
+                window.location.href = 'ExamResultQuestionWiseUpload.html?flow=question-wise-upload';
             }, 900);
         }
 
@@ -17444,11 +17460,50 @@ $(document).ready(function () {
 
             /* Slicky Element */
             window.onscroll = function () { mySticky() };
+            $(window).on("resize", function () {
+                if (uploadPhaseActive) {
+                    pinUploadPhaseMessages();
+                }
+            });
 
             var header = document.getElementById("TakeExamHeader");
             var takeExamBody = $(".TakeExamBody");
             var sticky = header.offsetTop + $("#TakeExamHeader").outerHeight(true) + 100;
+            function pinUploadPhaseMessages() {
+                var $stack = $("#uploadPhaseStickyStack");
+                var $spacer = $("#uploadPhaseStickySpacer");
+                var uploadHeaderHeight = $(".uu-header-wrapper").outerHeight() || 60;
+                var anchorElement = $stack.hasClass("upload-phase-sticky-stack") ? $spacer[0] : $stack[0];
+                var anchorRect = anchorElement.getBoundingClientRect();
+
+                if (anchorRect.top <= uploadHeaderHeight) {
+                    if ($spacer.hasClass("d-none")) {
+                        $spacer.height($stack.outerHeight(true)).removeClass("d-none");
+                    }
+
+                    var spacerRect = $spacer[0].getBoundingClientRect();
+                    $stack.addClass("upload-phase-sticky-stack").css({
+                        top: uploadHeaderHeight,
+                        left: spacerRect.left,
+                        width: spacerRect.width
+                    });
+                    $spacer.height($stack.outerHeight(true));
+                } else {
+                    $stack.removeClass("upload-phase-sticky-stack").css({
+                        top: "",
+                        left: "",
+                        width: ""
+                    });
+                    $spacer.height("").addClass("d-none");
+                }
+            }
+
             function mySticky() {
+                if (uploadPhaseActive) {
+                    pinUploadPhaseMessages();
+                    $(".ExamReminder").removeClass("sticky").css({ zIndex: "", top: "" });
+                    return;
+                }
                 if (window.pageYOffset > sticky) {
                     $(".ExamReminder").addClass("sticky");
                     var uuHeaderWrapperHeight = $(".uu-header-wrapper").outerHeight();
@@ -17488,6 +17543,9 @@ $(document).ready(function () {
                 $("#examInstructionsBlock").addClass("d-none");
                 $("#uploadPhaseNotice").removeClass("d-none");
                 $("#clockLabel").text("ছবি আপলোডের জন্য সময় বাকি:");
+                $("#examScheduleRange").addClass("d-none");
+                window.scrollTo(0, 0);
+                mySticky();
                 $("#demoSkipToUploadPhase").remove();
                 $("#examSubmission").text("Submit");
             }
