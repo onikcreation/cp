@@ -7825,7 +7825,7 @@ body { font-family: "Open Sans", Arial, sans-serif; }
                       <div class="panel-body">
                         <ul>
                           <li data-parent-id="102">
-                            <a href="CreateExam_Offline.html" data-businessid="Exams-CreateExam|" class="submenuitem" style="font-weight: bold;">
+                            <a href="./" data-businessid="Exams-CreateExam|" class="submenuitem" style="font-weight: bold;">
                               Create Exam
                             </a>
                           </li>
@@ -7835,7 +7835,7 @@ body { font-family: "Open Sans", Arial, sans-serif; }
                             </a>
                           </li>
                           <li data-parent-id="102">
-                            <a href="../ManageIndividualExam/ManageIndividualExam_Offline.html" data-businessid="Exams-ExamListForEdit|Exams-DownloadSampleSaq|Exams-EditIndividualExam|Exams-DownloadSample|" class="submenuitem">
+                            <a href="../ManageIndividualExam/" data-businessid="Exams-ExamListForEdit|Exams-DownloadSampleSaq|Exams-EditIndividualExam|Exams-DownloadSample|" class="submenuitem">
                               Manage Individual Exam
                             </a>
                           </li>
@@ -9001,7 +9001,7 @@ body { font-family: "Open Sans", Arial, sans-serif; }
                             </div>
                           </div>
                         </div>
-                        <div class="row exam-details-editor-row">
+                        <div class="row exam-details-editor-row" hidden>
                           <div class="form-group col-md-12">
                             <label class="control-label col-md-2 syllabus-label" for="syllabus">
                               Syllabus
@@ -11495,7 +11495,7 @@ body { font-family: "Open Sans", Arial, sans-serif; }
   </div>
   <div class="update-section">
     <p class="update-title">📌 ৫. Syllabus Rich Text Editor</p>
-    <p><strong>Exam Details</strong> panel-এ <strong>Is Marks Calculation</strong>-এর নিচে <strong>Syllabus</strong> CKEditor যোগ করা হয়েছে। এখানে এন্ট্রি করা ডাটা পোর্টালে এক্সাম কার্ডে দেখাতে হবে।</p>
+    <p>সরাসরি <strong>Create Exam</strong> মেনু থেকে নতুন এক্সাম তৈরি করার সময় <strong>Syllabus</strong> অংশ দেখাবে না। শুধু <strong>Manage Individual Exam</strong> পেইজে কোনো এক্সামের <strong>Edit</strong> বাটনে ক্লিক করে এই পেইজে এলে <strong>Exam Details</strong> panel-এর <strong>Is Marks Calculation</strong>-এর নিচে <strong>Syllabus</strong> CKEditor দেখাবে। এখানে এন্ট্রি করা ডাটা পোর্টালের Exam Card-এ দেখাতে হবে।</p>
   </div>
 
   <div class="update-section">
@@ -12997,6 +12997,23 @@ click:function(a){var b=a.elementMode==CKEDITOR.ELEMENT_MODE_INLINE?a.container.
 <script>
 (function () {
   "use strict";
+  var query = new URLSearchParams(window.location.search);
+  var editId = (query.get("editId") || "").trim();
+  var fromManageIndividualExam = query.get("source") === "manage-individual-exam";
+  var syllabusRow = document.querySelector(".exam-details-editor-row");
+
+  if (!fromManageIndividualExam || !editId) {
+    if (syllabusRow && syllabusRow.parentNode) {
+      syllabusRow.parentNode.removeChild(syllabusRow);
+    }
+    return;
+  }
+
+  if (syllabusRow) {
+    syllabusRow.hidden = false;
+    syllabusRow.setAttribute("data-edit-exam-id", editId);
+  }
+
   if (!window.CKEDITOR || !document.getElementById("syllabus")) return;
 
   var editor = CKEDITOR.replace("syllabus", {

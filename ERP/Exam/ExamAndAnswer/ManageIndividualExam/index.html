@@ -8670,7 +8670,7 @@ body { font-family: "Open Sans", Arial, sans-serif; }
         </button>
         <h4 class="modal-title" id="pageChangesTitle">এই পেইজে যা যা পরিবর্তন/আপডেট করা হয়েছে</h4>
       </div>
-      <div class="modal-body" id="pageChangesContent"><ol></ol></div>
+      <div class="modal-body" id="pageChangesContent"><ol><li><strong>Edit</strong> বাটনে ক্লিক করলে সংশ্লিষ্ট Exam ID এবং Manage Individual Exam source marker-সহ Create Exam edit view খুলবে। শুধু এই edit flow-তেই <strong>Syllabus</strong> অংশ দেখা যাবে; সরাসরি Create Exam মেনুতে এটি থাকবে না।</li></ol></div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default offline-modal-close-button">বন্ধ করুন</button>
       </div>
@@ -8919,7 +8919,8 @@ body { font-family: "Open Sans", Arial, sans-serif; }
     var action = button.getAttribute("data-action");
     if (action === "edit") {
       window.location.href = "../CreateExam/?editId=" +
-        encodeURIComponent(button.getAttribute("data-exam-id") || "");
+        encodeURIComponent(button.getAttribute("data-exam-id") || "") +
+        "&source=manage-individual-exam";
       return;
     }
     window.offlineShowToast(action.charAt(0).toUpperCase() + action.slice(1) + " action opened in demo mode.");
