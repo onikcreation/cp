@@ -5083,6 +5083,11 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
   .cp-result-heading { margin-bottom: 20px; text-align: center; }
   .cp-result-heading h4 { margin: 0 0 6px; color: #3B3849; font-size: 20px; font-weight: 700; }
   .cp-result-heading h5 { margin: 0 0 5px; color: #667085; font-size: 14px; font-weight: 600; }
+  .cp-performance-summary { display: none; max-width: 720px; margin: 0 auto 20px; overflow-x: auto; }
+  .cp-performance-summary table { width: 100%; min-width: 520px; border-collapse: collapse; background: #fff; }
+  .cp-performance-summary th, .cp-performance-summary td { padding: 12px 16px; border: 1px solid #dee2e6; text-align: center; vertical-align: middle; }
+  .cp-performance-summary th { color: #222; font-weight: 500; background: #fff; }
+  .cp-performance-summary th:first-child { min-width: 180px; }
   .cp-table-scroll { width: 100%; overflow-x: auto; }
   .cp-table { width: 100%; min-width: 1180px; border-collapse: collapse; }
   .cp-table th, .cp-table td { padding: 12px 9px; border: 1px solid #dee2e6; text-align: center; vertical-align: middle; }
@@ -5211,6 +5216,33 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
     return base ? Math.round((value * 100) / base) : 0;
   }
 
+  function ensurePerformanceSummary() {
+    var summary = document.getElementById('cpPerformanceSummary');
+    if (summary) return summary;
+    summary = document.createElement('div');
+    summary.id = 'cpPerformanceSummary';
+    summary.className = 'cp-performance-summary';
+    summary.innerHTML = '<table><tbody><tr><th rowspan=2 scope=rowgroup>Performance Summary</th><th scope=col>Good</th><th scope=col>Average</th><th scope=col>Bad</th></tr><tr><td id=cpSummaryGood>0 (0%)</td><td id=cpSummaryAverage>0 (0%)</td><td id=cpSummaryBad>0 (0%)</td></tr></tbody></table>';
+    var tableScroll = document.getElementById('cpTableScroll');
+    tableScroll.parentNode.insertBefore(summary, tableScroll);
+    return summary;
+  }
+
+  function renderPerformanceSummary(rows) {
+    var totals = rows.reduce(function (summary, item) {
+      summary.good += item.good;
+      summary.average += item.average;
+      summary.bad += item.bad;
+      return summary;
+    }, { good: 0, average: 0, bad: 0 });
+    var totalFeedback = totals.good + totals.average + totals.bad;
+    var summary = ensurePerformanceSummary();
+    document.getElementById('cpSummaryGood').textContent = totals.good + ' (' + pct(totals.good, totalFeedback) + '%)';
+    document.getElementById('cpSummaryAverage').textContent = totals.average + ' (' + pct(totals.average, totalFeedback) + '%)';
+    document.getElementById('cpSummaryBad').textContent = totals.bad + ' (' + pct(totals.bad, totalFeedback) + '%)';
+    summary.style.display = rows.length ? 'block' : 'none';
+  }
+
   function aggregateRows(rows, axes) {
     var groups = {};
     var order = [];
@@ -5274,6 +5306,7 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
     var displayRows = groupedRows.slice(0, limit);
     var showBranch = selectedMode.axes.indexOf("branch") !== -1;
     renderTableHead(showBranch);
+    renderPerformanceSummary(displayRows);
 
     var html = displayRows.map(function (item, index) {
       var row = "<tr><td>" + String(index + 1).padStart(2, "0") + "</td><td>" + item.date +
@@ -5445,7 +5478,7 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
 //# sourceMappingURL=bootstrap.bundle.min.js.map
 </script>
 <script type="text/javascript">
-﻿var CUSTOM_MESSAGE_CONTAINER_CLASS = ".customMessage";
+var CUSTOM_MESSAGE_CONTAINER_CLASS = ".customMessage";
 var DISPLAY_TIME_SUCCESS = 5000;
 var DISPLAY_TIME_ERROR = 30000;
 var DISPLAY_TIME_WARNING = 30000;

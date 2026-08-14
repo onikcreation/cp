@@ -13381,6 +13381,7 @@ function getDPI() {
 
   // ---- ফেইক টিচার রোস্টার (কোনো নাম আসল ক্যাপচার থেকে নেওয়া না) ----
   var FAKE_TEACHERS = [
+    { pin: 4867, nick: 'Onik', age: 2007, full: 'Onik', institute: 'Dummy Institute', label: 'Onik (2007)' },
     { pin: 40231, nick: 'Robin', age: 21, full: 'Md. Robiul Awal', institute: 'DU' },
     { pin: 40456, nick: 'Trisha', age: 19, full: 'Trisha Rahman', institute: 'BUET' },
     { pin: 40789, nick: 'Wasif', age: 22, full: 'Wasif Anjum Khan', institute: 'RUET' },
@@ -13401,7 +13402,7 @@ function getDPI() {
     { pin: 45103, nick: 'Ifty', age: 21, full: 'Iftekhar Ahmed', institute: 'KUET' }
   ];
   FAKE_TEACHERS.forEach(function (t, i) {
-    t.label = t.nick + ' (' + t.age + ') ' + t.full;
+    t.label = t.label || (t.nick + ' (' + t.age + ') ' + t.full);
     t.mobile = DUMMY_MOBILES[i % DUMMY_MOBILES.length];
   });
 
@@ -13497,6 +13498,8 @@ function getDPI() {
   // ---- Teacher PIN: হালকা কাস্টম অটোকমপ্লিট (bootstrap3-typeahead প্লাগইন লাগবে না) ----
   var $pinInput = $('#TeacherPin');
   var $suggestList = $('#teacherPinSuggestList');
+  $pinInput.val('[4867] - Onik (2007)');
+  $('#TeacherId').val('4867');
 
   function renderSuggestions(query) {
     var q = (query || '').toLowerCase().trim();
@@ -13673,6 +13676,13 @@ function getDPI() {
       : 'All Organization';
     var programSessionText = currentProgramSessionLabel();
     var dataGridMinWidth = 930 + (showDate ? 110 : 0) + (showLecture ? 190 : 0) + (showBranch ? 170 : 0);
+    var performanceSummary = displayRows.reduce(function (summary, row) {
+      summary.good += row.good;
+      summary.avg += row.avg;
+      summary.bad += row.bad;
+      return summary;
+    }, { good: 0, avg: 0, bad: 0 });
+    var performanceSummaryTotal = performanceSummary.good + performanceSummary.avg + performanceSummary.bad;
 
     var html = '';
     html += '<div class="panel panel-primary"><div class="panel-heading"><h4 class="panel-title">Details Report</h4></div>';
@@ -13730,6 +13740,31 @@ function getDPI() {
     html += '<div class="text-right" style="margin-top:6px;">Showing 1 to ' + displayRows.length + ' of ' + displayRows.length + ' entries</div>';
     html += '</div></div>';
     $('#reportResult').html(html);
+    var $teacherDetailsTable = $('#reportResult .panel-body > table').first();
+    var $overviewRow = $('<div>').addClass('row').css('margin-bottom', '15px');
+    var $teacherDetailsColumn = $('<div>').addClass('col-md-8');
+    var $performanceSummaryColumn = $('<div>').addClass('col-md-4');
+    var $performanceSummaryTable = $('<table>').addClass('table table-bordered table-condensed text-center').css('margin-bottom', 0);
+    var $performanceSummaryHead = $('<thead>').append(
+      $('<tr>').append($('<th>').attr('colspan', 3).addClass('text-center').text('Performance Summary'))
+    );
+    var $performanceSummaryBody = $('<tbody>');
+    function appendPerformanceSummaryRow(label, count) {
+      $performanceSummaryBody.append(
+        $('<tr>')
+          .append($('<td>').text(pct(count, performanceSummaryTotal)))
+          .append($('<td>').text(label))
+          .append($('<td>').text(count))
+      );
+    }
+    appendPerformanceSummaryRow('Good', performanceSummary.good);
+    appendPerformanceSummaryRow('Average', performanceSummary.avg);
+    appendPerformanceSummaryRow('Bad', performanceSummary.bad);
+    $teacherDetailsTable.css('margin-bottom', 0);
+    $teacherDetailsColumn.append($teacherDetailsTable);
+    $performanceSummaryColumn.append($performanceSummaryTable.append($performanceSummaryHead, $performanceSummaryBody));
+    $overviewRow.append($teacherDetailsColumn, $performanceSummaryColumn);
+    $('#reportResult .individual-performance-grid').before($overviewRow);
     if ($.fn.DataTable) {
       $('#DataGrid').DataTable({
         destroy: true,
@@ -13826,6 +13861,7 @@ function getDPI() {
           <li><strong>নতুন View By ফিল্টার:</strong> আগের Group By এবং Datewise/Lecturewise/Branchwise multi-select বাদ দিয়ে View Data-এর আগে single-select View By যোগ হয়েছে। অপশন দুটি হলো Date Lacture Wise ও Date Lacture Branch Wise।</li>
           <li><strong>ফিল্টার অনুযায়ী ফলাফল:</strong> Date Lacture Wise নির্বাচন করলে Date+Lecture combination অনুযায়ী এবং Date Lacture Branch Wise নির্বাচন করলে Date+Lecture+Branch combination অনুযায়ী Class Performance ও Content Alignment aggregate হয়।</li>
           <li><strong>Combine-style result:</strong> Teacher PIN দিয়ে Search করার পর ফলাফল Details Report panel, Organization/Program–Session/report heading ও teacher summary-সহ দেখায়। একই data table-এ Class Performance-এর পাশাপাশি Content Alignment-এর শুধু Good, Average ও Bad তথ্য থাকে।</li>
+          <li><strong>Class Performance সামারি পুনরায় যুক্ত:</strong> Search-এর ফলাফলে teacher details-এর ডান পাশে দৃশ্যমান row-গুলোর মোট Good, Average ও Bad count এবং percentage দেখানো হয়।</li>
         </ol>
       </div>
       <div class="modal-footer">
