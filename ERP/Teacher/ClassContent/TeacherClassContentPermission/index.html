@@ -26523,6 +26523,9 @@ table.dataTable td {
                             <th class="form-group">
                               <input type="button" name="search" id="search" value="Search" class="form-control btn-primary">
                             </th>
+                            <th class="form-group">
+                              <button type="button" name="export" id="export" class="form-control btn btn-success"><i class="fa fa-download" aria-hidden="true"></i> Export</button>
+                            </th>
                           </tr>
                         </tbody>
                       </table>
@@ -28539,6 +28542,61 @@ installFakeAjax({
 });
 
 
+function getManagePermissionFilters() {
+    return {
+        keyword: $('#keyword').val(),
+        mobileNumber: $('#mobileNumber').val(),
+        permissionStatus: $('#permissionStatus').val(),
+        status: $('#Status').val(),
+        organizationId: $('#OrganizationId').val() || '0',
+        programId: $('#ProgramId').val() || '0',
+        sessionId: $('#SessionId').val() || '0',
+        courseIds: $('#CourseId').val() || '0',
+        subjectIds: $('#SubjectId').val() || '0'
+    };
+}
+
+function escapeCsvValue(value) {
+    var text = value == null ? '' : String(value);
+    return '"' + text.replace(/"/g, '""') + '"';
+}
+
+function exportPermissionCsv() {
+    var exportResult = generateExaminers(getManagePermissionFilters(), 0, TOTAL_EXAMINERS);
+    if (!exportResult.rows.length) {
+        $.fn.customMessage({ displayMessage: 'No data found to export.', displayMessageType: 'e' });
+        return;
+    }
+
+    var csvRows = [[
+        'TPIN', 'Nick Name', 'Batch', 'Mobile Number', 'Permission Status',
+        'Status', 'Institute', 'Department', 'HSC Passing Year'
+    ]];
+    exportResult.rows.forEach(function (teacher) {
+        csvRows.push([
+            teacher.tpin,
+            teacher.nickname,
+            teacher.batchYear,
+            teacher.mobile,
+            teacher.hasPermission ? 'Has Permission' : 'No Permission',
+            teacher.hasPermission ? (teacher.active ? 'Active' : 'Inactive') : '',
+            teacher.institute,
+            teacher.department,
+            teacher.hscYear
+        ]);
+    });
+
+    var csv = '\uFEFF' + csvRows.map(function (row) { return row.map(escapeCsvValue).join(','); }).join('\r\n');
+    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement('a');
+    link.href = url;
+    link.download = 'Teacher-Class-Content-Permission-' + new Date().toISOString().slice(0, 10) + '.csv';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+}
 function dataTableRender() {
     var PageSize = 10;
     if ($('#PageSize').val() != "" && /^\d+$/.test($('#PageSize').val())) {
@@ -28589,6 +28647,10 @@ $(document).ready(function () {
     $(document).on("click", "#search", function () {
         $('#DataGrid').show();
         dataTableRender();
+    });
+
+    $(document).on("click", "#export", function () {
+        exportPermissionCsv();
     });
 
     $(document).on('change', '#OrganizationId', function () {

@@ -13169,23 +13169,30 @@ function(a){a._oFixedColumns&&a._oFixedColumns.fnUpdate()})});s.Api.register("fi
 this.row(a).index()});s.Api.register("fixedColumns().cellIndex()",function(a){a=d(a);if(a.parents(".DTFC_Cloned").length){var b=a.parent().index(),b=this.rows({page:"current"}).indexes()[b],a=a.parents(".DTFC_LeftWrapper").length?a.index():this.columns().flatten().length-this.context[0]._oFixedColumns.s.iRightColumns+a.index();return{row:b,column:this.column.index("toData",a),columnVisible:a}}return this.cell(a).index()});d(r).on("init.dt.fixedColumns",function(a,b){if("dt"===a.namespace){var c=b.oInit.fixedColumns,
 e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.dataTable.FixedColumns=m;return d.fn.DataTable.FixedColumns=m});
 
-</script>
-
-                  <style>
+</script>                  <style>
                     .teacher thead { height: 3em; }
                     .teacher th { position: sticky; top: 0; background: #c1c1c1; text-align: center; }
                     .tccpRequiredError { border-color: red !important; }
+                    .tccp-action-btn { min-width: 180px; padding: 12px 32px; font-size: 17px; font-weight: 600; }
+                    .permissionTree { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; list-style: none; margin: 0; padding: 0; }
+                    .permissionTree > li { margin: 0; padding: 15px 18px; border: 1px solid #ddd; border-radius: 4px; background: #fff; }
+                    .permissionTreeCourseTitle { display: block; margin-bottom: 4px; font-size: 15px; }
+                    .permissionTreeContext { display: block; margin: 0 0 10px 23px; color: #777; font-size: 12px; }
+                    .permissionTreeSubjects { display: grid; grid-template-columns: repeat(3, minmax(210px, 1fr)); gap: 8px 18px; margin: 10px 0 0 24px; padding: 0; list-style: none; }
+                    .permissionTreeSubjects label { margin: 0; font-weight: normal; }
+                    @media (max-width: 991px) { .permissionTree { grid-template-columns: 1fr; } .permissionTreeSubjects { grid-template-columns: repeat(2, minmax(180px, 1fr)); } }
+                    @media (max-width: 640px) { .permissionTreeSubjects { grid-template-columns: 1fr; } .tccp-action-btn { min-width: 145px; } }
                   </style>
                   <div class="panel panel-primary">
-                    <div class="panel-heading">Examiner Permission</div>
+                    <div class="panel-heading">Teacher Class Content Permission</div>
                     <div class="panel-body">
                       <form action="javascript:void(0)" id="bulkPermissionForm" method="post">
                         <div class="form-horizontal">
                           <div class="form-group">
-                            <label class="control-label col-md-2" for="OrganizationId">Organization :</label>
+                            <label class="control-label col-md-2" for="OrganizationIds">Organization :</label>
                             <div class="col-md-4">
-                              <select class="form-control" id="OrganizationId" name="OrganizationId">
-                                <option value="">Select Organization</option>
+                              <span class="hide-native-select">
+                                <select class="form-control" id="OrganizationIds" multiple="multiple" name="OrganizationIds">
                                 <option value="1">UDVASH</option>
 <option value="2">UNMESH</option>
 <option value="13">ONLINE CARE</option>
@@ -13205,20 +13212,21 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
 <option value="17">OU</option>
 <option value="18">OI</option>
                               </select>
+                              </span>
                             </div>
-                            <label class="control-label col-md-2" for="ProgramId">Program :</label>
+                            <label class="control-label col-md-2" for="ProgramIds">Program :</label>
                             <div class="col-md-4">
-                              <select class="form-control" id="ProgramId" name="ProgramId">
-                                <option value="">Select Program</option>
-                              </select>
+                              <span class="hide-native-select">
+                                <select class="form-control" id="ProgramIds" multiple="multiple" name="ProgramIds"></select>
+                              </span>
                             </div>
                           </div>
                           <div class="form-group">
-                            <label class="control-label col-md-2" for="SessionId">Session :</label>
+                            <label class="control-label col-md-2" for="SessionIds">Session :</label>
                             <div class="col-md-4">
-                              <select class="form-control" id="SessionId" name="SessionId">
-                                <option value="">Select Session</option>
-                              </select>
+                              <span class="hide-native-select">
+                                <select class="form-control" id="SessionIds" multiple="multiple" name="SessionIds"></select>
+                              </span>
                             </div>
                             <label class="control-label col-md-2" for="CourseId">Course :</label>
                             <div class="col-md-4">
@@ -13238,23 +13246,23 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                             <div class="col-md-4">
                               <select class="form-control" id="PermissionStatus" name="PermissionStatus">
                                 <option value="0">All</option>
-<option value="1">Has Permission</option>
-<option value="2">No Permission</option>
+                                <option value="1">Has Permission</option>
+                                <option value="2">No Permission</option>
                               </select>
                             </div>
                           </div>
                           <div class="form-group">
                             <label class="control-label col-md-2" for="Tpins">TPIN :</label>
-                            <div class="col-md-4">
-                              <input class="form-control" id="Tpins" name="Tpins" placeholder="TPIN with comma separate" type="text" value="">
+                            <div class="col-md-10">
+                              <textarea class="form-control" id="Tpins" name="Tpins" rows="3" placeholder="TPIN separated by comma, space or new line"></textarea>
                             </div>
                           </div>
                           <div class="form-group">
                             <div class="text-center mx-auto">
-                              <button class="btn btn-primary" type="button" id="btnSubmit">Submit</button>
+                              <button class="btn btn-primary btn-lg tccp-action-btn" type="button" id="btnSubmit">Submit</button>
                             </div>
                           </div>
-                          <div class="table-responsive disAppear" id="teacherTable" style="max-height: 200px; overflow-y: auto; border-bottom: 1px solid #dddddd; display:none;">
+                          <div class="table-responsive disAppear" id="teacherTable" style="max-height: 200px; overflow-y: auto; border-bottom: 1px solid #dddddd;">
                             <table class="table-striped table-bordered table-condensed teacher" cellspacing="0" width="100%">
                               <thead>
                                 <tr>
@@ -13272,20 +13280,20 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                               </tbody>
                             </table>
                           </div>
-                          <div class="form-group" style="padding-top: 1rem;">
+                          <div class="form-group disAppear" style="padding-top: 1rem;">
                             <div class="col-md-12">
                               <p>Total Selected Teacher(s) : <strong id="selectedTeacherCount">0</strong></p>
                             </div>
                           </div>
                           <div class="form-group">
                             <div class="col-md-12 text-center">
-                              <button class="btn btn-success" id="btnView">View</button>
+                              <button class="btn btn-success btn-lg tccp-action-btn" id="btnView">View</button>
                             </div>
                           </div>
                           <div id="teacherPermissionList"></div>
                           <div class="form-group">
                             <div class="col-md-12 text-center">
-                              <button class="btn btn-primary" id="btnSetPermission" style="display: none;">Set Permission</button>
+                              <button class="btn btn-primary" id="btnSetPermission" style="display:none;">Set Permission</button>
                             </div>
                           </div>
                         </div>
@@ -15215,13 +15223,20 @@ function generateExaminers(filters, start, length) {
   return { rows: out.slice(0, length), total: anyFilter ? matched + (scanned < maxScan ? 500 : 0) : TOTAL_EXAMINERS };
 }
 function findExaminerByTpin(tpin) {
-  var idx = Math.round((Number(tpin) - 40) / 7);
-  if (idx < 0 || idx >= TOTAL_EXAMINERS) return null;
-  var e = examinerAt(idx);
-  if (e.tpin !== Number(tpin)) return null;
-  return e;
-}
+  var numericTpin = Number(tpin);
+  if (!Number.isFinite(numericTpin) || numericTpin <= 0 || Math.floor(numericTpin) !== numericTpin) return null;
 
+  var idx = Math.round((numericTpin - 40) / 7);
+  if (idx >= 0 && idx < TOTAL_EXAMINERS) {
+    var exactExaminer = examinerAt(idx);
+    if (exactExaminer.tpin === numericTpin) return exactExaminer;
+  }
+
+  // Offline demo fallback: every valid numeric TPIN resolves to a stable teacher row.
+  var generatedExaminer = examinerAt(hash('tpin-' + numericTpin) % TOTAL_EXAMINERS);
+  generatedExaminer.tpin = numericTpin;
+  return generatedExaminer;
+}
 function installFakeAjax(handlers) {
   var origAjax = $.ajax;
   $.ajax = function (options) {
@@ -15248,16 +15263,24 @@ function installFakeAjax(handlers) {
 
 installFakeAjax({
   'Administration/CommonAjax/LoadProgram': function (data) {
-    var orgId = [].concat(data.organizationIds || [])[0];
-    return { IsSuccess: true, returnProgramList: PROGRAMS_BY_ORG[orgId] || [] };
+    var result = uniqueOptionList([].concat(data.organizationIds || []).map(function (orgId) { return PROGRAMS_BY_ORG[orgId] || []; }));
+    return { IsSuccess: true, returnProgramList: result };
   },
   'Administration/CommonAjax/LoadSession': function (data) {
-    var orgId = [].concat(data.organizationIds || [])[0], progId = [].concat(data.programIds || [])[0];
-    return { IsSuccess: true, returnSessionList: SESSIONS_BY_KEY[orgId + '_' + progId] || [] };
+    var lists = [];
+    [].concat(data.organizationIds || []).forEach(function (orgId) {
+      [].concat(data.programIds || []).forEach(function (programId) { lists.push(SESSIONS_BY_KEY[orgId + '_' + programId] || []); });
+    });
+    return { IsSuccess: true, returnSessionList: uniqueOptionList(lists) };
   },
   'Administration/CommonAjax/LoadCourse': function (data) {
-    var orgId = [].concat(data.organizationIds || [])[0], progId = [].concat(data.programIds || [])[0], sessId = [].concat(data.sessionIds || [])[0];
-    return { IsSuccess: true, returnCourse: COURSES_BY_KEY[orgId + '_' + progId + '_' + sessId] || [] };
+    var lists = [];
+    [].concat(data.organizationIds || []).forEach(function (orgId) {
+      [].concat(data.programIds || []).forEach(function (programId) {
+        [].concat(data.sessionIds || []).forEach(function (sessionId) { lists.push(COURSES_BY_KEY[orgId + '_' + programId + '_' + sessionId] || []); });
+      });
+    });
+    return { IsSuccess: true, returnCourse: uniqueOptionList(lists) };
   },
   'Administration/CommonAjax/LoadSubjectMulti': function (data) {
     return { IsSuccess: true, returnSubjectList: subjectsForCourses(data.courseIdList).map(function (s) { return { Text: s.name, Value: String(s.id) }; }) };
@@ -15266,13 +15289,15 @@ installFakeAjax({
     var tPinList = [].concat(data.tPinList || []).map(function (t) { return String(t).trim(); }).filter(Boolean);
     var rows;
     if (tPinList.length) {
-      // exact TPIN lookup (also how the "Permission" button's ?tPin= deep link resolves)
       rows = tPinList.map(function (t) { return findExaminerByTpin(t); }).filter(Boolean);
     } else {
       var filters = {
         permissionStatus: String(data.permissionStatus) === '0' ? '' : data.permissionStatus,
-        organizationId: data.organizationId, programId: data.programId, sessionId: data.sessionId,
-        courseIds: data.courseIds, subjectIds: data.subjectIds,
+        organizationId: [].concat(data.organizationIds || []).join(','),
+        programId: [].concat(data.programIds || []).join(','),
+        sessionId: [].concat(data.sessionIds || []).join(','),
+        courseIds: data.courseIds,
+        subjectIds: data.subjectIds
       };
       rows = generateExaminers(filters, 0, 60).rows;
     }
@@ -15285,49 +15310,103 @@ installFakeAjax({
       '<thead><tr><th><input type="checkbox" id="checkAll"></th><th>TPIN</th><th>Nick Name</th><th>Contact Number</th><th>HSC Passing Year</th><th>Institute</th><th>Department</th></tr></thead>' +
       '<tbody class="text-center" id="teacherList">' + (rows || '<tr><td colspan="7">No data</td></tr>') + '</tbody></table>';
   },
-  GetOnlineWrittenPermittedValue: function (data) {
+  GetPermittedValue: function (data) {
     var teacherIds = [].concat(data.listTeacher || []);
     var courseIds = [].concat(data.courseIds || []);
     var subjectIdFilter = [].concat(data.subjectIds || []).map(String);
-    if (!courseIds.length) {
-      // Course left at its default "Select All" (nothing explicitly picked) — treat as
-      // "every course available for the chosen Organization/Program/Session", not an error.
-      var key = data.organizationId + '_' + data.programId + '_' + data.sessionId;
-      courseIds = (COURSES_BY_KEY[key] || []).map(function (c) { return c.Value; });
-    }
-    if (!courseIds.length) {
-      return '<div class="alert alert-warning text-center">এই Organization/Program/Session-এর জন্য কোনো Course পাওয়া যায়নি।</div>';
-    }
-    // Grouped by course — one column per selected course, a "[Course] All Service"
-    // select-all checkbox, and the course's subjects nested as checkboxes underneath
-    // (matches the "Subject Permission" grid format the user specified).
+    if (!courseIds.length) { courseIds = availableCourses(data.organizationIds, data.programIds, data.sessionIds).map(function (c) { return c.Value; }); }
+    if (!courseIds.length) { return '<div class="alert alert-warning text-center">No course is available for the selected filters.</div>'; }
     var groupsHtml = courseIds.map(function (cid) {
-      var courseName = COURSES_BY_KEY_NAME(cid);
+      var courseContext = courseContextForSelection(cid, data.organizationIds, data.programIds, data.sessionIds);
       var courseSubjects = subjectsForCourse(cid);
-      if (subjectIdFilter.length) {
-        courseSubjects = courseSubjects.filter(function (s) { return subjectIdFilter.indexOf(String(s.id)) !== -1; });
-      }
+      if (subjectIdFilter.length) { courseSubjects = courseSubjects.filter(function (s) { return subjectIdFilter.indexOf(String(s.id)) !== -1; }); }
       var subjectItems = courseSubjects.map(function (s) {
-        var seed = hash(teacherIds.join(',') + '-' + cid + '-' + s.id);
-        return '<div><label class="checkbox" style="font-weight:normal;">' +
-          '<input type="checkbox" class="subjectGrantCheck" data-courseid="' + cid + '" data-subjectid="' + s.id + '" ' + ((seed % 4) ? '' : 'checked') + '> ' +
-          escapeHtml(s.name) + '</label></div>';
-      }).join('') || '<div class="text-muted">এই কোর্সে কোনো সাবজেক্ট পাওয়া যায়নি।</div>';
-      return '<div class="col-md-6 col-lg-4" style="margin-bottom: 20px;">' +
-        '<label class="checkbox"><input type="checkbox" class="courseAllCheck" data-courseid="' + cid + '"> <strong>' + escapeHtml(courseName) + ' All Service</strong></label>' +
-        '<div style="padding-left: 22px; margin-top: 4px;">' + subjectItems + '</div>' +
-        '</div>';
+        var granted = teacherIds.filter(function (teacherId) { return hash(teacherId + '-' + cid + '-' + s.id) % 4 !== 0; }).length;
+        var isChecked = teacherIds.length > 0 && granted === teacherIds.length;
+        var isPartial = granted > 0 && granted < teacherIds.length;
+        return '<li><label><input type="checkbox" class="subjectPermission" data-course-id="' + cid + '" data-subject-id="' + s.id + '" data-partial="' + isPartial + '" ' + (isChecked ? 'checked' : '') + '> ' + escapeHtml(s.name) + '</label></li>';
+      }).join('') || '<li class="text-muted">No subject is available for this course.</li>';
+      return '<li class="permissionTreeCourse">' +
+        '<label class="permissionTreeCourseTitle"><input type="checkbox" class="coursePermission" data-course-id="' + cid + '"> <strong>' + escapeHtml(COURSES_BY_KEY_NAME(cid)) + '</strong></label>' +
+        '<span class="permissionTreeContext">' + escapeHtml(courseContext.programName) + ' &mdash; ' + escapeHtml(courseContext.sessionName) + '</span>' +
+        '<ul class="permissionTreeSubjects">' + subjectItems + '</ul></li>';
     }).join('');
     return '<div class="panel panel-default" style="margin-top:15px;"><div class="panel-body">' +
       '<h4 style="text-decoration: underline;"><strong>Subject Permission</strong></h4>' +
-      '<div class="row">' + groupsHtml + '</div>' +
-      '</div></div>';
+
+      '<ul class="permissionTree">' + groupsHtml + '</ul></div></div>';
   },
   BulkPermissionAjax: function (data) {
-    return { IsSuccess: true, Message: (data.teacherIds ? data.teacherIds.length : 0) + ' জন টিচারের জন্য পারমিশন সফলভাবে সেট করা হয়েছে।' };
-  },
+    var model = data.teacherClassContentPermissionBulkViewModel || data;
+    var teacherCount = [].concat(model.TeacherIds || []).length;
+    var permissionCount = [].concat(model.PermissionList || []).filter(function (item) { return item.IsPartial !== true; }).length;
+    return { IsSuccess: true, Message: teacherCount + ' teacher(s) updated with ' + permissionCount + ' explicit permission selection(s).' };
+  }
 });
 
+function uniqueOptionList(lists) {
+  var seen = {};
+  var result = [];
+  [].concat.apply([], lists || []).forEach(function (item) {
+    if (!item || seen[String(item.Value)]) return;
+    seen[String(item.Value)] = true;
+    result.push(item);
+  });
+  return result;
+}
+
+function availableCourses(organizationIds, programIds, sessionIds) {
+  var lists = [];
+  [].concat(organizationIds || []).forEach(function (orgId) {
+    [].concat(programIds || []).forEach(function (programId) {
+      [].concat(sessionIds || []).forEach(function (sessionId) { lists.push(COURSES_BY_KEY[orgId + '_' + programId + '_' + sessionId] || []); });
+    });
+  });
+  return uniqueOptionList(lists);
+}
+
+function programNameById(programId) {
+  var name = '';
+  Object.keys(PROGRAMS_BY_ORG).some(function (key) {
+    return (PROGRAMS_BY_ORG[key] || []).some(function (item) { if (String(item.Value) === String(programId)) { name = item.Text; return true; } return false; });
+  });
+  return name || ('Program #' + programId);
+}
+
+function sessionNameById(sessionId) {
+  var name = '';
+  Object.keys(SESSIONS_BY_KEY).some(function (key) {
+    return (SESSIONS_BY_KEY[key] || []).some(function (item) { if (String(item.Value) === String(sessionId)) { name = item.Text; return true; } return false; });
+  });
+  return name || ('Session #' + sessionId);
+}
+
+function courseContextForSelection(courseId, organizationIds, programIds, sessionIds) {
+  var matchedProgramId = null;
+  var matchedSessionId = null;
+  [].concat(organizationIds || []).some(function (organizationId) {
+    return [].concat(programIds || []).some(function (programId) {
+      return [].concat(sessionIds || []).some(function (sessionId) {
+        var courseExists = (COURSES_BY_KEY[organizationId + '_' + programId + '_' + sessionId] || []).some(function (course) {
+          return String(course.Value) === String(courseId);
+        });
+        if (courseExists) {
+          matchedProgramId = programId;
+          matchedSessionId = sessionId;
+          return true;
+        }
+        return false;
+      });
+    });
+  });
+
+  matchedProgramId = matchedProgramId || [].concat(programIds || [])[0];
+  matchedSessionId = matchedSessionId || [].concat(sessionIds || [])[0];
+  return {
+    programName: matchedProgramId ? programNameById(matchedProgramId) : 'Selected program',
+    sessionName: matchedSessionId ? sessionNameById(matchedSessionId) : 'Selected session'
+  };
+}
 function COURSES_BY_KEY_NAME(courseId) {
   var name = null;
   Object.keys(COURSES_BY_KEY).forEach(function (k) {
@@ -15337,217 +15416,240 @@ function COURSES_BY_KEY_NAME(courseId) {
 }
 
 
+const organizationIdName = '#OrganizationIds';
+const programIdName = '#ProgramIds';
+const sessionIdName = '#SessionIds';
 const courseIdName = '#CourseId';
 const subjectIdName = '#SubjectId';
 const tpinsIdName = '#Tpins';
 
 function escapeHtml(s) { return String(s).replace(/[&<>"']/g, function (c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]; }); }
+function getSelectedIds(elementId) { return [].concat($(elementId).val() || []).filter(function (id) { return id !== '' && String(id) !== '0'; }); }
+function parseTpins() { return String($(tpinsIdName).val() || '').split(/[\s,]+/).map(function (value) { return value.trim(); }).filter(Boolean); }
 
-const muliselectfnc = (elementId, nonSelectedText = 'Select All') => {
-    $(elementId).multiselect({
-        enableCaseInsensitiveFiltering: true, enableFiltering: true, includeSelectAllOption: true,
-        numberDisplayed: 2, maxHeight: 400, buttonWidth: '100%', nonSelectedText: nonSelectedText
-    });
+const muliselectfnc = (elementId, nonSelectedText) => {
+  $(elementId).multiselect({
+    enableCaseInsensitiveFiltering: true,
+    enableFiltering: true,
+    includeSelectAllOption: true,
+    numberDisplayed: 2,
+    maxHeight: 400,
+    buttonWidth: '100%',
+    nonSelectedText: nonSelectedText
+  });
 };
-const resetMutiselect = (elementId) => {
-    $(elementId).multiselect({ includeSelectAllOption: true });
-    $(elementId).multiselect('refresh');
-    $(elementId).multiselect('rebuild');
-};
+const resetMutiselect = (elementId) => { $(elementId).multiselect('rebuild'); };
 const appendOptionToElement = (elementId, data) => { $(elementId).append($('<option>').text(data.Text).attr('value', data.Value)); };
-const addElementToDropdownList = (list, elementId, isMultiselect = false) => {
-    if (list !== null && list.length > 0) {
-        $.each(list, function (_, data) { appendOptionToElement(elementId, data); });
-        if (isMultiselect === true) { resetMutiselect(elementId); }
-    }
+const addElementToDropdownList = (list, elementId) => {
+  var seen = {};
+  $.each(list || [], function (_, data) {
+    if (!data || seen[String(data.Value)]) return;
+    seen[String(data.Value)] = true;
+    appendOptionToElement(elementId, data);
+  });
+  resetMutiselect(elementId);
 };
+function emptyMultiselect(elementId) { $(elementId).empty(); resetMutiselect(elementId); }
 
 function ClearTeachers() {
-    let td = $('#teacherList td').length;
-    if (td > 1) { $('#teacherList').html('<tr><td colspan="7">No data</td></tr>'); }
-    CountCheckedTeacher();
+  $('#teacherList').html('<tr><td colspan="7">No data</td></tr>');
+  CountCheckedTeacher();
 }
-function clearTeacherPermission() {
-    $("#teacherPermissionList").html("");
-    $('#btnSetPermission').hide();
-}
-function CountCheckedTeacher() {
-    let count = $('input.checkBox:checked').length;
-    $('#selectedTeacherCount').text(count);
-}
+function clearTeacherPermission() { $('#teacherPermissionList').empty(); $('#btnSetPermission').hide(); }
+function CountCheckedTeacher() { $('#selectedTeacherCount').text($('input.checkBox:checked').length); }
 function GetCheckedValues() {
-    let teacherIds = [];
-    $("input.checkBox:checked").each(function () { teacherIds.push($(this).val()); });
-    return teacherIds;
+  var teacherIds = [];
+  $('input.checkBox:checked').each(function () { teacherIds.push($(this).val()); });
+  return teacherIds;
 }
-function markRequiredField(id, message, isInvalid) {
-    // popup/message-এর বদলে শুধু বক্সের লাল বর্ডার (রেড-বর্ডার ভ্যালিডেশন) — showErrorMessageBelowCtrl-এর
-    // মেসেজ-ডিভ ইচ্ছাকৃতভাবে বাদ দেওয়া হয়েছে, নিচের বর্ডার-টগল যথেষ্ট
-    var $el = $('#' + id);
-    // Belt-and-suspenders, using only mechanisms with unambiguous specificity:
-    // (a) toggled CSS class (".tccpRequiredError", !important, defined in this page's own
-    //     <style> block) — usually enough on its own;
-    // (b) DIRECT inline border-width/border-style/border-color (the individual LONGHAND
-    //     properties, never the "border" shorthand). Inline styles always outrank any
-    //     stylesheet rule that isn't itself !important, so this cannot lose a specificity
-    //     fight against the theme CSS. Longhands are used deliberately instead of the
-    //     shorthand: setting/clearing shorthand "border" via JS does not reliably clean up
-    //     (browsers expand it to longhands internally and a later removeProperty('border')
-    //     can leave the expanded longhands in place) — setting the longhands directly has
-    //     no such residue risk in either direction.
-    $el.toggleClass('tccpRequiredError', isInvalid);
-    // শুধু border-color — width/style অপরিবর্তিত রাখা হয় যাতে অন্য মেনুর (যেমন ExaminerPermission)
-    // রেড-বর্ডার ভ্যালিডেশনের সাথে বর্ডার-পুরুত্ব মিলে যায় (আগে 2px জোর করে ভিন্ন দেখাচ্ছিল)
-    $el.css('border-color', isInvalid ? 'red' : '');
+function markRequiredField(id, isInvalid) {
+  var $el = $('#' + id);
+  var $visibleControl = $el.parent().find('button.multiselect');
+  if (!$visibleControl.length) $visibleControl = $el;
+  $visibleControl.toggleClass('tccpRequiredError', isInvalid).css('border-color', isInvalid ? 'red' : '');
 }
 function CheckValidation() {
-    let result = true;
-    if ($('#OrganizationId').val() == '') { markRequiredField("OrganizationId", "Please Select Organization", true); result = false; } else { markRequiredField("OrganizationId", "", false); }
-    if ($('#ProgramId').val() == '') { markRequiredField("ProgramId", "Please Select Program", true); result = false; } else { markRequiredField("ProgramId", "", false); }
-    if ($('#SessionId').val() == '') { markRequiredField("SessionId", "Please Select Session", true); result = false; } else { markRequiredField("SessionId", "", false); }
-    return result;
+  var result = true;
+  [
+    { id: 'OrganizationIds', selector: organizationIdName },
+    { id: 'ProgramIds', selector: programIdName },
+    { id: 'SessionIds', selector: sessionIdName }
+  ].forEach(function (item) {
+    var invalid = getSelectedIds(item.selector).length === 0;
+    markRequiredField(item.id, invalid);
+    if (invalid) result = false;
+  });
+  return result;
 }
 function TeacherValidate(teacherIds) {
-    if (teacherIds.length > 0) { window.showErrorMessageBelowCtrl("selectedTeacherCount", "", false); return true; }
-    window.showErrorMessageBelowCtrl("selectedTeacherCount", "No Teacher Selected.", true);
-    return false;
+  if (teacherIds.length > 0) { window.showErrorMessageBelowCtrl('selectedTeacherCount', '', false); return true; }
+  window.showErrorMessageBelowCtrl('selectedTeacherCount', 'No Teacher Selected.', true);
+  return false;
 }
 function LoadTeacher() {
-    let organizationId = $('#OrganizationId').val() || 0;
-    let programId = $('#ProgramId').val() || 0;
-    let sessionId = $('#SessionId').val() || 0;
-    let permissionStatus = $('#PermissionStatus').val();
-    let courseIds = $('#CourseId').val() || [];
-    let subjectIds = $('#SubjectId').val() || [];
-    let tPinCommaSeparated = $(tpinsIdName).val();
-    let tPinArray = tPinCommaSeparated ? tPinCommaSeparated.split(',').map(function (s) { return s.trim(); }).filter(Boolean) : [];
-
-    if (CheckValidation()) {
-        $.ajax({
-            type: "POST", url: "LoadTeacher",
-            data: { organizationId: organizationId, programId: programId, sessionId: sessionId, courseIds: courseIds, subjectIds: subjectIds, permissionStatus: permissionStatus, tPinList: tPinArray },
-            success: function (response) {
-                $('#teacherTable').html(response);
-                CountCheckedTeacher();
-                $('#teacherTable').show();
-            }
-        });
+  if (!CheckValidation()) return;
+  $.ajax({
+    type: 'POST',
+    url: 'LoadTeacher',
+    data: {
+      organizationIds: getSelectedIds(organizationIdName),
+      programIds: getSelectedIds(programIdName),
+      sessionIds: getSelectedIds(sessionIdName),
+      courseIds: getSelectedIds(courseIdName),
+      subjectIds: getSelectedIds(subjectIdName),
+      permissionStatus: $('#PermissionStatus').val(),
+      tPinList: parseTpins()
+    },
+    success: function (response) {
+      $('#teacherTable').html(response).show();
+      CountCheckedTeacher();
     }
+  });
 }
-
+function initializePermissionTree() {
+  var $tree = $('#teacherPermissionList');
+  var syncCourseCheckbox = function ($courseItem) {
+    var $subjects = $courseItem.find('input.subjectPermission');
+    var checkedCount = $subjects.filter(':checked').length;
+    var mixedCount = $subjects.filter(function () { return this.indeterminate === true; }).length;
+    $courseItem.children('label').find('input.coursePermission')
+      .prop('checked', checkedCount > 0)
+      .prop('indeterminate', mixedCount > 0 || (checkedCount > 0 && checkedCount + mixedCount < $subjects.length));
+  };
+  $tree.find('input.subjectPermission[data-partial="true"]').prop('indeterminate', true);
+  $tree.off('change.permissionTree')
+    .on('change.permissionTree', 'input.coursePermission', function () {
+      var isChecked = this.checked;
+      var $courseItem = $(this).closest('li.permissionTreeCourse');
+      $courseItem.find('input.subjectPermission:not(:disabled)').each(function () {
+        var staysMixed = isChecked === false && $(this).data('partial') === true && this.dataset.userSet !== 'true';
+        this.indeterminate = staysMixed;
+        this.checked = staysMixed ? false : isChecked;
+      });
+      syncCourseCheckbox($courseItem);
+    })
+    .on('change.permissionTree', 'input.subjectPermission', function () {
+      this.indeterminate = false;
+      this.dataset.userSet = 'true';
+      syncCourseCheckbox($(this).closest('li.permissionTreeCourse'));
+    });
+  $tree.find('li.permissionTreeCourse').each(function () { syncCourseCheckbox($(this)); });
+}
 function LoadSubjectPermission() {
-    let organizationId = $('#OrganizationId').val();
-    let programId = $('#ProgramId').val();
-    let sessionId = $('#SessionId').val();
-    let teacherIds = GetCheckedValues();
-    let courseIds = $('#CourseId').val() || [];
-    let subjectIds = $('#SubjectId').val() || [];
-    if (CheckValidation() && TeacherValidate(teacherIds)) {
-        $.ajax({
-            type: "POST", url: "GetOnlineWrittenPermittedValue",
-            data: { organizationId: organizationId, programId: programId, sessionId: sessionId, listTeacher: teacherIds, courseIds: courseIds, subjectIds: subjectIds },
-            success: function (result) {
-                $("#teacherPermissionList").html(result);
-                $('#btnSetPermission').css('display', '');
-            }
-        });
+  var teacherIds = GetCheckedValues();
+  if (!CheckValidation() || !TeacherValidate(teacherIds)) return;
+  $.ajax({
+    type: 'POST',
+    url: 'GetPermittedValue',
+    data: {
+      organizationIds: getSelectedIds(organizationIdName),
+      programIds: getSelectedIds(programIdName),
+      sessionIds: getSelectedIds(sessionIdName),
+      listTeacher: teacherIds,
+      courseIds: getSelectedIds(courseIdName),
+      subjectIds: getSelectedIds(subjectIdName)
+    },
+    success: function (result) {
+      $('#teacherPermissionList').html(result);
+      initializePermissionTree();
+      $('#btnSetPermission').show();
     }
+  });
+}
+function GetModel() {
+  var model = {
+    OrganizationIds: getSelectedIds(organizationIdName),
+    ProgramIds: getSelectedIds(programIdName),
+    SessionIds: getSelectedIds(sessionIdName),
+    TeacherIds: GetCheckedValues(),
+    CourseIds: getSelectedIds(courseIdName),
+    SubjectIds: getSelectedIds(subjectIdName),
+    PermissionList: []
+  };
+  $('#teacherPermissionList input.subjectPermission').each(function () {
+    var isPartial = this.indeterminate === true;
+    if (!isPartial && !this.checked) return;
+    model.PermissionList.push({
+      IsChecked: !isPartial,
+      IsPartial: isPartial,
+      SubjectId: $(this).data('subject-id'),
+      CourseId: $(this).data('course-id')
+    });
+  });
+  return model;
 }
 
 $(document).ready(function () {
-    muliselectfnc($(courseIdName));
-    muliselectfnc($(subjectIdName));
+  muliselectfnc(organizationIdName, 'Select Organization');
+  muliselectfnc(programIdName, 'Select Program');
+  muliselectfnc(sessionIdName, 'Select Session');
+  muliselectfnc(courseIdName, 'Select All');
+  muliselectfnc(subjectIdName, 'Select All');
 
-    var qs = new URLSearchParams(window.location.search);
-    var tPinFromLink = qs.get('tPin');
-    if (tPinFromLink) { $(tpinsIdName).val(tPinFromLink); }
+  var qs = new URLSearchParams(window.location.search);
+  var tPinFromLink = qs.get('tPin');
+  if (tPinFromLink) $(tpinsIdName).val(tPinFromLink);
 
-    $(document).on('change', '#OrganizationId', function () {
-        markRequiredField("OrganizationId", "", false);
-        ClearTeachers(); clearTeacherPermission();
-        $('#ProgramId').empty().append('<option value="">Select Program</option>');
-        $('#SessionId').empty().append('<option value="">Select Session</option>');
-        $('#CourseId').empty(); resetMutiselect(courseIdName);
-        $('#SubjectId').empty(); resetMutiselect(subjectIdName);
-        let organizationId = $('#OrganizationId').val();
-        if (organizationId != '') {
-            $.ajax({ type: "POST", url: "Administration/CommonAjax/LoadProgram", data: { organizationIds: [organizationId], isAuthorized: true },
-                success: function (response) { if (response.IsSuccess) { addElementToDropdownList(response.returnProgramList, '#ProgramId'); } } });
-        }
+  $(document).on('change', organizationIdName, function () {
+    markRequiredField('OrganizationIds', false);
+    ClearTeachers(); clearTeacherPermission();
+    emptyMultiselect(programIdName); emptyMultiselect(sessionIdName); emptyMultiselect(courseIdName); emptyMultiselect(subjectIdName);
+    var organizationIds = getSelectedIds(organizationIdName);
+    if (organizationIds.length) {
+      $.ajax({ type: 'POST', url: 'Administration/CommonAjax/LoadProgram', data: { organizationIds: organizationIds, isAuthorized: true },
+        success: function (response) { if (response.IsSuccess) addElementToDropdownList(response.returnProgramList, programIdName); } });
+    }
+  });
+  $(document).on('change', programIdName, function () {
+    markRequiredField('ProgramIds', false);
+    ClearTeachers(); clearTeacherPermission();
+    emptyMultiselect(sessionIdName); emptyMultiselect(courseIdName); emptyMultiselect(subjectIdName);
+    var organizationIds = getSelectedIds(organizationIdName);
+    var programIds = getSelectedIds(programIdName);
+    if (organizationIds.length && programIds.length) {
+      $.ajax({ type: 'POST', url: 'Administration/CommonAjax/LoadSession', data: { organizationIds: organizationIds, programIds: programIds, isAuthorized: true },
+        success: function (response) { if (response.IsSuccess) addElementToDropdownList(response.returnSessionList, sessionIdName); } });
+    }
+  });
+  $(document).on('change', sessionIdName, function () {
+    markRequiredField('SessionIds', false);
+    ClearTeachers(); clearTeacherPermission();
+    emptyMultiselect(courseIdName); emptyMultiselect(subjectIdName);
+    var organizationIds = getSelectedIds(organizationIdName);
+    var programIds = getSelectedIds(programIdName);
+    var sessionIds = getSelectedIds(sessionIdName);
+    if (organizationIds.length && programIds.length && sessionIds.length) {
+      $.ajax({ type: 'POST', url: 'Administration/CommonAjax/LoadCourse', data: { organizationIds: organizationIds, programIds: programIds, sessionIds: sessionIds },
+        success: function (response) { if (response.IsSuccess) addElementToDropdownList(response.returnCourse, courseIdName); } });
+    }
+  });
+  $(document).on('change', courseIdName, function () {
+    ClearTeachers(); clearTeacherPermission(); emptyMultiselect(subjectIdName);
+    var courseIds = getSelectedIds(courseIdName);
+    if (courseIds.length) {
+      $.ajax({ type: 'POST', url: 'Administration/CommonAjax/LoadSubjectMulti', data: { courseIdList: courseIds },
+        success: function (result) { if (result.IsSuccess) addElementToDropdownList(result.returnSubjectList, subjectIdName); } });
+    }
+  });
+  $(document).on('change', subjectIdName + ', #PermissionStatus, ' + tpinsIdName, function () { ClearTeachers(); clearTeacherPermission(); });
+  $(document).on('click', '#checkAll', function () { $('input.checkBox').prop('checked', $(this).is(':checked')); CountCheckedTeacher(); clearTeacherPermission(); });
+  $(document).on('change', 'input.checkBox', function () { CountCheckedTeacher(); clearTeacherPermission(); });
+  $(document).on('click', '#btnSubmit', function (e) { e.preventDefault(); ClearTeachers(); clearTeacherPermission(); LoadTeacher(); });
+  $(document).on('click', '#btnView', function (e) { e.preventDefault(); LoadSubjectPermission(); });
+  $(document).on('click', '#btnSetPermission', function (e) {
+    e.preventDefault();
+    var model = GetModel();
+    if (!CheckValidation() || !TeacherValidate(model.TeacherIds)) return;
+    $.ajax({
+      type: 'POST',
+      url: 'BulkPermissionAjax',
+      data: { teacherClassContentPermissionBulkViewModel: model },
+      success: function (response) {
+        $.fn.customMessage({ displayMessage: response.Message, displayMessageType: response.IsSuccess ? 's' : 'error' });
+      }
     });
-
-    $(document).on('change', '#ProgramId', function () {
-        markRequiredField("ProgramId", "", false);
-        ClearTeachers(); clearTeacherPermission();
-        $('#SessionId').empty().append('<option value="">Select Session</option>');
-        $('#CourseId').empty(); resetMutiselect(courseIdName);
-        $('#SubjectId').empty(); resetMutiselect(subjectIdName);
-        let organizationId = $('#OrganizationId').val(), programId = $('#ProgramId').val();
-        if (organizationId != '' && programId != '') {
-            $.ajax({ type: "POST", url: "Administration/CommonAjax/LoadSession", data: { organizationIds: [organizationId], programIds: [programId], isAuthorized: true },
-                success: function (response) { if (response.IsSuccess) { addElementToDropdownList(response.returnSessionList, '#SessionId'); } } });
-        }
-    });
-
-    $(document).on('change', '#SessionId', function () {
-        markRequiredField("SessionId", "", false);
-        ClearTeachers(); clearTeacherPermission();
-        $('#CourseId').empty(); resetMutiselect(courseIdName);
-        $('#SubjectId').empty(); resetMutiselect(subjectIdName);
-        let organizationId = $('#OrganizationId').val(), programId = $('#ProgramId').val(), sessionId = $('#SessionId').val();
-        if (organizationId != '' && programId != '' && sessionId != '') {
-            $.ajax({ type: "POST", url: "Administration/CommonAjax/LoadCourse", data: { organizationIds: [organizationId], programIds: [programId], sessionIds: [sessionId] },
-                success: function (response) { if (response.IsSuccess) { addElementToDropdownList(response.returnCourse, courseIdName, true); } } });
-        }
-    });
-
-    $(document).on('change', '#CourseId', function () {
-        $('#SubjectId').empty(); resetMutiselect(subjectIdName);
-        let courseIds = $('#CourseId').val() || [];
-        if (courseIds.length > 0) {
-            $.ajax({ type: "POST", url: "Administration/CommonAjax/LoadSubjectMulti", data: { courseIdList: courseIds },
-                success: function (result) { if (result.IsSuccess) { addElementToDropdownList(result.returnSubjectList, subjectIdName, true); } } });
-        }
-    });
-
-    $(document).on('click', '#checkAll', function () {
-        $('input.checkBox').prop('checked', $(this).is(':checked'));
-        CountCheckedTeacher();
-    });
-    $(document).on('change', 'input.checkBox', function () { CountCheckedTeacher(); });
-
-    $(document).on('click', '#btnSubmit', function (e) {
-        ClearTeachers(); clearTeacherPermission(); LoadTeacher();
-    });
-
-    $(document).on('click', '#btnView', function (e) {
-        e.preventDefault();
-        LoadSubjectPermission();
-    });
-
-    $(document).on('change', '.courseAllCheck', function () {
-        let cid = $(this).attr('data-courseid');
-        let checked = $(this).is(':checked');
-        $('.subjectGrantCheck[data-courseid="' + cid + '"]').prop('checked', checked);
-    });
-
-    $(document).on('click', '#btnSetPermission', function (e) {
-        e.preventDefault();
-        let teacherIds = GetCheckedValues();
-        if (CheckValidation() && TeacherValidate(teacherIds)) {
-            let grantedRows = $('input.subjectGrantCheck:checked').length;
-            $.ajax({
-                type: "POST", url: "BulkPermissionAjax",
-                data: { teacherIds: teacherIds, grantedCount: grantedRows },
-                success: function (response) {
-                    if (response.IsSuccess) { $.fn.customMessage({ displayMessage: response.Message, displayMessageType: "s" }); }
-                    else { $.fn.customMessage({ displayMessage: response.Message, displayMessageType: "error" }); }
-                }
-            });
-        }
-    });
+  });
 });
-
 </script>
 <script type="text/javascript">
         $(document).ready(function () {
