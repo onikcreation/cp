@@ -13180,6 +13180,11 @@ e=s.defaults.fixedColumns;if(c||e)e=d.extend({},c,e),!1!==c&&new m(b,e)}});d.fn.
                     .permissionTreeContext { display: block; margin: 0 0 10px 23px; color: #777; font-size: 12px; }
                     .permissionTreeSubjects { display: grid; grid-template-columns: repeat(3, minmax(210px, 1fr)); gap: 8px 18px; margin: 10px 0 0 24px; padding: 0; list-style: none; }
                     .permissionTreeSubjects label { margin: 0; font-weight: normal; }
+                    .subjectPermissionTitle { margin: 0 0 8px; font-size: 18px; line-height: 20px; text-decoration: underline; }
+                    .permissionTypeRow { display: block; margin: 15px 0 8px; line-height: 20px; }
+                    .permissionTypeRow > strong { margin-right: 3px; }
+                    .permissionTypeRow label { display: inline-block; margin: 0 15px 0 0; font-weight: normal; white-space: nowrap; }
+                    .permissionTypeRow input { margin: 0 3px 0 0; vertical-align: -2px; }
                     @media (max-width: 991px) { .permissionTree { grid-template-columns: 1fr; } .permissionTreeSubjects { grid-template-columns: repeat(2, minmax(180px, 1fr)); } }
                     @media (max-width: 640px) { .permissionTreeSubjects { grid-template-columns: 1fr; } .tccp-action-btn { min-width: 145px; } }
                   </style>
@@ -15331,9 +15336,13 @@ installFakeAjax({
         '<span class="permissionTreeContext">' + escapeHtml(courseContext.programName) + ' &mdash; ' + escapeHtml(courseContext.sessionName) + '</span>' +
         '<ul class="permissionTreeSubjects">' + subjectItems + '</ul></li>';
     }).join('');
-    return '<div class="panel panel-default" style="margin-top:15px;"><div class="panel-body">' +
-      '<h4 style="text-decoration: underline;"><strong>Subject Permission</strong></h4>' +
-
+    return '<div class="permissionTypeRow" role="group" aria-label="Permission Type">' +
+        '<strong>Permission Type:</strong>' +
+        '<label for="permissionTypeClassContent"><input type="checkbox" id="permissionTypeClassContent" class="permissionTypeOption" value="ClassContent" checked> Class Content</label>' +
+        '<label for="permissionTypeContentAlignment"><input type="checkbox" id="permissionTypeContentAlignment" class="permissionTypeOption" value="ContentAlignment" checked> Content Alignment</label>' +
+      '</div>' +
+      '<div class="panel panel-default" style="margin-top:0;"><div class="panel-body">' +
+      '<h4 class="subjectPermissionTitle"><strong>Subject Permission</strong></h4>' +
       '<ul class="permissionTree">' + groupsHtml + '</ul></div></div>';
   },
   BulkPermissionAjax: function (data) {
