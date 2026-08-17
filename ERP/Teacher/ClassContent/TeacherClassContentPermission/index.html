@@ -26504,6 +26504,13 @@ table.dataTable td {
                               <input id="mobileNumber" name="mobileNumber" type="text" class="form-control" placeholder="Mobile Number">
                             </th>
                             <th class="form-group">
+                              <select class="form-control" id="permissionType" name="permissionType">
+                                <option value="">Permission Type</option>
+                                <option value="1">Class Content</option>
+                                <option value="2">Content Alignment</option>
+                              </select>
+                            </th>
+                            <th class="form-group">
                               <select class="form-control" id="permissionStatus" name="permissionStatus">
                                 <option value="">Permission Status</option>
                                 <option value="1">Has Permission</option>
@@ -26535,6 +26542,7 @@ table.dataTable td {
                           <tr>
                             <th>Examiner</th>
                             <th>Mobile Number</th>
+                            <th>Permission Type</th>
                             <th>Permission Status</th>
                             <th>Status</th>
                             <th>Action</th>
@@ -28375,6 +28383,7 @@ function getDPI() {
 <script type="text/javascript">
 
 var PERMISSION_STATUS = [[1,"Has Permission"],[2,"No Permission"]];
+var PERMISSION_TYPES = [[1,"Class Content"],[2,"Content Alignment"]];
 var TEACHER_LEVEL = [[1,"Regular"],[2,"Expert"],[3,"Both"],[4,"None"]];
 var STATUS_LIST = [[1,"Active"],[-1,"Inactive"]];
 var FAKE_NICKNAMES = ["Rafiq","Shuvo","Tanim","Nayem","Rubel","Mamun","Faisal Vai","Shakil","Emran","Zahid","Kamrul","Delwar","Firoz","Munna","Habib Vai","Alamgir","Rezaul","Shohag","Nasir","Aminul","Jahid","Parvez","Kawsar","Milon Vai"];
@@ -28422,6 +28431,8 @@ function examinerAt(i) {
   return {
     tpin: tpin, nickname: pick(FAKE_NICKNAMES, rh), batchYear: batchYear,
     mobile: FIXED_MOBILES[rh % FIXED_MOBILES.length],
+    permissionTypeId: String((rh % 2) + 1),
+    permissionType: (rh % 2) === 0 ? 'Class Content' : 'Content Alignment',
     hasPermission: hasPermission,
     active: hasPermission ? ((rh >>> 3) % 5 !== 0) : null,
     institute: pick(FAKE_INSTITUTES, rh), department: pick(FAKE_DEPARTMENTS, rh + 3),
@@ -28455,6 +28466,7 @@ function generateExaminers(filters, start, length) {
       if (String(e.tpin).indexOf(kw) === -1 && e.nickname.toLowerCase().indexOf(kw) === -1) continue;
     }
     if (filters.mobileNumber && e.mobile.indexOf(filters.mobileNumber) === -1) continue;
+    if (filters.permissionType && filters.permissionType !== '0' && e.permissionTypeId !== String(filters.permissionType)) continue;
     if (filters.permissionStatus === '1' && !e.hasPermission) continue;
     if (filters.permissionStatus === '2' && e.hasPermission) continue;
     if (filters.status === '1' && e.active !== true) continue;
@@ -28462,7 +28474,7 @@ function generateExaminers(filters, start, length) {
     matched++;
     if (matched > start) out.push(e);
   }
-  var anyFilter = hasSeedFilter || filters.keyword || filters.mobileNumber || filters.permissionStatus || filters.status;
+  var anyFilter = hasSeedFilter || filters.keyword || filters.mobileNumber || filters.permissionType || filters.permissionStatus || filters.status;
   return { rows: out.slice(0, length), total: anyFilter ? matched + (scanned < maxScan ? 500 : 0) : TOTAL_EXAMINERS };
 }
 function findExaminerByTpin(tpin) {
@@ -28518,7 +28530,7 @@ installFakeAjax({
   },
   ManagePermissionList: function (data) {
     var filters = {
-      keyword: data.keyword, mobileNumber: data.mobileNumber, permissionStatus: data.permissionStatus, status: data.status,
+      keyword: data.keyword, mobileNumber: data.mobileNumber, permissionType: data.permissionType, permissionStatus: data.permissionStatus, status: data.status,
       organizationId: data.organizationId, programId: data.programId, sessionId: data.sessionId,
       courseIds: data.courseId, subjectIds: data.subjectId,
     };
@@ -28532,7 +28544,7 @@ installFakeAjax({
       var actionHtml = '<a class="btn btn-success btn-xs" href="BulkPermission.html?tPin=' + e.tpin + '">Permission</a> ' +
         (e.hasPermission ? '<a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="bootbox.alert(\'এই ফিচারটি (Details) এই ডেমো ভার্সনে অন্তর্ভুক্ত নয়।\')">Details</a> ' : '<a class="btn btn-primary btn-xs" disabled="disabled" href="#">Details</a> ') +
         '<a class="btn btn-warning btn-xs" href="javascript:void(0)" onclick="bootbox.alert(\'এই ফিচারটি (Log) এই ডেমো ভার্সনে অন্তর্ভুক্ত নয়।\')">Log</a>';
-      return ['[' + e.tpin + '] - ' + escapeHtml(e.nickname) + ' (' + e.batchYear + ')', e.mobile, permStatusText, permHtml, actionHtml];
+      return ['[' + e.tpin + '] - ' + escapeHtml(e.nickname) + ' (' + e.batchYear + ')', e.mobile, e.permissionType, permStatusText, permHtml, actionHtml];
     });
     return { draw: data.draw, recordsTotal: res.total, recordsFiltered: res.total, data: rows };
   },
@@ -28546,6 +28558,7 @@ function getManagePermissionFilters() {
     return {
         keyword: $('#keyword').val(),
         mobileNumber: $('#mobileNumber').val(),
+        permissionType: $('#permissionType').val(),
         permissionStatus: $('#permissionStatus').val(),
         status: $('#Status').val(),
         organizationId: $('#OrganizationId').val() || '0',
@@ -28569,7 +28582,7 @@ function exportPermissionCsv() {
     }
 
     var csvRows = [[
-        'TPIN', 'Nick Name', 'Batch', 'Mobile Number', 'Permission Status',
+        'TPIN', 'Nick Name', 'Batch', 'Mobile Number', 'Permission Type', 'Permission Status',
         'Status', 'Institute', 'Department', 'HSC Passing Year'
     ]];
     exportResult.rows.forEach(function (teacher) {
@@ -28578,6 +28591,7 @@ function exportPermissionCsv() {
             teacher.nickname,
             teacher.batchYear,
             teacher.mobile,
+            teacher.permissionType,
             teacher.hasPermission ? 'Has Permission' : 'No Permission',
             teacher.hasPermission ? (teacher.active ? 'Active' : 'Inactive') : '',
             teacher.institute,
@@ -28610,6 +28624,7 @@ function dataTableRender() {
     let sessionId = $('#SessionId').val(); sessionId = sessionId != '' ? sessionId : '0';
     let courseId = $('#CourseId').val(); courseId = courseId != '' ? courseId : '0';
     let subjectId = $('#SubjectId').val(); subjectId = subjectId != '' ? subjectId : '0';
+    let permissionType = $('#permissionType').val(); permissionType = permissionType != '' ? permissionType : '0';
     let permissionStatus = $('#permissionStatus').val(); permissionStatus = permissionStatus != '' ? permissionStatus : '0';
     let status = $('#Status').val(); status = status != '' ? status : '0';
 
@@ -28634,6 +28649,7 @@ function dataTableRender() {
                 dt.subjectId = subjectId;
                 dt.keyword = $('#keyword').val();
                 dt.mobileNumber = $('#mobileNumber').val();
+                dt.permissionType = permissionType;
                 dt.permissionStatus = permissionStatus;
                 dt.status = status;
             },
