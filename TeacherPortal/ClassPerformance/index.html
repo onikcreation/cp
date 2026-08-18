@@ -5102,14 +5102,82 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
   .cp-performance-summary th, .cp-performance-summary td { padding: 12px 16px; border: 1px solid #dee2e6; text-align: center; vertical-align: middle; }
   .cp-performance-summary th { color: #222; font-weight: 500; background: #fff; }
   .cp-performance-summary th:first-child { min-width: 180px; }
-  .cp-table-scroll { width: 100%; overflow-x: auto; }
-  .cp-table { width: 100%; min-width: 1180px; border-collapse: collapse; }
-  .cp-table th, .cp-table td { padding: 12px 9px; border: 1px solid #dee2e6; text-align: center; vertical-align: middle; }
+  .cp-table-scroll { width: 100%; overflow-x: hidden; }
+  .cp-table { width: 100%; min-width: 0; table-layout: fixed; border-collapse: collapse; font-size: 13px; }
+  .cp-table th, .cp-table td { padding: 9px 4px; border: 1px solid #dee2e6; text-align: center; vertical-align: middle; white-space: normal; line-height: 1.25; overflow-wrap: anywhere; }
   .cp-table th { font-weight: 700; color: #222; background: #fff; }
   .cp-table thead tr:first-child th { background: #F4F1F8; color: #532356; }
+  .cp-table:not(.has-branch) thead tr:first-child th:nth-child(1) { width: 4%; }
+  .cp-table:not(.has-branch) thead tr:first-child th:nth-child(2) { width: 10%; }
+  .cp-table:not(.has-branch) thead tr:first-child th:nth-child(3) { width: 19%; }
+  .cp-table:not(.has-branch) thead tr:first-child th:nth-child(4) { width: 46%; }
+  .cp-table:not(.has-branch) thead tr:first-child th:nth-child(5) { width: 21%; }
+  .cp-table.has-branch thead tr:first-child th:nth-child(1) { width: 4%; }
+  .cp-table.has-branch thead tr:first-child th:nth-child(2) { width: 9%; }
+  .cp-table.has-branch thead tr:first-child th:nth-child(3) { width: 17%; }
+  .cp-table.has-branch thead tr:first-child th:nth-child(4) { width: 10%; }
+  .cp-table.has-branch thead tr:first-child th:nth-child(5) { width: 40%; }
+  .cp-table.has-branch thead tr:first-child th:nth-child(6) { width: 20%; }
   .cp-table tbody tr:nth-child(odd) { background: rgba(0,0,0,.05); }
   .cp-result-count { margin-top: 8px; color: #667085; text-align: right; font-size: 13px; }
   .cp-empty { display: none; padding: 32px; text-align: center; color: #777; }
+  .cp-evidence-link { appearance: none; border: 0; background: transparent; padding: 2px 6px; border-radius: 5px; font-weight: 700; text-decoration: underline; cursor: pointer; }
+  .cp-evidence-link:hover, .cp-evidence-link:focus { color: #fff; outline: none; text-decoration: none; }
+  .cp-evidence-link--good { color: #157347; }
+  .cp-evidence-link--good:hover, .cp-evidence-link--good:focus { background: #157347; }
+  .cp-evidence-link--average { color: #9A6700; }
+  .cp-evidence-link--average:hover, .cp-evidence-link--average:focus { background: #9A6700; }
+  .cp-evidence-link--bad { color: #B42318; }
+  .cp-evidence-link--bad:hover, .cp-evidence-link--bad:focus { background: #B42318; }
+  .cp-evidence-zero { color: #98A2B3; }
+  body.cp-modal-open { overflow: hidden; }
+  .cp-evidence-modal, .cp-image-viewer { position: fixed; inset: 0; z-index: 2050; display: flex; align-items: center; justify-content: center; padding: 22px; }
+  .cp-evidence-modal[hidden], .cp-image-viewer[hidden] { display: none !important; }
+  .cp-evidence-backdrop, .cp-image-backdrop { position: absolute; inset: 0; background: rgba(15, 23, 42, .68); backdrop-filter: blur(2px); }
+  .cp-evidence-dialog { position: relative; z-index: 1; width: min(1040px, 96vw); height: min(780px, 90vh); display: flex; flex-direction: column; overflow: hidden; border-radius: 10px; background: #fff; box-shadow: 0 22px 65px rgba(15, 23, 42, .34); }
+  .cp-evidence-head { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 17px 20px; color: #fff; background: #4338CA; }
+  .cp-evidence-head h3 { margin: 0; color: inherit; font-size: 20px; font-weight: 700; }
+  .cp-modal-close { width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 50%; color: #fff; background: rgba(255,255,255,.16); cursor: pointer; }
+  .cp-modal-close:hover, .cp-modal-close:focus { background: rgba(255,255,255,.28); outline: none; }
+  .cp-modal-close svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+  .cp-evidence-body { flex: 1; overflow-y: auto; padding: 20px; background: #F8FAFC; }
+  .cp-evidence-context { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-bottom: 14px; }
+  .cp-context-item { padding: 11px 12px; border: 1px solid #E4E7EC; border-radius: 8px; background: #fff; }
+  .cp-context-item span { display: block; margin-bottom: 4px; color: #667085; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+  .cp-context-item strong { display: block; color: #101828; font-size: 14px; word-break: break-word; }
+  .cp-rating-badge { display: inline-flex !important; width: auto; padding: 3px 9px; border-radius: 999px; color: #fff !important; }
+  .cp-rating-badge--good { background: #157347; }
+  .cp-rating-badge--average { background: #9A6700; }
+  .cp-rating-badge--bad { background: #B42318; }
+  .cp-student-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  .cp-student-card { overflow: hidden; border: 1px solid #E4E7EC; border-radius: 9px; background: #fff; }
+  .cp-student-head { display: flex; align-items: center; justify-content: space-between; padding: 11px 13px; border-bottom: 1px solid #EAECF0; }
+  .cp-student-head h4 { margin: 0; color: #101828; font-size: 15px; font-weight: 700; }
+  .cp-student-head span { color: #667085; font-size: 12px; }
+  .cp-note-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; padding: 12px; }
+  .cp-note-thumb { position: relative; min-height: 190px; overflow: hidden; border: 1px solid #D0D5DD; border-radius: 7px; padding: 0; background: #F2F4F7; cursor: pointer; }
+  .cp-note-thumb img { width: 100%; height: 230px; display: block; object-fit: cover; object-position: top; transition: transform .2s ease; }
+  .cp-note-thumb:hover img, .cp-note-thumb:focus img { transform: scale(1.025); }
+  .cp-note-thumb:focus { outline: 3px solid rgba(67,56,202,.25); outline-offset: 1px; }
+  .cp-note-thumb span { position: absolute; right: 8px; bottom: 8px; padding: 4px 8px; border-radius: 5px; color: #fff; background: rgba(15,23,42,.78); font-size: 11px; }
+  .cp-evidence-foot { display: flex; justify-content: flex-end; padding: 13px 20px; border-top: 1px solid #EAECF0; background: #fff; }
+  .cp-close-btn { border: 1px solid #D0D5DD; border-radius: 5px; padding: 8px 17px; color: #344054; background: #fff; cursor: pointer; }
+  .cp-close-btn:hover, .cp-close-btn:focus { color: #fff; border-color: #4338CA; background: #4338CA; outline: none; }
+  .cp-image-viewer { z-index: 2100; }
+  .cp-image-dialog { position: relative; z-index: 1; width: min(1040px, 96vw); height: min(780px, 90vh); max-width: 1040px; max-height: 780px; display: flex; flex-direction: column; overflow: hidden; border-radius: 10px; background: #111827; box-shadow: 0 24px 70px rgba(0,0,0,.5); }
+  .cp-image-head { display: flex; align-items: center; justify-content: space-between; gap: 15px; padding: 13px 16px; color: #fff; background: #1F2937; }
+  .cp-image-head h4 { margin: 0; color: inherit; font-size: 16px; }
+  .cp-image-stage { flex: 1; min-height: 0; overflow: auto; display: flex; align-items: flex-start; justify-content: center; padding: 18px; background: #0B1220; }
+  .cp-image-stage img { display: block; max-width: 100%; height: auto; transform: rotate(0deg); transform-origin: center center; transition: width .2s ease, transform .2s ease; }
+  .cp-image-stage img.is-zoomed { width: 160%; max-width: none; }
+  .cp-image-tools { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px; background: #1F2937; }
+  .cp-image-tools button { min-width: 90px; border: 1px solid #475467; border-radius: 5px; padding: 8px 13px; color: #fff; background: #344054; cursor: pointer; }
+  .cp-image-tools button:hover, .cp-image-tools button:focus { border-color: #818CF8; background: #4338CA; outline: none; }
+  .cp-image-tools button:disabled { opacity: .4; cursor: default; }
+  @media (max-width: 991px) {
+    .cp-table-scroll { overflow-x: auto; }
+    .cp-table { min-width: 1100px; table-layout: auto; }
+  }
   @media (max-width: 767px) {
     .cp-wrap { padding-top: 20px; }
     .cp-filter-card { padding: 22px 15px; }
@@ -5117,7 +5185,12 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
     .cp-filter-row label { display: block; width: auto; padding: 0; margin-bottom: 6px; text-align: left; }
     .cp-filter-row select { width: 100%; }
     .cp-result { padding: 18px 15px; }
-    .cp-table { min-width: 1100px; }
+    .cp-evidence-modal, .cp-image-viewer { padding: 8px; }
+    .cp-evidence-dialog, .cp-image-dialog { width: 100%; height: 96vh; max-width: none; max-height: none; border-radius: 7px; }
+    .cp-evidence-context { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .cp-note-thumb img { height: 210px; }
+    .cp-image-tools { flex-wrap: wrap; }
+    .cp-image-tools button { min-width: 78px; }
   }
 </style>
 <div class="cp-wrap">
@@ -5181,6 +5254,37 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
     </div>
   </div>
 </div>
+<div id="cpEvidenceModal" class="cp-evidence-modal" hidden aria-hidden="true">
+  <div class="cp-evidence-backdrop" data-cp-evidence-close></div>
+  <section class="cp-evidence-dialog" role="dialog" aria-modal="true" aria-labelledby="cpEvidenceTitle">
+    <header class="cp-evidence-head">
+      <h3 id="cpEvidenceTitle">Content Alignment Notes</h3>
+      <button type="button" class="cp-modal-close" data-cp-evidence-close aria-label="Close evidence"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12"></path><path d="M18 6L6 18"></path></svg></button>
+    </header>
+    <div class="cp-evidence-body">
+      <div id="cpEvidenceContext" class="cp-evidence-context"></div>
+      <div id="cpStudentGrid" class="cp-student-grid"></div>
+    </div>
+    <footer class="cp-evidence-foot"><button type="button" class="cp-close-btn" data-cp-evidence-close>Close</button></footer>
+  </section>
+</div>
+<div id="cpImageViewer" class="cp-image-viewer" hidden aria-hidden="true">
+  <div class="cp-image-backdrop" data-cp-image-close></div>
+  <section class="cp-image-dialog" role="dialog" aria-modal="true" aria-labelledby="cpImageTitle">
+    <header class="cp-image-head">
+      <h4 id="cpImageTitle">Student Note</h4>
+      <button type="button" class="cp-modal-close" data-cp-image-close aria-label="Close image viewer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12"></path><path d="M18 6L6 18"></path></svg></button>
+    </header>
+    <div class="cp-image-stage"><img id="cpViewerImage" alt="Anonymous student note"></div>
+    <div class="cp-image-tools">
+      <button type="button" id="cpImagePrevious">Previous</button>
+      <button type="button" id="cpImageZoom">Zoom In</button>
+      <button type="button" id="cpImageRotate">Rotate</button>
+      <button type="button" id="cpImageNext">Next</button>
+      <button type="button" data-cp-image-close>Close</button>
+    </div>
+  </section>
+</div>
 <script>
 (function () {
   var data = [
@@ -5196,6 +5300,19 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
     {date:"20 Feb, 2026",good:0,average:0,bad:0,total:1,late:9,lecture:"Regular Live Class<br>Chemistry-21",branch:"Jhenaidah<br>Udvash-Unmesh",program:"HSC A to Z Final Revision<br>Course (Online) 2026",programKey:"hsc",session:"2026"},
     {date:"18 Feb, 2026",good:18,average:4,bad:1,total:26,late:2,lecture:"Biology Final<br>Model Class",branch:"Mirpur<br>Unmesh",program:"Medical Admission<br>Program 2026",programKey:"medical",session:"2026"}
   ];
+  var evidenceImages = [
+    "../ContentAlignment/Assets/content-page-01.jpg",
+    "../ContentAlignment/Assets/content-page-02.jpg",
+    "../ContentAlignment/Assets/content-page-03.jpg",
+    "../ContentAlignment/Assets/content-page-04.jpg",
+    "../ContentAlignment/Assets/content-page-05.jpg",
+    "../ContentAlignment/Assets/content-page-06.jpg",
+    "../ContentAlignment/Assets/content-page-07.jpg"
+  ];
+  var activeDisplayRows = [];
+  var activeEvidenceImages = [];
+  var activeImageIndex = 0;
+  var activeImageRotation = 0;
 
   var viewModes = {
     dateLecture: {
@@ -5218,12 +5335,13 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
     item.notAttended = Math.ceil(outsideFeedback / 2);
     item.blank = outsideFeedback - item.notAttended;
     item.total = feedback;
-    item.contentGood = Math.max(0, item.good - (index % 4));
-    item.contentAverage = item.average + (index % 3);
-    item.contentBad = item.bad + (index % 2);
+    item.contentGood = index % 3;
+    item.contentAverage = (index + 1) % 3;
+    item.contentBad = index === 1 ? 1 : 0;
     item.lectureText = cleanText(item.lecture);
     item.branchText = cleanText(item.branch);
     item.programText = cleanText(item.program);
+    item.sourceIndex = index;
   });
 
   function pct(value, base) {
@@ -5278,7 +5396,8 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
           late: 0,
           contentGood: 0,
           contentAverage: 0,
-          contentBad: 0
+          contentBad: 0,
+          sourceRows: []
         };
         order.push(key);
       }
@@ -5290,20 +5409,146 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
       group.blank += item.blank;
       group.total += item.total;
       group.late += item.late;
-      group.contentGood += item.contentGood;
-      group.contentAverage += item.contentAverage;
-      group.contentBad += item.contentBad;
+      group.contentGood = Math.min(2, group.contentGood + item.contentGood);
+      group.contentAverage = Math.min(2, group.contentAverage + item.contentAverage);
+      group.contentBad = Math.min(1, group.contentBad + item.contentBad);
+      group.sourceRows.push(item);
     });
     return order.map(function (key) { return groups[key]; });
   }
 
   function renderTableHead(showBranch) {
+    document.querySelector(".cp-table").classList.toggle("has-branch", showBranch);
     var firstRow = '<tr><th rowspan="2">Sl</th><th rowspan="2">Date</th><th rowspan="2">Lecture Name</th>';
     if (showBranch) firstRow += '<th rowspan="2">Branch Name</th>';
     firstRow += '<th colspan="7">Class Performance</th><th colspan="3">Content Alignment</th></tr>';
     var secondRow = '<tr><th>Good</th><th>Average</th><th>Bad</th><th>Not Attended</th><th>Blank</th><th>Total</th><th>T.Late</th>';
     secondRow += '<th>Good</th><th>Average</th><th>Bad</th></tr>';
     document.getElementById("cpTableHead").innerHTML = firstRow + secondRow;
+  }
+
+  function escapeHtml(value) {
+    return String(value == null ? "" : value).replace(/[&<>"']/g, function (character) {
+      return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character];
+    });
+  }
+
+  function evidenceCell(rowIndex, rating, value) {
+    if (!value) return '<span class="cp-evidence-zero">0</span>';
+    var label = rating.charAt(0).toUpperCase() + rating.slice(1);
+    return '<button type="button" class="cp-evidence-link cp-evidence-link--' + rating +
+      '" data-cp-row="' + rowIndex + '" data-cp-rating="' + rating +
+      '" title="View anonymized student-note evidence" aria-label="View ' + label +
+      ' evidence, ' + value + ' evaluations">' + value + '</button>';
+  }
+
+  function evidenceSeed(item, rating) {
+    var source = item.date + "|" + item.lectureText + "|" + item.branchText + "|" + rating;
+    var seed = 0;
+    for (var i = 0; i < source.length; i++) seed = (seed * 31 + source.charCodeAt(i)) >>> 0;
+    return seed;
+  }
+
+  function buildAnonymousStudents(item, rating) {
+    var property = rating === "good" ? "contentGood" : rating === "average" ? "contentAverage" : "contentBad";
+    var sourceRows = (item.sourceRows || []).filter(function (source) { return source[property] > 0; });
+    var markedCount = item[property];
+    var studentCount = Math.min(4, Math.max(1, sourceRows.length || Math.ceil(markedCount / 2)));
+    var seed = evidenceSeed(item, rating);
+    var students = [];
+    for (var studentIndex = 0; studentIndex < studentCount; studentIndex++) {
+      var pageCount = 1 + ((seed + studentIndex) % 2);
+      var pages = [];
+      for (var pageIndex = 0; pageIndex < pageCount; pageIndex++) {
+        var imageIndex = (seed + studentIndex * 2 + pageIndex) % evidenceImages.length;
+        pages.push(evidenceImages[imageIndex]);
+      }
+      students.push({
+        label: "Student " + String(studentIndex + 1).padStart(2, "0"),
+        pages: pages
+      });
+    }
+    return students;
+  }
+
+  function ratingLabel(rating) {
+    return rating.charAt(0).toUpperCase() + rating.slice(1);
+  }
+
+  function openEvidence(item, rating) {
+    var property = rating === "good" ? "contentGood" : rating === "average" ? "contentAverage" : "contentBad";
+    var students = buildAnonymousStudents(item, rating);
+    var context = [
+      { label: "Date", value: item.date },
+      { label: "Lecture", value: item.lectureText },
+      { label: "Branch", value: item.branchText || "Motijheel" },
+      { label: "Rating", value: ratingLabel(rating), rating: rating }
+    ];
+    document.getElementById("cpEvidenceContext").innerHTML = context.map(function (entry) {
+      var value = entry.rating
+        ? '<strong class="cp-rating-badge cp-rating-badge--' + entry.rating + '">' + escapeHtml(entry.value) + '</strong>'
+        : '<strong>' + escapeHtml(entry.value) + '</strong>';
+      return '<div class="cp-context-item"><span>' + escapeHtml(entry.label) + '</span>' + value + '</div>';
+    }).join("");
+
+    var flatImages = [];
+    document.getElementById("cpStudentGrid").innerHTML = students.map(function (student) {
+      var images = student.pages.map(function (path, pageIndex) {
+        var flatIndex = flatImages.length;
+        flatImages.push({ path: path, student: student.label, page: pageIndex + 1, pageCount: student.pages.length });
+        return '<button type="button" class="cp-note-thumb" data-cp-image="' + flatIndex +
+          '" aria-label="Open ' + student.label + ' note page ' + (pageIndex + 1) +
+          '"><img src="' + path + '" alt="' + student.label + ' note page ' + (pageIndex + 1) +
+          '"><span>Page ' + (pageIndex + 1) + '</span></button>';
+      }).join("");
+      return '<article class="cp-student-card"><div class="cp-student-head"><h4>' +
+        student.label + '</h4><span>' + student.pages.length + (student.pages.length === 1 ? ' image' : ' images') +
+        '</span></div><div class="cp-note-grid">' + images + '</div></article>';
+    }).join("");
+    activeEvidenceImages = flatImages;
+    var modal = document.getElementById("cpEvidenceModal");
+    modal.hidden = false;
+    modal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("cp-modal-open");
+    modal.querySelector(".cp-modal-close").focus();
+  }
+
+  function closeEvidence() {
+    closeImageViewer();
+    var modal = document.getElementById("cpEvidenceModal");
+    modal.hidden = true;
+    modal.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("cp-modal-open");
+  }
+
+  function renderActiveImage() {
+    var image = activeEvidenceImages[activeImageIndex];
+    if (!image) return;
+    var viewerImage = document.getElementById("cpViewerImage");
+    viewerImage.src = image.path;
+    viewerImage.alt = image.student + " note page " + image.page;
+    viewerImage.classList.remove("is-zoomed");
+    activeImageRotation = 0;
+    viewerImage.style.transform = "rotate(0deg)";
+    document.getElementById("cpImageZoom").textContent = "Zoom In";
+    document.getElementById("cpImageTitle").textContent = image.student + " - Page " + image.page + " of " + image.pageCount;
+    document.getElementById("cpImagePrevious").disabled = activeImageIndex === 0;
+    document.getElementById("cpImageNext").disabled = activeImageIndex === activeEvidenceImages.length - 1;
+  }
+
+  function openImageViewer(index) {
+    activeImageIndex = index;
+    renderActiveImage();
+    var viewer = document.getElementById("cpImageViewer");
+    viewer.hidden = false;
+    viewer.setAttribute("aria-hidden", "false");
+    viewer.querySelector(".cp-modal-close").focus();
+  }
+
+  function closeImageViewer() {
+    var viewer = document.getElementById("cpImageViewer");
+    viewer.hidden = true;
+    viewer.setAttribute("aria-hidden", "true");
   }
 
   document.getElementById("classPerformanceForm").addEventListener("submit", function (event) {
@@ -5318,6 +5563,7 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
     });
     var groupedRows = aggregateRows(filtered, selectedMode.axes);
     var displayRows = groupedRows.slice(0, limit);
+    activeDisplayRows = displayRows;
     var showBranch = selectedMode.axes.indexOf("branch") !== -1;
     renderTableHead(showBranch);
     renderPerformanceSummary(displayRows);
@@ -5330,8 +5576,9 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
         item.average + " (" + pct(item.average, item.total) + "%)</td><td>" +
         item.bad + " (" + pct(item.bad, item.total) + "%)</td><td>" + item.notAttended +
         "</td><td>" + item.blank + "</td><td>" + item.total + "</td><td>" + item.late +
-        "</td><td>" + item.contentGood + "</td><td>" + item.contentAverage +
-        "</td><td>" + item.contentBad + "</td></tr>";
+        "</td><td>" + evidenceCell(index, "good", item.contentGood) +
+        "</td><td>" + evidenceCell(index, "average", item.contentAverage) +
+        "</td><td>" + evidenceCell(index, "bad", item.contentBad) + "</td></tr>";
       return row;
     }).join("");
 
@@ -5346,6 +5593,53 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
       ? "Showing 1 to " + displayRows.length + " of " + groupedRows.length + " entries"
       : "";
     document.getElementById("classPerformanceResult").style.display = "block";
+  });
+
+  document.getElementById("cpRows").addEventListener("click", function (event) {
+    var trigger = event.target.closest(".cp-evidence-link");
+    if (!trigger) return;
+    var row = activeDisplayRows[Number(trigger.getAttribute("data-cp-row"))];
+    if (row) openEvidence(row, trigger.getAttribute("data-cp-rating"));
+  });
+
+  document.getElementById("cpStudentGrid").addEventListener("click", function (event) {
+    var trigger = event.target.closest(".cp-note-thumb");
+    if (trigger) openImageViewer(Number(trigger.getAttribute("data-cp-image")));
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll("[data-cp-evidence-close]"), function (button) {
+    button.addEventListener("click", closeEvidence);
+  });
+  Array.prototype.forEach.call(document.querySelectorAll("[data-cp-image-close]"), function (button) {
+    button.addEventListener("click", closeImageViewer);
+  });
+
+  document.getElementById("cpImagePrevious").addEventListener("click", function () {
+    if (activeImageIndex > 0) { activeImageIndex--; renderActiveImage(); }
+  });
+  document.getElementById("cpImageNext").addEventListener("click", function () {
+    if (activeImageIndex < activeEvidenceImages.length - 1) { activeImageIndex++; renderActiveImage(); }
+  });
+  document.getElementById("cpImageZoom").addEventListener("click", function () {
+    var image = document.getElementById("cpViewerImage");
+    var zoomed = image.classList.toggle("is-zoomed");
+    this.textContent = zoomed ? "Zoom Out" : "Zoom In";
+  });
+  document.getElementById("cpImageRotate").addEventListener("click", function () {
+    activeImageRotation = (activeImageRotation + 90) % 360;
+    document.getElementById("cpViewerImage").style.transform = "rotate(" + activeImageRotation + "deg)";
+  });
+
+  document.addEventListener("keydown", function (event) {
+    var viewer = document.getElementById("cpImageViewer");
+    var modal = document.getElementById("cpEvidenceModal");
+    if (event.key === "Escape" && !viewer.hidden) closeImageViewer();
+    else if (event.key === "Escape" && !modal.hidden) closeEvidence();
+    else if (!viewer.hidden && event.key === "ArrowLeft" && activeImageIndex > 0) {
+      activeImageIndex--; renderActiveImage();
+    } else if (!viewer.hidden && event.key === "ArrowRight" && activeImageIndex < activeEvidenceImages.length - 1) {
+      activeImageIndex++; renderActiveImage();
+    }
   });
 }());
 </script>
