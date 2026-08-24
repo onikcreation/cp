@@ -9682,6 +9682,46 @@ a.ui-button:active,
 </style>
 <style>
 /* inlined: /Content/DataTables-1.10.2/css/jquery.dataTables.css */
+#pageChangesBtn {
+  display: inline-block; position: absolute; left: 50%; top: 11px; z-index: 1031;
+  transform: translateX(-50%); padding: 6px 12px; border: 2px solid #fff;
+  border-radius: 6px; background: #F59E0B; color: #fff !important;
+  font-size: 12.5px; font-weight: bold; line-height: 1.2; text-align: center;
+  white-space: nowrap; animation: pageChangesPulse 1.6s infinite;
+}
+#pageChangesBtn:hover, #pageChangesBtn:focus { background: #D97706; color: #fff; text-decoration: none; }
+@keyframes pageChangesPulse {
+  0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, .7); }
+  70% { box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+}
+#pageChangesModal {
+  display: none; position: fixed; inset: 0; z-index: 2000;
+  padding: 30px 0; overflow-y: auto; background: rgba(15, 23, 42, .58);
+}
+#pageChangesModal.is-open { display: block; opacity: 1; }
+#pageChangesModal.is-open .modal-dialog { transform: none !important; -webkit-transform: none !important; }
+#pageChangesModal .modal-dialog { width: 60%; height: auto; margin: 0 auto; }
+#pageChangesModal .modal-content {
+  height: auto; display: block; overflow: hidden; border: 1px solid rgba(0,0,0,.2);
+  border-radius: 6px; box-shadow: 0 5px 15px rgba(0,0,0,.5);
+}
+#pageChangesModal .modal-header { padding: 12px 16px; border-bottom: 1px solid #e5e7eb; background: #4338CA; color: #fff; }
+#pageChangesModal .modal-title { margin: 0; font-size: 18px; }
+#pageChangesModal .close { float: right; border: 0; background: transparent; color: #fff; opacity: 1; font-size: 24px; line-height: 18px; }
+#pageChangesModal #copyChangesBtn {
+  float: right; margin: -2px 8px 0 0; padding: 2px 10px; border: 1px solid rgba(255,255,255,.5);
+  border-radius: 4px; background: rgba(255,255,255,.18); color: #fff; font-size: 12px; line-height: 1.6; cursor: pointer;
+}
+#pageChangesModal #copyChangesBtn:hover, #pageChangesModal #copyChangesBtn:focus { background: rgba(255,255,255,.28); color: #fff; }
+#pageChangesModal .modal-body { height: 65vh; overflow-y: auto; padding: 18px 22px; line-height: 1.65; }
+#pageChangesModal .modal-body ol { margin: 0; padding-left: 24px; }
+#pageChangesModal .modal-body li { margin-bottom: 14px; }
+#pageChangesModal .modal-footer { padding: 12px 16px; border-top: 1px solid #e5e7eb; text-align: right; }
+@media (max-width: 767px) {
+  #pageChangesModal { padding: 5vh 3%; }
+  #pageChangesModal .modal-dialog { width: 94%; }
+}
 /*
  * Table styles
  */
@@ -10310,6 +10350,7 @@ table.dataTable td {
                 </li>
               </div>
               <div class="navbar-collapse collapse">
+                <a href="javascript:void(0)" id="pageChangesBtn" data-toggle="modal" data-target="#pageChangesModal" data-remote="false" title="এই পেইজে যা নতুন পরিবর্তন/আপডেট করা হয়েছে">New Updates</a>
                 <ul class="nav navbar-nav" id="menuGroup">
                   <li>
                     <a href="/Student">
@@ -11377,6 +11418,26 @@ table.dataTable td {
                   <div id="reportResult">
                   </div>
                 </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal fade" id="pageChangesModal" role="dialog" aria-modal="true" aria-labelledby="pageChangesTitle" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close offline-modal-close" aria-label="Close">&times;</button>
+                    <button type="button" id="copyChangesBtn" title="সম্পূর্ণ কনটেন্ট কপি করুন">Copy</button>
+                    <h4 class="modal-title" id="pageChangesTitle">এই পেইজে যা যা পরিবর্তন/আপডেট করা হয়েছে</h4>
+                  </div>
+                  <div class="modal-body" id="pageChangesContent">
+                    <ol>
+                      <li>Group By তে All দিয়ে ডাটা ভিউ করা হলে ডাটা কলামে Lecture Name-এর আগে Institute ও Branch কলাম দেখাতে হবে। এখানে Institute হলো টিচারের শিক্ষাপ্রতিষ্ঠান এবং Branch হলো Lectureটি যে Branch ধরে ক্লাস এন্ট্রি করা হয়েছে।</li>
+                      <li>Group By তে Teacher Wise দিয়ে ডাটা ভিউ করা হলে ডাটা কলামে Mobile-এর পরে Institute কলাম দেখাতে হবে। Institute হলো টিচারের শিক্ষাপ্রতিষ্ঠান।</li>
+                    </ol>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default offline-modal-close-button">বন্ধ করুন</button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -29927,7 +29988,7 @@ function DeselectSelectedOptionAdd(elem) {
     return combos;
   }
 
-  function makeRecord(idx, combo, teacher, lecture, branches, subjects) {
+  function makeRecord(idx, combo, teacher, lecture, branch, subjects) {
     var good = rand(0, 60), avg = rand(0, 8), bad = rand(0, 4), notAttended = rand(0, 6), blank = rand(0, 8);
     var total = good + avg + bad;
     var contentGood = rand(0, 50), contentAvg = rand(0, 5), contentBad = rand(0, 3);
@@ -29937,7 +29998,7 @@ function DeselectSelectedOptionAdd(elem) {
     var d = new Date(); d.setDate(d.getDate() - rand(0, 30));
     return {
       org: combo.oid, program: combo.program, session: combo.session,
-      branch: pick(branches), subject: pick(subjects), lecture: lecture, teacher: teacher,
+      branch: branch, subject: pick(subjects), lecture: lecture, teacher: teacher,
       date: d,
       good: good, avg: avg, bad: bad, notAttended: notAttended, blank: blank, total: total, tLate: pick([0, 0, 0, 9]),
       contentGood: contentGood, contentAvg: contentAvg, contentBad: contentBad, uploaded: uploaded, checked: checked, pending: pending
@@ -29952,13 +30013,13 @@ function DeselectSelectedOptionAdd(elem) {
     var lectures = forcedLecture ? [forcedLecture] : LECTURE_LIST;
 
     var records = [];
-    var coverageCount = Math.max(combos.length, teachers.length, lectures.length);
+    var coverageCount = Math.max(combos.length, teachers.length, lectures.length, branches.length);
     var passSize = Math.min(count, Math.max(coverageCount, 10));
     for (var i = 0; i < passSize; i++) {
-      records.push(makeRecord(i, combos[i % combos.length], teachers[i % teachers.length], lectures[i % lectures.length], branches, subjects));
+      records.push(makeRecord(i, combos[i % combos.length], teachers[i % teachers.length], lectures[i % lectures.length], branches[i % branches.length], subjects));
     }
     for (var j = passSize; j < count; j++) {
-      records.push(makeRecord(j, pick(combos), pick(teachers), pick(lectures), branches, subjects));
+      records.push(makeRecord(j, pick(combos), pick(teachers), pick(lectures), pick(branches), subjects));
     }
     return records;
   }
@@ -29977,6 +30038,7 @@ function DeselectSelectedOptionAdd(elem) {
     if (axes.indexOf('10') !== -1) parts.push('D:' + fmtDateShort(rec.date));
     if (axes.indexOf('20') !== -1) parts.push('T:' + rec.teacher.pin);
     if (axes.indexOf('30') !== -1) parts.push('L:' + rec.lecture);
+    if (axes.indexOf('__branch') !== -1) parts.push('B:' + rec.branch);
     return parts.join('|') || 'ALL';
   }
 
@@ -29986,7 +30048,7 @@ function DeselectSelectedOptionAdd(elem) {
       var key = groupKey(rec, axes);
       if (!groups[key]) {
         groups[key] = {
-          date: rec.date, teacher: rec.teacher, lecture: rec.lecture,
+          date: rec.date, teacher: rec.teacher, lecture: rec.lecture, branch: rec.branch,
           good: 0, avg: 0, bad: 0, notAttended: 0, blank: 0, total: 0, tLate: 0,
           contentGood: 0, contentAvg: 0, contentBad: 0, uploaded: 0, checked: 0, pending: 0
         };
@@ -30012,18 +30074,25 @@ function DeselectSelectedOptionAdd(elem) {
     var forcedTeacher = forcedTeacherPin ? FAKE_TEACHERS.filter(function (t) { return String(t.pin) === String(forcedTeacherPin); })[0] : null;
     var forcedLecture = $('#Lecture').val() && $('#LectureId').val() ? $('#Lecture').val() : null;
 
-    var records = generateRecords(Math.max(20, Math.min(displayPerPage, 500)), forcedTeacher, forcedLecture);
     var axes = ($('#GroupBy').val() || []).map(String);
+    var branchValues = selectedOrAll($('#BranchIds'), FULL_BRANCH_LIST);
+    var isAllGrouping = axes.length === 0 || axes.length === 3;
+    var minimumBranchCoverage = isAllGrouping ? branchValues.length : 0;
+    var recordTarget = Math.max(20, Math.min(displayPerPage, 500), minimumBranchCoverage);
+    var records = generateRecords(recordTarget, forcedTeacher, forcedLecture);
+
     var showDate = axes.length === 0 || axes.indexOf('10') !== -1;
     var showTeacher = axes.length === 0 || axes.indexOf('20') !== -1;
     var showLecture = axes.length === 0 || axes.indexOf('30') !== -1;
-    var grouped = axes.length === 0 ? aggregate(records, ['10', '20', '30']) : aggregate(records, axes);
+    var showInstitute = isAllGrouping || axes.indexOf('20') !== -1;
+    var showBranch = isAllGrouping;
+    var grouped = isAllGrouping ? aggregate(records, ['10', '20', '30', '__branch']) : aggregate(records, axes);
 
     var orgIds = selectedOrAll($('#OrganizationIds'), []);
     var orgNames = orgIds.length ? orgIds.map(function (o) { return ORG_NAME_BY_ID[o]; }).join(', ') : 'All Organization';
     var programNames = selectedTextsOrAll($('#ProgramIds'), 'All Program');
     var sessionNames = selectedTextsOrAll($('#SessionIds'), 'All Session');
-    var axisLabel = (axes.length === 0 || axes.length === 3) ? 'All' : axes.map(function (a) { return AXIS_LABELS[a]; }).join(',');
+    var axisLabel = isAllGrouping ? 'All' : axes.map(function (a) { return AXIS_LABELS[a]; }).join(',');
 
     var html = '';
     html += '<div class="panel panel-primary"><div class="panel-heading"><h4 class="panel-title">Details Report</h4></div>';
@@ -30042,7 +30111,10 @@ function DeselectSelectedOptionAdd(elem) {
     html += '<thead><tr>';
     html += '<th rowspan="2">Sl</th>';
     if (showDate) html += '<th rowspan="2">Date</th>';
+
     if (showTeacher) { html += '<th rowspan="2">Pin</th><th rowspan="2">Nick Name</th><th rowspan="2">Full Name</th><th rowspan="2">Mobile</th>'; }
+    if (showInstitute) html += '<th rowspan="2">Institute</th>';
+    if (showBranch) html += '<th rowspan="2">Branch</th>';
     if (showLecture) html += '<th rowspan="2">Lecture Name</th>';
     html += '<th colspan="7" style="text-align:center;">Teacher Performance</th>';
     html += '<th colspan="6" style="text-align:center;">Content Alignment</th>';
@@ -30054,12 +30126,15 @@ function DeselectSelectedOptionAdd(elem) {
       html += '<tr>';
       html += '<td class="text-center">' + (i + 1) + '</td>';
       if (showDate) html += '<td class="text-center" style="white-space:nowrap;">' + fmtDateShort(g.date) + '</td>';
+
       if (showTeacher) {
         html += '<td class="text-center">' + g.teacher.pin + '</td>';
         html += '<td class="text-center">' + g.teacher.nick + ' (' + g.teacher.age + ')</td>';
         html += '<td class="text-center">' + g.teacher.full + '</td>';
         html += '<td class="text-center">' + g.teacher.mobile + '</td>';
       }
+      if (showInstitute) html += '<td class="text-center">' + g.teacher.institute + '</td>';
+      if (showBranch) html += '<td class="text-center" style="white-space:nowrap;">' + g.branch + '</td>';
       if (showLecture) html += '<td class="text-center">' + g.lecture + '</td>';
       html += '<td class="text-center">' + g.good + ' (' + pct(g.good, g.total) + ')</td>';
       html += '<td class="text-center">' + g.avg + ' (' + pct(g.avg, g.total) + ')</td>';
@@ -30108,6 +30183,57 @@ function DeselectSelectedOptionAdd(elem) {
       }
     });
   });
+})();
+</script>
+<script>
+(function () {
+  "use strict";
+  function q(selector) { return document.querySelector(selector); }
+  function qa(selector) { return Array.prototype.slice.call(document.querySelectorAll(selector)); }
+  var modal = q("#pageChangesModal");
+  function closeModal() {
+    if (!modal) return;
+    modal.classList.remove("is-open");
+    modal.setAttribute("aria-hidden", "true");
+  }
+  var updatesButton = q("#pageChangesBtn");
+  if (updatesButton && modal) {
+    updatesButton.addEventListener("click", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      modal.classList.add("is-open");
+      modal.setAttribute("aria-hidden", "false");
+    });
+  }
+  qa(".offline-modal-close, .offline-modal-close-button").forEach(function (button) { button.addEventListener("click", closeModal); });
+  if (modal) modal.addEventListener("click", function (event) { if (event.target === modal) closeModal(); });
+  document.addEventListener("keydown", function (event) { if (event.key === "Escape") closeModal(); });
+  function copyWithSelection(content, done) {
+    var range = document.createRange();
+    range.selectNodeContents(content);
+    var selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+    try { document.execCommand("copy"); } finally { selection.removeAllRanges(); }
+    done();
+  }
+  var copyButton = q("#copyChangesBtn");
+  if (copyButton) {
+    copyButton.addEventListener("click", function () {
+      var content = q("#pageChangesContent");
+      if (!content) return;
+      var original = copyButton.innerHTML;
+      function copied() {
+        copyButton.textContent = "Copied";
+        window.setTimeout(function () { copyButton.innerHTML = original; }, 1500);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(content.innerText).then(copied).catch(function () { copyWithSelection(content, copied); });
+      } else {
+        copyWithSelection(content, copied);
+      }
+    });
+  }
 })();
 </script>
 <script>
