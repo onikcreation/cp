@@ -5154,6 +5154,9 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
   .cp-student-head { display: flex; align-items: center; justify-content: space-between; padding: 11px 13px; border-bottom: 1px solid #EAECF0; }
   .cp-student-head h4 { margin: 0; color: #101828; font-size: 15px; font-weight: 700; }
   .cp-student-head span { color: #667085; font-size: 12px; }
+  .cp-student-remark { padding: 11px 13px 0; }
+  .cp-student-remark > span { display: block; margin-bottom: 5px; color: #667085; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+  .cp-student-remark p { margin: 0; padding: 10px 12px; border-left: 3px solid #4338CA; border-radius: 0 6px 6px 0; color: #344054; background: #F7F7FF; font-size: 13px; line-height: 1.5; }
   .cp-note-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; padding: 12px; }
   .cp-note-thumb { position: relative; min-height: 190px; overflow: hidden; border: 1px solid #D0D5DD; border-radius: 7px; padding: 0; background: #F2F4F7; cursor: pointer; }
   .cp-note-thumb img { width: 100%; height: 230px; display: block; object-fit: cover; object-position: top; transition: transform .2s ease; }
@@ -5309,6 +5312,26 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
     "../ContentAlignment/Assets/content-page-06.jpg",
     "../ContentAlignment/Assets/content-page-07.jpg"
   ];
+  var evidenceRemarks = {
+    good: [
+      "আপলোড করা কাজটি লেকচারের কনটেন্টের সঙ্গে সম্পূর্ণ সামঞ্জস্যপূর্ণ এবং প্রত্যাশিত সমাধানধারা অনুসরণ করেছে।",
+      "ধারণা, সমাধানপদ্ধতি এবং চূড়ান্ত উত্তর ক্লাসের আলোচনার সঙ্গে সামঞ্জস্যপূর্ণ।",
+      "প্রয়োজনীয় সব ধাপ রয়েছে এবং সেগুলো নির্ধারিত লেকচারের বিষয়বস্তুর সঙ্গে মিলেছে।",
+      "নোটটি স্পষ্ট, পরিপূর্ণ এবং পর্যালোচিত কনটেন্টের সঙ্গে সঠিকভাবে সামঞ্জস্যপূর্ণ।"
+    ],
+    average: [
+      "মূল ধারণাটি সামঞ্জস্যপূর্ণ, তবে একটি সহায়ক ধাপ আরও স্পষ্টভাবে ব্যাখ্যা করা প্রয়োজন।",
+      "কাজের অধিকাংশ অংশ লেকচারের সঙ্গে মিলেছে; মধ্যবর্তী ধাপগুলোর ক্রম আরও উন্নত করতে হবে।",
+      "উত্তরটি সাধারণভাবে সঠিক, তবে কিছু প্রয়োজনীয় বিস্তারিত তথ্য অসম্পূর্ণ রয়েছে।",
+      "কনটেন্ট আংশিকভাবে সামঞ্জস্যপূর্ণ; আরও স্পষ্টতা ও পূর্ণতার জন্য চিহ্নিত অংশটি সংশোধন করতে হবে।"
+    ],
+    bad: [
+      "জমা দেওয়া কাজটি নির্ধারিত লেকচারের কনটেন্টের সঙ্গে মেলেনি; চিহ্নিত অংশটি পর্যালোচনা করে আবার জমা দিতে হবে।",
+      "মূল ধারণা ও সমাধানের ধাপগুলো ক্লাসের আলোচনার সঙ্গে সামঞ্জস্যপূর্ণ নয়।",
+      "নোটটিতে কনটেন্টের উল্লেখযোগ্য অসামঞ্জস্য রয়েছে এবং সম্পূর্ণ সংশোধন প্রয়োজন।",
+      "উত্তরে এই লেকচারে শেখানো পদ্ধতির পরিবর্তে ভিন্ন একটি পদ্ধতি অনুসরণ করা হয়েছে।"
+    ]
+  };
   var activeDisplayRows = [];
   var activeEvidenceImages = [];
   var activeImageIndex = 0;
@@ -5449,6 +5472,10 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
     return seed;
   }
 
+  function remarkForStudent(rating, seed, studentIndex) {
+    var remarks = evidenceRemarks[rating] || evidenceRemarks.average;
+    return remarks[(seed + studentIndex) % remarks.length];
+  }
   function buildAnonymousStudents(item, rating) {
     var property = rating === "good" ? "contentGood" : rating === "average" ? "contentAverage" : "contentBad";
     var sourceRows = (item.sourceRows || []).filter(function (source) { return source[property] > 0; });
@@ -5465,6 +5492,7 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
       }
       students.push({
         label: "Student " + String(studentIndex + 1).padStart(2, "0"),
+        remark: remarkForStudent(rating, seed, studentIndex),
         pages: pages
       });
     }
@@ -5503,7 +5531,7 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
       }).join("");
       return '<article class="cp-student-card"><div class="cp-student-head"><h4>' +
         student.label + '</h4><span>' + student.pages.length + (student.pages.length === 1 ? ' image' : ' images') +
-        '</span></div><div class="cp-note-grid">' + images + '</div></article>';
+        '</span></div><div class="cp-student-remark"><span>Remark</span><p>' + escapeHtml(student.remark) + '</p></div><div class="cp-note-grid">' + images + '</div></article>';
     }).join("");
     activeEvidenceImages = flatImages;
     var modal = document.getElementById("cpEvidenceModal");
