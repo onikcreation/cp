@@ -5133,12 +5133,17 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
   .ca-label { margin-bottom:4px; color:var(--ca-muted); font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; }
   .ca-value { color:#344054; font-size:14px; font-weight:600; line-height:1.45; }
   .ca-toolbar { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:14px; }
-  .ca-info-dialog { width:min(760px,96vw); }
-  .ca-info-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1px; padding:1px; overflow:auto; background:var(--ca-line); }
-  .ca-info-item { min-width:0; padding:16px 18px; background:#fff; }
-  .ca-info-item.wide { grid-column:1/-1; }
-  .ca-info-item .ca-label { display:block; }
-  .ca-info-item strong { display:block; color:#344054; font-size:14px; font-weight:600; line-height:1.45; overflow-wrap:anywhere; }
+  .ca-info-dialog { width:min(580px,96vw); }
+  .ca-info-body { padding:26px 20px 30px; overflow:auto; }
+  .ca-info-section + .ca-info-section { margin-top:32px; }
+  .ca-info-section h4 { margin:0; color:#3b3849; font-size:14px; font-weight:700; }
+  .ca-info-rule { height:1px; margin:18px 0; background:var(--ca-line); }
+  .ca-info-list { margin:0; }
+  .ca-info-row { display:grid; grid-template-columns:120px minmax(0,1fr); gap:28px; margin:0 0 12px; }
+  .ca-info-row:last-child { margin-bottom:0; }
+  .ca-info-row dt,.ca-info-row dd { margin:0; font-size:14px; line-height:1.35; }
+  .ca-info-row dt { color:#3b3849; font-weight:700; text-align:right; }
+  .ca-info-row dd { min-width:0; color:#444; font-weight:400; overflow-wrap:anywhere; }
   .ca-image-list { display:grid; grid-template-columns:1fr; gap:18px; margin-bottom:18px; }
   .ca-image-card { padding:14px; overflow:hidden; }
   .ca-image-card button { display:block; width:100%; padding:0; border:0; cursor:zoom-in; background:#f5f6f8; }
@@ -5157,15 +5162,20 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
   .ca-rating span { display:inline-flex; align-items:center; min-height:16px; line-height:1; }
   .ca-actions { display:flex; justify-content:flex-end; flex-wrap:wrap; gap:10px; }
   .ca-filter-card { padding:24px 28px; margin-bottom:20px; }
-  .ca-filter-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px; }
-  .ca-filter-grid label { margin:0; color:#344054; font-size:13px; font-weight:700; }
+  .ca-filter-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+  .ca-filter-grid label,.ca-date-range-filter { min-width:0; margin:0; color:#344054; font-size:13px; font-weight:700; }
+  .ca-date-range-filter { padding:0; border:0; }
+  .ca-date-range-filter legend { margin:0 0 7px; padding:0; color:#344054; font-size:13px; font-weight:700; line-height:1.42857143; border:0; }
+  .ca-date-range { display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); align-items:center; gap:10px; }
+  .ca-date-range span { color:var(--ca-muted); font-size:12px; font-weight:600; text-transform:uppercase; }
   .ca-filter-grid select,.ca-filter-grid input { width:100%; height:40px; margin-top:7px; padding:7px 10px; border:1px solid #ced4da; border-radius:4px; color:#495057; background:#fff; }
+  .ca-date-range input { margin-top:0; }
   .ca-filter-action { grid-column:1/-1; text-align:center; }
   .ca-results { display:none; }
   .ca-results.active { display:block; }
   .ca-results-head { display:flex; justify-content:space-between; align-items:center; gap:15px; padding:18px 20px; border-bottom:1px solid var(--ca-line); }
   .ca-results-head h2 { margin:0; font-size:19px; font-weight:700; color:#3b3849; }
-  .ca-review-table { min-width:1320px; }
+  .ca-review-table { min-width:1580px; }
   .ca-review-table th:last-child,.ca-review-table td:last-child { position:sticky; right:0; z-index:2; min-width:96px; text-align:center; box-shadow:-5px 0 8px rgba(16,24,40,.06); }
   .ca-review-table th:last-child { z-index:3; background:var(--ca-purple-soft); }
   .ca-review-table tbody tr:nth-child(odd) td:last-child { background:#fff; }
@@ -5195,8 +5205,8 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
     .ca-summary { padding:18px; }
     .ca-context,.ca-filter-grid { grid-template-columns:1fr; }
     .ca-context-cell.wide,.ca-filter-action { grid-column:auto; }
-    .ca-info-grid { grid-template-columns:1fr; }
-    .ca-info-item.wide { grid-column:auto; }
+    .ca-info-body { padding:22px 18px 26px; }
+    .ca-info-row { grid-template-columns:105px minmax(0,1fr); gap:16px; }
     .ca-toolbar { align-items:stretch; }
     .ca-toolbar .ca-btn { flex:1; padding:0 10px; }
     .ca-actions { display:grid; grid-template-columns:1fr 1fr; }
@@ -5207,12 +5217,12 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
 </style><div class="ca-wrap"><div class="container ca-container">
   <section class="ca-list active" id="caReviewList">
     <div class="ca-page-head"><div><h1>Content Review</h1></div></div>
-    <form class="ca-card ca-filter-card" id="caReviewFilter"><div class="ca-filter-grid"><label>Program<select id="caReviewProgram"><option value="">All Programs</option><option>College Admission Program</option><option>Class 12 Academic Program</option></select></label><label>Status<select id="caReviewStatus"><option value="">All Status</option><option>Good</option><option>Average</option><option>Bad</option></select></label><label>From Date<input type="date" id="caReviewFrom" value="2026-08-01"></label><label>To Date<input type="date" id="caReviewTo" value="2026-08-16"></label><div class="ca-filter-action"><button class="ca-btn ca-btn-primary" type="submit"><svg class="ca-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6z"></path><circle cx="12" cy="12" r="2.5"></circle></svg><span>View</span></button></div></div></form>
-    <section class="ca-card ca-table-card ca-results" id="caReviewResults"><div class="ca-results-head"><h2>Checked Content</h2><span id="caReviewCount"></span></div><div class="ca-table-scroll"><table class="ca-table ca-review-table"><thead><tr><th>Program</th><th>Course</th><th>Subject</th><th>Lecture</th><th>Version</th><th>Checked On</th><th class="ca-center">Status</th><th>Remarks</th><th class="ca-center">Action</th></tr></thead><tbody id="caReviewRows"></tbody></table></div><div class="ca-empty" id="caReviewEmpty" hidden>No checked content matched the selected filters.</div></section>
+    <form class="ca-card ca-filter-card" id="caReviewFilter"><div class="ca-filter-grid"><label>Organization<select id="caReviewOrganization"><option value="">All Organizations</option><option>Udvash</option><option>Unmesh</option></select></label><label>Program<select id="caReviewProgram"><option value="">All Programs</option><option>College Admission Program</option><option>Class 12 Academic Program</option></select></label><label>Session<select id="caReviewSession"><option value="">All Sessions</option><option>2026</option></select></label><label>Course<select id="caReviewCourse"><option value="">All Courses</option><option>HCC Admission Course [Offline]</option><option>NDC &amp; SJC Admission Course [Offline]</option><option>HSC 27 2nd Year Progressive Batch</option></select></label><label>Subject<select id="caReviewSubjectFilter"><option value="">All Subjects</option><option>Physics</option><option>Chemistry</option><option>Higher Math</option><option>Biology</option></select></label><label>Status<select id="caReviewStatus"><option value="">All Status</option><option>Good</option><option>Average</option><option>Bad</option></select></label><fieldset class="ca-date-range-filter"><legend>Date Range</legend><div class="ca-date-range"><input type="date" id="caReviewFrom" value="2026-08-01" aria-label="From Date"><span>to</span><input type="date" id="caReviewTo" value="2026-08-16" aria-label="To Date"></div></fieldset><div class="ca-filter-action"><button class="ca-btn ca-btn-primary" type="submit"><svg class="ca-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6z"></path><circle cx="12" cy="12" r="2.5"></circle></svg><span>View</span></button></div></div></form>
+    <section class="ca-card ca-table-card ca-results" id="caReviewResults"><div class="ca-results-head"><h2>Checked Content</h2><span id="caReviewCount"></span></div><div class="ca-table-scroll"><table class="ca-table ca-review-table"><thead><tr><th>Organization</th><th>Program</th><th>Session</th><th>Course</th><th>Subject</th><th>Lecture</th><th>Version</th><th>Checked On</th><th class="ca-center">Status</th><th>Remarks</th><th class="ca-center">Action</th></tr></thead><tbody id="caReviewRows"></tbody></table></div><div class="ca-empty" id="caReviewEmpty" hidden>No checked content matched the selected filters.</div></section>
   </section>
   <section class="ca-detail" id="caReviewDetail">
     <div class="ca-detail-head"><div><h2>Content Review</h2><div class="ca-progress" id="caReviewProgress">Checked content &middot; Edit decision</div></div><button class="ca-btn ca-btn-light" type="button" id="caReviewBack"><svg class="ca-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path><path d="M9 12h10"></path></svg><span>Back to results</span></button></div>
-    <div class="ca-card ca-context"><div class="ca-context-cell wide"><div class="ca-label">Program &middot; Course</div><div class="ca-value" id="caReviewProgramValue"></div></div><div class="ca-context-cell"><div class="ca-label">Subject</div><div class="ca-value" id="caReviewSubject"></div></div><div class="ca-context-cell"><div class="ca-label">Lecture</div><div class="ca-value" id="caReviewLecture"></div></div><div class="ca-context-cell"><div class="ca-label">Version</div><div class="ca-value" id="caReviewVersion"></div></div><div class="ca-context-cell wide"><div class="ca-label">Selected Content</div><div class="ca-value" id="caReviewContent"></div></div></div>
+    <div class="ca-card ca-context"><div class="ca-context-cell wide"><div class="ca-label">Program - Session &middot; Course</div><div class="ca-value" id="caReviewProgramValue"></div></div><div class="ca-context-cell"><div class="ca-label">Subject</div><div class="ca-value" id="caReviewSubject"></div></div><div class="ca-context-cell"><div class="ca-label">Lecture</div><div class="ca-value" id="caReviewLecture"></div></div><div class="ca-context-cell"><div class="ca-label">Version</div><div class="ca-value" id="caReviewVersion"></div></div></div>
     <div class="ca-toolbar"><button class="ca-btn ca-btn-light" type="button" id="caReviewInfo"><svg class="ca-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v6"></path><path d="M12 7h.01"></path></svg><span>Content Info</span></button><button class="ca-btn ca-btn-purple" type="button" id="caReviewBv"><svg class="ca-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6z"></path><path d="M14 3v5h5"></path><path d="M9 13h6"></path><path d="M9 17h4"></path></svg><span>Teacher Content BV</span></button></div>
     <div class="ca-image-list" id="caImageList">
   <article class="ca-card ca-image-card"><button type="button" data-ca-image="0"><img src="../Assets/content-page-01.jpg" alt="Uploaded content page 1"></button><div class="ca-image-caption"><span>Image 1</span><span>Click to view</span></div></article>
@@ -5225,7 +5235,7 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
 </div>    <form class="ca-card ca-decision" id="caReviewForm"><div class="ca-field"><label for="caReviewRemarks">Remarks</label><textarea class="ca-textarea" id="caReviewRemarks" placeholder="Update the review remark..."></textarea></div><fieldset class="ca-field"><legend>Checked Status</legend><div class="ca-ratings"><label class="ca-rating"><input type="radio" name="caReviewRating" value="Good" required><span>Good</span></label><label class="ca-rating"><input type="radio" name="caReviewRating" value="Average"><span>Average</span></label><label class="ca-rating"><input type="radio" name="caReviewRating" value="Bad"><span>Bad</span></label></div></fieldset><div class="ca-actions"><button class="ca-btn ca-btn-light" type="button" id="caReviewExit">Exit</button><button class="ca-btn ca-btn-primary" type="submit">Update</button></div></form>
   </section>
 </div></div><div class="ca-modal" id="caInfoModal" role="dialog" aria-modal="true" aria-labelledby="caInfoTitle">
-  <div class="ca-modal-dialog ca-info-dialog"><div class="ca-modal-head"><h3 id="caInfoTitle">Content Info</h3><button class="ca-modal-close" type="button" data-ca-close="caInfoModal" aria-label="Close content info"><svg class="ca-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12"></path><path d="M18 6L6 18"></path></svg></button></div><div class="ca-info-grid"><div class="ca-info-item"><span class="ca-label">Total Images</span><strong>7</strong></div><div class="ca-info-item"><span class="ca-label">BV Status</span><strong>Approved BV ready</strong></div><div class="ca-info-item wide"><span class="ca-label">Program</span><strong id="caInfoProgram"></strong></div><div class="ca-info-item wide"><span class="ca-label">Course</span><strong id="caInfoCourse"></strong></div><div class="ca-info-item"><span class="ca-label">Subject</span><strong id="caInfoSubject"></strong></div><div class="ca-info-item"><span class="ca-label">Lecture</span><strong id="caInfoLecture"></strong></div><div class="ca-info-item"><span class="ca-label">Version</span><strong id="caInfoVersion"></strong></div><div class="ca-info-item"><span class="ca-label">Status</span><strong id="caInfoStatus"></strong></div><div class="ca-info-item wide"><span class="ca-label">Selected Content</span><strong id="caInfoContent"></strong></div><div class="ca-info-item"><span class="ca-label">Checked By</span><strong id="caInfoCheckedBy"></strong></div><div class="ca-info-item"><span class="ca-label">Checked On</span><strong id="caInfoCheckedOn"></strong></div><div class="ca-info-item wide"><span class="ca-label">Modified By</span><strong id="caInfoModifiedBy"></strong></div></div></div>
+  <div class="ca-modal-dialog ca-info-dialog"><div class="ca-modal-head"><h3 id="caInfoTitle">Content Info</h3><button class="ca-modal-close" type="button" data-ca-close="caInfoModal" aria-label="Close content info"><svg class="ca-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12"></path><path d="M18 6L6 18"></path></svg></button></div><div class="ca-info-body"><section class="ca-info-section" aria-labelledby="caUploadCriteriaTitle"><h4 id="caUploadCriteriaTitle">Upload Criteria</h4><div class="ca-info-rule"></div><dl class="ca-info-list"><div class="ca-info-row"><dt>Branch :</dt><dd>Barishal Udvash</dd></div><div class="ca-info-row"><dt>Campus :</dt><dd>Barishal Campus</dd></div><div class="ca-info-row"><dt>Batch Type :</dt><dd>Sun, Tue, Thu</dd></div><div class="ca-info-row"><dt>Batch Time :</dt><dd>1:30 PM To 4:00 PM</dd></div><div class="ca-info-row"><dt>Batch :</dt><dd>Progga-01 BG</dd></div><div class="ca-info-row"><dt>Upload Date :</dt><dd>Aug 25, 2026 16:37:PM</dd></div></dl></section><section class="ca-info-section" aria-labelledby="caUserCriteriaTitle"><h4 id="caUserCriteriaTitle">User Criteria</h4><div class="ca-info-rule"></div><dl class="ca-info-list"><div class="ca-info-row"><dt>User Name :</dt><dd>Md. Shawon Mia</dd></div><div class="ca-info-row"><dt>User Email :</dt><dd>demo.user@udvash.test</dd></div><div class="ca-info-row"><dt>User Mobile :</dt><dd>8801700000000</dd></div></dl></section></div></div>
 </div>
 <div class="ca-modal" id="caPdfModal" role="dialog" aria-modal="true" aria-labelledby="caPdfTitle">
   <div class="ca-modal-dialog"><div class="ca-modal-head"><h3 id="caPdfTitle">Teacher Content BV</h3><button class="ca-modal-close" type="button" data-ca-close="caPdfModal" aria-label="Close PDF"><svg class="ca-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12"></path><path d="M18 6L6 18"></path></svg></button></div><embed class="ca-pdf-frame" src="../Assets/teachercontentbv.pdf#toolbar=1&amp;navpanes=0" type="application/pdf"></div>
@@ -5236,20 +5246,36 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
 <div class="ca-toast" id="caToast" role="status" aria-live="polite"></div><script>
 (function () {
   var records = [
-    {program:'College Admission Program',course:'HCC Admission Course [Offline]',subject:'Physics',lecture:'Lecture 21',version:'Bangla',content:'Physics Content 1',status:'Good',remarks:'Page order and content are correct.',checkedBy:'Sr. Teacher 4867',checkedOn:'16 Aug 2026, 7:05 PM',modifiedBy:'-'},
-    {program:'College Admission Program',course:'HCC Admission Course [Offline]',subject:'Physics',lecture:'Lecture 21',version:'Bangla',content:'Physics Content 2',status:'Average',remarks:'Diagram caption needs attention.',checkedBy:'Sr. Teacher 4867',checkedOn:'16 Aug 2026, 7:08 PM',modifiedBy:'Reviewer 3912'},
-    {program:'Class 12 Academic Program',course:'HSC 27 2nd Year Progressive Batch',subject:'Chemistry',lecture:'Lecture 18',version:'Bangla',content:'Chemistry Content 1',status:'Good',remarks:'Matched with the approved BV.',checkedBy:'Sr. Teacher 4867',checkedOn:'15 Aug 2026, 6:40 PM',modifiedBy:'-'},
-    {program:'College Admission Program',course:'NDC & SJC Admission Course [Offline]',subject:'Higher Math',lecture:'Lecture 12',version:'English',content:'Higher Math Content 3',status:'Bad',remarks:'Two pages are out of sequence.',checkedBy:'Sr. Teacher 4867',checkedOn:'14 Aug 2026, 8:12 PM',modifiedBy:'Reviewer 3912'},
-    {program:'Class 12 Academic Program',course:'HCC Admission Course [Offline]',subject:'Biology',lecture:'Lecture 27+28',version:'Bangla',content:'Biology Content 1',status:'Good',remarks:'All pages are readable.',checkedBy:'Sr. Teacher 4867',checkedOn:'13 Aug 2026, 5:55 PM',modifiedBy:'-'},
-    {program:'Class 12 Academic Program',course:'HCC Admission Course [Offline]',subject:'Biology',lecture:'Lecture 27+28',version:'Bangla',content:'Biology Content 2',status:'Average',remarks:'One image should be rescanned.',checkedBy:'Sr. Teacher 4867',checkedOn:'13 Aug 2026, 6:10 PM',modifiedBy:'-'}
+    {organization:'Udvash',program:'College Admission Program',session:'2026',course:'HCC Admission Course [Offline]',subject:'Physics',lecture:'Lecture 21',version:'Bangla',content:'Physics Content 1',status:'Good',remarks:'Page order and content are correct.',checkedBy:'Sr. Teacher 4867',checkedDate:'2026-08-16',checkedOn:'16 Aug 2026, 7:05 PM',modifiedBy:'-'},
+    {organization:'Udvash',program:'College Admission Program',session:'2026',course:'HCC Admission Course [Offline]',subject:'Physics',lecture:'Lecture 21',version:'Bangla',content:'Physics Content 2',status:'Average',remarks:'Diagram caption needs attention.',checkedBy:'Sr. Teacher 4867',checkedDate:'2026-08-16',checkedOn:'16 Aug 2026, 7:08 PM',modifiedBy:'Reviewer 3912'},
+    {organization:'Unmesh',program:'Class 12 Academic Program',session:'2026',course:'HSC 27 2nd Year Progressive Batch',subject:'Chemistry',lecture:'Lecture 18',version:'Bangla',content:'Chemistry Content 1',status:'Good',remarks:'Matched with the approved BV.',checkedBy:'Sr. Teacher 4867',checkedDate:'2026-08-15',checkedOn:'15 Aug 2026, 6:40 PM',modifiedBy:'-'},
+    {organization:'Udvash',program:'College Admission Program',session:'2026',course:'NDC & SJC Admission Course [Offline]',subject:'Higher Math',lecture:'Lecture 12',version:'English',content:'Higher Math Content 3',status:'Bad',remarks:'Two pages are out of sequence.',checkedBy:'Sr. Teacher 4867',checkedDate:'2026-08-14',checkedOn:'14 Aug 2026, 8:12 PM',modifiedBy:'Reviewer 3912'},
+    {organization:'Unmesh',program:'Class 12 Academic Program',session:'2026',course:'HCC Admission Course [Offline]',subject:'Biology',lecture:'Lecture 27+28',version:'Bangla',content:'Biology Content 1',status:'Good',remarks:'All pages are readable.',checkedBy:'Sr. Teacher 4867',checkedDate:'2026-08-13',checkedOn:'13 Aug 2026, 5:55 PM',modifiedBy:'-'},
+    {organization:'Unmesh',program:'Class 12 Academic Program',session:'2026',course:'HCC Admission Course [Offline]',subject:'Biology',lecture:'Lecture 27+28',version:'Bangla',content:'Biology Content 2',status:'Average',remarks:'One image should be rescanned.',checkedBy:'Sr. Teacher 4867',checkedDate:'2026-08-13',checkedOn:'13 Aug 2026, 6:10 PM',modifiedBy:'-'}
   ];
   var currentReviewIndex = 0;
   var resultsVisible = false;
   function statusClass(status) { return status.toLowerCase(); }
   function filteredRecords() {
+    var organization = document.getElementById('caReviewOrganization').value;
     var program = document.getElementById('caReviewProgram').value;
+    var session = document.getElementById('caReviewSession').value;
+    var course = document.getElementById('caReviewCourse').value;
+    var subject = document.getElementById('caReviewSubjectFilter').value;
     var status = document.getElementById('caReviewStatus').value;
-    return records.map(function (record,index) { return {record:record,index:index}; }).filter(function (entry) { return (!program || entry.record.program === program) && (!status || entry.record.status === status); });
+    var fromDate = document.getElementById('caReviewFrom').value;
+    var toDate = document.getElementById('caReviewTo').value;
+    return records.map(function (record,index) { return {record:record,index:index}; }).filter(function (entry) {
+      var item = entry.record;
+      return (!organization || item.organization === organization) &&
+        (!program || item.program === program) &&
+        (!session || item.session === session) &&
+        (!course || item.course === course) &&
+        (!subject || item.subject === subject) &&
+        (!status || item.status === status) &&
+        (!fromDate || item.checkedDate >= fromDate) &&
+        (!toDate || item.checkedDate <= toDate);
+    });
   }
 
   function renderResults() {
@@ -5257,7 +5283,7 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
     var visible = filteredRecords();
     document.getElementById('caReviewRows').innerHTML = visible.map(function (entry) {
       var item = entry.record;
-      return '<tr><td>' + item.program + '</td><td>' + item.course + '</td><td>' + item.subject + '</td><td>' + item.lecture + '</td><td>' + item.version + '</td><td>' + item.checkedOn + '</td><td class="ca-center"><span class="ca-badge ' + statusClass(item.status) + '">' + item.status + '</span></td><td>' + item.remarks + '</td><td class="ca-center"><button class="ca-btn ca-btn-primary" type="button" data-ca-edit="' + entry.index + '">Edit</button></td></tr>';
+      return '<tr><td>' + item.organization + '</td><td>' + item.program + '</td><td>' + item.session + '</td><td>' + item.course + '</td><td>' + item.subject + '</td><td>' + item.lecture + '</td><td>' + item.version + '</td><td>' + item.checkedOn + '</td><td class="ca-center"><span class="ca-badge ' + statusClass(item.status) + '">' + item.status + '</span></td><td>' + item.remarks + '</td><td class="ca-center"><button class="ca-btn ca-btn-primary" type="button" data-ca-edit="' + entry.index + '">Edit</button></td></tr>';
     }).join('');
     document.getElementById('caReviewCount').textContent = visible.length + ' record' + (visible.length === 1 ? '' : 's');
     document.getElementById('caReviewEmpty').hidden = Boolean(visible.length);
@@ -5265,12 +5291,11 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
   function showResults() { document.getElementById('caReviewDetail').classList.remove('active'); document.getElementById('caReviewList').classList.add('active'); renderResults(); window.scrollTo(0,0); }
   function openReview(index) {
     currentReviewIndex = index; var item = records[index];
-    document.getElementById('caReviewProgramValue').textContent = item.program + ' / ' + item.course;
+    document.getElementById('caReviewProgramValue').textContent = item.program + ' ' + item.session + ' / ' + item.course;
     document.getElementById('caReviewSubject').textContent = item.subject;
     document.getElementById('caReviewLecture').textContent = item.lecture;
     document.getElementById('caReviewVersion').textContent = item.version;
-    document.getElementById('caReviewContent').textContent = item.content;
-    document.getElementById('caReviewProgress').textContent = item.checkedBy + ' / ' + item.checkedOn;
+    document.getElementById('caReviewProgress').textContent = item.checkedOn;
     document.getElementById('caReviewRemarks').value = item.remarks;
     document.querySelectorAll('[name="caReviewRating"]').forEach(function (radio) { radio.checked = radio.value === item.status; });
 
@@ -5278,20 +5303,7 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
   }
   document.getElementById('caReviewFilter').addEventListener('submit', function (event) { event.preventDefault(); resultsVisible = true; document.getElementById('caReviewResults').classList.add('active'); renderResults(); });
   document.getElementById('caReviewRows').addEventListener('click', function (event) { var button = event.target.closest('[data-ca-edit]'); if (button) openReview(Number(button.getAttribute('data-ca-edit'))); });
-  document.getElementById('caReviewInfo').addEventListener('click', function () {
-    var item = records[currentReviewIndex];
-    document.getElementById('caInfoProgram').textContent = item.program;
-    document.getElementById('caInfoCourse').textContent = item.course;
-    document.getElementById('caInfoSubject').textContent = item.subject;
-    document.getElementById('caInfoLecture').textContent = item.lecture;
-    document.getElementById('caInfoVersion').textContent = item.version;
-    document.getElementById('caInfoStatus').textContent = item.status;
-    document.getElementById('caInfoContent').textContent = item.content;
-    document.getElementById('caInfoCheckedBy').textContent = item.checkedBy;
-    document.getElementById('caInfoCheckedOn').textContent = item.checkedOn;
-    document.getElementById('caInfoModifiedBy').textContent = item.modifiedBy;
-    setModal('caInfoModal',true);
-  });
+  document.getElementById('caReviewInfo').addEventListener('click', function () { setModal('caInfoModal',true); });
   document.getElementById('caReviewBv').addEventListener('click', function () { setModal('caPdfModal',true); });
   document.getElementById('caReviewBack').addEventListener('click', showResults);
   document.getElementById('caReviewExit').addEventListener('click', showResults);

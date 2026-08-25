@@ -5132,12 +5132,17 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
   .ca-label { margin-bottom:4px; color:var(--ca-muted); font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; }
   .ca-value { color:#344054; font-size:14px; font-weight:600; line-height:1.45; }
   .ca-toolbar { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:14px; }
-  .ca-info-dialog { width:min(760px,96vw); }
-  .ca-info-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1px; padding:1px; overflow:auto; background:var(--ca-line); }
-  .ca-info-item { min-width:0; padding:16px 18px; background:#fff; }
-  .ca-info-item.wide { grid-column:1/-1; }
-  .ca-info-item .ca-label { display:block; }
-  .ca-info-item strong { display:block; color:#344054; font-size:14px; font-weight:600; line-height:1.45; overflow-wrap:anywhere; }
+  .ca-info-dialog { width:min(580px,96vw); }
+  .ca-info-body { padding:26px 20px 30px; overflow:auto; }
+  .ca-info-section + .ca-info-section { margin-top:32px; }
+  .ca-info-section h4 { margin:0; color:#3b3849; font-size:14px; font-weight:700; }
+  .ca-info-rule { height:1px; margin:18px 0; background:var(--ca-line); }
+  .ca-info-list { margin:0; }
+  .ca-info-row { display:grid; grid-template-columns:120px minmax(0,1fr); gap:28px; margin:0 0 12px; }
+  .ca-info-row:last-child { margin-bottom:0; }
+  .ca-info-row dt,.ca-info-row dd { margin:0; font-size:14px; line-height:1.35; }
+  .ca-info-row dt { color:#3b3849; font-weight:700; text-align:right; }
+  .ca-info-row dd { min-width:0; color:#444; font-weight:400; overflow-wrap:anywhere; }
   .ca-image-list { display:grid; grid-template-columns:1fr; gap:18px; margin-bottom:18px; }
   .ca-image-card { padding:14px; overflow:hidden; }
   .ca-image-card button { display:block; width:100%; padding:0; border:0; cursor:zoom-in; background:#f5f6f8; }
@@ -5192,8 +5197,8 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
     .ca-summary { padding:18px; }
     .ca-context,.ca-filter-grid { grid-template-columns:1fr; }
     .ca-context-cell.wide,.ca-filter-action { grid-column:auto; }
-    .ca-info-grid { grid-template-columns:1fr; }
-    .ca-info-item.wide { grid-column:auto; }
+    .ca-info-body { padding:22px 18px 26px; }
+    .ca-info-row { grid-template-columns:105px minmax(0,1fr); gap:16px; }
     .ca-toolbar { align-items:stretch; }
     .ca-toolbar .ca-btn { flex:1; padding:0 10px; }
     .ca-actions { display:grid; grid-template-columns:1fr 1fr; }
@@ -5205,11 +5210,11 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
   <section class="ca-list active" id="caCheckList">
     <div class="ca-page-head"><div><h1>Content Check</h1></div></div>
     <div class="ca-card ca-summary"><div><div class="ca-kicker">Total Pending</div><div class="ca-summary-copy" id="caPendingCopy">4 pending lectures &middot; 12 content inside</div></div><div class="ca-count" id="caPendingCount">12</div></div>
-    <div class="ca-card ca-table-card"><div class="ca-table-scroll"><table class="ca-table"><thead><tr><th class="ca-center">SL</th><th>Program</th><th>Course</th><th>Subject</th><th>Lecture</th><th>Version</th><th class="ca-center">Pending Content</th><th class="ca-center">Action</th></tr></thead><tbody id="caCheckRows"></tbody></table></div><div class="ca-empty" id="caCheckEmpty" hidden>There is no pending Content Check task.</div></div>
+    <div class="ca-card ca-table-card"><div class="ca-table-scroll"><table class="ca-table"><thead><tr><th class="ca-center">SL</th><th>Program - Session</th><th>Course</th><th>Subject</th><th>Lecture</th><th>Version</th><th class="ca-center">Pending Content</th><th class="ca-center">Action</th></tr></thead><tbody id="caCheckRows"></tbody></table></div><div class="ca-empty" id="caCheckEmpty" hidden>There is no pending Content Check task.</div></div>
   </section>
   <section class="ca-detail" id="caCheckDetail">
     <div class="ca-detail-head"><div><h2>Content Check</h2></div><button class="ca-btn ca-btn-light" type="button" id="caCheckBack"><svg class="ca-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path><path d="M9 12h10"></path></svg><span>Back to queue</span></button></div>
-    <div class="ca-card ca-context"><div class="ca-context-cell wide"><div class="ca-label">Program &middot; Course</div><div class="ca-value" id="caCheckProgram"></div></div><div class="ca-context-cell"><div class="ca-label">Subject</div><div class="ca-value" id="caCheckSubject"></div></div><div class="ca-context-cell"><div class="ca-label">Lecture</div><div class="ca-value" id="caCheckLecture"></div></div><div class="ca-context-cell"><div class="ca-label">Version</div><div class="ca-value" id="caCheckVersion"></div></div><div class="ca-context-cell wide"><div class="ca-label">Selected Content</div><div class="ca-value" id="caCheckContent"></div></div></div>
+    <div class="ca-card ca-context"><div class="ca-context-cell wide"><div class="ca-label">Program - Session &middot; Course</div><div class="ca-value" id="caCheckProgram"></div></div><div class="ca-context-cell"><div class="ca-label">Subject</div><div class="ca-value" id="caCheckSubject"></div></div><div class="ca-context-cell"><div class="ca-label">Lecture</div><div class="ca-value" id="caCheckLecture"></div></div><div class="ca-context-cell"><div class="ca-label">Version</div><div class="ca-value" id="caCheckVersion"></div></div></div>
     <div class="ca-toolbar"><button class="ca-btn ca-btn-light" type="button" id="caCheckInfo"><svg class="ca-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v6"></path><path d="M12 7h.01"></path></svg><span>Content Info</span></button><button class="ca-btn ca-btn-purple" type="button" id="caCheckBv"><svg class="ca-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6z"></path><path d="M14 3v5h5"></path><path d="M9 13h6"></path><path d="M9 17h4"></path></svg><span>Teacher Content BV</span></button></div>
     <div class="ca-image-list" id="caImageList">
   <article class="ca-card ca-image-card"><button type="button" data-ca-image="0"><img src="../Assets/content-page-01.jpg" alt="Uploaded content page 1"></button><div class="ca-image-caption"><span>Image 1</span><span>Click to view</span></div></article>
@@ -5222,7 +5227,7 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
 </div>    <form class="ca-card ca-decision" id="caCheckForm"><div class="ca-field"><label for="caCheckRemarks">Remarks</label><textarea class="ca-textarea" id="caCheckRemarks" placeholder="Write a short review remark..."></textarea></div><fieldset class="ca-field"><legend>Checked Status</legend><div class="ca-ratings"><label class="ca-rating"><input type="radio" name="caCheckStatus" value="Good" required><span>Good</span></label><label class="ca-rating"><input type="radio" name="caCheckStatus" value="Average"><span>Average</span></label><label class="ca-rating"><input type="radio" name="caCheckStatus" value="Bad"><span>Bad</span></label></div></fieldset><div class="ca-actions"><button class="ca-btn ca-btn-light" type="button" id="caCheckExit">Exit</button><button class="ca-btn ca-btn-light" type="button" id="caCheckSkip">Skip &amp; Next</button><button class="ca-btn ca-btn-primary" type="submit">Submit &amp; Next</button></div></form>
   </section>
 </div></div><div class="ca-modal" id="caInfoModal" role="dialog" aria-modal="true" aria-labelledby="caInfoTitle">
-  <div class="ca-modal-dialog ca-info-dialog"><div class="ca-modal-head"><h3 id="caInfoTitle">Content Info</h3><button class="ca-modal-close" type="button" data-ca-close="caInfoModal" aria-label="Close content info"><svg class="ca-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12"></path><path d="M18 6L6 18"></path></svg></button></div><div class="ca-info-grid"><div class="ca-info-item"><span class="ca-label">Uploader</span><strong>Content Team</strong></div><div class="ca-info-item"><span class="ca-label">Uploaded On</span><strong>16 Aug 2026, 6:40 PM</strong></div><div class="ca-info-item"><span class="ca-label">Total Images</span><strong>7</strong></div><div class="ca-info-item"><span class="ca-label">Source</span><strong>Offline content alignment demo</strong></div><div class="ca-info-item wide"><span class="ca-label">Program</span><strong id="caInfoProgram"></strong></div><div class="ca-info-item wide"><span class="ca-label">Course</span><strong id="caInfoCourse"></strong></div><div class="ca-info-item"><span class="ca-label">Subject</span><strong id="caInfoSubject"></strong></div><div class="ca-info-item"><span class="ca-label">Lecture</span><strong id="caInfoLecture"></strong></div><div class="ca-info-item"><span class="ca-label">Version</span><strong id="caInfoVersion"></strong></div><div class="ca-info-item wide"><span class="ca-label">Selected Content</span><strong id="caInfoContent"></strong></div></div></div>
+  <div class="ca-modal-dialog ca-info-dialog"><div class="ca-modal-head"><h3 id="caInfoTitle">Content Info</h3><button class="ca-modal-close" type="button" data-ca-close="caInfoModal" aria-label="Close content info"><svg class="ca-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12"></path><path d="M18 6L6 18"></path></svg></button></div><div class="ca-info-body"><section class="ca-info-section" aria-labelledby="caUploadCriteriaTitle"><h4 id="caUploadCriteriaTitle">Upload Criteria</h4><div class="ca-info-rule"></div><dl class="ca-info-list"><div class="ca-info-row"><dt>Branch :</dt><dd>Barishal Udvash</dd></div><div class="ca-info-row"><dt>Campus :</dt><dd>Barishal Campus</dd></div><div class="ca-info-row"><dt>Batch Type :</dt><dd>Sun, Tue, Thu</dd></div><div class="ca-info-row"><dt>Batch Time :</dt><dd>1:30 PM To 4:00 PM</dd></div><div class="ca-info-row"><dt>Batch :</dt><dd>Progga-01 BG</dd></div><div class="ca-info-row"><dt>Upload Date :</dt><dd>Aug 25, 2026 16:37:PM</dd></div></dl></section><section class="ca-info-section" aria-labelledby="caUserCriteriaTitle"><h4 id="caUserCriteriaTitle">User Criteria</h4><div class="ca-info-rule"></div><dl class="ca-info-list"><div class="ca-info-row"><dt>User Name :</dt><dd>Md. Shawon Mia</dd></div><div class="ca-info-row"><dt>User Email :</dt><dd>demo.user@udvash.test</dd></div><div class="ca-info-row"><dt>User Mobile :</dt><dd>8801700000000</dd></div></dl></section></div></div>
 </div>
 <div class="ca-modal" id="caPdfModal" role="dialog" aria-modal="true" aria-labelledby="caPdfTitle">
   <div class="ca-modal-dialog"><div class="ca-modal-head"><h3 id="caPdfTitle">Teacher Content BV</h3><button class="ca-modal-close" type="button" data-ca-close="caPdfModal" aria-label="Close PDF"><svg class="ca-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12"></path><path d="M18 6L6 18"></path></svg></button></div><embed class="ca-pdf-frame" src="../Assets/teachercontentbv.pdf#toolbar=1&amp;navpanes=0" type="application/pdf"></div>
@@ -5233,10 +5238,10 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
 <div class="ca-toast" id="caToast" role="status" aria-live="polite"></div><script>
 (function () {
   var seeds = [
-    {program:'College Admission Program',course:'HCC Admission Course [Offline]',subject:'Physics',lecture:'Lecture 21',version:'Bangla'},
-    {program:'College Admission Program',course:'HCC Admission Course [Offline]',subject:'Physics',lecture:'Lecture 22',version:'Bangla'},
-    {program:'College Admission Program',course:'HCC Admission Course [Offline]',subject:'Chemistry',lecture:'Lecture 18',version:'Bangla'},
-    {program:'Class 12 Academic Program',course:'HSC 27 2nd Year Progressive Batch',subject:'Chemistry',lecture:'Lecture 19',version:'Bangla'}
+    {program:'College Admission Program 2026',course:'HCC Admission Course [Offline]',subject:'Physics',lecture:'Lecture 21',version:'Bangla'},
+    {program:'College Admission Program 2026',course:'HCC Admission Course [Offline]',subject:'Physics',lecture:'Lecture 22',version:'Bangla'},
+    {program:'College Admission Program 2026',course:'HCC Admission Course [Offline]',subject:'Chemistry',lecture:'Lecture 18',version:'Bangla'},
+    {program:'Class 12 Academic Program 2026',course:'HSC 27 2nd Year Progressive Batch',subject:'Chemistry',lecture:'Lecture 19',version:'Bangla'}
   ];
   var lectures = seeds.map(function (seed, lectureIndex) {
     seed.contents = [1,2,3].map(function (number) { return {name:seed.subject + ' Content ' + number,status:'',remarks:'',key:lectureIndex + '-' + number}; });
@@ -5286,7 +5291,6 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
     document.getElementById('caCheckSubject').textContent = lecture.subject;
     document.getElementById('caCheckLecture').textContent = lecture.lecture;
     document.getElementById('caCheckVersion').textContent = lecture.version;
-    document.getElementById('caCheckContent').textContent = content.name;
     document.getElementById('caCheckRemarks').value = content.remarks;
     document.querySelectorAll('[name="caCheckStatus"]').forEach(function (radio) { radio.checked = radio.value === content.status; });
     document.getElementById('caCheckList').classList.remove('active'); document.getElementById('caCheckDetail').classList.add('active'); window.scrollTo(0,0);
@@ -5299,17 +5303,7 @@ body.uu-login-page div.custom-login-form.uu-login-form div.uu-form-action {
     if (next && !(next.lectureIndex === currentLecture && next.contentIndex === currentContent)) openTask(next.lectureIndex,next.contentIndex); else showList();
   }
   document.getElementById('caCheckRows').addEventListener('click', function (event) { var button = event.target.closest('[data-ca-check]'); if (!button) return; var lectureIndex = Number(button.getAttribute('data-ca-check')); var firstPending = lectures[lectureIndex].contents.findIndex(function (content) { return !content.status; }); openTask(lectureIndex,firstPending); });
-  document.getElementById('caCheckInfo').addEventListener('click', function () {
-    var lecture = lectures[currentLecture];
-    var content = lecture.contents[currentContent];
-    document.getElementById('caInfoProgram').textContent = lecture.program;
-    document.getElementById('caInfoCourse').textContent = lecture.course;
-    document.getElementById('caInfoSubject').textContent = lecture.subject;
-    document.getElementById('caInfoLecture').textContent = lecture.lecture;
-    document.getElementById('caInfoVersion').textContent = lecture.version;
-    document.getElementById('caInfoContent').textContent = content.name;
-    setModal('caInfoModal',true);
-  });
+  document.getElementById('caCheckInfo').addEventListener('click', function () { setModal('caInfoModal',true); });
   document.getElementById('caCheckBv').addEventListener('click', function () { setModal('caPdfModal',true); });
   document.getElementById('caCheckBack').addEventListener('click', showList);
   document.getElementById('caCheckExit').addEventListener('click', showList);
