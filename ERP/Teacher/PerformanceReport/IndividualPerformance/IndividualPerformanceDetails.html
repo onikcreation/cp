@@ -9677,8 +9677,20 @@ a.ui-button:active,
                 background-color: #6a6a6a;
             }
           </style>
-        <style>
+<style>
   .navbar.navbar-inverse.navbar-fixed-top { background-color: #4338CA !important; }
+  #pageChangesBtn {
+    position:absolute; left:50%; top:11px; transform:translateX(-50%); z-index:1031;
+    display:inline-block; padding:6px 12px; line-height:1.2; border-radius:6px;
+    background:#F59E0B; border:2px solid #fff; color:#fff !important;
+    font-size:12.5px; font-weight:bold; white-space:nowrap;
+    animation:pageChangesPulse 1.6s infinite;
+  }
+  @keyframes pageChangesPulse {
+    0% { box-shadow:0 0 0 0 rgba(245,158,11,.7); }
+    70% { box-shadow:0 0 0 10px rgba(245,158,11,0); }
+    100% { box-shadow:0 0 0 0 rgba(245,158,11,0); }
+  }
 </style>
 <style>
 /* inlined: /Content/DataTables-1.10.2/css/jquery.dataTables.css */
@@ -10310,6 +10322,7 @@ table.dataTable td {
                 </li>
               </div>
               <div class="navbar-collapse collapse">
+                <a href="javascript:void(0)" id="pageChangesBtn" data-toggle="modal" data-target="#pageChangesModal" title="এই পেইজে যা নতুন পরিবর্তন/আপডেট করা হয়েছে">New Updates</a>
                 <ul class="nav navbar-nav" id="menuGroup">
                   <li>
                     <a href="/Student">
@@ -11328,10 +11341,13 @@ table.dataTable td {
                         </tbody>
                       </table>
                       <br>
-                      <table class="display table table-striped table-bordered table-condensed table-hover" cellspacing="0" width="100%">
+                      <table class="display table table-striped table-bordered table-condensed table-hover" cellspacing="0" width="100%" style="min-width:1100px;">
                         <thead>
                           <tr>
                             <th>Serial</th>
+                            <th>Program</th>
+                            <th>Session</th>
+                            <th>Branch</th>
                             <th>Registration Number</th>
                             <th>Roll Number</th>
                             <th>Nick Name</th>
@@ -11347,7 +11363,6 @@ table.dataTable td {
                 </div>
                 </div>
               </div>
-            </div>
             <div class="container body-content">
               <hr>
             </div>
@@ -13212,6 +13227,7 @@ function getDPI() {
   'use strict';
 
   var DUMMY_MOBILES = ['8801600000001', '8801700000001', '8801800000001', '8801900000001'];
+  var STUDENT_PROGRAMS = ['Medical Admission Program', 'Medical Admission Program (Online)'];
 
   // ফ্রেশ স্টুডেন্ট নিকনেম পুল (Individual Performance-এর টিচার-পুল এবং আসল ক্যাপচারের ছাত্র-নাম থেকে সম্পূর্ণ আলাদা)
   var STUDENT_NICK_POOL = ['Efty', 'Proggo', 'Mishu', 'Turjo', 'Robel', 'Nayeem', 'Protik', 'Fahad', 'Anindo', 'Wasi',
@@ -13228,8 +13244,11 @@ function getDPI() {
   var institute = qp('institute', 'DU');
   var mobile = qp('mobile', DUMMY_MOBILES[0]);
   var program = qp('program', 'Engineering Admission Program 2026');
+  var session = qp('session', '2026');
   var lecture = qp('lecture', 'Regular Class Physics (Lecture-01+02)');
   var branch = qp('branch', 'Motijheel Udvash');
+  var branchChoices = branch.split(',').map(function (item) { return item.trim(); }).filter(Boolean);
+  if (!branchChoices.length) branchChoices = ['Farmgate Unmesh', 'Mirpur 1 Unmesh', 'Uttara Azampur Unmesh'];
   var good = parseInt(qp('good', '20'), 10) || 0;
   var avg = parseInt(qp('avg', '3'), 10) || 0;
   var bad = parseInt(qp('bad', '1'), 10) || 0;
@@ -13262,7 +13281,7 @@ function getDPI() {
   if (answers.length === 0) answers.push('Good');
   shuffle(answers);
 
-  var branchCode = 100 + (branch.length % 90);
+  var branchCode = 100 + (branchChoices[0].length % 90);
   var html = '';
   answers.forEach(function (answer, idx) {
     var nick = STUDENT_NICK_POOL[idx % STUDENT_NICK_POOL.length];
@@ -13270,8 +13289,13 @@ function getDPI() {
     var registration = 1000000 + rand(0, 399999);
     var roll = branchCode + '' + (10000000000 + idx).toString().slice(-8);
     var studentMobile = DUMMY_MOBILES[idx % DUMMY_MOBILES.length];
+    var studentProgram = STUDENT_PROGRAMS[idx % STUDENT_PROGRAMS.length];
+    var studentBranch = branchChoices[idx % branchChoices.length];
     html += '<tr>';
     html += '<td class="text-center">' + String(idx + 1).padStart(2, '0') + '</td>';
+    html += '<td class="text-center">' + studentProgram + '</td>';
+    html += '<td class="text-center" style="white-space:nowrap;">' + session + '</td>';
+    html += '<td class="text-center">' + studentBranch + '</td>';
     html += '<td class="text-center">' + registration + '</td>';
     html += '<td class="text-center">' + roll + '</td>';
     html += '<td class="text-center">' + nick + '</td>';
@@ -13341,6 +13365,59 @@ $(function () {
     return dfd.promise(fakeXHR);
   };
 })();
+</script>
+
+<style>
+  #pageChangesModal .modal-dialog { width:60%; }
+  #pageChangesModal .modal-content { height:65vh; overflow:hidden; }
+  #pageChangesModal .modal-body { height:calc(65vh - 120px); overflow-y:auto; }
+</style>
+<div class="modal fade" id="pageChangesModal" tabindex="-1" role="dialog" aria-labelledby="pageChangesModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="background:#4338CA; color:#fff;">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:#fff; opacity:1;"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="pageChangesModalLabel">এই পেইজে যা যা পরিবর্তন/আপডেট করা হয়েছে</h4>
+      </div>
+      <div class="modal-body">
+        <ol>
+          <li><strong>Source Program দেখানো:</strong> উপরের Program ঘরে যে result row-এর Details থেকে পেইজটি খোলা হয়েছে, ঠিক সেই Program-এর নাম দেখানো হয়।</li>
+          <li><strong>Student table-এ context:</strong> Registration Number-এর আগে Program, Session ও Branch column যোগ হয়েছে; প্রতিটি Details table-এ Medical Admission Program ও Medical Admission Program (Online), এবং কয়েকটি UNMESH branch পর্যায়ক্রমে দেখানো হয়।</li>
+        </ol>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" onclick="copyPageChanges(this)">Copy</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+function copyPageChanges(button) {
+  var source = document.querySelector('#pageChangesModal .modal-body ol');
+  var text = source ? source.innerText : '';
+  function copied() {
+    var oldText = button.textContent;
+    button.textContent = 'Copied';
+    setTimeout(function () { button.textContent = oldText; }, 1200);
+  }
+  function fallbackCopy() {
+    var textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    try { document.execCommand('copy'); copied(); } catch (e) {}
+    document.body.removeChild(textarea);
+  }
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(copied).catch(fallbackCopy);
+  } else {
+    fallbackCopy();
+  }
+}
 </script>
 
 </body>

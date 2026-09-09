@@ -11475,7 +11475,6 @@ table.dataTable td {
                 </div>
                 </div>
               </div>
-            </div>
             <div class="container body-content">
               <hr>
             </div>
@@ -13351,10 +13350,12 @@ function getDPI() {
   var PROGRAM_RANK_BY_KEY = {};
   PROGRAM_RANKS.forEach(function (t) { PROGRAM_RANK_BY_KEY[t[0] + '|' + t[1]] = t[2]; });
 
+  var HIDDEN_DEMO_PROGRAM = 'Class 11 Academic Program (New Batch 4th Porbo Start 04 April)';
   var ORG_PROGRAMS = {}; // orgId -> program names for that org, in Program Rank order
   var SESSIONS_BY_ORG_PROGRAM = {}; // "orgId|program" -> real session values for that combo
   REAL_ORG_PROGRAM_SESSION.forEach(function (t) {
     var oid = t[0], progName = t[1], sessionValue = t[2];
+    if (progName === HIDDEN_DEMO_PROGRAM) return;
     if (!ORG_PROGRAMS[oid]) ORG_PROGRAMS[oid] = [];
     if (ORG_PROGRAMS[oid].indexOf(progName) === -1) ORG_PROGRAMS[oid].push(progName);
     var key = oid + '|' + progName;
@@ -13365,6 +13366,7 @@ function getDPI() {
     ORG_PROGRAMS[oid].sort(function (a, b) { return PROGRAM_RANK_BY_KEY[oid + '|' + a] - PROGRAM_RANK_BY_KEY[oid + '|' + b]; });
   });
   var ALL_REAL_PROGRAMS = Object.keys(PROGRAM_RANK_BY_KEY)
+    .filter(function (key) { return key.substring(key.indexOf('|') + 1) !== HIDDEN_DEMO_PROGRAM; })
     .sort(function (a, b) { return PROGRAM_RANK_BY_KEY[a] - PROGRAM_RANK_BY_KEY[b]; })
     .map(function (key) { return key.substring(key.indexOf('|') + 1); });
 
@@ -13372,6 +13374,7 @@ function getDPI() {
   REAL_SESSIONS.forEach(function (s) { SESSION_TEXT_BY_VALUE[s.value] = s.text; });
 
   var FULL_BRANCH_LIST = BRANCH_MENTOR_DATA.map(function (pair) { return pair[0]; });
+  var UNMESH_DETAIL_BRANCHES = ['Farmgate Unmesh', 'Mirpur 1 Unmesh', 'Uttara Azampur Unmesh'];
 
   var ORG_NAME_BY_ID = {};
   REAL_ORG_LIST.forEach(function (o) { ORG_NAME_BY_ID[o.id] = o.name; });
@@ -13585,10 +13588,13 @@ function getDPI() {
       });
     });
     if (combos.length === 0) combos.push({ oid: '1', program: 'Engineering Admission Program', session: '66' });
+    var preferredMedicalCombo = combos.filter(function (combo) {
+      return combo.oid === '2' && combo.program === 'Medical Admission Program';
+    })[0];
 
     var rows = [];
     for (var i = 0; i < count; i++) {
-      var combo = combos[rand(0, combos.length - 1)];
+      var combo = (i === 0 && preferredMedicalCombo) ? preferredMedicalCombo : combos[rand(0, combos.length - 1)];
       var subject = pick(SUBJECTS);
       var good = rand(0, 40), avg = rand(0, 5), bad = rand(0, 3), notAttended = rand(0, 5), blank = rand(0, 6);
       var total = good + avg + bad;
@@ -13600,6 +13606,8 @@ function getDPI() {
         contentGood: contentGood, contentAvg: contentAvg, contentBad: contentBad,
         lecture: buildLectureName(subject),
         branch: pick(FULL_BRANCH_LIST) + ' ' + ORG_BRANCH_SUFFIX[combo.oid],
+        program: combo.program,
+        session: SESSION_TEXT_BY_VALUE[combo.session] || combo.session,
         programSession: combo.program + ' ' + SESSION_TEXT_BY_VALUE[combo.session],
         organization: ORG_NAME_BY_ID[combo.oid]
       });
@@ -13625,7 +13633,8 @@ function getDPI() {
     if (!axes.length) return rows;
     var groups = {}, order = [];
     rows.forEach(function (row) {
-      var keyParts = [];
+      // Program and Session are visible dimensions; never merge rows from different contexts.
+      var keyParts = ['P:' + row.program, 'S:' + row.session];
       if (axes.indexOf('date') !== -1) keyParts.push('D:' + row.date);
       if (axes.indexOf('lecture') !== -1) keyParts.push('L:' + row.lecture);
       if (axes.indexOf('branch') !== -1) keyParts.push('B:' + row.branch);
@@ -13635,6 +13644,8 @@ function getDPI() {
           date: axes.indexOf('date') !== -1 ? row.date : '',
           lecture: axes.indexOf('lecture') !== -1 ? row.lecture : '',
           branch: axes.indexOf('branch') !== -1 ? row.branch : '',
+          program: row.program,
+          session: row.session,
           programSession: row.programSession,
           organization: row.organization,
           good: 0, avg: 0, bad: 0, notAttended: 0, blank: 0, total: 0, tLate: 0,
@@ -13675,7 +13686,7 @@ function getDPI() {
       ? $('#OrganizationId option:selected').text()
       : 'All Organization';
     var programSessionText = currentProgramSessionLabel();
-    var dataGridMinWidth = 930 + (showDate ? 110 : 0) + (showLecture ? 190 : 0) + (showBranch ? 170 : 0);
+    var dataGridMinWidth = 1280 + (showDate ? 110 : 0) + (showLecture ? 190 : 0) + (showBranch ? 170 : 0);
     var performanceSummary = displayRows.reduce(function (summary, row) {
       summary.good += row.good;
       summary.avg += row.avg;
@@ -13700,6 +13711,7 @@ function getDPI() {
     html += '<table id="DataGrid" class="display table table-striped table-bordered table-condensed table-hover" cellspacing="0" width="100%" style="min-width:' + dataGridMinWidth + 'px; margin-bottom:0;">';
     html += '<thead><tr><th rowspan="2">Sl</th>';
     if (showDate) html += '<th rowspan="2">Date</th>';
+    html += '<th rowspan="2">Program</th><th rowspan="2">Session</th>';
     if (showLecture) html += '<th rowspan="2">Lecture Name</th>';
     if (showBranch) html += '<th rowspan="2" style="white-space:nowrap;">Branch Name</th>';
     html += '<th colspan="7" style="text-align:center;">Class Performance</th>';
@@ -13713,6 +13725,8 @@ function getDPI() {
       html += '<tr>';
       html += '<td class="text-center">' + (idx + 1) + '</td>';
       if (showDate) html += '<td class="text-center" style="white-space:nowrap;">' + r.date + '</td>';
+      html += '<td class="text-center">' + r.program + '</td>';
+      html += '<td class="text-center" style="white-space:nowrap;">' + r.session + '</td>';
       if (showLecture) html += '<td class="text-center">' + (r.lecture || 'All Lectures') + '</td>';
       if (showBranch) html += '<td class="text-center">' + (r.branch || 'All Branches') + '</td>';
       html += '<td class="text-center">' + r.good + ' (' + pct(r.good, r.total) + ')</td>';
@@ -13725,12 +13739,13 @@ function getDPI() {
       html += '<td class="text-center">' + r.contentGood + '</td>';
       html += '<td class="text-center">' + r.contentAvg + '</td>';
       html += '<td class="text-center">' + r.contentBad + '</td>';
-      var detailProgram = currentProgramSessionLabel();
+      var detailProgram = r.program || ($('#ProgramId option:selected').text() || 'All Program');
+      var detailSession = r.session || ($('#SessionId option:selected').text() || 'All Session');
       var detailLecture = r.lecture || 'All Lectures';
-      var detailBranch = r.branch || 'All Branches';
+      var detailBranch = r.branch || UNMESH_DETAIL_BRANCHES.join(', ');
       html += '<td class="text-center"><a title="Details" href="javascript:void(0)" class="glyphicon glyphicon-th-list individual-detail-link"' +
         ' data-teacher="' + escapeAttr(teacher.label) + '" data-institute="' + escapeAttr(teacher.institute) + '" data-mobile="' + escapeAttr(teacher.mobile) + '"' +
-        ' data-program="' + escapeAttr(detailProgram) + '" data-lecture="' + escapeAttr(detailLecture) + '" data-branch="' + escapeAttr(detailBranch) + '"' +
+        ' data-program="' + escapeAttr(detailProgram) + '" data-session="' + escapeAttr(detailSession) + '" data-lecture="' + escapeAttr(detailLecture) + '" data-branch="' + escapeAttr(detailBranch) + '"' +
         ' data-good="' + r.good + '" data-avg="' + r.avg + '" data-bad="' + r.bad + '" data-notattended="' + r.notAttended + '" data-blank="' + r.blank + '"' +
         '></a></td>';
       html += '</tr>';
@@ -13783,7 +13798,7 @@ function getDPI() {
     var $a = $(this);
     var params = {
       teacher: $a.data('teacher'), institute: $a.data('institute'), mobile: $a.data('mobile'),
-      program: $a.data('program'), lecture: $a.data('lecture'), branch: $a.data('branch'),
+      program: $a.data('program'), session: $a.data('session'), lecture: $a.data('lecture'), branch: $a.data('branch'),
       good: $a.data('good'), avg: $a.data('avg'), bad: $a.data('bad'), notattended: $a.data('notattended'), blank: $a.data('blank')
     };
     var query = $.map(params, function (v, k) { return encodeURIComponent(k) + '=' + encodeURIComponent(v); }).join('&');
@@ -13862,14 +13877,43 @@ function getDPI() {
           <li><strong>ফিল্টার অনুযায়ী ফলাফল:</strong> Date Lacture Wise নির্বাচন করলে Date+Lecture combination অনুযায়ী এবং Date Lacture Branch Wise নির্বাচন করলে Date+Lecture+Branch combination অনুযায়ী Class Performance ও Content Alignment aggregate হয়।</li>
           <li><strong>Combine-style result:</strong> Teacher PIN দিয়ে Search করার পর ফলাফল Details Report panel, Organization/Program–Session/report heading ও teacher summary-সহ দেখায়। একই data table-এ Class Performance-এর পাশাপাশি Content Alignment-এর শুধু Good, Average ও Bad তথ্য থাকে।</li>
           <li><strong>Class Performance সামারি পুনরায় যুক্ত:</strong> Search-এর ফলাফলে teacher details-এর ডান পাশে দৃশ্যমান row-গুলোর মোট Good, Average ও Bad count এবং percentage দেখানো হয়।</li>
+          <li><strong>Program ও Session context:</strong> Date Lacture Wise ফলাফলে Lecture Name-এর আগে Program ও Session দেখানো হয়; নির্দিষ্ট পুরোনো Class 11 program বাদ দিয়ে Medical Admission Program দেখানো হয়। Details table-এ Medical Admission Program-এর offline/online নাম ও কয়েকটি UNMESH branch পর্যায়ক্রমে দেখানো হয়।</li>
         </ol>
       </div>
       <div class="modal-footer">
+        <button type="button" class="btn btn-primary" onclick="copyPageChanges(this)">Copy</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
 </div>
+<script>
+function copyPageChanges(button) {
+  var source = document.querySelector('#pageChangesModal .modal-body ol');
+  var text = source ? source.innerText : '';
+  function copied() {
+    var oldText = button.textContent;
+    button.textContent = 'Copied';
+    setTimeout(function () { button.textContent = oldText; }, 1200);
+  }
+  function fallbackCopy() {
+    var textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    try { document.execCommand('copy'); copied(); } catch (e) {}
+    document.body.removeChild(textarea);
+  }
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(copied).catch(fallbackCopy);
+  } else {
+    fallbackCopy();
+  }
+}
+</script>
 <script>
 /* ===== Offline demo behavior (added for offline copy) ===== */
 $(function () {
