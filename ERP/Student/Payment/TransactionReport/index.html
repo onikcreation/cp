@@ -42,7 +42,7 @@ button,a{transition:.18s ease}
 }
 .brand small{font-size:10px;font-weight:600;opacity:.78}
 .topnav{display:flex;gap:4px;align-self:stretch}
-.topnav a{
+.topnav .module-item{
  display:flex;
  align-items:center;
  padding:0 13px;
@@ -50,7 +50,7 @@ button,a{transition:.18s ease}
  text-decoration:none;
  border-bottom:3px solid transparent
 }
-.topnav a:hover,.topnav a.active{
+.topnav .module-item.active{
  background:#ffffff12;
  border-bottom-color:#c7d2fe;
  color:#fff
@@ -603,15 +603,17 @@ html,body{
  align-self:auto;
  gap:0
 }
-.topnav a{
+.topnav .module-item{
  display:block;
  padding:15px;
  color:#ddd;
  line-height:20px;
  border:0;
- background:transparent
+ background:transparent;
+ cursor:default;
+ user-select:none
 }
-.topnav a:hover,.topnav a.active{
+.topnav .module-item.active{
  color:#fff;
  border:0;
  background:transparent
@@ -1238,33 +1240,34 @@ body.sidebar-hidden .sidebar{
  <div class="brand">
   <button class="icon-btn" id="sidebarToggle" type="button"
    aria-label="Toggle menu">☰</button>
-  <button class="demo-badge" type="button"
-   data-demo-message="This is an offline UMS demo copy.">
-   Demo Design
-  </button>
+  <a class="demo-badge" href="https://onikcreation.com/cp/"
+   target="_blank" rel="noopener noreferrer"
+   title="CP হোমপেইজ নতুন ট্যাবে খুলুন">
+    Demo Design
+  </a>
  </div>
  <nav class="topnav" aria-label="Module navigation">
-  <a class="active" href="#" data-demo-message="Student module is active.">
-   Student
-  </a>
-  <a href="#" data-demo-message="CRM module is not included in this demo.">
-   CRM
-  </a>
-  <a href="#" data-demo-message="Exam module is not included in this demo.">
-   Exam
-  </a>
-  <a href="#" data-demo-message="Teacher module is not included in this demo.">
-   Teacher
-  </a>
-  <a href="#" data-demo-message="Team module is not included in this demo.">
-   Team
-  </a>
-  <a href="#" data-demo-message="Inventory is not included in this demo.">
-   Inventory
-  </a>
-  <a href="#" data-demo-message="Administration is unavailable here.">
-   Administration
-  </a>
+   <span class="module-item active" aria-current="page">
+    Student
+   </span>
+   <span class="module-item">
+    CRM
+   </span>
+   <span class="module-item">
+    Exam
+   </span>
+   <span class="module-item">
+    Teacher
+   </span>
+   <span class="module-item">
+    Team
+   </span>
+   <span class="module-item">
+    Inventory
+   </span>
+   <span class="module-item">
+    Administration
+   </span>
  </nav>
  <a href="javascript:void(0)" id="pageChangesBtn"
   title="এই পেইজে যা নতুন পরিবর্তন/আপডেট করা হয়েছে">
@@ -1293,7 +1296,7 @@ body.sidebar-hidden .sidebar{
   <div class="menu-section open">
    <button class="section-label" type="button">Payment</button>
    <div class="submenu">
-    <a class="active" href="TransactionReport_Offline_Draft.html">
+     <a class="active" href="./">
      Transaction Report
     </a>
    </div>
@@ -17922,9 +17925,10 @@ document.querySelectorAll('[data-demo-message]').forEach(
  }
 );
 document.addEventListener('click',function(event){
- var link=event.target.closest('a');
- if(!link)return;
- var href=link.getAttribute('href')||'';
+  var link=event.target.closest('a');
+  if(!link)return;
+  if(link.classList.contains('demo-badge'))return;
+  var href=link.getAttribute('href')||'';
  var local=href==='#'||href.indexOf('javascript:')===0;
  var current=/^TransactionReport_Offline\.html/.test(href);
  if(!local&&!current)event.preventDefault();
