@@ -1406,14 +1406,17 @@ body.sidebar-hidden .sidebar{
        </span>
       </div>
       <div class="field">
-       <label>Payment Method</label>
-       <div class="multi" data-key="paymentMethod">
+       <label>Campus <span class="required">*</span></label>
+       <div class="multi" data-key="campus">
         <button class="multi-button" type="button">
-         <span class="multi-label">Select Payment Method</span>
+         <span class="multi-label">Select campus</span>
          <span class="chevron glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
         </button>
         <div class="multi-menu"></div>
        </div>
+       <span class="error" data-error="campus">
+        Select at least one campus.
+       </span>
       </div>
       <div class="field">
        <label for="dateFrom">
@@ -1440,17 +1443,14 @@ body.sidebar-hidden .sidebar{
        </span>
       </div>
       <div class="field">
-       <label>Campus <span class="required">*</span></label>
-       <div class="multi" data-key="campus">
+       <label>Payment Method</label>
+       <div class="multi" data-key="paymentMethod">
         <button class="multi-button" type="button">
-         <span class="multi-label">Select campus</span>
+         <span class="multi-label">Select Payment Method</span>
          <span class="chevron glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
         </button>
         <div class="multi-menu"></div>
        </div>
-       <span class="error" data-error="campus">
-        Select at least one campus.
-       </span>
       </div>
       <div class="field">
        <label>User Branch <span class="required">*</span></label>
@@ -1551,7 +1551,7 @@ body.sidebar-hidden .sidebar{
    <ol>
     <li>সব ফিল্টারগুলো মাল্টি সিলেক্ট করতে হবে।</li>
     <li>Program ফিল্টারের আগে Program Type: All/Free/Paid নতুন ফিল্টার অপশন যোগ করতে হবে। ডিফল্টভাবে Paid অপশন সিলেক্ট করা থাকবে।</li>
-    <li>Program ফিল্টারের পর Session ফিল্টার থাকবে, তারপর Branch ফিল্টার থাকবে, তারপর Payment Method ফিল্টার থাকবে।</li>
+    <li>Program ফিল্টারের পর Session, তারপর Branch, তারপর Campus থাকবে। Date To-এর পর Payment Method থাকবে।</li>
     <li>তারিখ সিলেকশনে ডিফল্টভাবে বর্তমান তারিখ সিলেক্ট অবস্থায় থাকবে।</li>
     <li>ক্যালেন্ডার header-এর আগের মাস, মাস/বছর এবং পরের মাস অংশে mouse রাখলে একই হালকা shade দেখাবে; দুই পাশে arrow চিহ্ন থাকবে।</li>
    </ol>
