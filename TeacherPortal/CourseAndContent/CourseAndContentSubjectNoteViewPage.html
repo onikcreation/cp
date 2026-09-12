@@ -246,7 +246,69 @@
         -moz-appearance: textfield;
     }
                             </style>
-                          </head>
+                          <style id="teacherPortalSidebarStyles">
+  body.uu-routine-page { --tp-sidebar-width: 256px; --tp-header-height: 60px; background: #ded4de; }
+  body.uu-routine-page.tp-sidebar-collapsed { --tp-sidebar-width: 72px; }
+  body.uu-routine-page .uu-header-wrapper { min-height: 60px; display: flex; align-items: center; }
+  body.uu-routine-page .uu-header-wrapper .container { max-width: 100% !important; padding-left: 20px; padding-right: 28px; }
+  body.uu-routine-page .uu-header-wrapper .row { flex-wrap: nowrap; }
+  body.uu-routine-page .logo-wrapper { display: flex; flex: 1 1 auto; justify-content: flex-start; max-width: none; }
+  body.uu-routine-page .logo-wrapper .logo { display: flex; align-items: center; }
+  body.uu-routine-page #wrapper { display: block !important; flex: 0 0 auto; float: none; margin: 0 0 0 18px; padding: 0; }
+  body.uu-routine-page #wrapper .circle { margin: 0; }
+  body.uu-routine-page .uu-mobile-menu { display: none !important; }
+  body.uu-routine-page .uu-mobile-right-menu { flex: 0 0 auto; width: auto !important; margin-left: auto; max-width: none; padding-right: 8px !important; }
+  body.uu-routine-page img.uu-profile-pic { max-height: 30px; border: 0; }
+  body.uu-routine-page footer { overflow-x: hidden; }
+  .tp-sidebar { position: fixed; z-index: 9998; top: var(--tp-header-height); bottom: 0; left: 0; width: var(--tp-sidebar-width); overflow-x: hidden; overflow-y: auto; background: #fff; border-right: 1px solid #e4e5eb; box-shadow: 3px 0 14px rgba(45,38,64,.07); scrollbar-width: thin; scrollbar-color: #c8c8d2 transparent; transition: width .22s ease, transform .25s ease; }
+  .tp-sidebar::-webkit-scrollbar { width: 6px; }
+  .tp-sidebar::-webkit-scrollbar-thumb { background: #c8c8d2; border-radius: 10px; }
+  .tp-sidebar-nav { padding: 10px 9px 24px; }
+  .tp-nav-link, .tp-nav-parent { position: relative; display: flex; width: 100%; min-height: 46px; align-items: center; gap: 10px; margin: 2px 0; padding: 7px 10px; color: #4e4a55; background: transparent; border: 0; border-radius: 7px; font-family: 'Roboto', sans-serif; font-size: 14px; font-weight: 500; line-height: 1.25; text-align: left; transition: background-color .15s ease, color .15s ease; }
+  .tp-nav-link:hover, .tp-nav-link:focus, .tp-nav-parent:hover, .tp-nav-parent:focus { color: #5d2566; background: #f7f2f8; text-decoration: none; outline: none; }
+  .tp-nav-link.active { color: #4e4a55; background: transparent; box-shadow: none; font-weight: 500; }
+  .tp-nav-icon { display: inline-flex; width: 28px; min-width: 28px; height: 28px; align-items: center; justify-content: center; }
+  .tp-nav-icon img { display: block; width: 27px; height: 27px; object-fit: contain; }
+  .tp-nav-link > span:not(.tp-nav-icon), .tp-nav-parent .tp-nav-label, .tp-nav-chevron { color: inherit; }
+  .tp-nav-label { flex: 1 1 auto; }
+  .tp-nav-chevron { width: 8px; height: 8px; margin-left: auto; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg) translateY(-2px); transition: transform .2s ease; }
+  .tp-nav-group.is-open > .tp-nav-parent { color: #5d2566; background: #f7f2f8; font-weight: 600; }
+  .tp-nav-group.is-open > .tp-nav-parent .tp-nav-chevron { transform: rotate(225deg) translate(-1px,-1px); }
+  .tp-submenu { display: none; margin: 1px 0 7px 24px; padding: 2px 0 2px 17px; border-left: 1px solid #ded8e0; }
+  .tp-nav-group.is-open > .tp-submenu { display: block; }
+  .tp-submenu a { display: flex; min-height: 34px; align-items: center; gap: 9px; padding: 7px 9px; color: #66616b; border-radius: 6px; font-size: 13px; font-weight: 500; line-height: 1.25; }
+  .tp-submenu a:hover, .tp-submenu a:focus { color: #5d2566; background: #f7f2f8; text-decoration: none; outline: none; }
+  .tp-submenu-dot { width: 5px; min-width: 5px; height: 5px; background: #bcb6bf; border-radius: 50%; }
+  .tp-submenu a:hover .tp-submenu-dot, .tp-submenu a:focus .tp-submenu-dot { background: #5d2566; }
+  .tp-sidebar-overlay { display: none; position: fixed; z-index: 9997; top: var(--tp-header-height); right: 0; bottom: 0; left: 0; padding: 0; background: rgba(31,24,36,.45); border: 0; opacity: 0; pointer-events: none; transition: opacity .2s ease; }
+  body.uu-routine-page div.uu-main, body.uu-routine-page footer { width: calc(100% - var(--tp-sidebar-width)); margin-left: var(--tp-sidebar-width); transition: width .22s ease, margin-left .22s ease; }
+  @media (min-width: 992px) {
+    body.tp-sidebar-collapsed .tp-sidebar-nav { padding-left: 8px; padding-right: 8px; }
+    body.tp-sidebar-collapsed .tp-nav-link, body.tp-sidebar-collapsed .tp-nav-parent { justify-content: center; gap: 0; padding-left: 5px; padding-right: 5px; }
+    body.tp-sidebar-collapsed .tp-nav-link > span:not(.tp-nav-icon), body.tp-sidebar-collapsed .tp-nav-parent .tp-nav-label, body.tp-sidebar-collapsed .tp-nav-chevron { display: none; }
+    body.tp-sidebar-collapsed .tp-submenu { display: none !important; }
+    body.tp-sidebar-collapsed .tp-nav-icon { width: 32px; min-width: 32px; height: 32px; }
+    body.tp-sidebar-collapsed .tp-nav-icon img { width: 30px; height: 30px; }
+  }
+  @media (max-width: 991.98px) {
+    body.uu-routine-page, body.uu-routine-page.tp-sidebar-collapsed { --tp-sidebar-width: 0px; }
+    body.uu-routine-page .uu-header-wrapper .container { padding-left: 14px; padding-right: 20px; }
+    .tp-sidebar { z-index: 99998; width: min(82vw,292px); transform: translateX(-105%); box-shadow: 6px 0 24px rgba(31,24,36,.2); }
+    body.tp-sidebar-open { overflow: hidden; }
+    body.tp-sidebar-open .tp-sidebar { transform: translateX(0); }
+    .tp-sidebar-overlay { display: block; }
+    body.tp-sidebar-open .tp-sidebar-overlay { opacity: 1; pointer-events: auto; }
+    body.uu-routine-page div.uu-main, body.uu-routine-page footer { width: 100%; margin-left: 0; }
+  }
+  @media (max-width: 575.98px) {
+    .tp-sidebar { width: min(88vw,292px); }
+    body.uu-routine-page .logo-wrapper { padding-left: 0; }
+    body.uu-routine-page .uu-header-logo { max-width: 172px; }
+    body.uu-routine-page #wrapper { margin-left: 13px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .tp-sidebar, .tp-sidebar-overlay, body.uu-routine-page div.uu-main, body.uu-routine-page footer { transition: none; } }
+</style>
+</head>
                           <body class="uu-routine-page" data-project-root="" cz-shortcut-listen="true" style="">
                             <a class="scroll-to-top" href="javascript:void(0)">
                               <i class="fas fa-chevron-circle-up">
@@ -317,7 +379,13 @@
                                 <div class="container">
                                   <div class="row align-items-center">
                                     <div class="col-md-10 col-6 col-lg-2 logo-wrapper d-middle">
-                                      <div id="wrapper" class="">
+                                      
+                                      <div class="logo">
+                                        <a href="/">
+                                          <img class="uu-header-logo" src="https://teacher.udvash-unmesh.com/Content/Image/UdvashUnmeshOnlineCare.png">
+                                        </a>
+                                      </div>
+<div id="wrapper" class="">
                                         <div id="iconId" class="circle icon">
                                           <span class="line top">
                                           </span>
@@ -326,11 +394,6 @@
                                           <span class="line bottom">
                                           </span>
                                         </div>
-                                      </div>
-                                      <div class="logo">
-                                        <a href="/">
-                                          <img class="uu-header-logo" src="https://teacher.udvash-unmesh.com/Content/Image/UdvashUnmeshOnlineCare.png">
-                                        </a>
                                       </div>
                                     </div>
                                     <!-- end col -->
@@ -444,12 +507,12 @@
                                             <div class="uu-last-element">
                                               <li class="uu-profile">
                                                 <a href="javascript:void(0)">
-                                                  <img class="uu-profile-pic" src="https://teacher.udvash-unmesh.com/Content/UmsTheme/assets/images/profile-pic.png">
+                                                  <img class="uu-profile-pic" src="../MyRoutinePage/icons/9.%20Profile.svg">
                                                 </a>
                                                 <ul class="uu-dropdown">
                                                   <div class="uu-profile-box">
                                                     <div class="uu-profile-box-header">
-                                                      <img src="https://teacher.udvash-unmesh.com/Content/UmsTheme/assets/images/profile-pic.png">
+                                                      <img src="../MyRoutinePage/icons/9.%20Profile.svg">
                                                     </div>
                                                     <div class="uu-profile-box-body">
                                                       <h3 class="uu-profile-name">
@@ -541,143 +604,63 @@
                                       </div>
                                       <!-- End Header Wrapper -->
                                       </header>
-                                      <div class="uuu-left-sidebar">
-                                        <div class="card d-none">
-                                          <div class="card-body">
-                                            <span class="d-middle menu-indicator">
-                                              <img src="https://teacher.udvash-unmesh.com/Content/Image/AppIcon/Indicator.svg">
-                                            </span>
-                                            <div class="row">
-                                              <div class="col-6 d-flex">
-                                                <a href="../MyRoutinePage/index.html" title="Routine">
-                                                  <img src="https://teacher.udvash-unmesh.com/Content/Image/AppIcon/Routine-menu.svg" alt="img" class="">
-                                                  <span class="menu-text">
-                                                    Routine
-                                                  </span>
-                                                </a>
-                                              </div>
-                                              <div class="col-6 d-flex">
-                                                 <a href="../ClassPerformance/index.html" title="Class Performance">
-                                                  <img src="https://teacher.udvash-unmesh.com/Content/Image/AppIcon/ClassPerformance.svg" alt="img" class="">
-                                                  <span class="menu-text">
-                                                    Class Performance
-                                                  </span>
-                                                </a>
-                                              </div>
-                                              <div class="col-6 d-flex">
-                                                <a href="/Teacher/Community/Messages" title="Community">
-                                                  <img src="https://teacher.udvash-unmesh.com/Content/Image/AppIcon/CommunityMenu.svg" alt="img" class="">
-                                                  <span class="menu-text">
-                                                    Community
-                                                  </span>
-                                                </a>
-                                              </div>
-                                              <div class="col-12 d-flex px-1">
-                                                <h6 class="mb-0 menu-head">
-                                                  <span class="menu-text">
-                                                    Script Evaluation
-                                                  </span>
-                                                </h6>
-                                              </div>
-                                              <div class="col-6 d-flex">
-                                                <a class="btn-courses-menu" href="/Teacher/ScriptEvaluation/Index" title="Evaluation">
-                                                  <img src="https://teacher.udvash-unmesh.com/Content/Image/AppIcon/Evaluation.svg" alt="img" class="">
-                                                  <span class="menu-text">
-                                                    Evaluation
-                                                  </span>
-                                                </a>
-                                              </div>
-                                              <div class="col-6 d-flex">
-                                                <a href="/Teacher/ScriptEvaluation/TeacherEvaluationReview" title="Review">
-                                                  <img src="https://teacher.udvash-unmesh.com/Content/Image/AppIcon/Review.svg" alt="img" class="">
-                                                  <span class="menu-text">
-                                                    Review
-                                                  </span>
-                                                </a>
-                                              </div>
-                                                                                            <div class="col-12 d-flex px-1">
-                                                <h6 class="mb-0 menu-head"><span class="menu-text">Content Alignment</span></h6>
-                                              </div>
-                                              <div class="col-6 d-flex">
-                                                <a href="../ContentAlignment/ContentCheck/index.html" title="Content Check"><img src="https://teacher.udvash-unmesh.com/Content/Image/AppIcon/Evaluation.svg" alt="" class=""><span class="menu-text">Content Check</span></a>
-                                              </div>
-                                              <div class="col-6 d-flex">
-                                                <a href="../ContentAlignment/ContentReview/index.html" title="Content Review"><img src="https://teacher.udvash-unmesh.com/Content/Image/AppIcon/Review.svg" alt="" class=""><span class="menu-text">Content Review</span></a>
-                                              </div><div class="col-12 d-flex px-1">
-                                                <h6 class="mb-0 menu-head">
-                                                  <span class="menu-text">
-                                                    My Payment
-                                                  </span>
-                                                </h6>
-                                              </div>
-                                              <div class="col-6 d-flex">
-                                                <a href="/Teacher/Report/TeacherPaymentSummaryReport" title="Summary Report">
-                                                  <img src="https://teacher.udvash-unmesh.com/Content/Image/AppIcon/SummaryReport.svg" alt="img" class="">
-                                                  <span class="menu-text">
-                                                    Summary Report
-                                                  </span>
-                                                </a>
-                                              </div>
-                                              <div class="col-6 d-flex">
-                                                <a href="/Teacher/Report/Index" title="Class Payment Report">
-                                                  <img src="https://teacher.udvash-unmesh.com/Content/Image/AppIcon/ClassPayment.svg" alt="img" class="">
-                                                  <span class="menu-text">
-                                                    Class Payment
-                                                  </span>
-                                                </a>
-                                              </div>
-                                              <div class="col-6 d-flex">
-                                                <a href="/Teacher/Report/EvaluationPayment" title="Evaluation Payment Report">
-                                                  <img src="https://teacher.udvash-unmesh.com/Content/Image/AppIcon/EvaluationPayment.svg" alt="img" class="">
-                                                  <span class="menu-text">
-                                                    Evaluation Payment
-                                                  </span>
-                                                </a>
-                                              </div>
-                                              <div class="col-6 d-flex">
-                                                <a href="/Teacher/Report/MaterialsPayment" title="Materials Payment Report">
-                                                  <img src="https://teacher.udvash-unmesh.com/Content/Image/AppIcon/MaterialsPayment.svg" alt="img" class="">
-                                                  <span class="menu-text">
-                                                    Materials Payment
-                                                  </span>
-                                                </a>
-                                              </div>
-                                              <div class="col-6 d-flex">
-                                                <a href="/Teacher/QnA2/TeacherPaymentReport" title="Q&amp;A Payment">
-                                                  <img src="https://teacher.udvash-unmesh.com/Content/Image/AppIcon/QnAPayment.svg" alt="img" class="">
-                                                  <span class="menu-text">
-                                                    Q&amp;A Payment
-                                                  </span>
-                                                </a>
-                                              </div>
-                                              <div class="col-12 d-flex px-1">
-                                                <h6 class="mb-0 menu-head">
-                                                  <span class="menu-text">
-                                                    Question &amp; Answer
-                                                  </span>
-                                                </h6>
-                                              </div>
-                                              <div class="col-6 d-flex">
-                                                <a href="/Teacher/QnA2/Index" title="Pending Question">
-                                                  <img src="https://teacher.udvash-unmesh.com/Content/Image/AppIcon/PendingQuestion.svg" alt="img" class="">
-                                                  <span class="menu-text">
-                                                    Pending Question
-                                                  </span>
-                                                </a>
-                                              </div>
-                                              <div class="col-6 d-flex">
-                                                <a href="/Teacher/QnA2/ManageEditAnswer" title="Edit Answer">
-                                                  <img src="https://teacher.udvash-unmesh.com/Content/Image/AppIcon/EditAnswer.svg" alt="img" class="">
-                                                  <span class="menu-text">
-                                                    Edit Answer
-                                                  </span>
-                                                </a>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <!-- Start Mian Section -->
+<aside class="uuu-left-sidebar tp-sidebar" id="teacherPortalSidebar" aria-label="Teacher Portal menu">
+  <nav class="tp-sidebar-nav">
+    <a class="tp-nav-link" href="../MyRoutinePage/index.html" title="My Routine">
+      <span class="tp-nav-icon" aria-hidden="true"><img src="../MyRoutinePage/icons/1.%20MyRoutine.svg" alt=""></span><span>My Routine</span>
+    </a>
+    <a class="tp-nav-link active" href="../CourseAndContent/index.html" aria-current="page" title="Class Content">
+      <span class="tp-nav-icon" aria-hidden="true"><img src="../MyRoutinePage/icons/2.%20ClassContent.svg" alt=""></span><span>Class Content</span>
+    </a>
+    <a class="tp-nav-link" href="../ClassPerformance/index.html" title="Class Performance">
+      <span class="tp-nav-icon" aria-hidden="true"><img src="../MyRoutinePage/icons/3.%20ClassPerformance.svg" alt=""></span><span>Class Performance</span>
+    </a>
+    <a class="tp-nav-link" href="/Teacher/Community/Messages" title="Community">
+      <span class="tp-nav-icon" aria-hidden="true"><img src="../MyRoutinePage/icons/7.%20Community.svg" alt=""></span><span>Community</span>
+    </a>
+    <div class="tp-nav-group">
+      <button type="button" class="tp-nav-parent" aria-expanded="false" title="Content Alignment">
+        <span class="tp-nav-icon" aria-hidden="true"><img src="../MyRoutinePage/icons/4.%20ContentAlignment.svg" alt=""></span><span class="tp-nav-label">Content Alignment</span><span class="tp-nav-chevron" aria-hidden="true"></span>
+      </button>
+      <div class="tp-submenu">
+        <a href="../ContentAlignment/ContentCheck/index.html"><span class="tp-submenu-dot"></span>Content Check</a>
+        <a href="../ContentAlignment/ContentReview/index.html"><span class="tp-submenu-dot"></span>Content Review</a>
+      </div>
+    </div>
+    <div class="tp-nav-group">
+      <button type="button" class="tp-nav-parent" aria-expanded="false" title="Script Evaluation">
+        <span class="tp-nav-icon" aria-hidden="true"><img src="../MyRoutinePage/icons/5.%20ScriptEvaluation.svg" alt=""></span><span class="tp-nav-label">Script Evaluation</span><span class="tp-nav-chevron" aria-hidden="true"></span>
+      </button>
+      <div class="tp-submenu">
+        <a href="/Teacher/ScriptEvaluation/Index"><span class="tp-submenu-dot"></span>Evaluation</a>
+        <a href="/Teacher/ScriptEvaluation/TeacherEvaluationReview"><span class="tp-submenu-dot"></span>Review</a>
+      </div>
+    </div>
+    <div class="tp-nav-group">
+      <button type="button" class="tp-nav-parent" aria-expanded="false" title="Question &amp; Answer">
+        <span class="tp-nav-icon" aria-hidden="true"><img src="../MyRoutinePage/icons/6.%20Question%20%26%20Answer.svg" alt=""></span><span class="tp-nav-label">Question &amp; Answer</span><span class="tp-nav-chevron" aria-hidden="true"></span>
+      </button>
+      <div class="tp-submenu">
+        <a href="/Teacher/QnA2/Index"><span class="tp-submenu-dot"></span>Pending Question</a>
+        <a href="/Teacher/QnA2/ManageEditAnswer"><span class="tp-submenu-dot"></span>Edit Answer</a>
+      </div>
+    </div>
+    <div class="tp-nav-group">
+      <button type="button" class="tp-nav-parent" aria-expanded="false" title="My Payment">
+        <span class="tp-nav-icon" aria-hidden="true"><img src="../MyRoutinePage/icons/8.%20MyPayment.svg" alt=""></span><span class="tp-nav-label">My Payment</span><span class="tp-nav-chevron" aria-hidden="true"></span>
+      </button>
+      <div class="tp-submenu">
+        <a href="/Teacher/MyPayment/Index"><span class="tp-submenu-dot"></span>Due Amount</a>
+        <a href="/Teacher/Report/TeacherPaymentSummaryReport"><span class="tp-submenu-dot"></span>Summary Report</a>
+        <a href="/Teacher/Report/Index"><span class="tp-submenu-dot"></span>Class Payment Report</a>
+        <a href="/Teacher/Report/EvaluationPayment"><span class="tp-submenu-dot"></span>Evaluation Payment Report</a>
+        <a href="/Teacher/Report/MaterialsPayment"><span class="tp-submenu-dot"></span>Materials Payment Report</a>
+        <a href="/Teacher/QnA2/TeacherPaymentReport"><span class="tp-submenu-dot"></span>Q&amp;A Payment</a>
+      </div>
+    </div>
+  </nav>
+</aside><button type="button" class="tp-sidebar-overlay" aria-label="Close menu" tabindex="-1"></button>
+<!-- Start Mian Section -->
                                         <div class="uu-main ">
                                           <div class="container" style="min-height:40vh;">
                                             <div class="customMessage text-center">
@@ -6412,5 +6395,105 @@ $(document).ready(function () {
       </script>
 
 
+<script id="teacherPortalSidebarScript">
+(function () {
+  var body = document.body;
+  var menuButton = document.getElementById('wrapper');
+  var menuIcon = document.getElementById('iconId');
+  var overlay = document.querySelector('.tp-sidebar-overlay');
+  var desktopBreakpoint = 992;
+  var wasDesktop = window.innerWidth >= desktopBreakpoint;
+
+  function updateTop() {
+    var header = document.querySelector('.uu-header-wrapper');
+    var height = header ? Math.max(header.offsetHeight, 60) : 60;
+    body.style.setProperty('--tp-header-height', height + 'px');
+  }
+
+  function setMobileOpen(open) {
+    body.classList.toggle('tp-sidebar-open', open);
+    menuIcon.classList.toggle('close', open);
+    menuButton.setAttribute('aria-expanded', open ? 'true' : 'false');
+    menuButton.setAttribute('aria-label', open ? 'Close teacher menu' : 'Open teacher menu');
+  }
+
+  function setDesktopCollapsed(collapsed) {
+    body.classList.toggle('tp-sidebar-collapsed', collapsed);
+    menuIcon.classList.remove('close');
+    menuButton.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+    menuButton.setAttribute('aria-label', collapsed ? 'Show full teacher menu' : 'Show menu icons only');
+  }
+
+  function closeGroup(group) {
+    group.classList.remove('is-open');
+    group.querySelector('.tp-nav-parent').setAttribute('aria-expanded', 'false');
+  }
+
+  menuButton.setAttribute('role', 'button');
+  menuButton.setAttribute('tabindex', '0');
+  menuButton.setAttribute('aria-controls', 'teacherPortalSidebar');
+  if (wasDesktop) setDesktopCollapsed(false); else setMobileOpen(false);
+
+  menuButton.addEventListener('click', function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+    if (window.innerWidth >= desktopBreakpoint) {
+      setDesktopCollapsed(!body.classList.contains('tp-sidebar-collapsed'));
+    } else {
+      setMobileOpen(!body.classList.contains('tp-sidebar-open'));
+    }
+  });
+
+  menuButton.addEventListener('keydown', function (event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      menuButton.click();
+    }
+  });
+
+  overlay.addEventListener('click', function () { setMobileOpen(false); });
+
+  document.querySelectorAll('.tp-nav-parent').forEach(function (button) {
+    button.addEventListener('click', function () {
+      var group = button.closest('.tp-nav-group');
+      var willOpen = !group.classList.contains('is-open');
+
+      document.querySelectorAll('.tp-nav-group.is-open').forEach(function (openGroup) {
+        if (openGroup !== group) closeGroup(openGroup);
+      });
+
+      if (window.innerWidth >= desktopBreakpoint && body.classList.contains('tp-sidebar-collapsed')) {
+        setDesktopCollapsed(false);
+      }
+
+      group.classList.toggle('is-open', willOpen);
+      button.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+    });
+  });
+
+  document.querySelectorAll('.tp-sidebar a').forEach(function (link) {
+    link.addEventListener('click', function () {
+      if (window.innerWidth < desktopBreakpoint && link.getAttribute('href') !== 'javascript:void(0)') setMobileOpen(false);
+    });
+  });
+
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape' && window.innerWidth < desktopBreakpoint) setMobileOpen(false);
+  });
+
+  window.addEventListener('resize', function () {
+    updateTop();
+    var isDesktop = window.innerWidth >= desktopBreakpoint;
+    if (isDesktop !== wasDesktop) {
+      body.classList.remove('tp-sidebar-open', 'tp-sidebar-collapsed');
+      menuIcon.classList.remove('close');
+      if (isDesktop) setDesktopCollapsed(false); else setMobileOpen(false);
+      wasDesktop = isDesktop;
+    }
+  });
+
+  updateTop();
+})();
+</script>
 </body>
 </html>
