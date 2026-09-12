@@ -308,15 +308,39 @@ button,a{transition:.18s ease}
  margin-bottom:6px
 }
 .calendar-head button{
+ display:flex;
+ align-items:center;
+ justify-content:center;
  height:28px;
  padding:0;
  border:0;
+ border-radius:3px;
  background:transparent;
  color:#444;
  font-size:21px;
- font-weight:700
+ font-weight:700;
+ line-height:28px;
+ transition:background-color .12s ease
 }
-.calendar-title{text-align:center;font-weight:700}
+.calendar-head .glyphicon{
+ top:0;
+ font-size:14px;
+ line-height:1
+}
+.calendar-title{
+ min-width:0;
+ height:28px;
+ border-radius:3px;
+ text-align:center;
+ font-weight:700;
+ line-height:28px;
+ transition:background-color .12s ease
+}
+.calendar-head button:hover,
+.calendar-head button:focus-visible,
+.calendar-title:hover{
+ background:#eee
+}
 .calendar-week,.calendar-grid{
  display:grid;
  grid-template-columns:repeat(7,1fr);
@@ -1067,6 +1091,8 @@ body.sidebar-hidden .sidebar{
 }
 .glyphicon-search:before{content:"\e003"}
 .glyphicon-chevron-down:before{content:"\e114"}
+.glyphicon-arrow-left:before{content:"\e091"}
+.glyphicon-arrow-right:before{content:"\e092"}
 /* Canonical UMS multi-select treatment from the supplied references. */
 .multi-button{
  position:relative;
@@ -1527,6 +1553,7 @@ body.sidebar-hidden .sidebar{
     <li>Program ফিল্টারের আগে Program Type: All/Free/Paid নতুন ফিল্টার অপশন যোগ করতে হবে। ডিফল্টভাবে Paid অপশন সিলেক্ট করা থাকবে।</li>
     <li>Program ফিল্টারের পর Session ফিল্টার থাকবে, তারপর Branch ফিল্টার থাকবে, তারপর Payment Method ফিল্টার থাকবে।</li>
     <li>তারিখ সিলেকশনে ডিফল্টভাবে বর্তমান তারিখ সিলেক্ট অবস্থায় থাকবে।</li>
+    <li>ক্যালেন্ডার header-এর আগের মাস, মাস/বছর এবং পরের মাস অংশে mouse রাখলে একই হালকা shade দেখাবে; দুই পাশে arrow চিহ্ন থাকবে।</li>
    </ol>
   </div>
   <div class="page-changes-footer">
@@ -17423,10 +17450,14 @@ function attachDatePicker(input){
  picker.innerHTML=
   '<div class="calendar-head">'+
   '<button type="button" class="calendar-prev" '+
-  'aria-label="Previous month">‹</button>'+
+  'aria-label="Previous month">'+
+  '<span class="glyphicon glyphicon-arrow-left" '+
+  'aria-hidden="true"></span></button>'+
   '<div class="calendar-title"></div>'+
   '<button type="button" class="calendar-next" '+
-  'aria-label="Next month">›</button>'+
+  'aria-label="Next month">'+
+  '<span class="glyphicon glyphicon-arrow-right" '+
+  'aria-hidden="true"></span></button>'+
   '</div>'+
   '<div class="calendar-week">'+
   '<span>Su</span><span>Mo</span><span>Tu</span>'+
@@ -17937,7 +17968,7 @@ document.addEventListener('click',function(event){
   if(link.classList.contains('demo-badge'))return;
   var href=link.getAttribute('href')||'';
  var local=href==='#'||href.indexOf('javascript:')===0;
- var current=/^TransactionReport_Offline\.html/.test(href);
+ var current=href==='./'||href==='./index.html';
  if(!local&&!current)event.preventDefault();
 },true);
 document.addEventListener('submit',function(event){
