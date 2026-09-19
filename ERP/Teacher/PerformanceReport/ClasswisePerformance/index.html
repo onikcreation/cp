@@ -1398,7 +1398,7 @@ var FAKE_TEACHERS = [
     });
   });
   var AXES = ['Lecturewise', 'Teacherwise', 'Userwise'];
-  var GROUP_OPTIONS = AXES.concat('Branchwise');
+  var GROUP_OPTIONS = AXES.concat('Branchwise', 'Datewise');
   var META = {
     organization: {placeholder: 'Select Organization', all: 'All Organization', required: true},
     program: {placeholder: 'Select Program', all: 'All Program', required: true},
@@ -1449,7 +1449,7 @@ var FAKE_TEACHERS = [
     var chosen = selected(key);
     if (!chosen.length) return meta.placeholder;
     if (key === 'motherCourse' && chosen.indexOf('None') !== -1) return 'None';
-    if (key === 'groupBy' && AXES.every(function (axis) { return chosen.indexOf(axis) !== -1; })) return 'All';
+    if (key === 'groupBy' && isAllGrouping(chosen)) return 'All';
     if (allSelected(key)) return meta.all;
     return chosen.length === 1 ? chosen[0] : chosen.length + ' selected';
   }
@@ -1812,6 +1812,7 @@ function attachDatePicker(input){
     var grouped = new Map();
     records.forEach(function (record) {
       var key = [
+        axes.indexOf('Datewise') !== -1 ? record.date : '',
         axes.indexOf('Branchwise') !== -1 ? record.branch : '',
         axes.indexOf('Lecturewise') !== -1 ? record.lecture : '',
         axes.indexOf('Teacherwise') !== -1 ? record.teacher.pin : '',
@@ -1823,28 +1824,35 @@ function attachDatePicker(input){
       var group = grouped.get(key);
       ['good', 'average', 'bad', 'notAttended', 'blank', 'total', 'late'].forEach(function (name) { group[name] += record[name]; });
     });
-    return Array.from(grouped.values());
+    var result = Array.from(grouped.values());
+    if (axes.indexOf('Datewise') !== -1) result.sort(function (a, b) { return a.date.localeCompare(b.date); });
+    return result;
   }
   function isAllGrouping(axes) {
-    return axes.length === 0 || AXES.every(function (axis) { return axes.indexOf(axis) !== -1; });
+    return axes.length === 0 ||
+      (axes.length === AXES.length && AXES.every(function (axis) { return axes.indexOf(axis) !== -1; })) ||
+      GROUP_OPTIONS.every(function (axis) { return axes.indexOf(axis) !== -1; });
   }
   function columns(axes) {
     var all = isAllGrouping(axes);
+    var showDate = !all && axes.indexOf('Datewise') !== -1;
     var showBranch = !all && axes.indexOf('Branchwise') !== -1;
     var showTeacher = all || axes.indexOf('Teacherwise') !== -1;
     var showLecture = all || axes.indexOf('Lecturewise') !== -1;
     var showUser = all || axes.indexOf('Userwise') !== -1;
     var headers = ['Serial'];
+    if (showDate) headers.push('Date');
     if (showBranch) headers.push('Branch');
     if (showTeacher) headers.push('TPin', 'Teacher Name', 'Nick Name', 'Institute', 'Personal Mobile');
     if (showLecture) headers.push('Lecture Name');
     if (showUser) headers.push('User Email', 'User Branch');
     headers.push('Good', 'Average', 'Bad', 'Not Attended', 'Blank', 'Total', 'T.Late', 'Details');
-    return {headers: headers, showBranch: showBranch, showTeacher: showTeacher, showLecture: showLecture, showUser: showUser};
+    return {headers: headers, showDate: showDate, showBranch: showBranch, showTeacher: showTeacher, showLecture: showLecture, showUser: showUser};
   }
   function percentage(value, total) { return total ? Math.round(value * 100 / total) + '%' : '0%'; }
   function rowCells(row, index, config) {
     var cells = [String(index + 1)];
+    if (config.showDate) cells.push(row.date);
     if (config.showBranch) cells.push(row.branch);
     if (config.showTeacher) cells.push(row.teacher.pin, row.teacher.label, row.teacher.nick, row.teacher.institute, row.teacher.mobile);
     if (config.showLecture) cells.push(row.lecture);
@@ -1867,7 +1875,7 @@ function attachDatePicker(input){
   function renderSummary(axes) {
     var orgs = selected('organization');
     document.getElementById('reportOrgTitle').textContent = orgs.join(', ') + ' Academic & Admission Care';
-    document.getElementById('reportProgramTitle').textContent = selectedSummary('program') + ' ' + selected('session').join(', ');
+    document.getElementById('reportProgramTitle').textContent = selectedSummary('program') + ' ' + selectedSummary('session');
     document.getElementById('reportAxisTitle').textContent = 'Teacher Performance Report(' + (isAllGrouping(axes) ? AXES.join(',') : axes.join(',')) + ')';
     var body = document.getElementById('reportSummary'); body.replaceChildren();
     body.appendChild(makeSummaryRow('Branch', selectedSummary('branch'), 'Campus', selectedSummary('campus')));
@@ -1892,7 +1900,7 @@ function attachDatePicker(input){
     button('Next', Math.min(pageCount, currentPage + 1), currentPage === pageCount, false);
   }
   var REPORT_COLUMN_WIDTHS = {
-    'Serial': 77, 'Branch': 165, 'TPin': 68, 'Teacher Name': 92, 'Nick Name': 81,
+    'Serial': 77, 'Date': 110, 'Branch': 165, 'TPin': 68, 'Teacher Name': 92, 'Nick Name': 81,
     'Institute': 90, 'Personal Mobile': 127, 'Lecture Name': 75,
     'User Email': 175, 'User Branch': 103, 'Good': 88,
     'Average': 107, 'Bad': 83, 'Not Attended': 111, 'Blank': 92,
