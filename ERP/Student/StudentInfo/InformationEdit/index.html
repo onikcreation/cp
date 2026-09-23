@@ -8638,7 +8638,7 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                       <div class="panel-body">
                         <ul>
                           <li data-parent-id="64">
-                            <a href="/Student/Information/InformationSearch" data-businessid="Information-InformationSearch|Information-InformationUpdate|Information-InformationSearchGet|Information-LogReport|StudentProgramLog-IndividualStudentProgramInfoLog|StudentProgramLog-IndividualStudentCourseInfoLog|" class="submenuitem" style="font-weight: bold;">
+                            <a href="./" data-businessid="Information-InformationSearch|Information-InformationUpdate|Information-InformationSearchGet|Information-LogReport|StudentProgramLog-IndividualStudentProgramInfoLog|StudentProgramLog-IndividualStudentCourseInfoLog|" class="submenuitem" style="font-weight: bold;">
                               Information Edit
                             </a>
                           </li>
@@ -9606,6 +9606,7 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
             $(".panel-collapse").height("0px");
             $(".panel-collapse").addClass("collapse").removeClass("in");
             $(".menu-parent-default").show();
+            $("#collapse_64").addClass("in").height("auto");
         }
         if (filter.length > 2) {
             var currentUrl = window.location.href;
@@ -9689,7 +9690,7 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                       <div class="form-horizontal">
                         <div class="admissionBodyContent">
                           <form action="javascript:void(0)" onsubmit="return false;" id="LoadStudentInformationId" method="get">
-                            <input type="text" class="form-control numericOnly" placeholder="Enter Registration No. / Roll No." id="stdProRoll" name="stdProRoll" maxlength="11">
+                            <input type="text" class="form-control numericOnly" placeholder="Enter Registration No. / Roll No." id="stdProRoll" name="stdProRoll" value="1234567" data-demo-prefill="true" maxlength="11">
                             <input type="button" value="Submit" id="btnSubmit" class="btn btn-primary btn-lg btn-block">
                           </form>
                         </div>
@@ -10556,13 +10557,13 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                             <thead>
                               <tr>
                                 <th style="text-align: center; padding: 8px;">
-                                  <label for="Class">
-                                    Class
+                                  <label for="Year">
+                                    Year
                                   </label>
                                 </th>
                                 <th style="text-align: center; padding: 8px;">
-                                  <label for="Year">
-                                    Year
+                                  <label for="Class">
+                                    Class
                                   </label>
                                 </th>
                                 <th style="text-align: center; padding: 8px;">
@@ -10601,6 +10602,9 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                               <tr>
                                 <td>
                                   <input type="hidden" class="CurrentAcademicInfoId" value="">
+                                  <input type="text" class="form-control numericOnly Year" name="Year" maxlength="4" placeholder="Year" autocomplete="off" style="text-align:center">
+                                </td>
+                                <td>
                                   <select class="form-control Class" name="Class" style="text-align:left">
                                     <option value="">Select</option>
                                     <option value="6">Six</option>
@@ -10611,9 +10615,6 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                                     <option value="11">Eleven</option>
                                     <option value="12">Twelve</option>
                                   </select>
-                                </td>
-                                <td>
-                                  <input type="text" class="form-control numericOnly Year" name="Year" placeholder="Year" autocomplete="off" style="text-align:center">
                                 </td>
                                 <td>
                                   <select class="form-control Group" name="Group" style="text-align:left">
@@ -15132,7 +15133,7 @@ $(document).ready(function () {
 
         $(document).ready(function () {
             var stdProRoll = $("#stdProRoll").val();
-            if (stdProRoll != "") {
+            if (stdProRoll != "" && $("#stdProRoll").data("demo-prefill") !== true) {
                 OnSubmitButtonClick();
             }
 
@@ -16124,6 +16125,8 @@ $(document).ready(function () {
           // for whichever menu matches the current URL's controller/action — which never
           // happens on this static demo copy. Force "Student Info" back open afterwards.
           $(document).ready(function () {
+            $('#accordion > .menu-parent-default').not('#menu_panel_parent_Id_64').remove();
+            $('#collapse_64 .panel-body > ul > li').not(':first').remove();
             $('#collapse_64').addClass('in');
           });
         </script>
@@ -16143,12 +16146,19 @@ $(document).ready(function () {
                 <h4 class="modal-title" id="pageChangesModalLabel">এই পেইজে যা নতুন পরিবর্তন/আপডেট করা হয়েছে</h4>
               </div>
               <div class="modal-body" style="height:65vh; overflow-y:auto;">
+                <p style="margin:0 0 14px;"><strong>Student &gt; Student Info &gt; Information Edit</strong> মেনুর প্রস্তাবিত পরিবর্তন:</p>
                 <ol style="padding-left:20px; margin:0;">
                   <li style="margin-bottom:12px;">
-                    <strong>Current Academic Information টেবিলে নতুন "Class" ড্রপডাউন কলাম</strong> — Year কলামের আগে নতুন একটা "Class" কলাম যোগ করা হয়েছে; ড্রপডাউনে Six, Seven, Eight, Nine, Ten, Eleven, Twelve — এই ৭টা অপশন থেকে ছাত্রের বর্তমান ক্লাস সিলেক্ট করা যাবে।
+                    <strong>Current Academic Information টেবিলে নতুন "Class" ড্রপডাউন কলাম</strong> — Year কলামের পরে নতুন একটা "Class" কলাম যোগ করা হয়েছে; ড্রপডাউনে Six, Seven, Eight, Nine, Ten, Eleven, Twelve — এই ৭টা অপশন থেকে ছাত্রের বর্তমান ক্লাস সিলেক্ট করা যাবে।
                   </li>
                   <li style="margin-bottom:12px;">
                     <strong>Current Academic Information টেবিলে নতুন "Group" ড্রপডাউন কলাম</strong> — Exam কলামের আগে নতুন একটা "Group" কলাম যোগ করা হয়েছে; ড্রপডাউনে N/A (ডিফল্ট), Science, Humanities, Business Studies, Technical — এই ৫টা অপশন থেকে ছাত্রের গ্রুপ সিলেক্ট করা যাবে।
+                  </li>
+                  <li style="margin-bottom:12px;">
+                    <strong>Year সর্বোচ্চ ৪ ডিজিট</strong> — Current Academic Information-এর Year input-এ ৪ digit-এর বেশি লেখা যাবে না; নতুন row যোগ করলেও একই সীমা থাকবে।
+                  </li>
+                  <li>
+                    <strong>Focused sidebar</strong> — বাম পাশের তালিকায় শুধু Student Info parent-এর অধীনে Information Edit থাকবে; অন্য parent ও submenu দেখানো হবে না।
                   </li>
                 </ol>
               </div>
