@@ -7848,6 +7848,34 @@ if(!jQuery)throw new Error("Bootstrap requires jQuery");+function(a){"use strict
             </div>
           </div>
           <ul class="panel-group" id="accordion">
+            <li class="panel panel-default menu-parent-default" data-id="389" id="menu_panel_parent_Id_389">
+              <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapse_389">
+                <h4 class="panel-title">
+                  <a href="#">
+                    Service Block
+                  </a>
+                </h4>
+              </div>
+              <div id="collapse_389" class="panel-collapse collapse in">
+                <div class="panel-body">
+                  <ul>
+                    <li data-parent-id="389">
+                      <a href="./" data-businessid="StudentServiceBlock-Create|StudentServiceBlock-ViewServiceBlockFrom|" class="submenuitem" style="font-weight: bold;" aria-current="page">
+                        Individual Settings
+                      </a>
+                    </li>
+                    <li data-parent-id="389">
+                      <a href="../IndividualBlockReport/" data-businessid="StudentServiceBlock-IndividualBlockReport|StudentServiceBlock-ExportIndividualBlockReport|" class="submenuitem">
+                        Individual Block Report
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </li>
+          </ul>
+          <!-- পুরোনো পূর্ণ sidebar তালিকা এই scoped demo-তে render করা হবে না।
+          <ul class="panel-group" id="captured-sidebar-menu">
             <li class="panel panel-default menu-parent-default" data-id="51" id="menu_panel_parent_Id_51">
               <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapse_51">
                 <h4 class="panel-title">
@@ -8650,7 +8678,7 @@ if(!jQuery)throw new Error("Bootstrap requires jQuery");+function(a){"use strict
                       </a>
                     </li>
                     <li data-parent-id="389">
-                      <a href="/Student/StudentServiceBlock/Create" data-businessid="StudentServiceBlock-Create|StudentServiceBlock-ViewServiceBlockFrom|" class="submenuitem" style="font-weight: bold;">
+                      <a href="./" data-businessid="StudentServiceBlock-Create|StudentServiceBlock-ViewServiceBlockFrom|" class="submenuitem" style="font-weight: bold;">
                         Individual Settings
                       </a>
                     </li>
@@ -8660,7 +8688,7 @@ if(!jQuery)throw new Error("Bootstrap requires jQuery");+function(a){"use strict
                       </a>
                     </li>
                     <li data-parent-id="389">
-                      <a href="/Student/StudentServiceBlock/IndividualBlockReport" data-businessid="StudentServiceBlock-IndividualBlockReport|StudentServiceBlock-ExportIndividualBlockReport|" class="submenuitem">
+                      <a href="../IndividualBlockReport/" data-businessid="StudentServiceBlock-IndividualBlockReport|StudentServiceBlock-ExportIndividualBlockReport|" class="submenuitem">
                         Individual Block Report
                       </a>
                     </li>
@@ -9074,6 +9102,7 @@ if(!jQuery)throw new Error("Bootstrap requires jQuery");+function(a){"use strict
               </div>
             </li>
           </ul>
+          -->
         
               <script type="text/javascript">
                 $(document).on('click', '.btn-clear-search-text', function () {
@@ -9122,6 +9151,8 @@ if(!jQuery)throw new Error("Bootstrap requires jQuery");+function(a){"use strict
                         $(".panel-collapse").height("0px");
                         $(".panel-collapse").addClass("collapse").removeClass("in");
                         $(".menu-parent-default").show();
+                        $("#menu_panel_parent_Id_389 > .panel-heading").removeClass("collapsed");
+                        $("#collapse_389").height("auto").addClass("in");
                     }
                     if (filter.length > 2) {
                         var currentUrl = window.location.href;
@@ -9288,7 +9319,7 @@ if(!jQuery)throw new Error("Bootstrap requires jQuery");+function(a){"use strict
           var a = e.target.closest('a[href]');
           if (!a) return;
           var href = a.getAttribute('href');
-          if (href && href.indexOf('#') !== 0 && href.indexOf('javascript:') !== 0) {
+          if (href && (/^https?:\/\//i.test(href) || /^\//.test(href))) {
               e.preventDefault();
           }
       }, true);
@@ -9388,12 +9419,13 @@ if(!jQuery)throw new Error("Bootstrap requires jQuery");+function(a){"use strict
             <h4 class="modal-title" id="pageChangesModalLabel">এই পেইজে যা যা পরিবর্তন/আপডেট করা হয়েছে</h4>
           </div>
           <div class="modal-body" style="height:65vh; overflow-y:auto;">
-            <p style="font-weight:bold; margin-bottom:12px;">নতুন আপডেট:</p>
+            <p style="font-weight:bold; margin-bottom:12px;">Student &gt; Service Block &gt; Individual Settings মেনুর প্রস্তাবিত পরিবর্তনগুলো:</p>
             <ol style="padding-left:20px; margin:0;">
               <li>
                 <strong>Campus ও Action কলামের মাঝে নতুন "Due Amount" কলাম যোগ করা হয়েছে।</strong>
                 <p style="margin:4px 0 0; color:#555;"><em>যেভাবে কাজ করবে:</em> রেজিস্ট্রেশন/রোল নম্বর দিয়ে সার্চ করলে যে রেজাল্ট টেবিল পাওয়া যায়, সেখানে প্রতিটি প্রোগ্রামের বকেয়া (Due) পরিমাণ Campus ও Action কলামের মাঝে Due Amount নামে নতুন কলামে দেখাতে হবে।</p>
               </li>
+              <li style="margin-top:12px;"><strong>Sidebar menu সীমিতকরণ:</strong> বাম পাশের তালিকায় শুধু Service Block parent-এর অধীনে Individual Settings ও Individual Block Report থাকবে; অন্য সব parent ও submenu দেখানো হবে না।</li>
             </ol>
           </div>
           <div class="modal-footer">

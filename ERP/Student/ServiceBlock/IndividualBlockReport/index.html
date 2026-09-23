@@ -8142,6 +8142,34 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                   </div>
                 </div>
                 <ul class="panel-group" id="accordion">
+                  <li class="panel panel-default menu-parent-default" data-id="389" id="menu_panel_parent_Id_389">
+                    <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapse_389">
+                      <h4 class="panel-title">
+                        <a href="#">
+                          Service Block
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="collapse_389" class="panel-collapse collapse in">
+                      <div class="panel-body">
+                        <ul>
+                          <li data-parent-id="389">
+                            <a href="../IndividualSettings/" data-businessid="StudentServiceBlock-Create|StudentServiceBlock-ViewServiceBlockFrom|" class="submenuitem">
+                              Individual Settings
+                            </a>
+                          </li>
+                          <li data-parent-id="389">
+                            <a href="./" data-businessid="StudentServiceBlock-IndividualBlockReport|StudentServiceBlock-ExportIndividualBlockReport|" class="submenuitem" style="font-weight: bold;" aria-current="page">
+                              Individual Block Report
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+                <!-- পুরোনো পূর্ণ sidebar তালিকা এই scoped demo-তে render করা হবে না।
+                <ul class="panel-group" id="captured-sidebar-menu">
                   <li class="panel panel-default menu-parent-default" data-id="51" id="menu_panel_parent_Id_51">
                     <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapse_51">
                       <h4 class="panel-title">
@@ -8959,7 +8987,7 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                             </a>
                           </li>
                           <li data-parent-id="389">
-                            <a href="../IndividualSettings/index.html" data-businessid="StudentServiceBlock-Create|StudentServiceBlock-ViewServiceBlockFrom|" class="submenuitem">
+                            <a href="../IndividualSettings/" data-businessid="StudentServiceBlock-Create|StudentServiceBlock-ViewServiceBlockFrom|" class="submenuitem">
                               Individual Settings
                             </a>
                           </li>
@@ -8969,7 +8997,7 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                             </a>
                           </li>
                           <li data-parent-id="389">
-                            <a href="index.html" data-businessid="StudentServiceBlock-IndividualBlockReport|StudentServiceBlock-ExportIndividualBlockReport|" class="submenuitem" style="font-weight: bold;">
+                            <a href="./" data-businessid="StudentServiceBlock-IndividualBlockReport|StudentServiceBlock-ExportIndividualBlockReport|" class="submenuitem" style="font-weight: bold;">
                               Individual Block Report
                             </a>
                           </li>
@@ -9383,6 +9411,7 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                     </div>
                   </li>
                 </ul>
+                -->
               </div>
               
               </div>
@@ -9738,6 +9767,8 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
             $(".panel-collapse").height("0px");
             $(".panel-collapse").addClass("collapse").removeClass("in");
             $(".menu-parent-default").show();
+            $("#menu_panel_parent_Id_389 > .panel-heading").removeClass("collapsed");
+            $("#collapse_389").height("auto").addClass("in");
         }
         if (filter.length > 2) {
             var currentUrl = window.location.href;
@@ -28239,6 +28270,9 @@ var DEMO_BRANCHES = ["Bandarban","Khagrachari","Rangamati","Donia","Jatrabari","
       icon.toggleClass('fa-minus', panel.is(':visible')).toggleClass('fa-plus', !panel.is(':visible'));
       $(this).attr('title', panel.is(':visible') ? 'Colapse' : 'Expand');
     });
+    $('#menu_panel_parent_Id_389 > .panel-heading').removeClass('collapsed');
+    $('#collapse_389').height('auto').addClass('in');
+    $('#collapse_389 a[aria-current="page"]').css('font-weight', 'bold');
   });
 
   document.addEventListener('click', function (event) {
@@ -28250,6 +28284,14 @@ var DEMO_BRANCHES = ["Bandarban","Khagrachari","Rangamati","Donia","Jatrabari","
   document.addEventListener('submit', function (event) { event.preventDefault(); }, true);
 })();
 </script>
+<script>
+function toggleSubMenu() {
+  var element = document.getElementById('navbar-sub-menu');
+  if (!element) return;
+  element.classList.toggle('navbar-sub-menu');
+  element.classList.toggle('navbar-sub-menu-show');
+}
+</script>
 <div class="modal fade" id="pageChangesModal" tabindex="-1" role="dialog" aria-labelledby="pageChangesModalLabel">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -28259,9 +28301,11 @@ var DEMO_BRANCHES = ["Bandarban","Khagrachari","Rangamati","Donia","Jatrabari","
         <h4 class="modal-title" id="pageChangesModalLabel">এই পেইজে যা যা পরিবর্তন/আপডেট করা হয়েছে</h4>
       </div>
       <div class="modal-body">
+        <p><strong>Student &gt; Service Block &gt; Individual Block Report</strong> মেনুর প্রস্তাবিত পরিবর্তনগুলো:</p>
         <ol>
           <li><strong>Service Type মাল্টি-সিলেক্ট:</strong> একসঙ্গে এক বা একাধিক Service Type নির্বাচন করে রিপোর্ট Search ও Export করা যাবে। একটি নির্বাচন হলে নাম এবং একাধিক হলে নির্বাচিত সংখ্যাটি দেখাবে।</li>
           <li><strong>Service Status ফিল্টার:</strong> বাম কলামে Block When-এর নিচে নতুন All/Active/Block অপশন যোগ করা হয়েছে; তার নিচে Display Per Page থাকবে। ডান কলামে Service Type-এর নিচে Keyword থাকবে। নির্বাচিত status অনুযায়ী রিপোর্ট ও export data ফিল্টার হবে।</li>
+          <li><strong>Sidebar menu সীমিতকরণ:</strong> বাম পাশের তালিকায় শুধু Service Block parent-এর অধীনে Individual Settings ও Individual Block Report থাকবে; অন্য সব parent ও submenu দেখানো হবে না।</li>
         </ol>
       </div>
       <div class="modal-footer">
