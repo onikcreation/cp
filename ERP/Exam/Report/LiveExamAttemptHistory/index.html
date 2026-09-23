@@ -16789,8 +16789,8 @@ function rebuildSessions(preferred){
 function rebuildCourses(preferred){
  var program=activeProgram();var session=byId('sessionFilter').value;var courses=[];
  if(program)courses=program.courses.filter(function(course){return String(course.session)===session;}).sort(function(a,b){return a.rank-b.rank;});
- var seen={};var items=courses.filter(function(course){if(seen[course.name])return false;seen[course.name]=true;return true;}).map(function(course){return {value:course.name,label:course.name};});
- fillSelect('courseFilter',items,preferred||'','--Select Course--');
+ var seen={};var items=[{value:'All',label:'All'}].concat(courses.filter(function(course){if(seen[course.name])return false;seen[course.name]=true;return true;}).map(function(course){return {value:course.name,label:course.name};}));
+ fillSelect('courseFilter',items,preferred||'All');
  byId('examFilter').value='';
 }
 function setError(id,show){var node=document.querySelector('[data-error="'+id+'"]');if(node)node.style.display=show?'block':'none';}
