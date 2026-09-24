@@ -16145,7 +16145,23 @@ $(document).ready(function () {
                 <button type="button" class="pcm-copy-btn" title="সম্পূর্ণ কনটেন্ট কপি করুন" style="float:right; margin:-2px 8px 0 0; background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.5); color:#fff; border-radius:4px; padding:2px 10px; font-size:12px; line-height:1.6; cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="12" height="12" fill="currentColor" style="vertical-align:-1px; margin-right:4px;"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path></svg>Copy</button>
                 <h4 class="modal-title" id="pageChangesModalLabel">এই পেইজে যা নতুন পরিবর্তন/আপডেট করা হয়েছে</h4>
               </div>
-              <div class="modal-body" style="height:65vh; overflow-y:auto;"></div>
+              <div class="modal-body" id="pageChangesContent" style="height:65vh; overflow-y:auto;">
+                <p style="margin:0 0 14px;"><strong>Student &gt; Student Info &gt; Information Edit</strong> মেনুর প্রস্তাবিত পরিবর্তন:</p>
+                <ol style="padding-left:20px; margin:0;">
+                  <li style="margin-bottom:12px;">
+                    <strong>Year সর্বোচ্চ ৪ ডিজিট</strong> — Current Academic Information সেকশনের Year ইনপুটে ৪ ডিজিটের বেশি এন্ট্রি করা যাবে না।
+                  </li>
+                  <li style="margin-bottom:12px;">
+                    <strong>Static Class ও Group ফিল্টার</strong> — Year ইনপুট ফিল্ডের পরে নতুন Class ও Group ফিল্টার যোগ করতে হবে এবং এই দুই ফিল্টারের ডাটা Static থাকবে।
+                  </li>
+                  <li style="margin-bottom:12px;">
+                    <strong>শুধু GPA অপশনাল</strong> — Current Academic Information সেকশনে ডাটা এন্ট্রির সময় GPA ফিল্ডটি অপশনাল থাকবে; বাকি সব ফিল্ড বাধ্যতামূলক হবে।
+                  </li>
+                  <li>
+                    <strong>Student List ও Student Search-এ তথ্য প্রদর্শন</strong> — এই মেনুতে এন্ট্রি করা তথ্য Student List ও Student Search মেনুর Select Information To View অংশে, ডাটা টেবিলে এবং এক্সপোর্ট ফাইলেও দেখাতে হবে।
+                  </li>
+                </ol>
+              </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">বন্ধ করুন</button>
               </div>
