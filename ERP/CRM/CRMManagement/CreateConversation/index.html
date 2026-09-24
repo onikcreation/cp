@@ -8304,6 +8304,12 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                                   Add Student(s)
                                 </button>
                               </div>
+                              <div class="col-md-6 text-right">
+                                <button type="button" class="btn btn-primary" id="btnManageTargetedStudents" style="display:none; min-width: 20rem;">
+                                  <i aria-hidden="true" class="glyphicon glyphicon-user"></i>
+                                  Manage Students
+                                </button>
+                              </div>
                             </div>
                             <div class="form-group row">
                               <div class="col-md-12" style="max-height: 40vh; overflow: auto;">
@@ -8674,6 +8680,51 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                     </div>
                   </div>
 
+                  <!-- Existing conversation: individual targeted-student management -->
+                  <div class="modal fade" id="ManageTargetedStudentsModal" role="dialog" aria-labelledby="ManageTargetedStudentsModalLabel">
+                    <div class="modal-dialog cc-manage-students-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header cc-manage-students-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                          <h4 class="modal-title" id="ManageTargetedStudentsModalLabel">Targeted Student List</h4>
+                        </div>
+                        <div class="modal-body">
+                          <div id="ccStudentRemoveFeedback" class="alert" style="display:none;" role="status" aria-live="polite"></div>
+                          <div class="cc-manage-students-toolbar">
+                            <div class="cc-student-summary" aria-live="polite">
+                              <span>Total: <strong id="ccStudentTotalCount">0</strong></span>
+                              <span>Pending: <strong id="ccStudentPendingCount">0</strong></span>
+                              <span>Conversation Entered: <strong id="ccStudentEnteredCount">0</strong></span>
+                            </div>
+                            <button type="button" class="btn btn-danger" id="btnRemoveAllPendingStudents">
+                              <i class="glyphicon glyphicon-trash" aria-hidden="true"></i>
+                              Remove All Pending
+                            </button>
+                          </div>
+                          <div class="table-responsive cc-manage-students-table-wrap">
+                            <table class="table table-bordered table-striped table-hover table-condensed" id="ManageTargetedStudentsTable">
+                              <thead>
+                                <tr>
+                                  <th>SL</th>
+                                  <th>Registration No.</th>
+                                  <th>Student Name</th>
+                                  <th>Program &amp; Session</th>
+                                  <th>Status</th>
+                                  <th>Action</th>
+                                </tr>
+                              </thead>
+                              <tbody id="ManageTargetedStudentsBody"></tbody>
+                            </table>
+                          </div>
+                          <p class="cc-remove-rule-note"><strong>Note:</strong> Students with entered conversation data cannot be removed.</p>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                   <!-- Merit Position Modal -->
                   <div class="modal fade" id="MeritPositionModal" role="dialog" data-backdrop="static">
                     <div class="modal-dialog" style="width: 50%;">
@@ -8790,9 +8841,119 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                 </div>
 
                 <style>
+                  #pageChangesModal .modal-content {
+                    height: 65vh;
+                    display: flex;
+                    flex-direction: column;
+                  }
+                  #pageChangesModal .modal-body {
+                    height: auto !important;
+                    flex: 1 1 auto;
+                    overflow-y: auto;
+                  }
+                  #pageChangesModal .modal-header,
+                  #pageChangesModal .modal-footer {
+                    flex: 0 0 auto;
+                  }
+                  #ManageTargetedStudentsModal .cc-manage-students-dialog {
+                    width: 80%;
+                    max-width: 1100px;
+                  }
+                  #ManageTargetedStudentsModal .cc-manage-students-header {
+                    background: #2F1031;
+                    color: #fff;
+                    border-bottom: 0;
+                  }
+                  #ManageTargetedStudentsModal .cc-manage-students-header .close {
+                    color: #fff;
+                    opacity: .9;
+                    text-shadow: none;
+                  }
+                  #ManageTargetedStudentsModal .cc-manage-students-toolbar {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 12px;
+                    margin-bottom: 12px;
+                  }
+                  #ManageTargetedStudentsModal .cc-student-summary {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 8px;
+                  }
+                  #ManageTargetedStudentsModal .cc-student-summary span {
+                    display: inline-block;
+                    padding: 5px 10px;
+                    border: 1px solid #D9D9D9;
+                    border-radius: 4px;
+                    background: #F8F8F8;
+                    white-space: nowrap;
+                  }
+                  #ManageTargetedStudentsModal .cc-manage-students-table-wrap {
+                    max-height: 48vh;
+                    overflow: auto;
+                    border: 1px solid #D9D9D9;
+                  }
+                  #ManageTargetedStudentsModal #ManageTargetedStudentsTable {
+                    margin-bottom: 0;
+                    min-width: 760px;
+                  }
+                  #ManageTargetedStudentsModal #ManageTargetedStudentsTable thead th {
+                    position: sticky;
+                    top: 0;
+                    z-index: 2;
+                    background: #F5F5F5;
+                    vertical-align: middle;
+                  }
+                  #ManageTargetedStudentsModal .cc-status {
+                    display: inline-block;
+                    padding: 3px 8px;
+                    border-radius: 3px;
+                    font-weight: 600;
+                    white-space: nowrap;
+                  }
+                  #ManageTargetedStudentsModal .cc-status-pending {
+                    color: #8A4B08;
+                    background: #FEF3C7;
+                    border: 1px solid #F59E0B;
+                  }
+                  #ManageTargetedStudentsModal .cc-status-entered {
+                    color: #166534;
+                    background: #DCFCE7;
+                    border: 1px solid #86EFAC;
+                  }
+                  #ManageTargetedStudentsModal .cc-not-removable {
+                    color: #777;
+                    white-space: nowrap;
+                  }
+                  #ManageTargetedStudentsModal .cc-remove-rule-note {
+                    margin: 12px 0 0;
+                    color: #555;
+                  }
+                  #ManageTargetedStudentsModal #ccStudentRemoveFeedback {
+                    margin-bottom: 12px;
+                  }
                   @media screen and (min-width: 768px) {
                     #pageChangesModal .modal-dialog, #pageChangesModalOld .modal-dialog {
                       width: 60%;
+                    }
+                  }
+                  @media screen and (max-width: 767px) {
+                    #btnManageTargetedStudents {
+                      width: 100%;
+                      margin-top: 10px;
+                    }
+                    #ManageTargetedStudentsModal .cc-manage-students-dialog {
+                      width: auto;
+                      max-width: none;
+                      margin: 10px;
+                    }
+                    #ManageTargetedStudentsModal .cc-manage-students-toolbar {
+                      align-items: stretch;
+                      flex-direction: column;
+                    }
+                    #ManageTargetedStudentsModal #btnRemoveAllPendingStudents {
+                      width: 100%;
                     }
                   }
                 </style>
@@ -8804,22 +8965,13 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                         <button type="button" class="pcm-copy-btn" title="সম্পূর্ণ কনটেন্ট কপি করুন" style="float:right; margin:-2px 8px 0 0; background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.5); color:#fff; border-radius:4px; padding:2px 10px; font-size:12px; line-height:1.6; cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="12" height="12" fill="currentColor" style="vertical-align:-1px; margin-right:4px;"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path></svg>Copy</button>
                         <h4 class="modal-title" id="pageChangesModalLabel">এই পেইজে যা যা পরিবর্তন/আপডেট করা হয়েছে</h4>
                       </div>
-                      <div class="modal-body" style="height:65vh; overflow-y:auto;">
-                        <p style="margin:0 0 4px;">Targeted Students &gt; "Add Students" মোডালে</p>
-                        <ul style="padding-left:20px; margin:0 0 14px;">
-                          <li>"Add Student From" টাইটেলের নাম পরিবর্তন করে "Add Student By" করতে হবে।</li>
-                          <li>ফিল্টারের অপশনে থাকা "Student List" অপশনটি বাদ দিতে হবে।</li>
-                          <li>ফিল্টার অপশনে নতুন করে "Batch Wise" ও "Institute Wise" নামে দুটি অপশন যোগ করতে হবে।</li>
-                          <li>ফিল্টার অপশনের সিরিয়ালগুলো এমন হবে: Batch Wise, Institute Wise, Registration No. Wise, Visited Student, Excel Sheet।</li>
-                        </ul>
-                        <p style="margin:0 0 4px;"><em>যেভাবে কাজ করবে:</em></p>
-                        <ul style="padding-left:20px; margin:0;">
-                          <li>Community গ্রুপে শিক্ষার্থী এড করার ক্ষেত্রে Add Student By: "Batch Wise" ও "Institute Wise" যে ফিল্টরগুলো আছে এবং যেভাবে কাজ করে ঠিক একইভাবে এই মেনুতেও কাজ করবে।</li>
-                          <li>"Batch Wise" ও "Institute Wise" দুটি অপশনেই সবার শেষে Admission Target ফিল্টার থাকবে।</li>
-                          <li>আগে "Student List"-এর ক্ষেত্রে Admission Target যেই লজিকে দেখাতো এখানেও একই লজিকে দেখাবে।</li>
-                          <li>Organization, Program, Session বাদে সকল ফিল্টার মাল্টি সিলেক্ট থাকবে।</li>
-                          <li>"Batch Wise" ও "Institute Wise" দুটি অপশনেই শিক্ষার্থী সিলেক্ট করে Add করার ক্ষেত্রে Conversation Type ও Target Program-এর Manage Conversation Type লজিক অনুযায়ী শিক্ষার্থী এড করতে হবে।</li>
-                        </ul>
+                      <div class="modal-body">
+                        <div id="pageChangesContent">
+                          <p style="margin:0 0 12px;"><strong>CRM → CRM Management → Create Conversation</strong></p>
+                          <ol style="padding-left:22px; margin:0;">
+                            <li style="margin-bottom:0;"><strong>Pending শিক্ষার্থী Remove</strong> — Conversation তৈরির পর Targeted Student List থেকে যাদের Conversation ডেটা এখনো এন্ট্রি করা হয়নি, তাদের একজন একজন করে অথবা সব Pending শিক্ষার্থীকে একসাথে Remove করা যাবে। যাদের Conversation ডেটা ইতোমধ্যে এন্ট্রি হয়েছে, তারা তালিকায় থাকবে এবং কোনো Remove action পাবে না।</li>
+                          </ol>
+                        </div>
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">বন্ধ করুন</button>
@@ -8846,6 +8998,10 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                             <strong>Create Conversation ও Manage Conversation মেনুতে Registration Number দিয়ে সরাসরি শিক্ষার্থী Add করার ফিচার যোগ করতে হবে।</strong>
                             <p style="margin:4px 0 0; color:#555;"><em>যেভাবে কাজ করবে:</em> CRM-এ Create Conversation ও Manage Conversation মেনুতে Community গ্রুপের মতো এক বা একাধিক Registration Number সরাসরি ইনপুট করে শিক্ষার্থী Add করার ফিচার যোগ করতে হবে। Create Conversation মেনুতে Targeted Students সেকশনে Add Students বাটনে ক্লিক করা হলে যে পপ আপ আসে তাতে Add Student From ফিল্টারে Registration No. Wise নতুন অপশন যোগ করতে হবে। এটি সিলেক্ট করা হলে সেই অনুযায়ি নিচে একটি টেক্সট বক্স দেখাবে, যাতে একটা বা একাধিক রেজি নম্বর কমা বা স্পেস দিয়ে সেপারেট করে ইনপুট করার পর সাবমিট বাটনে ক্লিক করা হলে Targeted Students টেবিলে ঐ শিক্ষার্থীগুলো যোগ হবে।</p>
                           </li>
+                        </ol>
+                        <p style="font-weight:bold; font-size:15px; margin:22px 0 10px; color:#374151; border-bottom:2px solid #6B7280; padding-bottom:4px;">Step 02</p>
+                        <ol style="padding-left:20px; margin:0;">
+                          <li><strong>Add Student By-তে Batch Wise ও Institute Wise</strong> — Student List-এর বদলে Batch Wise ও Institute Wise যোগ করা হয়েছে; Registration No. Wise, Visited Student ও Excel Sheet-সহ নির্ধারিত ক্রম, Admission Target এবং Manage Conversation Type-এর filtering logic রাখা হয়েছে।</li>
                         </ol>
                       </div>
                       <div class="modal-footer">
@@ -13085,6 +13241,7 @@ function DeselectSelectedOptionAdd(elem) {
 
         // ==================== Targeted Students ====================
         var ccStudentRows = [];
+        var ccIsExistingConversationMode = false;
 
         // Manage Conversation Type পেইজে কনফিগার করা সেটিংস (AdmissionStatusId/DueStatusId) - এখানে সেই একই মান রাখা হয়েছে,
         // যাতে New Admission/Due Collection টাইপের জন্য "Student List" থেকে যোগ করার সময় সেই সেটিংস অনুযায়ী ফিল্টার প্রয়োগ হয়।
@@ -13302,22 +13459,149 @@ var CC_COURSES = [["1","Engineering Admission Program","2027",[["Engineering Ful
               '<td>' + ccEsc(r.gender) + '</td>' +
               '<td>' + ccEsc(r.importFrom) + '</td>' +
               '<td>' + r.total + '</td>' +
-              '<td><span class="glyphicon glyphicon-trash text-danger btn-remove-student-row" style="cursor:pointer;"></span></td>' +
+              '<td>' + (ccIsExistingConversationMode
+                ? '<span class="text-muted" title="Use Manage Students to remove eligible students individually.">—</span>'
+                : '<span class="glyphicon glyphicon-trash text-danger btn-remove-student-row" style="cursor:pointer;"></span>') + '</td>' +
               '</tr>';
           });
           $('#StudentBody').html(html);
         }
         $(document).on('click', '.btn-remove-student-row', function () {
+          if (ccIsExistingConversationMode) return;
           var idx = parseInt($(this).closest('tr').data('idx'), 10);
           ccStudentRows.splice(idx, 1);
           ccRenderStudentTable();
         });
         $('#btnRemoveAllStudents').on('click', function () {
+          if (ccIsExistingConversationMode) return;
           if (!ccStudentRows.length) return;
           bootbox.confirm({
             message: "<h4 class='text-center'>Are you sure, you want to remove all targeted students criteria?</h4>",
             buttons: { confirm: { label: 'Yes' }, cancel: { label: 'No' } },
             callback: function (result) { if (result) { ccStudentRows = []; ccRenderStudentTable(); } }
+          });
+        });
+
+        // Existing conversation-এর individual student list। শুধু Pending row remove করা যাবে;
+        // Conversation Entered row UI এবং handler—দুই স্তরেই protected।
+        var ccExistingStudentRows = [
+          { id: 'ST-001', registrationNo: '1000001', studentName: 'Demo Student 01', programSession: 'Medical Admission Program / 2026', status: 'pending' },
+          { id: 'ST-002', registrationNo: '1000002', studentName: 'Demo Student 02', programSession: 'Medical Admission Program / 2026', status: 'entered' },
+          { id: 'ST-003', registrationNo: '1000003', studentName: 'Demo Student 03', programSession: 'Medical Admission Program / 2026', status: 'pending' },
+          { id: 'ST-004', registrationNo: '1000004', studentName: 'Demo Student 04', programSession: 'Medical Admission Program / 2026', status: 'pending' },
+          { id: 'ST-005', registrationNo: '1000005', studentName: 'Demo Student 05', programSession: 'Medical Admission Program / 2026', status: 'entered' },
+          { id: 'ST-006', registrationNo: '1000006', studentName: 'Demo Student 06', programSession: 'Medical Admission Program / 2026', status: 'pending' },
+          { id: 'ST-007', registrationNo: '1000007', studentName: 'Demo Student 07', programSession: 'Medical Admission Program / 2026', status: 'entered' },
+          { id: 'ST-008', registrationNo: '1000008', studentName: 'Demo Student 08', programSession: 'Medical Admission Program / 2026', status: 'pending' }
+        ];
+
+        function ccExistingStudentCounts() {
+          var pending = ccExistingStudentRows.filter(function (student) { return student.status === 'pending'; }).length;
+          return {
+            total: ccExistingStudentRows.length,
+            pending: pending,
+            entered: ccExistingStudentRows.length - pending
+          };
+        }
+
+        function ccShowStudentRemoveFeedback(message, type) {
+          var $feedback = $('#ccStudentRemoveFeedback');
+          $feedback.removeClass('alert-success alert-danger alert-info')
+            .addClass(type === 'danger' ? 'alert-danger' : 'alert-success')
+            .text(message)
+            .show();
+        }
+
+        function ccSyncExistingStudentTotal() {
+          if (ccStudentRows.length) {
+            ccStudentRows[0].total = ccExistingStudentRows.length;
+            ccRenderStudentTable();
+          }
+        }
+
+        function ccRenderExistingStudentTable() {
+          var counts = ccExistingStudentCounts();
+          $('#ccStudentTotalCount').text(counts.total);
+          $('#ccStudentPendingCount').text(counts.pending);
+          $('#ccStudentEnteredCount').text(counts.entered);
+          $('#btnRemoveAllPendingStudents')
+            .prop('disabled', counts.pending === 0)
+            .attr('title', counts.pending === 0 ? 'No pending student is available to remove.' : 'Remove all pending students');
+
+          if (!ccExistingStudentRows.length) {
+            $('#ManageTargetedStudentsBody').html('<tr><td colspan="6" class="text-center text-danger">No targeted student available</td></tr>');
+            return;
+          }
+
+          var html = '';
+          ccExistingStudentRows.forEach(function (student, index) {
+            var isPending = student.status === 'pending';
+            var statusHtml = isPending
+              ? '<span class="cc-status cc-status-pending">Pending</span>'
+              : '<span class="cc-status cc-status-entered">Conversation Entered</span>';
+            var actionHtml = isPending
+              ? '<button type="button" class="btn btn-xs btn-danger cc-remove-pending-student" data-student-id="' + ccEsc(student.id) + '"><i class="glyphicon glyphicon-trash" aria-hidden="true"></i> Remove</button>'
+              : '<span class="cc-not-removable"><i class="glyphicon glyphicon-lock" aria-hidden="true"></i> Not Removable</span>';
+            html += '<tr>' +
+              '<td>' + (index + 1) + '</td>' +
+              '<td>' + ccEsc(student.registrationNo) + '</td>' +
+              '<td>' + ccEsc(student.studentName) + '</td>' +
+              '<td>' + ccEsc(student.programSession) + '</td>' +
+              '<td>' + statusHtml + '</td>' +
+              '<td>' + actionHtml + '</td>' +
+              '</tr>';
+          });
+          $('#ManageTargetedStudentsBody').html(html);
+        }
+
+        $('#btnManageTargetedStudents').on('click', function () {
+          $('#ccStudentRemoveFeedback').hide().text('');
+          ccRenderExistingStudentTable();
+          $('#ManageTargetedStudentsModal').modal('show');
+        });
+
+        $(document).on('click', '.cc-remove-pending-student', function () {
+          var studentId = String($(this).data('student-id'));
+          var student = ccExistingStudentRows.filter(function (item) { return item.id === studentId; })[0];
+          if (!student || student.status !== 'pending') {
+            ccShowStudentRemoveFeedback('This student cannot be removed because conversation data has already been entered.', 'danger');
+            return;
+          }
+          bootbox.confirm({
+            message: "<h4 class='text-center'>Are you sure you want to remove " + ccEsc(student.studentName) + " (" + ccEsc(student.registrationNo) + ")?</h4>",
+            buttons: { confirm: { label: 'Yes', className: 'btn-danger' }, cancel: { label: 'No', className: 'btn-default' } },
+            callback: function (result) {
+              if (!result) return;
+              var current = ccExistingStudentRows.filter(function (item) { return item.id === studentId; })[0];
+              if (!current || current.status !== 'pending') {
+                ccShowStudentRemoveFeedback('This student cannot be removed because conversation data has already been entered.', 'danger');
+                return;
+              }
+              ccExistingStudentRows = ccExistingStudentRows.filter(function (item) { return item.id !== studentId; });
+              ccRenderExistingStudentTable();
+              ccSyncExistingStudentTotal();
+              ccShowStudentRemoveFeedback('Pending student removed successfully.', 'success');
+            }
+          });
+        });
+
+        $('#btnRemoveAllPendingStudents').on('click', function () {
+          var counts = ccExistingStudentCounts();
+          if (!counts.pending) {
+            ccShowStudentRemoveFeedback('No pending student is available to remove.', 'danger');
+            return;
+          }
+          bootbox.confirm({
+            message: "<h4 class='text-center'>Are you sure you want to remove all pending students?</h4><p class='text-center'>Students with entered conversation data will remain unchanged.</p>",
+            buttons: { confirm: { label: 'Yes', className: 'btn-danger' }, cancel: { label: 'No', className: 'btn-default' } },
+            callback: function (result) {
+              if (!result) return;
+              var removedCount = ccExistingStudentRows.filter(function (student) { return student.status === 'pending'; }).length;
+              ccExistingStudentRows = ccExistingStudentRows.filter(function (student) { return student.status !== 'pending'; });
+              ccRenderExistingStudentTable();
+              ccSyncExistingStudentTotal();
+              ccShowStudentRemoveFeedback(removedCount + ' pending student(s) removed successfully. Students with entered conversation data were not removed.', 'success');
+            }
           });
         });
 
@@ -13658,7 +13942,7 @@ var CC_COURSES = [["1","Engineering Admission Program","2027",[["Engineering Ful
             $(document.body).scrollTop(0);
             return;
           }
-          $.fn.customMessage({ displayMessage: '<strong>Success!</strong> Conversation created successfully.', displayMessageType: 'success' });
+          $.fn.customMessage({ displayMessage: '<strong>Success!</strong> Conversation ' + (ccIsExistingConversationMode ? 'updated' : 'created') + ' successfully.', displayMessageType: 'success' });
           $(document.body).scrollTop(0);
         });
 
@@ -13697,12 +13981,12 @@ var CC_COURSES = [["1","Engineering Admission Program","2027",[["Engineering Ful
             return found;
           }
 
-          var ct = params.get('ct');
-          var title = params.get('title');
-          var org = params.get('org');
-          var program = params.get('program');
-          var session = params.get('session');
-          var initiatedBy = params.get('initiatedBy');
+          var ct = params.get('ct') || '';
+          var title = params.get('title') || '';
+          var org = params.get('org') || '';
+          var program = params.get('program') || '';
+          var session = params.get('session') || '';
+          var initiatedBy = params.get('initiatedBy') || '';
 
           if (ct) selectByText($('#ConversationType'), ct);
           if (title) $('#DataType').val(title);
@@ -13716,11 +14000,26 @@ var CC_COURSES = [["1","Engineering Admission Program","2027",[["Engineering Ful
             }
           }
           if (initiatedBy) $('#InitiatedByText').val(initiatedBy);
-
-          var tid = params.get('tid');
+          var tid = params.get('tid') || '';
           if (mode === 'edit') {
+            ccIsExistingConversationMode = true;
             $('#ccPageHeading').text('Update Conversation' + (tid ? ' (Tracking ID: ' + tid + ')' : ''));
             $('#btnSubmit').text('Update');
+            $('#btnManageTargetedStudents').show();
+            $('#btnRemoveAllStudents').hide();
+            if (!ccStudentRows.length) {
+              ccStudentRows = [{
+                organization: org || 'UDVASH',
+                program: program || 'Medical Admission Program',
+                session: session || '2026',
+                course: 'All',
+                branch: 'All',
+                gender: 'All',
+                importFrom: 'Batch Wise',
+                total: ccExistingStudentRows.length
+              }];
+              ccRenderStudentTable();
+            }
           } else if (mode === 'duplicate') {
             $('#ccPageHeading').text('Create Conversation' + (tid ? ' (Duplicated from Tracking ID: ' + tid + ')' : ''));
           }
@@ -13743,18 +14042,18 @@ var CC_COURSES = [["1","Engineering Admission Program","2027",[["Engineering Ful
       }
 
       var siblingLivePages = {
-        '/Student/CrmConversation/Dashboard': { folder: 'Dashboard', file: 'Dashboard_Offline.html' },
-        '/Student/CrmConversationTargetedStudent/ManageSingleEntry': { folder: 'ConversationEntry', file: 'CrmConversationEntry_Offline.html' },
-        '/Student/CrmReport/DetailsReport': { folder: 'DetailsReport', file: 'DetailsReport_Offline.html' },
-        '/Student/CrmReport/IndividualReport': { folder: 'IndividualReport', file: 'IndividualReport_Offline.html' },
-        '/Student/CrmConversationTargetedStudent/DefaultSettings': { folder: 'DefaultSettings', file: 'DefaultSettings_Offline.html' },
-        '/Student/CrmComments/Index': { folder: 'ManageStudentFeedback', file: 'ManageStudentFeedback_Offline.html' },
-        '/Student/CrmConversation/MentorDashboard': { folder: 'MentorDashboard', file: 'MentorDashboard_Offline.html' },
-        '/Student/CrmReport/EffectiveCallReport': { folder: 'EffectiveCallReport', file: 'EffectiveCallReport_Offline.html' },
-        '/Student/CrmConversationType/Index': { folder: 'ManageConversationType', file: 'ManageConversationType_Offline.html' },
-        '/Student/CrmReport/SummaryReport': { folder: 'SummaryReport', file: 'SummaryReport_Offline.html' },
-        '/Student/CrmConversation/SaveOrEdit': { folder: 'CreateConversation', file: 'CreateConversation_Offline.html' },
-        '/Student/CrmConversation/Index': { folder: 'ManageConversation', file: 'ManageConversation_Offline.html' }
+        '/Student/CrmConversation/Dashboard': { folder: 'Dashboard', file: 'index.html' },
+        '/Student/CrmConversationTargetedStudent/ManageSingleEntry': { folder: 'ConversationEntry', file: 'index.html' },
+        '/Student/CrmReport/DetailsReport': { folder: 'DetailsReport', file: 'index.html' },
+        '/Student/CrmReport/IndividualReport': { folder: 'IndividualReport', file: 'index.html' },
+        '/Student/CrmConversationTargetedStudent/DefaultSettings': { folder: 'DefaultSettings', file: 'index.html' },
+        '/Student/CrmComments/Index': { folder: 'ManageStudentFeedback', file: 'index.html' },
+        '/Student/CrmConversation/MentorDashboard': { folder: 'MentorDashboard', file: 'index.html' },
+        '/Student/CrmReport/EffectiveCallReport': { folder: 'EffectiveCallReport', file: 'index.html' },
+        '/Student/CrmConversationType/Index': { folder: 'ManageConversationType', file: 'index.html' },
+        '/Student/CrmReport/SummaryReport': { folder: 'SummaryReport', file: 'index.html' },
+        '/Student/CrmConversation/SaveOrEdit': { folder: 'CreateConversation', file: 'index.html' },
+        '/Student/CrmConversation/Index': { folder: 'ManageConversation', file: 'index.html' }
       };
       Object.keys(siblingLivePages).forEach(function (route) {
         var target = siblingLivePages[route];
@@ -13762,7 +14061,6 @@ var CC_COURSES = [["1","Engineering Admission Program","2027",[["Engineering Ful
           a.setAttribute('href', siblingPageUrl(target.folder, target.file));
         });
       });
-
       document.addEventListener('click', function (e) {
         var a = e.target.closest('a');
         if (!a) return;
