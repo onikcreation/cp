@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- <meta http-equiv="refresh" content="0;URL='http://dev.umsbd.net/'" />
     -->
-    <title>UMS - Manage Permission</title>
+    <title>UMS - View Teacher Permission (Demo Copy)</title>
     <style>/* bootstrap.css */
 /* NUGET: BEGIN LICENSE TEXT
  *
@@ -23201,118 +23201,1129 @@ table.dataTable td {
 
 </script>
 
-                  <p>
-                    <a href="BulkPermission.html" data-id="" class="btn btn-primary">Bulk Permission</a>
-                  </p>
                   <div class="panel panel-primary">
                     <div class="panel-heading">
-                      <h4 class="panel-title">Manage Permission</h4>
+                      View Teacher Permission
                     </div>
                     <div class="panel-body">
-                      <table id="tableDiv" style="width: 100%;">
-                        <tbody>
+                      <table style="width:100%">
+                        <thead>
+                        </thead>
+                        <tbody style="border:1px solid #808080">
                           <tr>
-                            <th class="form-group">
-                              <select class="form-control" id="OrganizationId" name="OrganizationId">
-                                <option value="">All Organization</option>
-                                <option value="1">UDVASH</option>
-<option value="2">UNMESH</option>
-<option value="13">ONLINE CARE</option>
-<option value="12">UTTORON</option>
-<option value="14">UTKORSHO</option>
-<option value="11">Shikkha Poribar</option>
-<option value="3">OSL</option>
-<option value="4">Pi Labs</option>
-<option value="5">ORELCO</option>
-<option value="6">OWSL</option>
-<option value="7">TSB</option>
-<option value="8">OG</option>
-<option value="9">OP</option>
-<option value="10">ORP</option>
-<option value="15">OPL</option>
-<option value="16">OE</option>
-<option value="17">OU</option>
-<option value="18">OI</option>
-                              </select>
-                            </th>
-                            <th class="form-group">
-                              <select class="form-control" id="ProgramId" name="ProgramId">
-                                <option value="">All Program</option>
-                              </select>
-                            </th>
-                            <th class="form-group">
-                              <select class="form-control" id="SessionId" name="SessionId">
-                                <option value="">All Session</option>
-                              </select>
-                            </th>
-                            <th class="form-group">
-                              <select class="form-control" id="CourseId" name="CourseId">
-                                <option value="">All Course</option>
-                              </select>
-                            </th>
-                            <th class="form-group">
-                              <select class="form-control" id="SubjectId" name="SubjectId">
-                                <option value="">All Subject</option>
-                              </select>
-                            </th>
-                            <th class="form-group">
-                              <input id="keyword" name="Keyword" type="text" class="form-control " placeholder="[TPIN] Name (Batch)">
-                            </th>
+                            <td colspan="2">
+                              <div style="font-size: 16px;text-align:center">
+                                <strong>
+                                  Varsity 'KA' Admission Program (Online) - 2024
+                                </strong>
+                              </div>
+                              <hr style="margin-top:5px;">
+                            </td>
                           </tr>
-                          <tr class="form-group">
-                            <th class="form-group ">
-                              <input id="mobileNumber" name="mobileNumber" type="text" class="form-control" placeholder="Mobile Number">
-                            </th>
-                            <th class="form-group">
-                              <select class="form-control" id="permissionStatus" name="permissionStatus">
-                                <option value="">Permission Status</option>
-                                <option value="1">Has Permission</option>
-<option value="2">No Permission</option>
-                              </select>
-                            </th>
-                            <th class="form-group">
-                              <select class="form-control" id="TeacherLevelSelect" name="TeacherLevelSelect">
-                                <option value="">Teacher Level</option>
-                                <option value="1">Regular</option>
-<option value="2">Expert</option>
-<option value="3">Both</option>
-<option value="4">None</option>
-                              </select>
-                            </th>
-                            <th class="form-group">
-                              <select class="form-control" id="Status" name="Status">
-                                <option value="">Status</option>
-                                <option value="1">Active</option>
-<option value="-1">Inactive</option>
-                              </select>
-                            </th>
-                            <th class="form-group">
-                              <input id="PageSize" name="PageSize" type="text" class="form-control" placeholder="No of Data" value="10">
-                            </th>
-                            <th class="form-group">
-                              <input type="button" name="search" id="search" value="Search" class="form-control btn-primary">
-                            </th>
+                          <tr>
+                            <td>
+                              <div style="width: 30%; float: left;padding-left:20px;">
+                                <ul id="treeLists" class="list-unstyled">
+                                  <li>
+                                    <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked" style="padding-left:10px;">
+                                    Varsity KA Model Test (Package-1) [Online]
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Chemistry
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Physics
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Chemistry
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Physics
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Higher Mathematics
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Physics
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Chemistry
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Higher Mathematics
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Physics
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Chemistry
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Higher Mathematics
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </div>
+                              <div style="width: 30%; float: left;padding-left:20px;">
+                                <ul id="treeLists" class="list-unstyled">
+                                  <li>
+                                    <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked" style="padding-left:10px;">
+                                    Varsity KA Model Test (Package-2) [Online]
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Physics
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Physics
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Chemistry
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Higher Mathematics
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Physics
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Chemistry
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Higher Mathematics
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </div>
+                            </td>
+                            <td>
+                              <a href="BulkPermission.html?tPin=47&amp;orgId=13&amp;proId=162&amp;sessId=63" data-id="" class="btn btn-success">
+                                Edit
+                              </a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="2">
+                              <div style="font-size: 16px;text-align:center">
+                                <strong>
+                                  Varsity 'KA' Admission Program - 2023
+                                </strong>
+                              </div>
+                              <hr style="margin-top:5px;">
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <div style="width: 30%; float: left;padding-left:20px;">
+                                <ul id="treeLists" class="list-unstyled">
+                                  <li>
+                                    <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked" style="padding-left:10px;">
+                                    Varsity 'KA' Model Test
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Bangla
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Physics
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Chemistry
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Higher Mathematics
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </div>
+                              <div style="width: 30%; float: left;padding-left:20px;">
+                                <ul id="treeLists" class="list-unstyled">
+                                  <li>
+                                    <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked" style="padding-left:10px;">
+                                    DU 'KA' Special Model Test
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Physics
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Chemistry
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Higher Mathematics
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Bangla
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </div>
+                            </td>
+                            <td>
+                              <a href="BulkPermission.html?tPin=47&amp;orgId=1&amp;proId=82&amp;sessId=61" data-id="" class="btn btn-success">
+                                Edit
+                              </a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="2">
+                              <div style="font-size: 16px;text-align:center">
+                                <strong>
+                                  Varsity 'KA' Admission Program - 2021
+                                </strong>
+                              </div>
+                              <hr style="margin-top:5px;">
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <div style="width: 30%; float: left;padding-left:20px;">
+                                <ul id="treeLists" class="list-unstyled">
+                                  <li>
+                                    <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked" style="padding-left:10px;">
+                                    Final Model Test
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Mathematics
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Physics
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </div>
+                              <div style="width: 30%; float: left;padding-left:20px;">
+                                <ul id="treeLists" class="list-unstyled">
+                                  <li>
+                                    <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked" style="padding-left:10px;">
+                                    DU_GHA Special Model Test
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Mathematics
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </div>
+                            </td>
+                            <td>
+                              <a href="BulkPermission.html?tPin=47&amp;orgId=1&amp;proId=82&amp;sessId=54" data-id="" class="btn btn-success">
+                                Edit
+                              </a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="2">
+                              <div style="font-size: 16px;text-align:center">
+                                <strong>
+                                  Medical Admission Program - 2021
+                                </strong>
+                              </div>
+                              <hr style="margin-top:5px;">
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <div style="width: 30%; float: left;padding-left:20px;">
+                                <ul id="treeLists" class="list-unstyled">
+                                  <li>
+                                    <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked" style="padding-left:10px;">
+                                    Varsity KA Final Model Test (Start 8 May)
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Physics
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Mathematics
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </div>
+                            </td>
+                            <td>
+                              <a href="BulkPermission.html?tPin=47&amp;orgId=2&amp;proId=74&amp;sessId=54" data-id="" class="btn btn-success">
+                                Edit
+                              </a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="2">
+                              <div style="font-size: 16px;text-align:center">
+                                <strong>
+                                  DU 'KHA' Shomvabona - 2023
+                                </strong>
+                              </div>
+                              <hr style="margin-top:5px;">
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <div style="width: 30%; float: left;padding-left:20px;">
+                                <ul id="treeLists" class="list-unstyled">
+                                  <li>
+                                    <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked" style="padding-left:10px;">
+                                    DU 'KHA' Shomvabona
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Bangla
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </div>
+                            </td>
+                            <td>
+                              <a href="BulkPermission.html?tPin=47&amp;orgId=1&amp;proId=213&amp;sessId=61" data-id="" class="btn btn-success">
+                                Edit
+                              </a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="2">
+                              <div style="font-size: 16px;text-align:center">
+                                <strong>
+                                  Medical Admission Program - 2022
+                                </strong>
+                              </div>
+                              <hr style="margin-top:5px;">
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <div style="width: 30%; float: left;padding-left:20px;">
+                                <ul id="treeLists" class="list-unstyled">
+                                  <li>
+                                    <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked" style="padding-left:10px;">
+                                    UDVASH Varsity Math Course 2022
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Physics
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Chemistry
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Higher Mathematics
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </div>
+                              <div style="width: 30%; float: left;padding-left:20px;">
+                                <ul id="treeLists" class="list-unstyled">
+                                  <li>
+                                    <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked" style="padding-left:10px;">
+                                    HSC Board Standard Revision Class (P, C, M, B) FREE
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Physics
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Higher Mathematics
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </div>
+                              <div style="width: 30%; float: left;padding-left:20px;">
+                                <ul id="treeLists" class="list-unstyled">
+                                  <li>
+                                    <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked" style="padding-left:10px;">
+                                    Home Practice Model Test-2022
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Physics
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </div>
+                              <div style="width: 30%; float: left;padding-left:20px;">
+                                <ul id="treeLists" class="list-unstyled">
+                                  <li>
+                                    <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked" style="padding-left:10px;">
+                                    HSC &amp; Medical MCQ Booster Course by UNMESH
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Physics
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Higher Mathematics
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </div>
+                              <div style="width: 30%; float: left;padding-left:20px;">
+                                <ul id="treeLists" class="list-unstyled">
+                                  <li>
+                                    <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked" style="padding-left:10px;">
+                                    Medical Advance Course
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Physics
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Higher Mathematics
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </div>
+                              <div style="width: 30%; float: left;padding-left:20px;">
+                                <ul id="treeLists" class="list-unstyled">
+                                  <li>
+                                    <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked" style="padding-left:10px;">
+                                    Varsity Math Advance Course
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Physics
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Higher Mathematics
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </div>
+                              <div style="width: 30%; float: left;padding-left:20px;">
+                                <ul id="treeLists" class="list-unstyled">
+                                  <li>
+                                    <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked" style="padding-left:10px;">
+                                    1st Time All Exam + 3 Materials
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Physics
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </div>
+                            </td>
+                            <td>
+                              <a href="BulkPermission.html?tPin=47&amp;orgId=2&amp;proId=74&amp;sessId=58" data-id="" class="btn btn-success">
+                                Edit
+                              </a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="2">
+                              <div style="font-size: 16px;text-align:center">
+                                <strong>
+                                  Varsity 'KA' Admission Program - 2022
+                                </strong>
+                              </div>
+                              <hr style="margin-top:5px;">
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <div style="width: 30%; float: left;padding-left:20px;">
+                                <ul id="treeLists" class="list-unstyled">
+                                  <li>
+                                    <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked" style="padding-left:10px;">
+                                    Varsity 'KA' Full Course 2022
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Physics
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Higher Mathematics
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </div>
+                              <div style="width: 30%; float: left;padding-left:20px;">
+                                <ul id="treeLists" class="list-unstyled">
+                                  <li>
+                                    <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked" style="padding-left:10px;">
+                                    Varsity 'KA' Crash Course
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Physics
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Chemistry
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Higher Mathematics
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </div>
+                              <div style="width: 30%; float: left;padding-left:20px;">
+                                <ul id="treeLists" class="list-unstyled">
+                                  <li>
+                                    <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked" style="padding-left:10px;">
+                                    HSC Board Standard Revision Class (P, C, M, B) FREE
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Physics
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </div>
+                              <div style="width: 30%; float: left;padding-left:20px;">
+                                <ul id="treeLists" class="list-unstyled">
+                                  <li>
+                                    <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked" style="padding-left:10px;">
+                                    HSC &amp; Medical MCQ Booster Course by UNMESH
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Physics
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </div>
+                              <div style="width: 30%; float: left;padding-left:20px;">
+                                <ul id="treeLists" class="list-unstyled">
+                                  <li>
+                                    <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked" style="padding-left:10px;">
+                                    Varsity_KA Advance Course
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Physics
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </div>
+                              <div style="width: 30%; float: left;padding-left:20px;">
+                                <ul id="treeLists" class="list-unstyled">
+                                  <li>
+                                    <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked" style="padding-left:10px;">
+                                    Varsity 'KA' Exam Pack + All Materials
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Physics
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Chemistry
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Higher Mathematics
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </div>
+                              <div style="width: 30%; float: left;padding-left:20px;">
+                                <ul id="treeLists" class="list-unstyled">
+                                  <li>
+                                    <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked" style="padding-left:10px;">
+                                    Varsity 'KA' Final Model Test
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Physics
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Chemistry
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Higher Mathematics
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </div>
+                              <div style="width: 30%; float: left;padding-left:20px;">
+                                <ul id="treeLists" class="list-unstyled">
+                                  <li>
+                                    <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked" style="padding-left:10px;">
+                                    DU 'KA' Special Model Test
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Physics
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Chemistry
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Higher Mathematics
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </div>
+                            </td>
+                            <td>
+                              <a href="BulkPermission.html?tPin=47&amp;orgId=1&amp;proId=82&amp;sessId=58" data-id="" class="btn btn-success">
+                                Edit
+                              </a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="2">
+                              <div style="font-size: 16px;text-align:center">
+                                <strong>
+                                  SSC Udvashito Mukh - 2023
+                                </strong>
+                              </div>
+                              <hr style="margin-top:5px;">
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <div style="width: 30%; float: left;padding-left:20px;">
+                                <ul id="treeLists" class="list-unstyled">
+                                  <li>
+                                    <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked" style="padding-left:10px;">
+                                    SSC Udvashito Mukh-2023
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        General Mathematics
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Physics
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Chemistry
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </div>
+                            </td>
+                            <td>
+                              <a href="BulkPermission.html?tPin=47&amp;orgId=1&amp;proId=69&amp;sessId=61" data-id="" class="btn btn-success">
+                                Edit
+                              </a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="2">
+                              <div style="font-size: 16px;text-align:center">
+                                <strong>
+                                  Engineering Admission Program - 2022
+                                </strong>
+                              </div>
+                              <hr style="margin-top:5px;">
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <div style="width: 30%; float: left;padding-left:20px;">
+                                <ul id="treeLists" class="list-unstyled">
+                                  <li>
+                                    <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked" style="padding-left:10px;">
+                                    BUET Written Special Model Test
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Chemistry
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </div>
+                            </td>
+                            <td>
+                              <a href="BulkPermission.html?tPin=47&amp;orgId=1&amp;proId=68&amp;sessId=58" data-id="" class="btn btn-success">
+                                Edit
+                              </a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="2">
+                              <div style="font-size: 16px;text-align:center">
+                                <strong>
+                                  College Admission Program (Online) - 2023
+                                </strong>
+                              </div>
+                              <hr style="margin-top:5px;">
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <div style="width: 30%; float: left;padding-left:20px;">
+                                <ul id="treeLists" class="list-unstyled">
+                                  <li>
+                                    <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked" style="padding-left:10px;">
+                                    College Admission Full Course
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Physics
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Chemistry
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Higher Mathematics
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </div>
+                            </td>
+                            <td>
+                              <a href="BulkPermission.html?tPin=47&amp;orgId=13&amp;proId=169&amp;sessId=61" data-id="" class="btn btn-success">
+                                Edit
+                              </a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="2">
+                              <div style="font-size: 16px;text-align:center">
+                                <strong>
+                                  College Admission Program - 2023
+                                </strong>
+                              </div>
+                              <hr style="margin-top:5px;">
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <div style="width: 30%; float: left;padding-left:20px;">
+                                <ul id="treeLists" class="list-unstyled">
+                                  <li>
+                                    <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked" style="padding-left:10px;">
+                                    College Admission Full Course
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Physics
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Chemistry
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Higher Mathematics
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </div>
+                            </td>
+                            <td>
+                              <a href="BulkPermission.html?tPin=47&amp;orgId=1&amp;proId=67&amp;sessId=61" data-id="" class="btn btn-success">
+                                Edit
+                              </a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="2">
+                              <div style="font-size: 16px;text-align:center">
+                                <strong>
+                                  Class 12 Academic Program Online - 2022
+                                </strong>
+                              </div>
+                              <hr style="margin-top:5px;">
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <div style="width: 30%; float: left;padding-left:20px;">
+                                <ul id="treeLists" class="list-unstyled">
+                                  <li>
+                                    <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked" style="padding-left:10px;">
+                                    2nd year Academic Course
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Physics
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Chemistry
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Higher Mathematics
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </div>
+                            </td>
+                            <td>
+                              <a href="BulkPermission.html?tPin=47&amp;orgId=13&amp;proId=178&amp;sessId=58" data-id="" class="btn btn-success">
+                                Edit
+                              </a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="2">
+                              <div style="font-size: 16px;text-align:center">
+                                <strong>
+                                  Engineering Admission Program - 2023
+                                </strong>
+                              </div>
+                              <hr style="margin-top:5px;">
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <div style="width: 30%; float: left;padding-left:20px;">
+                                <ul id="treeLists" class="list-unstyled">
+                                  <li>
+                                    <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked" style="padding-left:10px;">
+                                    BUET Written Special Model Test
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Chemistry
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </div>
+                            </td>
+                            <td>
+                              <a href="BulkPermission.html?tPin=47&amp;orgId=1&amp;proId=68&amp;sessId=61" data-id="" class="btn btn-success">
+                                Edit
+                              </a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="2">
+                              <div style="font-size: 16px;text-align:center">
+                                <strong>
+                                  Varsity 'KA' Admission Program (Online) - 2022
+                                </strong>
+                              </div>
+                              <hr style="margin-top:5px;">
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <div style="width: 30%; float: left;padding-left:20px;">
+                                <ul id="treeLists" class="list-unstyled">
+                                  <li>
+                                    <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked" style="padding-left:10px;">
+                                    Varsity 'KA' Crash Course
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Chemistry
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Higher Mathematics
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </div>
+                              <div style="width: 30%; float: left;padding-left:20px;">
+                                <ul id="treeLists" class="list-unstyled">
+                                  <li>
+                                    <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked" style="padding-left:10px;">
+                                    Varsity 'KA' Exam Pack + All Materials
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Physics
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Higher Mathematics
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </div>
+                            </td>
+                            <td>
+                              <a href="BulkPermission.html?tPin=47&amp;orgId=13&amp;proId=162&amp;sessId=58" data-id="" class="btn btn-success">
+                                Edit
+                              </a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="2">
+                              <div style="font-size: 16px;text-align:center">
+                                <strong>
+                                  Medical Admission Program - 2023
+                                </strong>
+                              </div>
+                              <hr style="margin-top:5px;">
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <div style="width: 30%; float: left;padding-left:20px;">
+                                <ul id="treeLists" class="list-unstyled">
+                                  <li>
+                                    <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked" style="padding-left:10px;">
+                                    Varsity KA Crash Course Service
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Bangla
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Physics
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Chemistry
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Higher Mathematics
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Mathematical Physics
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Mathematical Chemistry
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </div>
+                              <div style="width: 30%; float: left;padding-left:20px;">
+                                <ul id="treeLists" class="list-unstyled">
+                                  <li>
+                                    <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked" style="padding-left:10px;">
+                                    Varsity KA Crash Course for Medical Aspirants (Offline)
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Physics
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Chemistry
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Higher Mathematics
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Mathematical Physics
+                                      </li>
+                                    </ul>
+                                    <ul>
+                                      <li class="list-unstyled">
+                                        <input type="checkbox" name="selectedRole" disabled="disabled" checked="checked">
+                                        Mathematical Chemistry
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </div>
+                            </td>
+                            <td>
+                              <a href="BulkPermission.html?tPin=47&amp;orgId=2&amp;proId=74&amp;sessId=61" data-id="" class="btn btn-success">
+                                Edit
+                              </a>
+                            </td>
                           </tr>
                         </tbody>
                       </table>
-                      <br>
-                      <table id="DataGrid" class="display table table-striped table-bordered table-condensed table-hover table-responsive" style="display: none;">
-                        <thead>
-                          <tr>
-                            <th>Examiner</th>
-                            <th>Mobile Number</th>
-                            <th>Permission Status</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                          </tr>
-                        </thead>
-                        <tbody class="text-center"></tbody>
-                      </table>
                     </div>
                   </div>
+                  <div>
+                    <a href="index.html" data-id="" class="btn btn-primary">
+                      Back
+                    </a>
+                  </div>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  var requested=new URLSearchParams(location.search).get('tPin')||'47';
+  document.querySelectorAll('a[href^="BulkPermission.html?tPin="]').forEach(function(link){
+    var url=new URL(link.getAttribute('href'),location.href);url.searchParams.set('tPin',requested);link.setAttribute('href',url.pathname.split('/').pop()+url.search);
+  });
+});
+</script>
 
-
-                </div>
+</div>
                 <div class="container body-content">
                   <hr>
                 </div>
@@ -25296,8 +26307,8 @@ installFakeAjax({
         : '-';
       var permStatusText = e.hasPermission ? 'Has Permission' : 'No Permission';
       var actionHtml = '<a class="btn btn-success btn-xs" href="BulkPermission.html?tPin=' + e.tpin + '">Permission</a> ' +
-        (e.hasPermission ? '<a class="btn btn-primary btn-xs" href="ExaminerPermissionDetails.html?tPin=' + e.tpin + '">Details</a> ' : '<a class="btn btn-primary btn-xs" disabled="disabled" href="#">Details</a> ') +
-        '<a class="btn btn-warning btn-xs" href="ExaminerPermissionLog.html?tPin=' + e.tpin + '">Log</a>';
+        (e.hasPermission ? '<a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="bootbox.alert(\'এই ফিচারটি (Details) এই ডেমো ভার্সনে অন্তর্ভুক্ত নয়।\')">Details</a> ' : '<a class="btn btn-primary btn-xs" disabled="disabled" href="#">Details</a> ') +
+        '<a class="btn btn-warning btn-xs" href="javascript:void(0)" onclick="bootbox.alert(\'এই ফিচারটি (Log) এই ডেমো ভার্সনে অন্তর্ভুক্ত নয়।\')">Log</a>';
       return ['[' + e.tpin + '] - ' + escapeHtml(e.nickname) + ' (' + e.batchYear + ')', e.mobile, permStatusText, permHtml, actionHtml];
     });
     return { draw: data.draw, recordsTotal: res.total, recordsFiltered: res.total, data: rows };

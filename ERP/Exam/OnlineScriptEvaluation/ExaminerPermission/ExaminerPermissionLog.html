@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- <meta http-equiv="refresh" content="0;URL='http://dev.umsbd.net/'" />
     -->
-    <title>UMS - Manage Permission</title>
+    <title>UMS - Display Log Data (Demo Copy)</title>
     <style>/* bootstrap.css */
 /* NUGET: BEGIN LICENSE TEXT
  *
@@ -23201,118 +23201,60 @@ table.dataTable td {
 
 </script>
 
-                  <p>
-                    <a href="BulkPermission.html" data-id="" class="btn btn-primary">Bulk Permission</a>
-                  </p>
-                  <div class="panel panel-primary">
-                    <div class="panel-heading">
-                      <h4 class="panel-title">Manage Permission</h4>
-                    </div>
-                    <div class="panel-body">
-                      <table id="tableDiv" style="width: 100%;">
-                        <tbody>
-                          <tr>
-                            <th class="form-group">
-                              <select class="form-control" id="OrganizationId" name="OrganizationId">
-                                <option value="">All Organization</option>
-                                <option value="1">UDVASH</option>
-<option value="2">UNMESH</option>
-<option value="13">ONLINE CARE</option>
-<option value="12">UTTORON</option>
-<option value="14">UTKORSHO</option>
-<option value="11">Shikkha Poribar</option>
-<option value="3">OSL</option>
-<option value="4">Pi Labs</option>
-<option value="5">ORELCO</option>
-<option value="6">OWSL</option>
-<option value="7">TSB</option>
-<option value="8">OG</option>
-<option value="9">OP</option>
-<option value="10">ORP</option>
-<option value="15">OPL</option>
-<option value="16">OE</option>
-<option value="17">OU</option>
-<option value="18">OI</option>
-                              </select>
-                            </th>
-                            <th class="form-group">
-                              <select class="form-control" id="ProgramId" name="ProgramId">
-                                <option value="">All Program</option>
-                              </select>
-                            </th>
-                            <th class="form-group">
-                              <select class="form-control" id="SessionId" name="SessionId">
-                                <option value="">All Session</option>
-                              </select>
-                            </th>
-                            <th class="form-group">
-                              <select class="form-control" id="CourseId" name="CourseId">
-                                <option value="">All Course</option>
-                              </select>
-                            </th>
-                            <th class="form-group">
-                              <select class="form-control" id="SubjectId" name="SubjectId">
-                                <option value="">All Subject</option>
-                              </select>
-                            </th>
-                            <th class="form-group">
-                              <input id="keyword" name="Keyword" type="text" class="form-control " placeholder="[TPIN] Name (Batch)">
-                            </th>
-                          </tr>
-                          <tr class="form-group">
-                            <th class="form-group ">
-                              <input id="mobileNumber" name="mobileNumber" type="text" class="form-control" placeholder="Mobile Number">
-                            </th>
-                            <th class="form-group">
-                              <select class="form-control" id="permissionStatus" name="permissionStatus">
-                                <option value="">Permission Status</option>
-                                <option value="1">Has Permission</option>
-<option value="2">No Permission</option>
-                              </select>
-                            </th>
-                            <th class="form-group">
-                              <select class="form-control" id="TeacherLevelSelect" name="TeacherLevelSelect">
-                                <option value="">Teacher Level</option>
-                                <option value="1">Regular</option>
-<option value="2">Expert</option>
-<option value="3">Both</option>
-<option value="4">None</option>
-                              </select>
-                            </th>
-                            <th class="form-group">
-                              <select class="form-control" id="Status" name="Status">
-                                <option value="">Status</option>
-                                <option value="1">Active</option>
-<option value="-1">Inactive</option>
-                              </select>
-                            </th>
-                            <th class="form-group">
-                              <input id="PageSize" name="PageSize" type="text" class="form-control" placeholder="No of Data" value="10">
-                            </th>
-                            <th class="form-group">
-                              <input type="button" name="search" id="search" value="Search" class="form-control btn-primary">
-                            </th>
-                          </tr>
-                        </tbody>
-                      </table>
-                      <br>
-                      <table id="DataGrid" class="display table table-striped table-bordered table-condensed table-hover table-responsive" style="display: none;">
-                        <thead>
-                          <tr>
-                            <th>Examiner</th>
-                            <th>Mobile Number</th>
-                            <th>Permission Status</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                          </tr>
-                        </thead>
-                        <tbody class="text-center"></tbody>
-                      </table>
-                    </div>
-                  </div>
+                  
+<style>
+#legacyLogScroll{max-height:70vh;overflow:auto;border:1px solid #ddd}
+#legacyLogScroll table{margin:0;min-width:1000px}
+#legacyLogScroll thead th{position:sticky;top:0;z-index:2;background:#fff;text-align:center}
+#legacyLogScroll td{vertical-align:middle;text-align:center}
+#legacyLogScroll td:last-child{min-width:460px}
+.legacy-log-detail{margin:0 0 8px}
+.legacy-log-detail:last-child{margin-bottom:0}
+.legacy-log-detail strong{display:block;margin-bottom:3px;text-decoration:underline}
+.legacy-log-detail p{margin:0}
+#legacyLogFooter{display:flex;justify-content:space-between;align-items:center;padding-top:8px}
+#legacyLogFooter .paginate_button{display:inline-block;min-width:34px;padding:6px 10px;border:1px solid #ddd;color:#777;text-align:center}
+#legacyLogFooter .current{background:#eee;font-weight:bold}
+@media(max-width:767px){#legacyLogFooter{align-items:flex-start;flex-direction:column;gap:8px}}
+</style>
+<div class="panel panel-primary">
+  <div class="panel-heading"><h4 class="panel-title">Display Log Data</h4></div>
+  <div class="panel-body">
+    <div id="legacyLogScroll">
+      <table id="DataGrid" class="display table table-striped table-bordered table-condensed table-hover table-responsive">
+        <thead><tr><th>Examiner</th><th>Create By</th><th>Creation Date</th><th>Status</th><th>Permission Details</th></tr></thead>
+        <tbody class="text-center" id="legacyLogBody"></tbody>
+      </table>
+    </div>
+    <div id="legacyLogFooter"><div>Showing 1 to 44 of 44 entries</div><div><span class="paginate_button">Previous</span><span class="paginate_button current">1</span><span class="paginate_button">Next</span></div></div>
+  </div>
+</div>
+<input type="hidden" value="47" id="teacherId">
+<a href="index.html" class="btn btn-info">Back</a>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  var raw=Number(new URLSearchParams(location.search).get('tPin'));
+  var fallback=47;var tpin=Number.isFinite(raw)&&raw>0?raw:fallback;
+  var examiner=typeof examinerFromTpin==='function'?examinerFromTpin(tpin):null;
+  if(!examiner&&typeof examinerAt==='function'){var idx=Math.max(0,Math.round((tpin-40)/7));examiner=examinerAt(idx);tpin=examiner.tpin;}
+  examiner=examiner||{tpin:tpin,nickname:'Rafiq',batchYear:2020};
+  document.getElementById('teacherId').value=tpin;
+  var label='['+tpin+'] - '+examiner.nickname+' ('+examiner.batchYear+')';
+  var emails=['rezaul.karim@udvash.com','kamal.hossain@udvash.net','sharmin.akter@udvash.com','tanvir.ahmed@udvash.net'];
+  var programs=["Varsity 'KA' Admission Program (Online)",'Medical Admission Program','Engineering Admission Program','College Admission Program (Online)','Class 12 Academic Program Online'];
+  var courses=["Varsity 'KA' Model Test (Package-1) [Online]",'Medical & Dental Full Course [Online]','Engineering Full Course [Offline]','College Admission Full Course','2nd year Academic Course'];
+  var subjects=['Phy','Chem','HMath','Ban','Eng','Bio'];
+  var months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  function esc(value){return String(value).replace(/[&<>"']/g,function(ch){return({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[ch];});}
+  function stamp(date){var h=date.getHours();var suffix=h>=12?'PM':'AM';h=h%12||12;return String(date.getDate()).padStart(2,'0')+' '+months[date.getMonth()]+', '+date.getFullYear()+' '+String(h).padStart(2,'0')+':'+String(date.getMinutes()).padStart(2,'0')+' '+suffix;}
+  var anchor=new Date(2026,8,20,20,0,0);var rows='';
+  for(var i=0;i<44;i+=1){var date=new Date(anchor.getTime()-(i*3+i%5)*86400000-(i%8)*37*60000);var blocks='';var count=1+(i%3);for(var j=0;j<count;j+=1){var p=programs[(i+j)%programs.length];var c=courses[(i*2+j)%courses.length];var sub=subjects.slice((i+j)%3,(i+j)%3+3).join(',');blocks+='<div class="legacy-log-detail"><strong>'+esc(p)+' - '+(2026-(i+j)%5)+'</strong><p>'+esc(c)+' ('+esc(sub)+')</p></div>';}
+    rows+='<tr><td>'+esc(label)+'</td><td>'+emails[i%emails.length]+'</td><td>'+stamp(date)+'</td><td>'+(i%9===8?'Inactive':'Active')+'</td><td>'+blocks+'</td></tr>';}
+  document.getElementById('legacyLogBody').innerHTML=rows;
+});
+</script>
 
-
-                </div>
+</div>
                 <div class="container body-content">
                   <hr>
                 </div>
@@ -25296,8 +25238,8 @@ installFakeAjax({
         : '-';
       var permStatusText = e.hasPermission ? 'Has Permission' : 'No Permission';
       var actionHtml = '<a class="btn btn-success btn-xs" href="BulkPermission.html?tPin=' + e.tpin + '">Permission</a> ' +
-        (e.hasPermission ? '<a class="btn btn-primary btn-xs" href="ExaminerPermissionDetails.html?tPin=' + e.tpin + '">Details</a> ' : '<a class="btn btn-primary btn-xs" disabled="disabled" href="#">Details</a> ') +
-        '<a class="btn btn-warning btn-xs" href="ExaminerPermissionLog.html?tPin=' + e.tpin + '">Log</a>';
+        (e.hasPermission ? '<a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="bootbox.alert(\'এই ফিচারটি (Details) এই ডেমো ভার্সনে অন্তর্ভুক্ত নয়।\')">Details</a> ' : '<a class="btn btn-primary btn-xs" disabled="disabled" href="#">Details</a> ') +
+        '<a class="btn btn-warning btn-xs" href="javascript:void(0)" onclick="bootbox.alert(\'এই ফিচারটি (Log) এই ডেমো ভার্সনে অন্তর্ভুক্ত নয়।\')">Log</a>';
       return ['[' + e.tpin + '] - ' + escapeHtml(e.nickname) + ' (' + e.batchYear + ')', e.mobile, permStatusText, permHtml, actionHtml];
     });
     return { draw: data.draw, recordsTotal: res.total, recordsFiltered: res.total, data: rows };
