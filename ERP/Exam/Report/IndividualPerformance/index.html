@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Individual Performance | UMS Demo</title>
+<style>
+:root{
+ --brand:#4338ca;
+ --brand-dark:#312e81;
+ --ink:#172033;
+ --muted:#64748b;
+ --line:#dbe2ea;
+ --soft:#f6f8fc;
+ --danger:#dc2626;
+ --success:#15803d;
+}
+*{box-sizing:border-box}
+html{font-family:"Segoe UI",Arial,sans-serif;color:var(--ink)}
+body{margin:0;background:#eef2f7;font-size:14px}
+button,input,select{font:inherit}
+button,a{transition:.18s ease}
+.topbar{
+ height:58px;
+ display:flex;
+ align-items:center;
+ gap:22px;
+ padding:0 18px;
+ background:linear-gradient(110deg,var(--brand-dark),var(--brand));
+ color:#fff;
+ box-shadow:0 3px 15px #312e8138;
+ position:sticky;
+ top:0;
+ z-index:50
+}
+.brand{min-width:72px;font-size:18px;font-weight:800;line-height:.9;letter-spacing:-.4px}
+.topnav{display:flex;gap:4px;align-self:stretch}
+.topnav .module-item{
+ display:flex;
+ align-items:center;
+ padding:0 13px;
+ color:#e0e7ff;
+ text-decoration:none;
+ border-bottom:3px solid transparent
+}
+.top-actions{margin-left:auto;display:flex;align-items:center;gap:11px;flex-shrink:0}
+.demo-badge{
+ border:1px solid #c7d2fe;
+ border-radius:999px;
+ padding:5px 9px;
+ background:#ffffff14;
+ color:#fff;
+ text-decoration:none!important;
+ font-size:11px;
+ font-weight:700;
+ cursor:pointer
+}
+.profile{font-size:12px;color:#eef2ff}
+.icon-btn{border:0;background:#ffffff14;color:#fff;width:34px;height:34px;border-radius:9px;cursor:pointer}
+.layout{display:grid;grid-template-columns:250px minmax(0,1fr);min-height:calc(100vh - 58px)}
+.sidebar{
+ background:#fff;
+ border-right:1px solid var(--line);
+ padding:14px 12px 28px;
+ overflow:auto
+}
+.sidebar-search{position:relative;margin-bottom:12px}
+.module-title{
+ background:var(--brand);
+ color:#fff;
+ padding:10px 12px;
+ border-radius:8px;
+ font-weight:700;
+ margin-bottom:8px
+}
+.section-label{
+ width:100%;
+ text-align:left;
+ padding:10px 11px;
+ border:0;
+ background:#f1f5f9;
+ border-radius:7px;
+ color:#334155;
+ font-weight:700
+}
+.menu-section.open .section-label{color:var(--brand-dark)}
+.content{padding:18px;min-width:0}
+.panel{
+ background:#fff;
+ border:1px solid var(--line);
+ border-radius:11px;
+ box-shadow:0 3px 13px #0f172a0a;
+ overflow:hidden;
+ margin-bottom:16px
+}
+.panel-head{
+ min-height:46px;
+ display:flex;
+ align-items:center;
+ padding:0 14px;
+ background:linear-gradient(95deg,var(--brand-dark),var(--brand));
+ color:#fff
+}
+.filters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px 20px}
+.report-meta{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:0 0 12px;color:var(--muted);font-size:12px}
+body.sidebar-hidden .layout{grid-template-columns:0 minmax(0,1fr)}
+body.sidebar-hidden .sidebar{overflow:hidden;padding:0;border:0}
+@media(max-width:980px){
+ .topnav{display:none}
+ .layout{grid-template-columns:210px minmax(0,1fr)}
+ .filters{grid-template-columns:1fr}
+}
+@media(max-width:720px){
+ .topbar{gap:10px;padding:0 10px}
+ .demo-badge{font-size:10px;padding:4px 7px;white-space:nowrap}
+ .layout{display:block}
+ .sidebar{
+  position:fixed;
+  inset:58px auto 0 0;
+  width:250px;
+  z-index:45;
+  box-shadow:10px 0 25px #0f172a20
+ }
+ body.sidebar-hidden .sidebar{display:none}
+ body:not(.sidebar-hidden) .content{filter:brightness(.86)}
+ .content{padding:12px}
+}
+
+/* Canonical UMS Final Common Design shell */
+:root{
+ --nav:#4338ca;
+ --brand:#2f1031;
+ --brand-hover:#421744;
+ --demo:#10b981;
+ --primary:#428bca;
+ --primary-dark:#357ebd;
+ --danger:#d9534f;
+ --text:#333;
+ --muted:#777;
+ --line:#d9d9d9;
+ --soft:#f7f7f7;
+ --header-height:50px;
+ --sidebar-width:210px;
+ --content-gutter:15px;
+ --control-height:34px
+}
+html,body{margin:0;min-height:100%;font-family:"Open Sans",Arial,sans-serif;font-size:14px;color:var(--text);background:#fff}
+.topbar{
+ position:fixed;
+ z-index:60;
+ inset:0 0 auto;
+ height:var(--header-height);
+ display:flex;
+ align-items:center;
+ gap:0;
+ padding:0 15px;
+ background:var(--nav);
+ color:#fff;
+ box-shadow:0 1px 3px rgba(0,0,0,.35)
+}
+.brand{display:flex;align-items:center;flex:0 0 92px;width:92px;min-width:0;margin-left:-15px;font-size:0;line-height:normal}
+#sidebarToggle{display:none;width:40px;height:50px;border:0;border-radius:0;background:transparent;color:#fff;font-size:22px;line-height:1}
+.demo-badge{
+ display:flex;
+ align-items:center;
+ width:92px;
+ height:50px;
+ padding:0 0 0 8px;
+ border:0;
+ border-radius:0;
+ background:transparent;
+ color:#fff;
+ text-decoration:none!important;
+ font-size:0
+}
+.demo-badge::after{
+ content:"Demo Design";
+ display:inline-block;
+ padding:5px 6px;
+ border:2px solid #fff;
+ border-radius:6px;
+ background:var(--demo);
+ color:#fff;
+ font-size:11.5px;
+ font-weight:700;
+ line-height:1.2;
+ text-decoration:none!important;
+ white-space:nowrap
+}
+.demo-badge:hover,.demo-badge:focus,.demo-badge:active{color:#fff;text-decoration:none!important}
+.topnav{
+ display:flex;
+ align-items:center;
+ align-self:auto;
+ gap:0
+}
+.topnav .module-item{
+ display:block;
+ padding:15px;
+ color:#ddd;
+ line-height:20px;
+ border:0;
+ background:transparent;
+ cursor:default;
+ user-select:none
+}
+.topnav .module-item.active{color:#fff;border:0;background:transparent}
+.top-actions{position:static;margin-left:auto;display:flex;align-items:center;height:50px;gap:0;flex-shrink:0}
+.profile{display:block;padding:15px;color:#fff;font-size:14px}
+.top-actions .icon-btn{display:flex;align-items:center;justify-content:center;width:52px;height:50px;border:0;border-radius:0;background:transparent;color:#fff}
+.top-actions .icon-btn svg{width:18px;height:18px;fill:currentColor}
+.layout{
+ display:grid;
+ grid-template-columns:11% minmax(0,89%);
+ min-height:100vh;
+ padding-top:var(--header-height)
+}
+.sidebar{
+ width:100%;
+ max-width:var(--sidebar-width);
+ padding:10px 10px 0;
+ border-right:1px solid #cfcfcf;
+ background:#fff;
+ overflow:visible
+}
+.sidebar-search{position:relative;margin-bottom:5px}
+.sidebar-search input{width:100%;height:var(--control-height);padding:6px 34px 6px 12px;border:1px solid #ccc;border-radius:4px}
+.clear-search{position:absolute;top:4px;right:3px;width:26px;height:26px;padding:0;border:0;border-radius:50%;background:#ddd;color:#888;font-size:20px;line-height:22px}
+.module-title{
+ margin:0 0 5px;
+ padding:10px 15px;
+ border-radius:4px;
+ background:var(--brand);
+ color:#fff;
+ font-weight:400;
+ font-size:14px;
+ line-height:20px
+}
+.menu-section{margin:0 0 5px;border:1px solid #ddd;border-radius:4px;background:#f5f5f5;box-shadow:0 1px 1px rgba(0,0,0,.05)}
+.section-label{
+ width:100%;
+ padding:10px 15px;
+ border:0;
+ border-radius:0;
+ background:transparent;
+ color:#333;
+ text-align:left;
+ font-weight:400;
+ line-height:20px
+}
+.menu-section.open .section-label{color:#333}
+.submenu{display:none;padding:4px 11px 7px;background:#fff}
+.menu-section.open .submenu{display:block}
+.submenu a{display:block;padding:5px 0;border:0;border-bottom:1px solid #eee;color:#3d2b3e;font-size:14px;line-height:normal;text-decoration:none}
+.submenu a.active{border-left:0;background:transparent;color:#3d2b3e;font-weight:700}
+.content{
+ min-width:0;
+ padding:10px var(--content-gutter) 70px
+}
+.panel{
+ margin-bottom:15px;
+ border:1px solid var(--brand);
+ border-radius:4px;
+ background:#fff;
+ overflow:visible;
+ box-shadow:0 1px 1px rgba(0,0,0,.05)
+}
+.panel-head{
+ min-height:40px;
+ padding:9px 15px;
+ border-radius:3px 3px 0 0;
+ background:var(--brand);
+ color:#fff
+}
+#filterPanel .panel-head{cursor:pointer;user-select:none}
+#reportPanel .panel-head{cursor:default;user-select:auto}
+#reportPanel .panel-toggle{display:none}
+.panel-head h1,.panel-head h2{margin:0;font-size:14px;font-weight:700}
+.panel-body{padding:15px}
+.filters{grid-template-columns:1fr 1fr;column-gap:45px;row-gap:15px}
+.report-meta{padding:0;margin:0 0 12px;color:#333;font-size:13px}
+
+body.sidebar-hidden .layout{
+ grid-template-columns:11% minmax(0,89%)
+}
+body.sidebar-hidden .sidebar{
+ padding:10px 10px 0;
+ border-right:1px solid #cfcfcf;
+ overflow:visible
+}
+@media(max-width:1600px){
+ .layout{grid-template-columns:13% minmax(0,87%)}
+ body.sidebar-hidden .layout{
+  grid-template-columns:13% minmax(0,87%)
+ }
+}
+@media(max-width:1000px){
+ .layout,body.sidebar-hidden .layout{
+  grid-template-columns:minmax(0,1fr)
+ }
+ .sidebar,body.sidebar-hidden .sidebar{
+  position:fixed;
+  z-index:55;
+  top:50px;
+  bottom:0;
+  left:-230px;
+  width:210px;
+  max-width:210px;
+  overflow:auto;
+  padding:10px 10px 0;
+  border-right:1px solid #cfcfcf;
+  transition:left .2s
+ }
+ body:not(.sidebar-hidden) .sidebar{left:0}
+ body:not(.sidebar-hidden) .content{filter:none}
+ #sidebarToggle{display:block}
+ .topnav,.top-actions{display:none}
+ .content{padding:10px 10px 70px}
+}
+@media(max-width:760px){
+ .demo-badge{width:auto;padding-left:0}
+ .content{padding:5px 5px 70px}
+}
+
+/* Page-specific content; common shell above remains unchanged. */
+#lookupForm{max-width:515px;margin:0 auto}
+#lookupForm input{width:100%;height:34px;padding:6px 12px;border:1px solid #ccc;border-radius:4px;color:#333}
+.form-actions{display:flex;justify-content:center;margin-top:6px}
+.btn{min-height:34px;padding:6px 12px;border:1px solid #357ebd;border-radius:4px;background:#428bca;color:#fff;cursor:pointer}
+.btn:hover,.btn:focus{background:#357ebd}
+.btn-small{min-height:31px;padding:5px 11px}
+.lookup-error{display:none;margin-top:5px;color:#d9534f;font-size:12px}
+.lookup-error.show{display:block}
+.student-summary{display:grid;grid-template-columns:minmax(0,1fr) 90px;gap:18px;align-items:start;margin:0 5px 20px}
+.student-facts{margin:0;line-height:1.55}
+.student-facts div{display:grid;grid-template-columns:108px minmax(0,1fr);gap:4px}
+.student-facts dt,.student-facts dd{margin:0}
+.student-photo{width:86px;height:100px;justify-self:end;border:1px solid #d9d9d9;background:#282828;object-fit:cover}
+.table-scroll{width:100%;overflow:auto;border:1px solid #ddd}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:8px;border:1px solid #ddd;text-align:center;vertical-align:middle}
+th{background:#fafafa;font-weight:700}
+#programTable{min-width:820px}
+#programTable th:nth-child(2),#programTable td:nth-child(2){width:24%}
+.report-head-actions{margin-left:auto}
+.print-icon{width:30px;height:25px;border:0;background:transparent;color:#fff;cursor:pointer}
+.print-icon svg{width:16px;height:16px;fill:currentColor}
+.report-document{font-family:Calibri,"Open Sans",Arial,sans-serif;font-size:12px;color:#222}
+.report-title-grid{display:grid;grid-template-columns:1fr 1fr 1fr;align-items:start;gap:12px}
+.logo-mark{width:100px;height:80px;display:flex;align-items:center}
+.logo-emblem{width:54px;height:68px;border:2px solid #d3ae1e;border-radius:4px;display:grid;place-items:center;background:#fff;color:#2f1031;font-size:31px;font-weight:800;line-height:1}
+.report-title{text-align:center;padding-top:6px;line-height:1.5}
+.report-title strong{display:block}
+.report-photo{width:80px;height:80px;justify-self:end;background:#282828;border:1px solid #444}
+.student-report-meta{display:grid;grid-template-columns:1fr 1fr;gap:3px 20px;margin:6px 0 10px;font-weight:700}
+.student-report-meta div:nth-child(even){text-align:right}
+.report-filter-form{display:grid;grid-template-columns:2fr 2fr 1.25fr 1.1fr .7fr;gap:8px;margin-bottom:8px}
+.report-filter-form select{width:100%;height:34px;padding:6px 9px;border:1px solid #ccc;border-radius:3px;background:#fff;color:#333}
+.report-filter-form .btn{width:100%}
+.filter-caption{display:grid;grid-template-columns:1fr 1fr 1fr;padding:8px 0;border-bottom:1px solid #222;text-align:center;font-weight:700}
+.filter-caption[hidden]{display:none}
+.course-block{margin-top:10px}
+.course-name{margin:0 0 4px;font-size:12px;font-weight:700}
+.performance-scroll{max-height:620px;overflow:auto;border:1px solid #222}
+.performance-table{min-width:1510px;font-size:12px;table-layout:fixed}
+.performance-table th,.performance-table td{height:38px;padding:5px;border:1px solid #222}
+.performance-table th{position:sticky;top:0;z-index:2;white-space:nowrap}
+.performance-table th:first-child,.performance-table td:first-child{position:sticky;left:0;width:58px;min-width:58px;background:#fff;z-index:1}
+.performance-table th:first-child{z-index:3;background:#fafafa}
+.performance-table th:nth-child(2){width:100px}.performance-table th:nth-child(3){width:240px}
+.performance-table td:nth-child(3){text-align:left}
+.course-total{text-align:right;padding:5px 2px;font-weight:700}
+.merit-title{margin:8px 0 4px;font-weight:700}
+.merit-scroll{overflow:auto;border:1px solid #222}
+.merit-table{min-width:1220px;font-size:12px}
+.merit-table th,.merit-table td{border:1px solid #222;padding:6px}
+.signatures{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin:56px 10px 24px;font-weight:700;text-align:center}
+.signatures div{border-top:1px solid #222;padding-top:4px}
+.print-actions{text-align:center;margin:12px 0 5px}
+footer{text-align:center;padding:30px 0 10px;color:#333;font-size:12px}
+.modal{position:fixed;inset:0;display:none;place-items:center;padding:18px;background:rgba(0,0,0,.45);z-index:90}
+.modal.open{display:grid}
+.modal-card{width:min(440px,100%);padding:20px;border-radius:5px;background:#fff;box-shadow:0 15px 45px rgba(0,0,0,.3)}
+.modal-card h3{margin:0 0 8px;color:#2f1031}.modal-card p{margin:0 0 16px;line-height:1.5}
+@media(max-width:760px){
+ .student-summary{grid-template-columns:1fr auto;gap:10px}
+ .student-report-meta{grid-template-columns:1fr}.student-report-meta div:nth-child(even){text-align:left}
+ .report-title-grid{grid-template-columns:auto 1fr auto}.logo-mark{width:58px}.logo-emblem{width:46px;height:58px;font-size:26px}.report-title{font-size:10px}.report-photo{width:58px;height:66px}
+ .report-filter-form{grid-template-columns:1fr}
+ .filter-caption{grid-template-columns:1fr;text-align:left;gap:4px}
+}
+@media(max-width:430px){.student-summary{grid-template-columns:1fr}.student-photo{justify-self:start;grid-row:1}}
+@media print{
+ body{background:#fff}.topbar,.sidebar,#lookupStage,#detailsPanel,.report-head-actions,.report-filter-form,.print-actions,footer{display:none!important}
+ [class~="layout"]{display:block!important;padding:0!important}main{padding:0!important}#reportPanel{border:0!important;margin:0!important}#reportPanel>div:first-child{display:none!important}.panel-body{padding:0!important}
+ .performance-scroll,.merit-scroll{max-height:none;overflow:visible;border:0}.performance-table,.merit-table{min-width:100%;font-size:8px}.performance-table th,.performance-table td{height:auto;padding:3px;position:static!important}.course-block{break-inside:avoid-page}
+}
+</style>
+</head>
+<body class="sidebar-hidden-mobile">
+<header class="topbar">
+ <div class="brand">
+  <button class="icon-btn" id="sidebarToggle" type="button" aria-label="Toggle menu">☰</button>
+  <a class="demo-badge" href="https://onikcreation.com/cp/" target="_blank" rel="noopener noreferrer" title="CP হোমপেইজ নতুন ট্যাবে খুলুন">Demo Design</a>
+ </div>
+ <nav class="topnav" aria-label="Module navigation">
+  <span class="module-item">Student</span><span class="module-item">CRM</span><span class="module-item active" aria-current="page">Exam</span><span class="module-item">Teacher</span><span class="module-item">Team</span><span class="module-item">Inventory</span><span class="module-item">Administration</span>
+ </nav>
+ <div class="top-actions">
+  <span class="profile">Al Amin Anik ▼</span>
+  <button class="icon-btn" type="button" data-demo-message="Logout is disabled in the offline demo." aria-label="Log off"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M7.5 1v7h1V1h-1zM5.17 2.18a6 6 0 1 0 5.66 0l-.47.88a5 5 0 1 1-4.72 0l-.47-.88z"/></svg></button>
+ </div>
+</header>
+<div class="layout">
+ <aside class="sidebar">
+  <div class="sidebar-search"><input id="menuSearch" type="search" placeholder="Search By Menu.." aria-label="Search menu"><button class="clear-search" id="clearSearch" type="button" aria-label="Clear search">×</button></div>
+  <div class="module-title">Exam</div>
+  <div class="menu-section open">
+   <button class="section-label" type="button">Report</button>
+   <div class="submenu"><a class="active" href="./">Individual Performance</a></div>
+  </div>
+ </aside>
+ <main class="content">
+  <div id="lookupStage">
+   <section class="panel" id="searchPanel">
+    <div class="panel-head"><h1>Individual Performance</h1></div>
+    <div class="panel-body">
+     <form id="lookupForm" action="javascript:void(0)" novalidate>
+      <input id="RollNumber" name="RollNumber" type="text" inputmode="numeric" maxlength="11" autocomplete="off" placeholder="Enter Registration No. / Roll Number" aria-label="Registration No. / Roll Number" aria-describedby="RollInvalidText">
+      <span class="lookup-error" id="RollInvalidText" role="alert">Please give student roll number!</span>
+      <div class="form-actions"><button class="btn" id="btnSubmit" type="button">Submit</button></div>
+     </form>
+    </div>
+   </section>
+   <section class="panel" id="detailsPanel" hidden>
+    <div class="panel-head"><h2>Details</h2></div>
+    <div class="panel-body">
+     <div class="student-summary">
+      <dl class="student-facts">
+       <div><dt>Full Name</dt><dd>: NABIL RAHMAN</dd></div><div><dt>Nick Name</dt><dd>: Nabil</dd></div><div><dt>Mobile Number</dt><dd>: 8801600000001</dd></div><div><dt>Gender</dt><dd>: Male</dd></div><div><dt>Religion</dt><dd>: Islam</dd></div>
+      </dl>
+      <img class="student-photo" alt="Demo student placeholder" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='86' height='100' viewBox='0 0 86 100'%3E%3Crect width='86' height='100' fill='%23282828'/%3E%3Ccircle cx='43' cy='30' r='18' fill='%23e7e7e7'/%3E%3Cpath d='M17 93c2-25 12-38 26-38s24 13 26 38' fill='%23e7e7e7'/%3E%3C/svg%3E">
+     </div>
+     <div class="table-scroll">
+      <table id="programTable"><thead><tr><th>Admission Date</th><th>Program</th><th>Session</th><th>Total Exam(s)</th><th>Present</th><th>Absent</th><th>Action</th></tr></thead><tbody>
+       <tr><td>Jun 16, 2026</td><td>Employee Training Program (ETP)</td><td>2026</td><td>25</td><td>11</td><td>14</td><td><button class="btn btn-small view-report" type="button" data-session="2026">View Report</button></td></tr>
+       <tr><td>Apr 06, 2023</td><td>Employee Training Program (ETP)</td><td>2021</td><td>73</td><td>12</td><td>61</td><td><button class="btn btn-small view-report" type="button" data-session="2021">View Report</button></td></tr>
+      </tbody></table>
+     </div>
+    </div>
+   </section>
+  </div>
+
+  <section class="panel" id="reportPanel" hidden>
+   <div class="panel-head"><h2>Student's Performance Report</h2><div class="report-head-actions"><button class="print-icon" id="iconPrint" type="button" title="Print" aria-label="Print"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h12v5H6V2zm12 16v4H6v-4H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-2zm-2-2H8v4h8v-4zm3-6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg></button></div></div>
+   <div class="panel-body report-document">
+    <div class="report-title-grid">
+     <div class="logo-mark" aria-label="Udvash logo"><div class="logo-emblem">U</div></div>
+     <div class="report-title"><strong>UDVASH Academic &amp; Admission Care</strong><strong id="programHeading">Employee Training Program (ETP) 2021</strong><strong>Student's Performance Report</strong></div>
+     <img class="report-photo" alt="Demo student placeholder" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Crect width='80' height='80' fill='%23282828'/%3E%3Ccircle cx='40' cy='23' r='15' fill='%23e7e7e7'/%3E%3Cpath d='M13 78c2-22 11-34 27-34s25 12 27 34' fill='%23e7e7e7'/%3E%3C/svg%3E">
+    </div>
+    <div class="student-report-meta"><div>Student's Name : NABIL RAHMAN</div><div>Institute : DEMO MODEL ACADEMY</div><div>Reg. &amp; Roll No. : <span id="reportRegistration">1997219</span> (65200000001)</div><div>Branch : Corporate Udvash</div></div>
+    <form id="reportForm" class="report-filter-form" action="javascript:void(0)">
+     <select id="CourseId" aria-label="Course"><option value="all">All Course</option><option value="home">Home Practice Model Test 2025</option><option value="employee">Employee Training Course 2021</option></select>
+     <select id="SubjectId" aria-label="Subject"><option value="all">All Subject</option></select>
+     <select id="ExamPlatform" aria-label="Exam platform"><option value="all">All Platform</option><option value="In-Branch Exam">In-Branch Exam</option><option value="Live Exam">Live Exam</option><option value="Practice Exam">Practice Exam</option></select>
+     <select id="examAttendance" aria-label="Exam attendance"><option value="all">All Exam</option><option value="present">Present</option><option value="absent">Absent</option></select>
+     <button class="btn" type="submit">View</button>
+    </form>
+    <div class="filter-caption" id="filterCaption" hidden><div>Course: <span id="courseHeader"></span></div><div>Subject: <span id="subjectHeader"></span></div><div>Exam Platform: <span id="examPlatformHeader"></span></div></div>
+    <div id="bottomPart"></div>
+    <div class="merit-title">Course Merit Calculation</div>
+    <div class="merit-scroll"><table class="merit-table"><thead><tr><th>Serial</th><th>Course Name</th><th>Total MCQ Marks</th><th>Total Written Marks</th><th>Total Deduction</th><th>Total Obtained Marks</th><th>Total Exam</th><th>Highest marks</th><th>Average marks</th><th>Course Branch Merit</th><th>Course Central Merit</th></tr></thead><tbody><tr><td>01</td><td>Employee Training Course 2021<br><span>(Based on In-Branch Exam + Live Exam)</span></td><td>19.25 / 706</td><td>236.5 / 1184</td><td>0</td><td>255.75 / 1890</td><td>4 / 15</td><td>255.75 / 1890</td><td>55.29</td><td>1</td><td>1</td></tr></tbody></table></div>
+    <div class="course-total">Total Marks Obtained: 255.75 / 1890&nbsp;&nbsp;</div>
+    <div class="signatures"><div>Prepared By</div><div>Verified By</div><div>Director</div></div>
+    <div class="print-actions"><button class="btn" id="btnPrint" type="button">Print</button></div>
+   </div>
+  </section>
+  <footer>© 2026 - UMS</footer>
+ </main>
+</div>
+
+<div class="modal" id="messageModal" role="dialog" aria-modal="true" aria-labelledby="messageModalTitle"><div class="modal-card"><h3 id="messageModalTitle">Offline Demo</h3><p id="messageText"></p><button class="btn" id="closeMessage" type="button">Close</button></div></div>
+
+<script>
+(function(){
+'use strict';
+var byId=function(id){return document.getElementById(id);};
+var currentRegistration='1997219';
+var subjectCatalog={
+ all:['Bangla 1st Paper','Bangla 2nd Paper','English 1st Paper','English 2nd Paper','Bangla','Mathematics','Higher Mathematics','English','General Science','Home Science','Islam and Moral Education','Hindu Religion and Moral Education','Christian Religion and Moral Education','Buddhist Religion and Moral Education','Physics','Chemistry','Biology','Statistics','ICT','BGS','General Knowledge','Chemistry 1st Paper','Chemistry 2nd Paper','Physics 1st Paper','Physics 2nd Paper','Higher Mathematics 1st Paper','Higher Mathematics 2nd Paper','Bangladesh Affairs'],
+ home:['Bangla','English','Mathematics','General Science','Physics','Chemistry','Biology','ICT','General Knowledge'],
+ employee:['General Knowledge','ICT','English']
+};
+var homeNames=['Home Practice Final Model Test-01','Home Practice Final Model Test-02','Home Practice Final Model Test-03','Home Practice Final Model Test-04','Home Practice Final Model Test-05','Exam Book Paper Final Model Test-01','Exam Book Paper Final Model Test-02','Exam Book MAP Monthly Review Exam-01','Exam Book MAP Weekly MCQ Exam-01','Exam Book MAP Weekly MCQ Exam-02','Exam Book Subject Final Biology','Exam Book Subject Final Chemistry 1st Paper','Exam Book Subject Final English 1st Paper','Exam Book Subject Final General Knowledge'];
+var employeeNames=['HR Appraisal Written Live Exam','Physics Continuous Exam','Chemistry Practice Exam','MAP OMR Scan Exam','Soft Skill & Training Weekly Live Exam','Merit Set Practice Exam','Executive Written Upload Live Exam','Subject Final Live Exam Chemistry for HCE','Subject Final Live Exam Chemistry for NCC','Weekly Live MCQ and SAQ Exam','Written Final Model Test English-001','Written Final Bangladesh-001','Patron Live Training Exam-2026','Online Question Exam','MCQ Question Exam','Questions Exam','MAP Practice Exam OMR Scan','Class + Chapterwise Final Physics-05'];
+function makeRows(course,count,names,startYear){
+ var rows=[];
+ for(var index=0;index<count;index+=1){
+  var absent=(course==='home'&&index!==15&&index!==49)||(course==='employee'&&[0,1,2,10,11,12,13,14].indexOf(index)>-1);
+  var platform=course==='home'?'In-Branch Exam':(['Live Exam','Practice Exam','In-Branch Exam'][index%3]);
+  var subject=course==='home'?subjectCatalog.home[index%subjectCatalog.home.length]:subjectCatalog.employee[index%subjectCatalog.employee.length];
+  var max=course==='home'?100:[25,18,30,40,55,10,35,85,40,200,200,200,50][index%13];
+  var obtained=absent?0:Math.round((max*(.42+(index%7)*.065))*100)/100;
+  var mcq=absent?'A':(platform==='Practice Exam'?(Math.min(obtained,10)+' / '+Math.min(max,10)):'N/A');
+  var written=absent?'N/A':((obtained-(platform==='Practice Exam'?Math.min(obtained,10):0)).toFixed(2).replace(/\.00$/,'')+' / '+(max-(platform==='Practice Exam'?Math.min(max,10):0)));
+  var month=course==='home'?(index<15?'Nov':'Aug'):(index<3?'Sep':'Aug');
+  rows.push({course:course,serial:String(index+1).padStart(2,'0'),date:String(28-(index%20)).padStart(2,'0')+' '+month+', '+startYear,name:'['+(138-index)+'] '+names[index%names.length],platform:platform,subject:subject,attendance:absent?'absent':'present',mcq:mcq,written:written,deduction:'0',total:(absent?'0':obtained)+' / '+max,highest:(Math.round(max*(.85+(index%4)*.05)*100)/100)+' / '+max,average:(Math.round((35+(index*7)%31)*100)/100).toFixed(2),branch:absent?'-':String(1+(index%9)),central:absent?'-':String(5+(index*11)%121),mode:platform==='Live Exam'?'Online':(index%16===15?'OMR Sheet':'-'),action:(!absent&&index%7===1)?'View Analysis Report':'-'});
+ }
+ return rows;
+}
+var allRows=makeRows('home',50,homeNames,2025).concat(makeRows('employee',23,employeeNames,2026));
+function showMessage(message){byId('messageText').textContent=message;byId('messageModal').classList.add('open');}
+function closeMessage(){byId('messageModal').classList.remove('open');}
+function submitLookup(){
+ var input=byId('RollNumber');var value=input.value.trim();
+ if(!value){byId('RollInvalidText').classList.add('show');input.focus();return;}
+ currentRegistration=value;byId('RollInvalidText').classList.remove('show');byId('detailsPanel').hidden=false;byId('detailsPanel').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function rebuildSubjects(){
+ var course=byId('CourseId').value;var list=subjectCatalog[course]||subjectCatalog.all;var select=byId('SubjectId');var old=select.value;select.innerHTML='<option value="all">All Subject</option>';
+ list.forEach(function(subject){var option=document.createElement('option');option.value=subject;option.textContent=subject;select.appendChild(option);});
+ if(Array.from(select.options).some(function(option){return option.value===old;}))select.value=old;
+}
+function cell(value){var node=document.createElement('td');node.textContent=value;return node;}
+function courseBlock(course,rows){
+ var section=document.createElement('section');section.className='course-block';
+ var heading=document.createElement('h3');heading.className='course-name';heading.textContent=course==='home'?'Home Practice Model Test 2025':'Employee Training Course 2021';section.appendChild(heading);
+ var scroll=document.createElement('div');scroll.className='performance-scroll';var table=document.createElement('table');table.className='performance-table';
+ var labels=['Serial','Date','Exam Name','Platform','MCQ Marks','Written Marks','Deduction','Total Marks','Highest Marks','Average Marks','Branch Merit','Central Merit','Online Exam Mode','Action'];
+ var thead=document.createElement('thead');var headRow=document.createElement('tr');labels.forEach(function(label){var th=document.createElement('th');th.textContent=label;headRow.appendChild(th);});thead.appendChild(headRow);table.appendChild(thead);
+ var tbody=document.createElement('tbody');rows.forEach(function(row){var tr=document.createElement('tr');['serial','date','name','platform','mcq','written','deduction','total','highest','average','branch','central','mode'].forEach(function(key){tr.appendChild(cell(row[key]));});var action=document.createElement('td');if(row.action==='-'){action.textContent='-';}else{var button=document.createElement('button');button.type='button';button.className='btn btn-small analysis-action';button.textContent='View Analysis Report';action.appendChild(button);}tr.appendChild(action);tbody.appendChild(tr);});table.appendChild(tbody);scroll.appendChild(table);section.appendChild(scroll);
+ var total=document.createElement('div');total.className='course-total';total.textContent=course==='home'?'Total Marks Obtained: 68.5/5000  ':'Total Marks Obtained: 217.5/1420  ';section.appendChild(total);return section;
+}
+function renderReport(){
+ var course=byId('CourseId').value,subject=byId('SubjectId').value,platform=byId('ExamPlatform').value,attendance=byId('examAttendance').value;
+ var rows=allRows.filter(function(row){return (course==='all'||row.course===course)&&(subject==='all'||row.subject===subject)&&(platform==='all'||row.platform===platform)&&(attendance==='all'||row.attendance===attendance);});
+ var holder=byId('bottomPart');holder.innerHTML='';['home','employee'].forEach(function(key){if(course!=='all'&&course!==key)return;var group=rows.filter(function(row){return row.course===key;});if(group.length)holder.appendChild(courseBlock(key,group));});
+ if(!rows.length){var empty=document.createElement('p');empty.textContent='No performance records found for the selected filters.';holder.appendChild(empty);}
+ byId('filterCaption').hidden=course==='all'&&subject==='all'&&platform==='all';
+ byId('courseHeader').textContent=byId('CourseId').options[byId('CourseId').selectedIndex].textContent;byId('subjectHeader').textContent=byId('SubjectId').options[byId('SubjectId').selectedIndex].textContent;byId('examPlatformHeader').textContent=byId('ExamPlatform').options[byId('ExamPlatform').selectedIndex].textContent;
+}
+function openReport(session){
+ byId('programHeading').textContent='Employee Training Program (ETP) '+session;byId('reportRegistration').textContent=currentRegistration;byId('lookupStage').hidden=true;byId('reportPanel').hidden=false;rebuildSubjects();renderReport();history.pushState({report:true},'',location.pathname+'#report');window.scrollTo(0,0);
+}
+byId('RollNumber').addEventListener('input',function(){this.value=this.value.replace(/\D/g,'').slice(0,11);if(this.value)byId('RollInvalidText').classList.remove('show');});
+byId('RollNumber').addEventListener('keydown',function(event){if(event.key==='Enter'){event.preventDefault();submitLookup();}});
+byId('btnSubmit').addEventListener('click',submitLookup);
+document.querySelectorAll('.view-report').forEach(function(button){button.addEventListener('click',function(){openReport(this.getAttribute('data-session'));});});
+byId('CourseId').addEventListener('change',rebuildSubjects);
+byId('reportForm').addEventListener('submit',function(event){event.preventDefault();renderReport();});
+byId('bottomPart').addEventListener('click',function(event){if(event.target.closest('.analysis-action'))showMessage('এই ফিচারটি (View Analysis Report) এই ডেমো ভার্সনে অন্তর্ভুক্ত নয়।');});
+byId('iconPrint').addEventListener('click',function(){window.print();});byId('btnPrint').addEventListener('click',function(){window.print();});
+byId('closeMessage').addEventListener('click',closeMessage);byId('messageModal').addEventListener('click',function(event){if(event.target===this)closeMessage();});
+document.querySelector('[data-demo-message]').addEventListener('click',function(){showMessage(this.getAttribute('data-demo-message'));});
+byId('sidebarToggle').addEventListener('click',function(){document.body.classList.toggle('sidebar-hidden');});
+function filterMenu(){var query=byId('menuSearch').value.trim().toLowerCase();document.querySelector('.menu-section').style.display=document.querySelector('.menu-section').textContent.toLowerCase().indexOf(query)>-1?'':'none';}
+byId('menuSearch').addEventListener('input',filterMenu);byId('clearSearch').addEventListener('click',function(){byId('menuSearch').value='';filterMenu();byId('menuSearch').focus();});
+window.addEventListener('popstate',function(){if(location.hash!=='#report'){byId('lookupStage').hidden=false;byId('reportPanel').hidden=true;}});
+document.addEventListener('click',function(event){var link=event.target.closest('a');if(!link)return;var href=link.getAttribute('href')||'';if(link.classList.contains('demo-badge'))return;if(/^https?:\/\//i.test(href)||href.charAt(0)==='/'){event.preventDefault();showMessage('This navigation is disabled in the offline demo.');}},true);
+document.addEventListener('submit',function(event){if(event.target!==byId('lookupForm')&&event.target!==byId('reportForm'))event.preventDefault();},true);
+if(window.matchMedia('(max-width:1000px)').matches)document.body.classList.add('sidebar-hidden');
+rebuildSubjects();
+}());
+</script>
+</body>
+</html>
