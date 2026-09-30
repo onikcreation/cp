@@ -10831,12 +10831,30 @@ function getDPI() {
                 e.preventDefault();
             });
 
+            function dashboardEntryContext(button) {
+                var row = $(button).closest('tr');
+                var cells = row.children('td');
+                var hasProgramCell = cells.length === 11;
+                var programRow = hasProgramCell ? row : row.prevAll('tr').filter(function () {
+                    return $(this).find('.entry').length && $(this).children('td').length === 11;
+                }).first();
+                var program = $.trim(programRow.children('td').eq(0).text()).replace(/\s*\[UDVASH\]\s*$/i, '');
+                var offset = hasProgramCell ? 1 : 0;
+                return {
+                    trackingId: $(button).attr('data-trackingId') || '',
+                    conversationId: $(button).attr('data-conversationId') || '',
+                    program: program,
+                    dataType: $.trim(cells.eq(offset + 1).text()),
+                    conversationType: $.trim(cells.eq(offset + 4).text())
+                };
+            }
+
             $(document).on('click', '.entry', function () {
                 var entryHandle = $(this);
                 var firstEntry = entryHandle[0].textContent.trim();
-
-                let trackingId = $(this).attr('data-trackingId');
-                let conversationId = $(this).attr('data-conversationId');
+                var context = dashboardEntryContext(this);
+                let trackingId = context.trackingId;
+                let conversationId = context.conversationId;
                 let ncyCount = parseInt($(this).attr('data-ncy'), 10) || 0;
                 let cnrCount = parseInt($(this).attr('data-cnr'), 10) || 0;
 
@@ -10848,7 +10866,7 @@ function getDPI() {
                         // (both = old behaviour, NCY first then CNR).
                         $('#entryTypeNcyCount').text(ncyCount);
                         $('#entryTypeCnrCount').text(cnrCount);
-                        $('#entryTypeModal').data('trackingId', trackingId).data('conversationId', conversationId);
+                        $('#entryTypeModal').data('entryContext', context);
                         $('#entryTypeNcyBtn').toggle(ncyCount > 0);
                         $('#entryTypeCnrBtn').toggle(cnrCount > 0);
                         $('#entryTypeBothBtn').toggle(ncyCount > 0 && cnrCount > 0);
@@ -10870,16 +10888,19 @@ function getDPI() {
 
             // Demo: the real page opens a new tab straight to the Single Entry detail page
             // for the clicked row, no filter step in between — simulated here by opening the
-            // Conversation Entry demo page with "direct=1" (skip its own filter+list landing
-            // view) plus a new "entryType" marker (ncy / cnr / both) recording which option the
-            // user picked in the popup above. This offline demo's Conversation Entry page is
-            // still a single static form (no real per-student queue against backend data), so
-            // entryType has no visible effect here yet — on the live site it needs to drive
-            // which subset of students (Not Called Yet only / Call Not Received only / both,
-            // NCY first then CNR) the backend queues up next.
+            // Conversation Entry Draft with direct-view, queue type and clicked-row context.
+            // The target page uses this context to show the selected Program/Tracking/Data Type
+            // and to default the Live Class Link Share Class + Program filters.
             function openEntryTypeTarget(entryType) {
+                var context = $('#entryTypeModal').data('entryContext') || {};
+                var query = '?direct=1&entryType=' + encodeURIComponent(entryType)
+                    + '&trackingId=' + encodeURIComponent(context.trackingId || '')
+                    + '&conversationId=' + encodeURIComponent(context.conversationId || '')
+                    + '&program=' + encodeURIComponent(context.program || '')
+                    + '&dataType=' + encodeURIComponent(context.dataType || '')
+                    + '&conversationType=' + encodeURIComponent(context.conversationType || '');
                 $('#entryTypeModal').modal('hide');
-                window.open(siblingPageUrl('ConversationEntry', 'CrmConversationEntry_Offline.html') + '?direct=1&entryType=' + entryType, '_blank');
+                window.open(siblingPageUrl('ConversationEntry', 'CrmConversationEntry_Offline.html') + query, '_blank');
             }
             $('#entryTypeNcyBtn').on('click', function () { openEntryTypeTarget('ncy'); });
             $('#entryTypeCnrBtn').on('click', function () { openEntryTypeTarget('cnr'); });
@@ -11029,11 +11050,6 @@ function getDPI() {
                 <h4 class="modal-title" id="pageChangesModalLabel">এই পেইজে যা নতুন পরিবর্তন/আপডেট করা হয়েছে</h4>
               </div>
               <div class="modal-body" style="height:65vh; overflow-y:auto;">
-                <p style="margin:0 0 4px;">Action কলামের "Entry" বাটনে ক্লিক করা হলে:</p>
-                <ul style="padding-left:20px; margin:0;">
-                  <li>সরাসরি Conversation Entry পেইজে না গিয়ে প্রথমে একটা পপআপ দেখাবে, যেখানে সেই সারির Not Called Yet ও Call Not Received-এর আলাদা সংখ্যা দেখাবে (0 হলে সেই অপশন দেখাবে না)।</li>
-                  <li>ইউজার চাইলে শুধু Not Called Yet, শুধু Call Not Received, অথবা উভয়ই (আগের মতো NCY আগে তারপর CNR ক্রমে) সিলেক্ট করে এন্ট্রি শুরু করতে পারবে।</li>
-                </ul>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">বন্ধ করুন</button>
@@ -11059,6 +11075,13 @@ function getDPI() {
                     <strong>Dashboard মেনু থেকে Conversation Entry করার সময় Entry বাটনে ক্লিক করা হলে প্রথমে Not Called Yet ডাটাগুলো পর্যায়ক্রমে একটির পর একটি করে আসবে।</strong> Not Called Yet ডাটা শেষ হলে Call Not Received ডাটাগুলো একটির পর একটি আসবে।
                   </li>
                 </ol>
+                <p style="font-weight:bold; font-size:15px; margin:20px 0 10px; color:#374151; border-bottom:2px solid #6B7280; padding-bottom:4px;">Step 02</p>
+                <p style="margin:0 0 4px;">Action কলামের "Entry" বাটনে ক্লিক করা হলে:</p>
+                <ul style="padding-left:20px; margin:0;">
+                  <li>সরাসরি Conversation Entry পেইজে না গিয়ে প্রথমে একটা পপআপ দেখাবে, যেখানে সেই সারির Not Called Yet ও Call Not Received-এর আলাদা সংখ্যা দেখাবে (0 হলে সেই অপশন দেখাবে না)।</li>
+                  <li>ইউজার চাইলে শুধু Not Called Yet, শুধু Call Not Received, অথবা উভয়ই (আগের মতো NCY আগে তারপর CNR ক্রমে) সিলেক্ট করে এন্ট্রি শুরু করতে পারবে।</li>
+                  <li>যে Program-এর Entry বাটন থেকে এন্ট্রি শুরু হবে, তার Program, Tracking ID, Data Type ও Conversation Type Conversation Entry পেইজে যাবে। Live Class Link Share popup-এ সেই Program-এর Class ও matching Program default selected থাকবে; Session সব ক্ষেত্রে শুধু 2026 থাকবে এবং সেটিই selected থাকবে।</li>
+                </ul>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">বন্ধ করুন</button>
