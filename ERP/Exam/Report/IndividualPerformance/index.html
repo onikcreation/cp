@@ -353,7 +353,9 @@ th{background:#fafafa;font-weight:700}
 .report-title strong{display:block}
 .report-photo{width:80px;height:80px;justify-self:end;background:#282828;border:1px solid #444}
 .student-report-meta{display:grid;grid-template-columns:1fr 1fr;gap:3px 20px;margin:6px 0 10px;font-weight:700}
-.student-report-meta div:nth-child(even){text-align:right}
+.student-report-meta{grid-template-areas:"name institute" "registration branch" "admission ."}
+.meta-name{grid-area:name}.meta-registration{grid-area:registration}.meta-admission{grid-area:admission}.meta-institute{grid-area:institute}.meta-branch{grid-area:branch}
+.meta-institute,.meta-branch{text-align:right}
 .report-filter-form{display:grid;grid-template-columns:2fr 2fr 1.25fr 1.1fr .7fr;gap:8px;margin-bottom:8px}
 .report-filter-form select{width:100%;height:34px;padding:6px 9px;border:1px solid #ccc;border-radius:3px;background:#fff;color:#333}
 .report-filter-form .btn{width:100%}
@@ -382,16 +384,27 @@ footer{text-align:center;padding:30px 0 10px;color:#333;font-size:12px}
 .modal.open{display:grid}
 .modal-card{width:min(440px,100%);padding:20px;border-radius:5px;background:#fff;box-shadow:0 15px 45px rgba(0,0,0,.3)}
 .modal-card h3{margin:0 0 8px;color:#2f1031}.modal-card p{margin:0 0 16px;line-height:1.5}
+#pageChangesBtn{position:absolute;left:50%;top:11px;z-index:61;transform:translateX(-50%);min-height:28px;padding:3px 12px;border:2px solid #fff;border-radius:6px;background:#f59e0b;color:#fff;font-weight:700;line-height:18px;white-space:nowrap;cursor:pointer;animation:pageChangesPulse 1.6s infinite}
+@keyframes pageChangesPulse{0%{box-shadow:0 0 0 0 rgba(245,158,11,.7)}70%{box-shadow:0 0 0 10px rgba(245,158,11,0)}100%{box-shadow:0 0 0 0 rgba(245,158,11,0)}}
+#pageChangesModal .modal-card{width:60%;max-width:none;height:65vh;padding:0;display:flex;flex-direction:column;overflow:hidden}
+.page-changes-head{display:flex;align-items:center;gap:12px;padding:12px 15px;background:#4338ca;color:#fff}
+#pageChangesModal .page-changes-head h3{margin:0;color:#fff;font-size:16px}
+.page-changes-head .btn{margin-left:auto;min-height:30px;padding:4px 11px;border-color:#fff;background:#fff;color:#4338ca}
+.page-changes-body{flex:1;overflow:auto;padding:16px 20px;line-height:1.55}
+.page-changes-body p{margin:0 0 12px}.page-changes-body ol{margin:0;padding-left:22px}.page-changes-body li{margin:0}
+.page-changes-footer{flex:0 0 auto;padding:10px 15px;border-top:1px solid #ddd;text-align:right}
 @media(max-width:760px){
+ #pageChangesBtn{left:55%;font-size:11px}
+ #pageChangesModal .modal-card{width:96%}
  .student-summary{grid-template-columns:1fr auto;gap:10px}
- .student-report-meta{grid-template-columns:1fr}.student-report-meta div:nth-child(even){text-align:left}
+ .student-report-meta{grid-template-columns:1fr;grid-template-areas:"name" "registration" "admission" "institute" "branch"}.meta-institute,.meta-branch{text-align:left}
  .report-title-grid{grid-template-columns:auto 1fr auto}.logo-mark{width:58px}.logo-emblem{width:46px;height:58px;font-size:26px}.report-title{font-size:10px}.report-photo{width:58px;height:66px}
  .report-filter-form{grid-template-columns:1fr}
  .filter-caption{grid-template-columns:1fr;text-align:left;gap:4px}
 }
 @media(max-width:430px){.student-summary{grid-template-columns:1fr}.student-photo{justify-self:start;grid-row:1}}
 @media print{
- body{background:#fff}.topbar,.sidebar,#lookupStage,#detailsPanel,.report-head-actions,.report-filter-form,.print-actions,footer{display:none!important}
+ body{background:#fff}.topbar,.sidebar,#lookupStage,#detailsPanel,.report-head-actions,.report-filter-form,.print-actions,#pageChangesModal,footer{display:none!important}
  [class~="layout"]{display:block!important;padding:0!important}main{padding:0!important}#reportPanel{border:0!important;margin:0!important}#reportPanel>div:first-child{display:none!important}.panel-body{padding:0!important}
  .performance-scroll,.merit-scroll{max-height:none;overflow:visible;border:0}.performance-table,.merit-table{min-width:100%;font-size:8px}.performance-table th,.performance-table td{height:auto;padding:3px;position:static!important}.course-block{break-inside:avoid-page}
 }
@@ -406,6 +419,7 @@ footer{text-align:center;padding:30px 0 10px;color:#333;font-size:12px}
  <nav class="topnav" aria-label="Module navigation">
   <span class="module-item">Student</span><span class="module-item">CRM</span><span class="module-item active" aria-current="page">Exam</span><span class="module-item">Teacher</span><span class="module-item">Team</span><span class="module-item">Inventory</span><span class="module-item">Administration</span>
  </nav>
+  <button id="pageChangesBtn" type="button" title="এই পেইজে যা নতুন পরিবর্তন/আপডেট করা হয়েছে">New Updates</button>
  <div class="top-actions">
   <span class="profile">Al Amin Anik ▼</span>
   <button class="icon-btn" type="button" data-demo-message="Logout is disabled in the offline demo." aria-label="Log off"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M7.5 1v7h1V1h-1zM5.17 2.18a6 6 0 1 0 5.66 0l-.47.88a5 5 0 1 1-4.72 0l-.47-.88z"/></svg></button>
@@ -443,8 +457,8 @@ footer{text-align:center;padding:30px 0 10px;color:#333;font-size:12px}
      </div>
      <div class="table-scroll">
       <table id="programTable"><thead><tr><th>Admission Date</th><th>Program</th><th>Session</th><th>Total Exam(s)</th><th>Present</th><th>Absent</th><th>Action</th></tr></thead><tbody>
-       <tr><td>Jun 16, 2026</td><td>Employee Training Program (ETP)</td><td>2026</td><td>25</td><td>11</td><td>14</td><td><button class="btn btn-small view-report" type="button" data-session="2026">View Report</button></td></tr>
-       <tr><td>Apr 06, 2023</td><td>Employee Training Program (ETP)</td><td>2021</td><td>73</td><td>12</td><td>61</td><td><button class="btn btn-small view-report" type="button" data-session="2021">View Report</button></td></tr>
+       <tr><td>Jun 16, 2026</td><td>Employee Training Program (ETP)</td><td>2026</td><td>25</td><td>11</td><td>14</td><td><button class="btn btn-small view-report" type="button" data-session="2026" data-admission-date="Jun 16, 2026">View Report</button></td></tr>
+       <tr><td>Apr 06, 2023</td><td>Employee Training Program (ETP)</td><td>2021</td><td>73</td><td>12</td><td>61</td><td><button class="btn btn-small view-report" type="button" data-session="2021" data-admission-date="Apr 06, 2023">View Report</button></td></tr>
       </tbody></table>
      </div>
     </div>
@@ -459,7 +473,7 @@ footer{text-align:center;padding:30px 0 10px;color:#333;font-size:12px}
      <div class="report-title"><strong>UDVASH Academic &amp; Admission Care</strong><strong id="programHeading">Employee Training Program (ETP) 2021</strong><strong>Student's Performance Report</strong></div>
      <img class="report-photo" alt="Demo student placeholder" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Crect width='80' height='80' fill='%23282828'/%3E%3Ccircle cx='40' cy='23' r='15' fill='%23e7e7e7'/%3E%3Cpath d='M13 78c2-22 11-34 27-34s25 12 27 34' fill='%23e7e7e7'/%3E%3C/svg%3E">
     </div>
-    <div class="student-report-meta"><div>Student's Name : NABIL RAHMAN</div><div>Institute : DEMO MODEL ACADEMY</div><div>Reg. &amp; Roll No. : <span id="reportRegistration">1997219</span> (65200000001)</div><div>Branch : Corporate Udvash</div></div>
+    <div class="student-report-meta"><div class="meta-name">Student's Name : NABIL RAHMAN</div><div class="meta-registration">Reg. &amp; Roll No. : <span id="reportRegistration">1997219</span> (65200000001)</div><div class="meta-admission">Admission Date : <span id="reportAdmissionDate">Apr 06, 2023</span></div><div class="meta-institute">Institute : DEMO MODEL ACADEMY</div><div class="meta-branch">Branch : Corporate Udvash</div></div>
     <form id="reportForm" class="report-filter-form" action="javascript:void(0)">
      <select id="CourseId" aria-label="Course"><option value="all">All Course</option><option value="home">Home Practice Model Test 2025</option><option value="employee">Employee Training Course 2021</option></select>
      <select id="SubjectId" aria-label="Subject"><option value="all">All Subject</option></select>
@@ -480,6 +494,16 @@ footer{text-align:center;padding:30px 0 10px;color:#333;font-size:12px}
  </main>
 </div>
 
+<div class="modal" id="pageChangesModal" role="dialog" aria-modal="true" aria-labelledby="pageChangesModalLabel">
+ <div class="modal-card">
+  <div class="page-changes-head"><h3 id="pageChangesModalLabel">এই পেইজে যা নতুন পরিবর্তন/আপডেট করা হয়েছে</h3><button class="btn" id="copyPageChanges" type="button">Copy</button></div>
+  <div class="page-changes-body" id="pageChangesContent">
+   <p><strong>Exam &gt; Report &gt; Individual Performance মেনুতে নতুন যে আপডেট করতে হবে:</strong></p>
+   <ol><li><strong>Admission Date দেখানো</strong> — View Report পেইজের উপরের তথ্য অংশে Reg. &amp; Roll No.-এর ঠিক নিচে নির্বাচিত প্রোগ্রামের Admission Date দেখাতে হবে।</li></ol>
+  </div>
+  <div class="page-changes-footer"><button class="btn" type="button" data-close-page-changes>বন্ধ করুন</button></div>
+ </div>
+</div>
 <div class="modal" id="messageModal" role="dialog" aria-modal="true" aria-labelledby="messageModalTitle"><div class="modal-card"><h3 id="messageModalTitle">Offline Demo</h3><p id="messageText"></p><button class="btn" id="closeMessage" type="button">Close</button></div></div>
 
 <script>
@@ -512,6 +536,8 @@ function makeRows(course,count,names,startYear){
 var allRows=makeRows('home',50,homeNames,2025).concat(makeRows('employee',23,employeeNames,2026));
 function showMessage(message){byId('messageText').textContent=message;byId('messageModal').classList.add('open');}
 function closeMessage(){byId('messageModal').classList.remove('open');}
+function closePageChanges(){byId('pageChangesModal').classList.remove('open');}
+function copyPageChanges(){var button=byId('copyPageChanges');var content=byId('pageChangesContent');var value=content.innerText;function feedback(label){var original=button.textContent;button.textContent=label;window.setTimeout(function(){button.textContent=original;},1800);}function fallback(){var range=document.createRange();range.selectNodeContents(content);var selection=window.getSelection();selection.removeAllRanges();selection.addRange(range);try{document.execCommand('copy');feedback('Copied');}catch(error){feedback('Select & Copy');}selection.removeAllRanges();}if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(value).then(function(){feedback('Copied');}).catch(fallback);}else{fallback();}}
 function submitLookup(){
  var input=byId('RollNumber');var value=input.value.trim();
  if(!value){byId('RollInvalidText').classList.add('show');input.focus();return;}
@@ -540,18 +566,19 @@ function renderReport(){
  byId('filterCaption').hidden=course==='all'&&subject==='all'&&platform==='all';
  byId('courseHeader').textContent=byId('CourseId').options[byId('CourseId').selectedIndex].textContent;byId('subjectHeader').textContent=byId('SubjectId').options[byId('SubjectId').selectedIndex].textContent;byId('examPlatformHeader').textContent=byId('ExamPlatform').options[byId('ExamPlatform').selectedIndex].textContent;
 }
-function openReport(session){
- byId('programHeading').textContent='Employee Training Program (ETP) '+session;byId('reportRegistration').textContent=currentRegistration;byId('lookupStage').hidden=true;byId('reportPanel').hidden=false;rebuildSubjects();renderReport();history.pushState({report:true},'',location.pathname+'#report');window.scrollTo(0,0);
+function openReport(session,admissionDate){
+ byId('programHeading').textContent='Employee Training Program (ETP) '+session;byId('reportRegistration').textContent=currentRegistration;byId('reportAdmissionDate').textContent=admissionDate;byId('lookupStage').hidden=true;byId('reportPanel').hidden=false;rebuildSubjects();renderReport();history.pushState({report:true},'',location.pathname+'#report');window.scrollTo(0,0);
 }
 byId('RollNumber').addEventListener('input',function(){this.value=this.value.replace(/\D/g,'').slice(0,11);if(this.value)byId('RollInvalidText').classList.remove('show');});
 byId('RollNumber').addEventListener('keydown',function(event){if(event.key==='Enter'){event.preventDefault();submitLookup();}});
 byId('btnSubmit').addEventListener('click',submitLookup);
-document.querySelectorAll('.view-report').forEach(function(button){button.addEventListener('click',function(){openReport(this.getAttribute('data-session'));});});
+document.querySelectorAll('.view-report').forEach(function(button){button.addEventListener('click',function(){openReport(this.getAttribute('data-session'),this.getAttribute('data-admission-date'));});});
 byId('CourseId').addEventListener('change',rebuildSubjects);
 byId('reportForm').addEventListener('submit',function(event){event.preventDefault();renderReport();});
 byId('bottomPart').addEventListener('click',function(event){if(event.target.closest('.analysis-action'))showMessage('এই ফিচারটি (View Analysis Report) এই ডেমো ভার্সনে অন্তর্ভুক্ত নয়।');});
 byId('iconPrint').addEventListener('click',function(){window.print();});byId('btnPrint').addEventListener('click',function(){window.print();});
 byId('closeMessage').addEventListener('click',closeMessage);byId('messageModal').addEventListener('click',function(event){if(event.target===this)closeMessage();});
+byId('pageChangesBtn').addEventListener('click',function(){byId('pageChangesModal').classList.add('open');});byId('copyPageChanges').addEventListener('click',copyPageChanges);document.querySelector('[data-close-page-changes]').addEventListener('click',closePageChanges);byId('pageChangesModal').addEventListener('click',function(event){if(event.target===this)closePageChanges();});
 document.querySelector('[data-demo-message]').addEventListener('click',function(){showMessage(this.getAttribute('data-demo-message'));});
 byId('sidebarToggle').addEventListener('click',function(){document.body.classList.toggle('sidebar-hidden');});
 function filterMenu(){var query=byId('menuSearch').value.trim().toLowerCase();document.querySelector('.menu-section').style.display=document.querySelector('.menu-section').textContent.toLowerCase().indexOf(query)>-1?'':'none';}
