@@ -1329,7 +1329,7 @@ body.sidebar-hidden .sidebar{
   <div class="menu-section open">
    <button class="section-label" type="button">Payment</button>
    <div class="submenu">
-    <a class="active" href="./">Payment History</a>
+    <a class="active" href="PaymentHistory_Offline.html">Payment History</a>
    </div>
   </div>
  </aside>
@@ -1419,14 +1419,28 @@ input.addEventListener('input',function(){
  if(input.value!==cleaned){input.value=cleaned;}
  setError(validate(input.value));
 });
-form.addEventListener('submit',function(event){
- event.preventDefault();
+function submitLookup(scrollBehavior){
  var message=validate(input.value);
  setError(message);
- if(message){input.focus();return;}
+ if(message){input.focus();return false;}
  detailsPanel.hidden=false;
- detailsPanel.scrollIntoView({behavior:'smooth',block:'start'});
+ detailsPanel.scrollIntoView({behavior:scrollBehavior||'smooth',block:'start'});
+ return true;
+}
+form.addEventListener('submit',function(event){
+ event.preventDefault();
+ submitLookup('smooth');
 });
+function applyQueryLookup(){
+ var params=new URLSearchParams(window.location.search);
+ var registration=(params.get('stdRollOrRegistrationNo')||'').replace(/\D/g,'').slice(0,11);
+ if(!registration){return;}
+ input.value=registration;
+ setError(validate(registration));
+ if(params.get('autoSubmit')==='1'){
+  window.setTimeout(function(){submitLookup('auto');},0);
+ }
+}
 document.querySelectorAll('.details-action').forEach(function(button){
  button.addEventListener('click',function(){
   showMessage('এই ফিচারটি (Payment History Details) এই ডেমো ভার্সনে অন্তর্ভুক্ত নয়।');
@@ -1462,6 +1476,7 @@ document.addEventListener('click',function(event){
 },true);
 document.addEventListener('submit',function(event){if(event.target!==form){event.preventDefault();}},true);
 setError('');
+applyQueryLookup();
 })();
 </script>
 </body>

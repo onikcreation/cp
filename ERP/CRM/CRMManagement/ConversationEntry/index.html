@@ -9727,7 +9727,7 @@ table tfoot th::after {
                                           <td>
                                             Registration No. :
                                           </td>
-                                          <td style="text-align: left; padding: 7px;">
+                                          <td id="currentRegistrationNumber" style="text-align: left; padding: 7px;">
                                             &nbsp;3182647
                                           </td>
                                         </tr>
@@ -9925,6 +9925,20 @@ table tfoot th::after {
                               </div>
                             </div>
                           </div>
+                          <style id="ce-enrolled-program-actions-style">
+                            [id^="enrollModal_"] .modal-dialog { width: 760px; max-width: calc(100vw - 30px); margin: 70px auto 30px; }
+                            [id^="enrollModal_"] .modal-body { padding: 24px 28px 14px; }
+                            [id^="enrollModal_"] .modal-footer { padding: 12px 28px 18px; }
+                            [id^="enrollModal_"] table { margin-bottom: 0; }
+                            [id^="enrollModal_"] th, [id^="enrollModal_"] td { vertical-align: middle; }
+                            [id^="enrollModal_"] td { width: 33.333%; padding: 16px 10px; }
+                            [id^="enrollModal_"] td .btn { min-width: 138px; border-radius: 4px !important; white-space: nowrap; }
+                            @media (max-width: 767px) {
+                              [id^="enrollModal_"] .modal-dialog { width: auto; max-width: none; margin: 20px 10px; }
+                              [id^="enrollModal_"] .modal-body { padding: 18px 12px 10px; overflow-x: auto; }
+                              [id^="enrollModal_"] td { min-width: 150px; padding: 12px 8px; }
+                            }
+                          </style>
                           <div class="panel panel-default">
                             <div class="panel-heading text-center">
                               <h4 class="panel-title font-weight-bold">
@@ -9954,7 +9968,7 @@ table tfoot th::after {
                                                 <tr>
                                                   <td>
                                                     <a target="_blank" href="/Exam/IndividualPerformance/IndividualPerformanceReportViewV2?studentProgramId=6030934&amp;rollOrRegistrationNo=3182647" class="btn btn-primary btn-sm rounded" style="border-radius:28%;">
-                                                      Result
+                                                      Performance
                                                     </a>
                                                   </td>
                                                   <td>
@@ -9964,24 +9978,24 @@ table tfoot th::after {
                                                   </td>
                                                   <td>
                                                     <a target="_blank" href="/Student/Attendance/IndividualReport?roll=3182647&amp;attendanceType=1&amp;programId=184&amp;sessionId=66&amp;dateFrom=07%2F01%2F2026%2000%3A00%3A00&amp;datetTo=07%2F03%2F2026%2015%3A04%3A37" class="btn btn-primary btn-sm rounded" style="border-radius:28%;">
-                                                      Class
+                                                      Offline Class
                                                     </a>
                                                   </td>
                                                 </tr>
                                                 <tr>
                                                   <td>
-                                                    <a target="_blank" href="/Student/Payment/DuePayment?studentProgramId=6030934&amp;stdRollOrRegistrationNo=3182647" class="btn btn-primary btn-sm rounded" style="border-radius:28%;">
-                                                      Due
+                                                    <a target="_blank" href="../../../1. Student/Payment/PaymentHistory/PaymentHistory_Offline.html?stdRollOrRegistrationNo=3182647&amp;autoSubmit=1" class="btn btn-primary btn-sm rounded ce-payment-history" data-registration-number="3182647" style="border-radius:28%;">
+                                                      Payment History
                                                     </a>
                                                   </td>
                                                   <td>
                                                     <a target="_blank" href="/Student/Attendance/IndividualClassReportDetails?studentProgramId=6030934&amp;rollOrRegistrationNo=3182647&amp;lectureType=2" class="btn btn-primary btn-sm rounded" style="border-radius:28%;">
-                                                      O. Class
+                                                      Online Class
                                                     </a>
                                                   </td>
                                                   <td>
                                                     <a target="_blank" href="/Student/Information/InformationSearch?stdRollOrRegistrationNo=3182647" class="btn btn-primary btn-sm rounded" style="border-radius:28%;">
-                                                      Info Edit
+                                                      Information Edit
                                                     </a>
                                                   </td>
                                                 </tr>
@@ -10016,7 +10030,7 @@ table tfoot th::after {
                                                   <tr>
                                                     <td>
                                                       <a target="_blank" href="/Exam/IndividualPerformance/IndividualPerformanceReportViewV2?studentProgramId=5092363&amp;rollOrRegistrationNo=3182647" class="btn btn-primary btn-sm rounded" style="border-radius:28%;">
-                                                        Result
+                                                        Performance
                                                       </a>
                                                     </td>
                                                     <td>
@@ -10026,24 +10040,24 @@ table tfoot th::after {
                                                     </td>
                                                     <td>
                                                       <a target="_blank" href="/Student/Attendance/IndividualReport?roll=3182647&amp;attendanceType=1&amp;programId=69&amp;sessionId=65&amp;dateFrom=07%2F01%2F2026%2000%3A00%3A00&amp;datetTo=07%2F03%2F2026%2015%3A04%3A37" class="btn btn-primary btn-sm rounded" style="border-radius:28%;">
-                                                        Class
+                                                        Offline Class
                                                       </a>
                                                     </td>
                                                   </tr>
                                                   <tr>
                                                     <td>
-                                                      <a target="_blank" href="/Student/Payment/DuePayment?studentProgramId=5092363&amp;stdRollOrRegistrationNo=3182647" class="btn btn-primary btn-sm rounded" style="border-radius:28%;">
-                                                        Due
-                                                      </a>
+                                                      <a target="_blank" href="../../../1. Student/Payment/PaymentHistory/PaymentHistory_Offline.html?stdRollOrRegistrationNo=3182647&amp;autoSubmit=1" class="btn btn-primary btn-sm rounded ce-payment-history" data-registration-number="3182647" style="border-radius:28%;">
+                                                      Payment History
+                                                    </a>
                                                     </td>
                                                     <td>
                                                       <a target="_blank" href="/Student/Attendance/IndividualClassReportDetails?studentProgramId=5092363&amp;rollOrRegistrationNo=3182647&amp;lectureType=2" class="btn btn-primary btn-sm rounded" style="border-radius:28%;">
-                                                        O. Class
+                                                        Online Class
                                                       </a>
                                                     </td>
                                                     <td>
                                                       <a target="_blank" href="/Student/Information/InformationSearch?stdRollOrRegistrationNo=3182647" class="btn btn-primary btn-sm rounded" style="border-radius:28%;">
-                                                        Info Edit
+                                                        Information Edit
                                                       </a>
                                                     </td>
                                                   </tr>
@@ -10078,7 +10092,7 @@ table tfoot th::after {
                                                     <tr>
                                                       <td>
                                                         <a target="_blank" href="/Exam/IndividualPerformance/IndividualPerformanceReportViewV2?studentProgramId=4290645&amp;rollOrRegistrationNo=3182647" class="btn btn-primary btn-sm rounded" style="border-radius:28%;">
-                                                          Result
+                                                          Performance
                                                         </a>
                                                       </td>
                                                       <td>
@@ -10088,24 +10102,24 @@ table tfoot th::after {
                                                       </td>
                                                       <td>
                                                         <a target="_blank" href="/Student/Attendance/IndividualReport?roll=3182647&amp;attendanceType=1&amp;programId=65&amp;sessionId=65&amp;dateFrom=07%2F01%2F2026%2000%3A00%3A00&amp;datetTo=07%2F03%2F2026%2015%3A04%3A37" class="btn btn-primary btn-sm rounded" style="border-radius:28%;">
-                                                          Class
+                                                          Offline Class
                                                         </a>
                                                       </td>
                                                     </tr>
                                                     <tr>
                                                       <td>
-                                                        <a target="_blank" href="/Student/Payment/DuePayment?studentProgramId=4290645&amp;stdRollOrRegistrationNo=3182647" class="btn btn-primary btn-sm rounded" style="border-radius:28%;">
-                                                          Due
-                                                        </a>
+                                                        <a target="_blank" href="../../../1. Student/Payment/PaymentHistory/PaymentHistory_Offline.html?stdRollOrRegistrationNo=3182647&amp;autoSubmit=1" class="btn btn-primary btn-sm rounded ce-payment-history" data-registration-number="3182647" style="border-radius:28%;">
+                                                      Payment History
+                                                    </a>
                                                       </td>
                                                       <td>
                                                         <a target="_blank" href="/Student/Attendance/IndividualClassReportDetails?studentProgramId=4290645&amp;rollOrRegistrationNo=3182647&amp;lectureType=2" class="btn btn-primary btn-sm rounded" style="border-radius:28%;">
-                                                          O. Class
+                                                          Online Class
                                                         </a>
                                                       </td>
                                                       <td>
                                                         <a target="_blank" href="/Student/Information/InformationSearch?stdRollOrRegistrationNo=3182647" class="btn btn-primary btn-sm rounded" style="border-radius:28%;">
-                                                          Info Edit
+                                                          Information Edit
                                                         </a>
                                                       </td>
                                                     </tr>
@@ -10140,7 +10154,7 @@ table tfoot th::after {
                                                       <tr>
                                                         <td>
                                                           <a target="_blank" href="/Exam/IndividualPerformance/IndividualPerformanceReportViewV2?studentProgramId=4016195&amp;rollOrRegistrationNo=3182647" class="btn btn-primary btn-sm rounded" style="border-radius:28%;">
-                                                            Result
+                                                            Performance
                                                           </a>
                                                         </td>
                                                         <td>
@@ -10150,24 +10164,24 @@ table tfoot th::after {
                                                         </td>
                                                         <td>
                                                           <a target="_blank" href="/Student/Attendance/IndividualReport?roll=3182647&amp;attendanceType=1&amp;programId=171&amp;sessionId=65&amp;dateFrom=07%2F01%2F2026%2000%3A00%3A00&amp;datetTo=07%2F03%2F2026%2015%3A04%3A37" class="btn btn-primary btn-sm rounded" style="border-radius:28%;">
-                                                            Class
+                                                            Offline Class
                                                           </a>
                                                         </td>
                                                       </tr>
                                                       <tr>
                                                         <td>
-                                                          <a target="_blank" href="/Student/Payment/DuePayment?studentProgramId=4016195&amp;stdRollOrRegistrationNo=3182647" class="btn btn-primary btn-sm rounded" style="border-radius:28%;">
-                                                            Due
-                                                          </a>
+                                                          <a target="_blank" href="../../../1. Student/Payment/PaymentHistory/PaymentHistory_Offline.html?stdRollOrRegistrationNo=3182647&amp;autoSubmit=1" class="btn btn-primary btn-sm rounded ce-payment-history" data-registration-number="3182647" style="border-radius:28%;">
+                                                      Payment History
+                                                    </a>
                                                         </td>
                                                         <td>
                                                           <a target="_blank" href="/Student/Attendance/IndividualClassReportDetails?studentProgramId=4016195&amp;rollOrRegistrationNo=3182647&amp;lectureType=2" class="btn btn-primary btn-sm rounded" style="border-radius:28%;">
-                                                            O. Class
+                                                            Online Class
                                                           </a>
                                                         </td>
                                                         <td>
                                                           <a target="_blank" href="/Student/Information/InformationSearch?stdRollOrRegistrationNo=3182647" class="btn btn-primary btn-sm rounded" style="border-radius:28%;">
-                                                            Info Edit
+                                                            Information Edit
                                                           </a>
                                                         </td>
                                                       </tr>
@@ -10202,7 +10216,7 @@ table tfoot th::after {
                                                         <tr>
                                                           <td>
                                                             <a target="_blank" href="/Exam/IndividualPerformance/IndividualPerformanceReportViewV2?studentProgramId=3301334&amp;rollOrRegistrationNo=3182647" class="btn btn-primary btn-sm rounded" style="border-radius:28%;">
-                                                              Result
+                                                              Performance
                                                             </a>
                                                           </td>
                                                           <td>
@@ -10212,24 +10226,24 @@ table tfoot th::after {
                                                           </td>
                                                           <td>
                                                             <a target="_blank" href="/Student/Attendance/IndividualReport?roll=3182647&amp;attendanceType=1&amp;programId=119&amp;sessionId=63&amp;dateFrom=07%2F01%2F2026%2000%3A00%3A00&amp;datetTo=07%2F03%2F2026%2015%3A04%3A37" class="btn btn-primary btn-sm rounded" style="border-radius:28%;">
-                                                              Class
+                                                              Offline Class
                                                             </a>
                                                           </td>
                                                         </tr>
                                                         <tr>
                                                           <td>
-                                                            <a target="_blank" href="/Student/Payment/DuePayment?studentProgramId=3301334&amp;stdRollOrRegistrationNo=3182647" class="btn btn-primary btn-sm rounded" style="border-radius:28%;">
-                                                              Due
-                                                            </a>
+                                                            <a target="_blank" href="../../../1. Student/Payment/PaymentHistory/PaymentHistory_Offline.html?stdRollOrRegistrationNo=3182647&amp;autoSubmit=1" class="btn btn-primary btn-sm rounded ce-payment-history" data-registration-number="3182647" style="border-radius:28%;">
+                                                      Payment History
+                                                    </a>
                                                           </td>
                                                           <td>
                                                             <a target="_blank" href="/Student/Attendance/IndividualClassReportDetails?studentProgramId=3301334&amp;rollOrRegistrationNo=3182647&amp;lectureType=2" class="btn btn-primary btn-sm rounded" style="border-radius:28%;">
-                                                              O. Class
+                                                              Online Class
                                                             </a>
                                                           </td>
                                                           <td>
                                                             <a target="_blank" href="/Student/Information/InformationSearch?stdRollOrRegistrationNo=3182647" class="btn btn-primary btn-sm rounded" style="border-radius:28%;">
-                                                              Info Edit
+                                                              Information Edit
                                                             </a>
                                                           </td>
                                                         </tr>
@@ -10264,7 +10278,7 @@ table tfoot th::after {
                                                           <tr>
                                                             <td>
                                                               <a target="_blank" href="/Exam/IndividualPerformance/IndividualPerformanceReportViewV2?studentProgramId=3202867&amp;rollOrRegistrationNo=3182647" class="btn btn-primary btn-sm rounded" style="border-radius:28%;">
-                                                                Result
+                                                                Performance
                                                               </a>
                                                             </td>
                                                             <td>
@@ -10274,24 +10288,24 @@ table tfoot th::after {
                                                             </td>
                                                             <td>
                                                               <a target="_blank" href="/Student/Attendance/IndividualReport?roll=3182647&amp;attendanceType=1&amp;programId=196&amp;sessionId=61&amp;dateFrom=07%2F01%2F2026%2000%3A00%3A00&amp;datetTo=07%2F03%2F2026%2015%3A04%3A37" class="btn btn-primary btn-sm rounded" style="border-radius:28%;">
-                                                                Class
+                                                                Offline Class
                                                               </a>
                                                             </td>
                                                           </tr>
                                                           <tr>
                                                             <td>
-                                                              <a target="_blank" href="/Student/Payment/DuePayment?studentProgramId=3202867&amp;stdRollOrRegistrationNo=3182647" class="btn btn-primary btn-sm rounded" style="border-radius:28%;">
-                                                                Due
-                                                              </a>
+                                                              <a target="_blank" href="../../../1. Student/Payment/PaymentHistory/PaymentHistory_Offline.html?stdRollOrRegistrationNo=3182647&amp;autoSubmit=1" class="btn btn-primary btn-sm rounded ce-payment-history" data-registration-number="3182647" style="border-radius:28%;">
+                                                      Payment History
+                                                    </a>
                                                             </td>
                                                             <td>
                                                               <a target="_blank" href="/Student/Attendance/IndividualClassReportDetails?studentProgramId=3202867&amp;rollOrRegistrationNo=3182647&amp;lectureType=2" class="btn btn-primary btn-sm rounded" style="border-radius:28%;">
-                                                                O. Class
+                                                                Online Class
                                                               </a>
                                                             </td>
                                                             <td>
                                                               <a target="_blank" href="/Student/Information/InformationSearch?stdRollOrRegistrationNo=3182647" class="btn btn-primary btn-sm rounded" style="border-radius:28%;">
-                                                                Info Edit
+                                                                Information Edit
                                                               </a>
                                                             </td>
                                                           </tr>
@@ -17055,6 +17069,21 @@ $(document).ready(function () {
                                                                           document.querySelectorAll('a.submenuitem[href="' + route + '"]').forEach(function (a) {
                                                                               a.setAttribute('href', siblingPageUrl(target.folder, target.file));
                                                                           });
+                                                                      });
+
+                                                                      // Build the Payment History URL from the Registration Number
+                                                                      // currently shown in this CRM entry. Local review stays on the
+                                                                      // paired Draft; a hosted final uses the Student/Payment leaf route.
+                                                                      var currentRegistrationCell = document.getElementById('currentRegistrationNumber');
+                                                                      var currentRegistrationMatch = currentRegistrationCell ? currentRegistrationCell.textContent.match(/\d{7,11}/) : null;
+                                                                      var currentRegistrationNumber = currentRegistrationMatch ? currentRegistrationMatch[0] : '';
+                                                                      var paymentHistoryBase = location.protocol === 'file:'
+                                                                          ? '../../../1. Student/Payment/PaymentHistory/PaymentHistory_Offline.html'
+                                                                          : '../../../Student/Payment/PaymentHistory/';
+                                                                      document.querySelectorAll('a.ce-payment-history').forEach(function (a) {
+                                                                          if (!currentRegistrationNumber) return;
+                                                                          a.setAttribute('data-registration-number', currentRegistrationNumber);
+                                                                          a.setAttribute('href', paymentHistoryBase + '?stdRollOrRegistrationNo=' + encodeURIComponent(currentRegistrationNumber) + '&autoSubmit=1');
                                                                       });
 
                                                                       // This is a static design demo — it must never navigate away to the
