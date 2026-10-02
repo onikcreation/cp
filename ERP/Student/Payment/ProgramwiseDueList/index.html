@@ -9220,6 +9220,23 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                 </ul>
               </div>
               <script type="text/javascript">
+                (function scopeSidebarToCurrentMenu() {
+                  var accordion = document.getElementById('accordion');
+                  var paymentMenu = document.getElementById('menu_panel_parent_Id_53');
+                  var currentLink = paymentMenu && paymentMenu.querySelector('a.submenuitem[href="../ProgramwiseDueList/"]');
+                  if (!accordion || !paymentMenu || !currentLink) return;
+                  Array.prototype.slice.call(accordion.children).forEach(function (menu) {
+                    if (menu !== paymentMenu) menu.parentNode.removeChild(menu);
+                  });
+                  var currentItem = currentLink.parentNode;
+                  var menuList = currentItem && currentItem.parentNode;
+                  if (menuList) {
+                    Array.prototype.slice.call(menuList.children).forEach(function (item) {
+                      if (item !== currentItem) item.parentNode.removeChild(item);
+                    });
+                  }
+                  currentLink.setAttribute('aria-current', 'page');
+                }());
                 $(document).on('click', '.btn-clear-search-text', function () {
         let currentUrl = window.location.href;
         let areaName = extractAreaFromUrl(currentUrl);
