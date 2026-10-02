@@ -9220,7 +9220,7 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                 </ul>
               </div>
               <script type="text/javascript">
-                (function scopeSidebarToCurrentMenu() {
+                (function scopeSidebarToDueListMenus() {
                   var accordion = document.getElementById('accordion');
                   var paymentMenu = document.getElementById('menu_panel_parent_Id_53');
                   var currentLink = paymentMenu && paymentMenu.querySelector('a.submenuitem[href="../DueList/"]');
@@ -9230,9 +9230,16 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
                   });
                   var currentItem = currentLink.parentNode;
                   var menuList = currentItem && currentItem.parentNode;
+                  var allowedLabels = ['Due List', 'Programwise Due List', 'Coursewise Due List'];
                   if (menuList) {
                     Array.prototype.slice.call(menuList.children).forEach(function (item) {
-                      if (item !== currentItem) item.parentNode.removeChild(item);
+                      var link = item.querySelector('a.submenuitem');
+                      var label = link && link.textContent.replace(/\s+/g, ' ').trim();
+                      if (allowedLabels.indexOf(label) === -1) {
+                        item.parentNode.removeChild(item);
+                      } else if (item !== currentItem) {
+                        link.removeAttribute('aria-current');
+                      }
                     });
                   }
                   currentLink.setAttribute('aria-current', 'page');
