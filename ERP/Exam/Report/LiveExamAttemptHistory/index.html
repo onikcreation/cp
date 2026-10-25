@@ -1296,23 +1296,42 @@ body.sidebar-hidden .sidebar{
 .submission-badge.auto{border-color:#f5d4a7;background:#fff4e5;color:#8a4b08}
 .attempt-table{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid #b7bec8;border-left:1px solid #b7bec8}
 .attempt-column{display:flex;min-width:0;flex-direction:column}
-.attempt-type-title{margin:0;padding:7px 10px;border-right:1px solid #b7bec8;border-bottom:1px solid #b7bec8;background:#fff;color:#111;font-size:20px;font-weight:500;line-height:1.25;text-align:center}
+.attempt-type-title{display:flex;margin:0;padding:7px 10px;align-items:center;justify-content:center;gap:9px;border-right:1px solid #b7bec8;border-bottom:1px solid #b7bec8;background:#fff;color:#111;font-size:20px;font-weight:500;line-height:1.25;text-align:center}
+.attempt-badge{display:inline-flex;align-items:center;padding:3px 8px;border:1px solid #c9d3de;border-radius:12px;background:#f3f6f9;color:#4b5968;font-size:11px;font-weight:700;line-height:1.2;white-space:nowrap}
+.attempt-badge.ready{border-color:#a8d5ad;background:#edf8ee;color:#256029}
 .attempt-row{display:grid;grid-template-columns:155px minmax(0,1fr);flex:1}
 .attempt-label,.attempt-value{display:flex;min-height:42px;align-items:center;padding:8px 10px;border-right:1px solid #b7bec8;border-bottom:1px solid #b7bec8;line-height:21px}
 .attempt-label{justify-content:flex-end;background:#eef1f5;color:#222;font-weight:700;text-align:right}
 .attempt-value{background:#fff;color:#222;overflow-wrap:anywhere}
+.attempt-column.ready .attempt-value{background:#fbfefb;color:#315b35}
+.previous-attempts{margin-top:14px;border:1px solid #cfd6de;border-radius:4px;background:#f7f9fb}
+.previous-attempts[hidden],.previous-card[hidden]{display:none}
+.previous-attempts-head{display:flex;padding:10px 12px;align-items:center;justify-content:space-between;border-bottom:1px solid #cfd6de}
+.previous-attempts-head h4{margin:0;color:#2b3642;font-size:15px}
+.previous-attempts-head span{color:#66717d;font-size:12px}
+.previous-attempts-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:12px}
+.previous-card{min-width:0;border:1px solid #d7dde4;border-radius:4px;background:#fff;overflow:hidden}
+.previous-card-head{display:flex;padding:9px 10px;align-items:center;justify-content:space-between;gap:8px;border-bottom:1px solid #e0e4e9;background:#f4f6f8;font-weight:700}
+.previous-badge{padding:2px 7px;border:1px solid #bfc8d1;border-radius:10px;background:#fff;color:#596674;font-size:11px;white-space:nowrap}
+.previous-row{display:grid;grid-template-columns:138px minmax(0,1fr);border-bottom:1px solid #e5e8ec}
+.previous-row:last-child{border-bottom:0}
+.previous-row strong,.previous-row span{padding:7px 9px;line-height:19px}
+.previous-row strong{border-right:1px solid #e5e8ec;background:#fafbfc;text-align:right}
+.previous-row span{overflow-wrap:anywhere}
 .retake-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border:1px solid #d8dce1;background:#fff}
 .retake-card{min-width:0;padding:20px;text-align:center}
 .retake-card+.retake-card{border-left:1px solid #d8dce1}
-.retake-card-title{margin:0 auto 16px;color:#222;font-size:16px;font-weight:700;line-height:1.45}
-.retake-clear-btn{min-width:220px;border:1px solid #cf765a;background:#fff1eb;color:#8b2f18;font-weight:700}
-.retake-clear-btn:hover,.retake-clear-btn:focus{border-color:#ad5135;background:#f7dfd5;color:#76230f}
+.retake-card-title{margin:0 auto 7px;color:#222;font-size:16px;font-weight:700;line-height:1.45}
+.retake-card-note{max-width:520px;margin:0 auto 16px;color:#65717e;font-size:13px;line-height:1.45}
+.retake-section-note{margin:-2px 0 10px;color:#5f6975;font-size:13px}
+.retake-clear-btn{min-width:220px;border:1px solid #367bb7;background:#eaf4fc;color:#18598e;font-weight:700}
+.retake-clear-btn:hover,.retake-clear-btn:focus{border-color:#245f92;background:#dceefa;color:#124b79}
 .retake-clear-btn:disabled{border-color:#b7dfba;background:#e8f5e9;color:#256029;cursor:not-allowed;opacity:1}
 .retake-status{display:inline-flex;margin-left:10px;align-items:center;color:#256029;font-size:12px;font-weight:700}
 .retake-status[hidden]{display:none}
 .retake-modal-actions{display:flex;justify-content:flex-end;gap:8px}
-.retake-confirm-btn{border:1px solid #c85d3b;background:#c85d3b;color:#fff}
-.retake-confirm-btn:hover,.retake-confirm-btn:focus{border-color:#a64225;background:#a64225;color:#fff}
+.retake-confirm-btn{border:1px solid #337ab7;background:#337ab7;color:#fff}
+.retake-confirm-btn:hover,.retake-confirm-btn:focus{border-color:#245f92;background:#286090;color:#fff}
 #detailsPanel>.panel-head:not(.unused){cursor:default}
 @media(max-width:760px){
  .details-wrap{padding:14px 10px 16px}
@@ -1326,6 +1345,12 @@ body.sidebar-hidden .sidebar{
  .attempt-row{grid-template-columns:1fr}
  .attempt-label{min-height:auto;justify-content:flex-start;padding-bottom:3px;border-bottom:0;text-align:left}
  .attempt-value{padding-top:4px}
+ .attempt-type-title{flex-wrap:wrap}
+ .previous-attempts-head{align-items:flex-start;flex-direction:column;gap:3px}
+ .previous-attempts-grid{grid-template-columns:1fr;padding:10px}
+ .previous-row{grid-template-columns:1fr}
+ .previous-row strong{padding-bottom:2px;border-right:0;text-align:left}
+ .previous-row span{padding-top:3px}
  .retake-grid{grid-template-columns:1fr}
  .retake-card{padding:18px 14px}
  .retake-card+.retake-card{border-top:1px solid #d8dce1;border-left:0}
@@ -1410,7 +1435,7 @@ body.sidebar-hidden .sidebar{
      <h3 class="detail-section-title" id="attemptHistoryTitle">Exam Attempt History</h3>
      <div class="attempt-table">
       <section class="attempt-column" aria-labelledby="mcqAttemptTitle">
-       <h4 class="attempt-type-title" id="mcqAttemptTitle">MCQ</h4>
+       <h4 class="attempt-type-title" id="mcqAttemptTitle"><span>MCQ</span><span class="attempt-badge" id="mcqAttemptBadge">Attempt 1 • Current</span></h4>
        <div class="attempt-row"><div class="attempt-label">Exam Start Time</div><div class="attempt-value" id="detailMcqStartTime"></div></div>
        <div class="attempt-row"><div class="attempt-label">Exam End Time</div><div class="attempt-value" id="detailMcqEndTime"></div></div>
        <div class="attempt-row"><div class="attempt-label">Answered</div><div class="attempt-value" id="detailMcqAnswered"></div></div>
@@ -1418,7 +1443,7 @@ body.sidebar-hidden .sidebar{
        <div class="attempt-row"><div class="attempt-label">Device Type</div><div class="attempt-value" id="detailMcqDevice"></div></div>
       </section>
       <section class="attempt-column" aria-labelledby="writtenAttemptTitle">
-       <h4 class="attempt-type-title" id="writtenAttemptTitle">Online Written</h4>
+       <h4 class="attempt-type-title" id="writtenAttemptTitle"><span>Online Written</span><span class="attempt-badge" id="writtenAttemptBadge">Attempt 1 • Current</span></h4>
        <div class="attempt-row"><div class="attempt-label">Exam Start Time</div><div class="attempt-value" id="detailWrittenStartTime"></div></div>
        <div class="attempt-row"><div class="attempt-label">Exam End Time</div><div class="attempt-value" id="detailWrittenEndTime"></div></div>
        <div class="attempt-row"><div class="attempt-label">Scripts Upload</div><div class="attempt-value" id="detailWrittenScripts"></div></div>
@@ -1426,19 +1451,43 @@ body.sidebar-hidden .sidebar{
        <div class="attempt-row"><div class="attempt-label">Device Type</div><div class="attempt-value" id="detailWrittenDevice"></div></div>
       </section>
      </div>
+     <div class="previous-attempts" id="previousAttempts" hidden>
+      <div class="previous-attempts-head"><h4>Previous Attempts</h4><span>Earlier attempt details remain here after retake is allowed.</span></div>
+      <div class="previous-attempts-grid">
+       <article class="previous-card" data-previous-attempt="MCQ" hidden>
+        <div class="previous-card-head"><span>MCQ — Attempt 1</span><span class="previous-badge">Preserved</span></div>
+        <div class="previous-row"><strong>Exam Start Time</strong><span>18 Sep 2026, 10:02 AM</span></div>
+        <div class="previous-row"><strong>Exam End Time</strong><span>18 Sep 2026, 10:42 AM</span></div>
+        <div class="previous-row"><strong>Answered</strong><span>49 Selected, 01 Skipped</span></div>
+        <div class="previous-row"><strong>Submission Type</strong><span>Manual Submit</span></div>
+        <div class="previous-row"><strong>Device Type</strong><span>Desktop</span></div>
+       </article>
+       <article class="previous-card" data-previous-attempt="Online Written" hidden>
+        <div class="previous-card-head"><span>Online Written — Attempt 1</span><span class="previous-badge">Preserved</span></div>
+        <div class="previous-row"><strong>Exam Start Time</strong><span>18 Sep 2026, 11:05 AM</span></div>
+        <div class="previous-row"><strong>Exam End Time</strong><span>18 Sep 2026, 11:55 AM</span></div>
+        <div class="previous-row"><strong>Scripts Upload</strong><span>Yes</span></div>
+        <div class="previous-row"><strong>Submission Type</strong><span>Auto Submit</span></div>
+        <div class="previous-row"><strong>Device Type</strong><span>Mobile App</span></div>
+       </article>
+      </div>
+     </div>
     </section>
     <section class="detail-section" aria-labelledby="retakeExamTitle">
      <h3 class="detail-section-title" id="retakeExamTitle">Retake Exam</h3>
+     <p class="retake-section-note">Allow Retake keeps the current attempt in Previous Attempts and creates a new attempt.</p>
      <div class="retake-grid">
       <article class="retake-card" data-retake-card="MCQ">
-       <h4 class="retake-card-title" id="retakeMcqTitle">Clear MCQ Marks for Retake MCQ Exam</h4>
-       <button class="btn retake-clear-btn" type="button" data-retake-clear="MCQ" aria-describedby="retakeMcqTitle">Clear</button>
-       <span class="retake-status" data-retake-status="MCQ" aria-live="polite" hidden>Ready for Retake</span>
+       <h4 class="retake-card-title" id="retakeMcqTitle">Allow MCQ Retake</h4>
+       <p class="retake-card-note">Keeps MCQ Attempt 1 and creates a new Attempt 2.</p>
+       <button class="btn retake-clear-btn" type="button" data-retake-allow="MCQ" aria-describedby="retakeMcqTitle">Allow Retake</button>
+       <span class="retake-status" data-retake-status="MCQ" aria-live="polite" hidden>Attempt 1 Preserved</span>
       </article>
       <article class="retake-card" data-retake-card="Online Written">
-       <h4 class="retake-card-title" id="retakeWrittenTitle">Clear Written Marks for Retake Written Exam</h4>
-       <button class="btn retake-clear-btn" type="button" data-retake-clear="Online Written" aria-describedby="retakeWrittenTitle">Clear</button>
-       <span class="retake-status" data-retake-status="Online Written" aria-live="polite" hidden>Ready for Retake</span>
+       <h4 class="retake-card-title" id="retakeWrittenTitle">Allow Written Retake</h4>
+       <p class="retake-card-note">Keeps Written Attempt 1 and creates a new Attempt 2.</p>
+       <button class="btn retake-clear-btn" type="button" data-retake-allow="Online Written" aria-describedby="retakeWrittenTitle">Allow Retake</button>
+       <span class="retake-status" data-retake-status="Online Written" aria-live="polite" hidden>Attempt 1 Preserved</span>
       </article>
      </div>
     </section>
@@ -1450,16 +1499,28 @@ body.sidebar-hidden .sidebar{
 <div class="modal" id="pageChangesModal" role="dialog" aria-modal="true" aria-labelledby="pageChangesModalLabel">
  <div class="modal-card">
   <div class="page-changes-head"><h3 id="pageChangesModalLabel">এই পেইজে যা নতুন পরিবর্তন/আপডেট করা হয়েছে</h3><button class="btn" id="copyPageChanges" type="button">Copy</button></div>
-  <div class="page-changes-body" id="pageChangesContent"></div>
+  <div class="page-changes-body" id="pageChangesContent">
+   <p><strong>Live Exam Attempt History মেনুতে নতুন যে আপডেটগুলো করা হয়েছে:</strong></p>
+   <ul>
+    <li>Exam Attempt History সেকশনের MCQ ও Online Written অংশে Attempt Number এবং Status দেখানো হয়েছে। প্রথমবার রিপোর্ট দেখলে Attempt 1 • Current দেখাবে।</li>
+    <li>Exam Attempt History সেকশনের পরে নতুন Retake Exam সেকশন যোগ করা হয়েছে।</li>
+    <li>Retake Exam সেকশনে MCQ ও Online Written পরীক্ষার জন্য পৃথক Allow Retake বাটন যোগ করা হয়েছে।</li>
+    <li>Allow Retake করা হলে পুরোনো Attempt-এর তথ্য মুছে যাবে না; সেটি বর্তমান টেবিলের নিচে Previous Attempts হিসেবে সংরক্ষিত থাকবে।</li>
+    <li>একই সঙ্গে Exam Attempt History অংশে নতুন Attempt-টি Attempt 2 • Ready for Retake হিসেবে দেখাবে।</li>
+    <li>শুধু MCQ অথবা শুধু Online Written—যেকোনো একটির Retake আলাদাভাবে অনুমোদন করা যাবে।</li>
+    <li>Confirmation popup-এ পুরোনো Attempt সংরক্ষিত থাকবে এবং নতুন Attempt তৈরি হবে—বিষয়টি পরিষ্কারভাবে জানানো হবে।</li>
+    <li>Allow Retake করার পর পরীক্ষার নির্ধারিত সময় সক্রিয় থাকলে শিক্ষার্থী Live Exam-এ পরীক্ষাটি পুনরায় দেখতে এবং অংশগ্রহণ করতে পারবে।</li>
+   </ul>
+  </div>
   <div class="page-changes-footer"><button class="btn" type="button" data-close-page-changes>বন্ধ করুন</button></div>
  </div>
 </div>
 <div class="modal" id="messageModal" role="dialog" aria-modal="true" aria-labelledby="messageModalLabel"><div class="modal-card"><h3 id="messageModalLabel">Offline Demo</h3><p id="messageText"></p><button class="btn btn-primary" type="button" data-close-modal>Close</button></div></div>
 <div class="modal" id="retakeConfirmModal" role="dialog" aria-modal="true" aria-labelledby="retakeConfirmTitle">
  <div class="modal-card">
-  <h3 id="retakeConfirmTitle">Clear Marks for Retake?</h3>
+  <h3 id="retakeConfirmTitle">Allow Retake?</h3>
   <p id="retakeConfirmText"></p>
-  <div class="retake-modal-actions"><button class="btn" type="button" data-close-retake>Cancel</button><button class="btn retake-confirm-btn" id="confirmRetakeClear" type="button">Clear Marks</button></div>
+  <div class="retake-modal-actions"><button class="btn" type="button" data-close-retake>Cancel</button><button class="btn retake-confirm-btn" id="confirmRetakeAllow" type="button">Allow Retake</button></div>
  </div>
 </div>
 <script>
@@ -16895,24 +16956,39 @@ var pendingRetakeType='';
 function closeRetakeConfirm(){pendingRetakeType='';byId('retakeConfirmModal').classList.remove('open');}
 function resetRetakeActions(){
  document.querySelectorAll('[data-retake-card]').forEach(function(card){
-  card.classList.remove('cleared');
-  var button=card.querySelector('[data-retake-clear]');var status=card.querySelector('[data-retake-status]');
-  button.disabled=false;button.textContent='Clear';status.hidden=true;
+  card.classList.remove('allowed');
+  var button=card.querySelector('[data-retake-allow]');var status=card.querySelector('[data-retake-status]');
+  button.disabled=false;button.textContent='Allow Retake';status.hidden=true;
  });
+ document.querySelectorAll('[data-previous-attempt]').forEach(function(card){card.hidden=true;});
+ byId('previousAttempts').hidden=true;
+ byId('mcqAttemptBadge').textContent='Attempt 1 • Current';byId('mcqAttemptBadge').classList.remove('ready');
+ byId('writtenAttemptBadge').textContent='Attempt 1 • Current';byId('writtenAttemptBadge').classList.remove('ready');
+ document.querySelector('#mcqAttemptTitle').closest('.attempt-column').classList.remove('ready');
+ document.querySelector('#writtenAttemptTitle').closest('.attempt-column').classList.remove('ready');
  closeRetakeConfirm();
 }
 function openRetakeConfirm(type){
  pendingRetakeType=type;
  var registration=byId('detailRegistration').textContent.trim();var exam=byId('detailExam').textContent.trim();
- byId('retakeConfirmText').textContent='This will clear the '+type+' marks for Registration No. '+registration+' in '+exam+' and make the exam ready for retake. Continue?';
+ byId('retakeConfirmTitle').textContent='Allow '+type+' Retake?';
+ byId('retakeConfirmText').textContent='The current '+type+' attempt for Registration No. '+registration+' in '+exam+' will remain under Previous Attempts as Attempt 1. A new Attempt 2 will be created as Ready for Retake. Continue?';
  byId('retakeConfirmModal').classList.add('open');
 }
-function confirmRetakeClear(){
+function confirmRetakeAllow(){
  if(!pendingRetakeType)return;
  var type=pendingRetakeType;var card=document.querySelector('[data-retake-card="'+type+'"]');
- var button=card.querySelector('[data-retake-clear]');var status=card.querySelector('[data-retake-status]');
- card.classList.add('cleared');button.disabled=true;button.textContent='Cleared';status.hidden=false;
- closeRetakeConfirm();showMessage(type+' marks cleared in this offline demo. The student is ready for retake.');
+ var button=card.querySelector('[data-retake-allow]');var status=card.querySelector('[data-retake-status]');
+ var isMcq=type==='MCQ';var badge=byId(isMcq?'mcqAttemptBadge':'writtenAttemptBadge');var title=byId(isMcq?'mcqAttemptTitle':'writtenAttemptTitle');
+ card.classList.add('allowed');button.disabled=true;button.textContent='Retake Allowed';status.hidden=false;
+ document.querySelector('[data-previous-attempt="'+type+'"]').hidden=false;byId('previousAttempts').hidden=false;
+ badge.textContent='Attempt 2 • Ready for Retake';badge.classList.add('ready');title.closest('.attempt-column').classList.add('ready');
+ if(isMcq){
+  setText('detailMcqStartTime','Waiting for student');setText('detailMcqEndTime','—');setText('detailMcqAnswered','Not attempted');setText('detailMcqSubmission','Pending');setText('detailMcqDevice','—');
+ }else{
+  setText('detailWrittenStartTime','Waiting for student');setText('detailWrittenEndTime','—');setText('detailWrittenScripts','Not uploaded');setText('detailWrittenSubmission','Pending');setText('detailWrittenDevice','—');
+ }
+ closeRetakeConfirm();showMessage(type+' Attempt 1 has been preserved in Previous Attempts. Attempt 2 is now ready for retake.');
 }
 function studentForRegistration(registration){
  var known=STUDENT_RECORDS[registration.toUpperCase()];if(known)return known;
@@ -16976,8 +17052,8 @@ byId('pageChangesBtn').addEventListener('click',function(){byId('pageChangesModa
 byId('copyPageChanges').addEventListener('click',copyUpdates);
 document.querySelectorAll('[data-close-page-changes]').forEach(function(button){button.addEventListener('click',closeUpdates);});
 document.querySelectorAll('[data-close-modal]').forEach(function(button){button.addEventListener('click',closeMessage);});
-document.querySelectorAll('[data-retake-clear]').forEach(function(button){button.addEventListener('click',function(){openRetakeConfirm(button.getAttribute('data-retake-clear'));});});
-byId('confirmRetakeClear').addEventListener('click',confirmRetakeClear);
+document.querySelectorAll('[data-retake-allow]').forEach(function(button){button.addEventListener('click',function(){openRetakeConfirm(button.getAttribute('data-retake-allow'));});});
+byId('confirmRetakeAllow').addEventListener('click',confirmRetakeAllow);
 document.querySelectorAll('[data-close-retake]').forEach(function(button){button.addEventListener('click',closeRetakeConfirm);});
 byId('pageChangesModal').addEventListener('click',function(event){if(event.target===this)closeUpdates();});
 byId('messageModal').addEventListener('click',function(event){if(event.target===this)closeMessage();});
