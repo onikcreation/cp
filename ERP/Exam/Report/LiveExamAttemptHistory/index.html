@@ -1271,6 +1271,17 @@ body.sidebar-hidden .sidebar{
 <style>
 /* Page-specific single-student Live Exam Attempt History details. */
 .filters .field select.control{background:#fff}
+.exam-combobox{position:relative;min-width:0}
+.exam-combobox .control{padding-right:36px}
+.exam-suggestion-toggle{position:absolute;z-index:2;top:1px;right:1px;width:34px;height:32px;padding:0;border:0;border-left:1px solid #ddd;border-radius:0 3px 3px 0;background:#f5f5f5;color:#555;cursor:pointer}
+.exam-suggestion-toggle:hover,.exam-suggestion-toggle:focus{background:#e9e9e9;color:#222;outline:0}
+.exam-combobox.open .exam-suggestion-toggle{color:var(--brand)}
+.exam-suggestions{position:absolute;z-index:45;top:calc(100% + 2px);right:0;left:0;max-height:238px;overflow-y:auto;border:1px solid #bbb;border-radius:3px;background:#fff;box-shadow:0 6px 14px rgba(0,0,0,.2)}
+.exam-suggestions[hidden]{display:none}
+.exam-suggestion{display:block;width:100%;padding:9px 11px;border:0;border-bottom:1px solid #e5e5e5;background:#fff;color:#222;font:inherit;line-height:1.35;text-align:left;cursor:pointer}
+.exam-suggestion:last-child{border-bottom:0}
+.exam-suggestion:hover,.exam-suggestion:focus,.exam-suggestion.active{background:#eef4fb;color:#173f6b;outline:0}
+.exam-no-result{padding:10px 11px;color:#777;font-size:13px}
 .details-wrap{padding:18px 16px 20px}
 .detail-section{margin:0 0 22px}
 .detail-section:last-child{margin-bottom:0}
@@ -1290,6 +1301,18 @@ body.sidebar-hidden .sidebar{
 .attempt-label,.attempt-value{display:flex;min-height:42px;align-items:center;padding:8px 10px;border-right:1px solid #b7bec8;border-bottom:1px solid #b7bec8;line-height:21px}
 .attempt-label{justify-content:flex-end;background:#eef1f5;color:#222;font-weight:700;text-align:right}
 .attempt-value{background:#fff;color:#222;overflow-wrap:anywhere}
+.retake-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border:1px solid #d8dce1;background:#fff}
+.retake-card{min-width:0;padding:20px;text-align:center}
+.retake-card+.retake-card{border-left:1px solid #d8dce1}
+.retake-card-title{margin:0 auto 16px;color:#222;font-size:16px;font-weight:700;line-height:1.45}
+.retake-clear-btn{min-width:220px;border:1px solid #cf765a;background:#fff1eb;color:#8b2f18;font-weight:700}
+.retake-clear-btn:hover,.retake-clear-btn:focus{border-color:#ad5135;background:#f7dfd5;color:#76230f}
+.retake-clear-btn:disabled{border-color:#b7dfba;background:#e8f5e9;color:#256029;cursor:not-allowed;opacity:1}
+.retake-status{display:inline-flex;margin-left:10px;align-items:center;color:#256029;font-size:12px;font-weight:700}
+.retake-status[hidden]{display:none}
+.retake-modal-actions{display:flex;justify-content:flex-end;gap:8px}
+.retake-confirm-btn{border:1px solid #c85d3b;background:#c85d3b;color:#fff}
+.retake-confirm-btn:hover,.retake-confirm-btn:focus{border-color:#a64225;background:#a64225;color:#fff}
 #detailsPanel>.panel-head:not(.unused){cursor:default}
 @media(max-width:760px){
  .details-wrap{padding:14px 10px 16px}
@@ -1303,6 +1326,12 @@ body.sidebar-hidden .sidebar{
  .attempt-row{grid-template-columns:1fr}
  .attempt-label{min-height:auto;justify-content:flex-start;padding-bottom:3px;border-bottom:0;text-align:left}
  .attempt-value{padding-top:4px}
+ .retake-grid{grid-template-columns:1fr}
+ .retake-card{padding:18px 14px}
+ .retake-card+.retake-card{border-top:1px solid #d8dce1;border-left:0}
+ .retake-clear-btn{width:100%;min-width:0}
+ .retake-status{display:flex;margin:9px 0 0;justify-content:center}
+ .retake-status[hidden]{display:none}
 }
 </style>
 </head>
@@ -1345,7 +1374,7 @@ body.sidebar-hidden .sidebar{
       <div class="field"><label for="programFilter">Program <span class="required">*</span></label><select class="control" id="programFilter"></select><span class="error" data-error="programFilter">Select a program.</span></div>
       <div class="field"><label for="sessionFilter">Session <span class="required">*</span></label><select class="control" id="sessionFilter"></select><span class="error" data-error="sessionFilter">Select a session.</span></div>
       <div class="field"><label for="courseFilter">Course <span class="required">*</span></label><select class="control" id="courseFilter"></select><span class="error" data-error="courseFilter">Select a course.</span></div>
-      <div class="field"><label for="examFilter">Exam <span class="required">*</span></label><input class="control" id="examFilter" type="text" placeholder="[Code] Exam Name" autocomplete="off"><span class="error" data-error="examFilter">Enter an exam code or name.</span></div>
+      <div class="field"><label for="examFilter">Exam <span class="required">*</span></label><div class="exam-combobox"><input class="control" id="examFilter" type="text" placeholder="[Code] Exam Name" autocomplete="off" role="combobox" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false"><button class="exam-suggestion-toggle" type="button" tabindex="-1" aria-label="Show exam suggestions"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></button><div class="exam-suggestions" role="listbox" aria-label="Exam suggestions" hidden></div></div><span class="error" data-error="examFilter">Select an exam from the suggestions.</span></div>
       <div class="field"><label for="registrationNo">Registration No. <span class="required">*</span></label><input class="control" id="registrationNo" type="text" placeholder="Enter Registration No." autocomplete="off"><span class="error" data-error="registrationNo">Enter a registration number.</span></div>
      </div>
      <div class="form-actions"><button class="btn btn-primary" type="submit">View</button></div>
@@ -1398,6 +1427,21 @@ body.sidebar-hidden .sidebar{
       </section>
      </div>
     </section>
+    <section class="detail-section" aria-labelledby="retakeExamTitle">
+     <h3 class="detail-section-title" id="retakeExamTitle">Retake Exam</h3>
+     <div class="retake-grid">
+      <article class="retake-card" data-retake-card="MCQ">
+       <h4 class="retake-card-title" id="retakeMcqTitle">Clear MCQ Marks for Retake MCQ Exam</h4>
+       <button class="btn retake-clear-btn" type="button" data-retake-clear="MCQ" aria-describedby="retakeMcqTitle">Clear</button>
+       <span class="retake-status" data-retake-status="MCQ" aria-live="polite" hidden>Ready for Retake</span>
+      </article>
+      <article class="retake-card" data-retake-card="Online Written">
+       <h4 class="retake-card-title" id="retakeWrittenTitle">Clear Written Marks for Retake Written Exam</h4>
+       <button class="btn retake-clear-btn" type="button" data-retake-clear="Online Written" aria-describedby="retakeWrittenTitle">Clear</button>
+       <span class="retake-status" data-retake-status="Online Written" aria-live="polite" hidden>Ready for Retake</span>
+      </article>
+     </div>
+    </section>
    </div>
   </section>
   <footer>© 2026 - UMS</footer>
@@ -1411,6 +1455,13 @@ body.sidebar-hidden .sidebar{
  </div>
 </div>
 <div class="modal" id="messageModal" role="dialog" aria-modal="true" aria-labelledby="messageModalLabel"><div class="modal-card"><h3 id="messageModalLabel">Offline Demo</h3><p id="messageText"></p><button class="btn btn-primary" type="button" data-close-modal>Close</button></div></div>
+<div class="modal" id="retakeConfirmModal" role="dialog" aria-modal="true" aria-labelledby="retakeConfirmTitle">
+ <div class="modal-card">
+  <h3 id="retakeConfirmTitle">Clear Marks for Retake?</h3>
+  <p id="retakeConfirmText"></p>
+  <div class="retake-modal-actions"><button class="btn" type="button" data-close-retake>Cancel</button><button class="btn retake-confirm-btn" id="confirmRetakeClear" type="button">Clear Marks</button></div>
+ </div>
+</div>
 <script>
 (function(){
 'use strict';
@@ -16743,6 +16794,45 @@ var STUDENT_RECORDS={
 };
 
 function byId(id){return document.getElementById(id);}
+var EXAM_SUGGESTIONS=[
+ '[101] EAP Daily Live Exam P-01 Part-01',
+ '[102] EAP Daily Live Exam P-01 Part-02',
+ '[103] EAP Daily Live Exam M-01 Part-01',
+ '[104] EAP Daily Live Exam M-01 Part-02',
+ '[105] EAP Daily Live Exam C-01 Part-01',
+ '[106] EAP Daily Live Exam C-01 Part-02'
+];
+var activeExamSuggestion=-1;
+function matchingExamSuggestions(query){
+ var normalized=(query||'').trim().toLowerCase();
+ if(!normalized)return EXAM_SUGGESTIONS.slice();
+ return EXAM_SUGGESTIONS.filter(function(item){return item.toLowerCase().indexOf(normalized)>-1;});
+}
+function examSuggestionList(){return document.querySelector('.exam-suggestions');}
+function examCombobox(){return document.querySelector('.exam-combobox');}
+function chooseExamSuggestion(value){
+ byId('examFilter').value=value;setError('examFilter',false);closeExamSuggestions();byId('examFilter').focus();
+}
+function renderExamSuggestions(query){
+ var list=examSuggestionList();var matches=matchingExamSuggestions(query);list.innerHTML='';activeExamSuggestion=-1;
+ if(!matches.length){var empty=document.createElement('div');empty.className='exam-no-result';empty.textContent='No matching exam found.';list.appendChild(empty);return;}
+ matches.forEach(function(item,index){
+  var option=document.createElement('button');option.type='button';option.className='exam-suggestion';option.id='examSuggestion'+index;option.setAttribute('role','option');option.setAttribute('aria-selected','false');option.textContent=item;
+  option.addEventListener('click',function(){chooseExamSuggestion(item);});list.appendChild(option);
+ });
+}
+function openExamSuggestions(showAll){
+ renderExamSuggestions(showAll?'':byId('examFilter').value);examSuggestionList().hidden=false;examCombobox().classList.add('open');byId('examFilter').setAttribute('aria-expanded','true');
+}
+function closeExamSuggestions(){
+ activeExamSuggestion=-1;examSuggestionList().hidden=true;examCombobox().classList.remove('open');byId('examFilter').setAttribute('aria-expanded','false');byId('examFilter').removeAttribute('aria-activedescendant');
+}
+function moveExamSuggestion(direction){
+ var options=Array.prototype.slice.call(examSuggestionList().querySelectorAll('.exam-suggestion'));if(!options.length)return;
+ activeExamSuggestion=(activeExamSuggestion+direction+options.length)%options.length;
+ options.forEach(function(option,index){var active=index===activeExamSuggestion;option.classList.toggle('active',active);option.setAttribute('aria-selected',String(active));});
+ var current=options[activeExamSuggestion];byId('examFilter').setAttribute('aria-activedescendant',current.id);current.scrollIntoView({block:'nearest'});
+}
 function unique(values){return values.filter(function(value,index,array){return array.indexOf(value)===index;});}
 function fillSelect(id,items,preferred,placeholder){
  var select=byId(id);select.innerHTML='';
@@ -16791,15 +16881,39 @@ function rebuildCourses(preferred){
  if(program)courses=program.courses.filter(function(course){return String(course.session)===session;}).sort(function(a,b){return a.rank-b.rank;});
  var seen={};var items=[{value:'All',label:'All'}].concat(courses.filter(function(course){if(seen[course.name])return false;seen[course.name]=true;return true;}).map(function(course){return {value:course.name,label:course.name};}));
  fillSelect('courseFilter',items,preferred||'All');
- byId('examFilter').value='';
+ byId('examFilter').value='';closeExamSuggestions();
 }
 function setError(id,show){var node=document.querySelector('[data-error="'+id+'"]');if(node)node.style.display=show?'block':'none';}
+function clearErrors(ids){ids.forEach(function(id){setError(id,false);});}
 function validate(){
  var ids=['organizationFilter','classFilter','programFilter','sessionFilter','courseFilter','examFilter','registrationNo'];var valid=true;
- ids.forEach(function(id){var ok=byId(id).value.trim()!=='';setError(id,!ok);if(!ok)valid=false;});return valid;
+ ids.forEach(function(id){var value=byId(id).value.trim();var ok=value!=='';if(id==='examFilter')ok=EXAM_SUGGESTIONS.indexOf(value)>=0;setError(id,!ok);if(!ok)valid=false;});return valid;
 }
 function selectedText(id){var select=byId(id);return select.options[select.selectedIndex]?select.options[select.selectedIndex].textContent:'';}
 function setText(id,value){byId(id).textContent=value;}
+var pendingRetakeType='';
+function closeRetakeConfirm(){pendingRetakeType='';byId('retakeConfirmModal').classList.remove('open');}
+function resetRetakeActions(){
+ document.querySelectorAll('[data-retake-card]').forEach(function(card){
+  card.classList.remove('cleared');
+  var button=card.querySelector('[data-retake-clear]');var status=card.querySelector('[data-retake-status]');
+  button.disabled=false;button.textContent='Clear';status.hidden=true;
+ });
+ closeRetakeConfirm();
+}
+function openRetakeConfirm(type){
+ pendingRetakeType=type;
+ var registration=byId('detailRegistration').textContent.trim();var exam=byId('detailExam').textContent.trim();
+ byId('retakeConfirmText').textContent='This will clear the '+type+' marks for Registration No. '+registration+' in '+exam+' and make the exam ready for retake. Continue?';
+ byId('retakeConfirmModal').classList.add('open');
+}
+function confirmRetakeClear(){
+ if(!pendingRetakeType)return;
+ var type=pendingRetakeType;var card=document.querySelector('[data-retake-card="'+type+'"]');
+ var button=card.querySelector('[data-retake-clear]');var status=card.querySelector('[data-retake-status]');
+ card.classList.add('cleared');button.disabled=true;button.textContent='Cleared';status.hidden=false;
+ closeRetakeConfirm();showMessage(type+' marks cleared in this offline demo. The student is ready for retake.');
+}
 function studentForRegistration(registration){
  var known=STUDENT_RECORDS[registration.toUpperCase()];if(known)return known;
  var digits=registration.replace(/\D/g,'');var numeric=parseInt(digits.slice(-6),10)||1;var suffix=String(numeric).padStart(6,'0');
@@ -16810,6 +16924,7 @@ function studentForRegistration(registration){
 }
 function renderDetails(){
  if(!validate())return;
+ resetRetakeActions();
  var registration=byId('registrationNo').value.trim();var student=studentForRegistration(registration);
  setText('detailOrganization',selectedText('organizationFilter'));setText('detailProgram',selectedText('programFilter'));
  setText('detailSession',selectedText('sessionFilter'));setText('detailCourse',selectedText('courseFilter'));setText('detailExam',byId('examFilter').value.trim());
@@ -16835,11 +16950,21 @@ function copyUpdates(){
 }
 
 rebuildOrganizations();rebuildPrograms('');
-byId('organizationFilter').addEventListener('change',function(){rebuildPrograms('');});
-byId('classFilter').addEventListener('change',function(){rebuildPrograms('');});
-byId('programFilter').addEventListener('change',function(){rebuildSessions('');});
-byId('sessionFilter').addEventListener('change',function(){rebuildCourses('');});
-byId('courseFilter').addEventListener('change',function(){byId('examFilter').value='';});
+byId('organizationFilter').addEventListener('change',function(){clearErrors(['organizationFilter','programFilter','sessionFilter','courseFilter','examFilter']);rebuildPrograms('');});
+byId('classFilter').addEventListener('change',function(){clearErrors(['classFilter','programFilter','sessionFilter','courseFilter','examFilter']);rebuildPrograms('');});
+byId('programFilter').addEventListener('change',function(){clearErrors(['programFilter','sessionFilter','courseFilter','examFilter']);rebuildSessions('');});
+byId('sessionFilter').addEventListener('change',function(){clearErrors(['sessionFilter','courseFilter','examFilter']);rebuildCourses('');});
+byId('courseFilter').addEventListener('change',function(){clearErrors(['courseFilter','examFilter']);byId('examFilter').value='';closeExamSuggestions();});
+byId('examFilter').addEventListener('focus',function(){openExamSuggestions(true);});
+byId('examFilter').addEventListener('click',function(){openExamSuggestions(true);});
+byId('examFilter').addEventListener('input',function(){setError('examFilter',false);openExamSuggestions(false);});
+byId('examFilter').addEventListener('keydown',function(event){
+ if(event.key==='ArrowDown'||event.key==='ArrowUp'){event.preventDefault();if(examSuggestionList().hidden)openExamSuggestions(true);moveExamSuggestion(event.key==='ArrowDown'?1:-1);}
+ else if(event.key==='Enter'&&activeExamSuggestion>=0){event.preventDefault();var option=examSuggestionList().querySelectorAll('.exam-suggestion')[activeExamSuggestion];if(option)chooseExamSuggestion(option.textContent);}
+ else if(event.key==='Escape')closeExamSuggestions();
+});
+document.querySelector('.exam-suggestion-toggle').addEventListener('click',function(){if(examSuggestionList().hidden){byId('examFilter').focus();openExamSuggestions(true);}else closeExamSuggestions();});
+byId('registrationNo').addEventListener('input',function(){if(this.value.trim())setError('registrationNo',false);});
 var filterToggle=document.querySelector('#filterPanel .panel-toggle');
 document.getElementById('reportForm').addEventListener('submit',function(event){event.preventDefault();renderDetails();});
 document.querySelectorAll('#filterPanel .panel-head').forEach(function(header){header.addEventListener('click',function(event){if(!event.target.closest('button')||event.target.classList.contains('panel-toggle'))toggleBody(filterToggle);});});
@@ -16851,10 +16976,15 @@ byId('pageChangesBtn').addEventListener('click',function(){byId('pageChangesModa
 byId('copyPageChanges').addEventListener('click',copyUpdates);
 document.querySelectorAll('[data-close-page-changes]').forEach(function(button){button.addEventListener('click',closeUpdates);});
 document.querySelectorAll('[data-close-modal]').forEach(function(button){button.addEventListener('click',closeMessage);});
+document.querySelectorAll('[data-retake-clear]').forEach(function(button){button.addEventListener('click',function(){openRetakeConfirm(button.getAttribute('data-retake-clear'));});});
+byId('confirmRetakeClear').addEventListener('click',confirmRetakeClear);
+document.querySelectorAll('[data-close-retake]').forEach(function(button){button.addEventListener('click',closeRetakeConfirm);});
 byId('pageChangesModal').addEventListener('click',function(event){if(event.target===this)closeUpdates();});
 byId('messageModal').addEventListener('click',function(event){if(event.target===this)closeMessage();});
+byId('retakeConfirmModal').addEventListener('click',function(event){if(event.target===this)closeRetakeConfirm();});
 document.querySelectorAll('[data-demo-message]').forEach(function(button){button.addEventListener('click',function(){showMessage(button.getAttribute('data-demo-message'));});});
-document.addEventListener('keydown',function(event){if(event.key==='Escape'){closeUpdates();closeMessage();}});
+document.addEventListener('keydown',function(event){if(event.key==='Escape'){closeUpdates();closeMessage();closeRetakeConfirm();closeExamSuggestions();}});
+document.addEventListener('click',function(event){if(!event.target.closest('.exam-combobox'))closeExamSuggestions();});
 document.addEventListener('click',function(event){var link=event.target.closest('a');if(!link)return;var href=link.getAttribute('href')||'';if(link.classList.contains('demo-badge'))return;if(/^https?:\/\//i.test(href)||href.charAt(0)==='/')event.preventDefault();},true);
 document.addEventListener('submit',function(event){if(event.target!==byId('reportForm'))event.preventDefault();},true);
 })();
