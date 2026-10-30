@@ -8681,6 +8681,22 @@ table.dataTable td {
   }
 }
 
+.detail-only-filter { display: none; }
+.info-select-section { margin: 4px 0 8px; padding: 12px 14px 14px; border: 1px solid #d5d5d5; border-radius: 4px; background: #fafafa; }
+.info-select-section legend { width: auto; margin: 0 auto 9px; padding: 0 9px; border: 0; color: #2f1031; font-size: 16px; font-weight: 700; text-align: center; }
+.info-transfer { display: grid; grid-template-columns: minmax(0,1fr) 110px minmax(0,1fr); gap: 14px; align-items: center; }
+.info-transfer select { width: 100%; height: 150px; padding: 3px; border: 1px solid #bbb; border-radius: 3px; background: #fff; }
+.info-transfer select:focus { border-color: #428bca; outline: 1px solid #428bca; }
+.info-transfer-buttons { display: grid; gap: 0; }
+.info-transfer-buttons .btn { width: 100%; min-height: 32px; padding: 3px 8px; border-radius: 0; font-family: "Arial Black", Arial, sans-serif; font-size: 20px; font-weight: 900; line-height: 1; -webkit-text-stroke: .45px currentColor; }
+.info-transfer-buttons .btn:first-child { border-radius: 4px 4px 0 0; }
+.info-transfer-buttons .btn:last-child { border-radius: 0 0 4px 4px; }
+.detail-pagination { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
+.detail-page-info { color: #666; font-size: 12px; }
+.detail-page-buttons { display: flex; gap: 4px; }
+.detail-page-buttons .btn.active { border-color: #357ebd; background: #428bca; color: #fff; }
+@media screen and (max-width: 767px) { .info-transfer { grid-template-columns: 1fr; } .info-transfer-buttons { grid-template-columns: repeat(4,1fr); } .info-transfer-buttons .btn, .info-transfer-buttons .btn:first-child, .info-transfer-buttons .btn:last-child { border-radius: 4px; } .detail-pagination { align-items: flex-start; flex-direction: column; } }
+
 </style>
                   <div class="panel panel-primary">
                     <div class="panel-heading">
@@ -8715,6 +8731,46 @@ table.dataTable td {
                             <input class="form-control" id="RegistrationNo" name="RegistrationNo" placeholder="0" type="text" value="">
                             <span style="color:red;font-weight:bold" id="regivalidator">
                             </span>
+                          </div>
+                        </div>
+                        <div class="form-group detail-only-filter">
+                          <label class="control-label col-md-5" for="DisplayPerPage">
+                            Display Per Page
+                          </label>
+                          <div class="col-md-4">
+                            <input class="form-control" id="DisplayPerPage" name="DisplayPerPage" type="number" min="1" max="100" step="1" value="10" inputmode="numeric">
+                          </div>
+                        </div>
+                        <div class="form-group detail-only-filter">
+                          <div class="col-md-8 col-md-offset-2">
+                            <fieldset class="info-select-section">
+                              <legend>Select Information To View</legend>
+                              <div class="info-transfer" id="detailInfoTransfer">
+                                <select id="detailInfoAvailable" multiple size="8" aria-label="Available information">
+                                  <option value="serial" data-order="0">Serial</option>
+                                  <option value="trackingId" data-order="1">Tracking ID</option>
+                                  <option value="title" data-order="2">Conversation Title</option>
+                                  <option value="type" data-order="3">Conversation Type</option>
+                                  <option value="status" data-order="4">Status</option>
+                                  <option value="studentFeedback" data-order="5">Student Feedback</option>
+                                  <option value="duration" data-order="6">Conversation Duration</option>
+                                  <option value="remarks" data-order="7">Remarks</option>
+                                  <option value="customEntryField" data-order="8">Custom Entry Field</option>
+                                  <option value="contactedPerson" data-order="9">যে নম্বরে কথা হয়েছে</option>
+                                  <option value="contactMedium" data-order="10">যে মাধ্যমে কথা হয়েছে</option>
+                                  <option value="entryBy" data-order="11">Executed By</option>
+                                  <option value="entryDateTime" data-order="12">Entry Date &amp; Time</option>
+                                  <option value="mobileNumber" data-order="13">Mobile Number</option>
+                                </select>
+                                <div class="info-transfer-buttons" aria-label="Transfer information controls">
+                                  <button class="btn btn-default" id="detailInfoMoveAllRight" type="button" title="Move all to selected" aria-label="Move all to selected">→→</button>
+                                  <button class="btn btn-default" id="detailInfoMoveRight" type="button" title="Move selected to selected list" aria-label="Move selected to selected list">→</button>
+                                  <button class="btn btn-default" id="detailInfoMoveLeft" type="button" title="Move selected back to available list" aria-label="Move selected back to available list">←</button>
+                                  <button class="btn btn-default" id="detailInfoMoveAllLeft" type="button" title="Move all back to available" aria-label="Move all back to available">←←</button>
+                                </div>
+                                <select id="detailInfoSelected" multiple size="8" aria-label="Selected information"></select>
+                              </div>
+                            </fieldset>
                           </div>
                         </div>
                         <div class="form-group">
@@ -25327,7 +25383,7 @@ function getDPI() {
               function demoGetStudent(regNo) {
                   if (!demoStudentCache[regNo]) {
                       var idx = demoRandInt(0, fakeFullNames.length - 1);
-                      var rowCount = demoRandInt(6, 14);
+                      var rowCount = 12;
                       var rows = [];
                       for (var i = 1; i <= rowCount; i++) { rows.push(demoBuildConversationRow(i)); }
                       demoStudentCache[regNo] = {
@@ -25399,45 +25455,86 @@ function getDPI() {
                       '</table></div></div></div></div>';
               }
 
-              function demoDetailsTableHtml(student) {
-                  var rowsHtml = student.rows.map(function (r) {
-                      return '<tr>' +
-                          '<td>' + r.serial + '</td>' +
-                          '<td>' + r.trackingId + '</td>' +
-                          '<td>' + r.title + '</td>' +
-                          '<td>' + r.type + '</td>' +
-                          '<td>' + r.status + '</td>' +
-                          '<td>' + r.studentFeedback + '</td>' +
-                          '<td>' + r.duration + '</td>' +
-                          '<td>' + r.remarks + '</td>' +
-                          '<td style="text-align: left;">' + r.customEntryField + '</td>' +
-                          '<td>' + r.contactedPerson + '</td>' +
-                          '<td>' + r.contactMedium + '</td>' +
-                          '<td>' + r.entryBy + '</td>' +
-                          '<td>' + r.entryDateTime + '</td>' +
-                          '<td>' + r.mobileNumber + '</td>' +
-                          '</tr>';
+              var demoDetailColumns = [
+                  { key: 'serial', label: 'Serial' },
+                  { key: 'trackingId', label: 'Tracking ID', width: '100px' },
+                  { key: 'title', label: 'Conversation Title', width: '200px' },
+                  { key: 'type', label: 'Conversation Type', width: '200px' },
+                  { key: 'status', label: 'Status', width: '100px' },
+                  { key: 'studentFeedback', label: 'Student Feedback', width: '200px' },
+                  { key: 'duration', label: 'Conversation Duration' },
+                  { key: 'remarks', label: 'Remarks', width: '200px' },
+                  { key: 'customEntryField', label: 'Custom Entry Field', width: '250px' },
+                  { key: 'contactedPerson', label: 'যে নম্বরে কথা হয়েছে', width: '150px' },
+                  { key: 'contactMedium', label: 'যে মাধ্যমে কথা হয়েছে', width: '150px' },
+                  { key: 'entryBy', label: 'Executed By', width: '150px' },
+                  { key: 'entryDateTime', label: 'Entry Date &amp; Time', width: '200px' },
+                  { key: 'mobileNumber', label: 'Mobile Number', width: '150px' }
+              ];
+              var demoDefaultDetailColumnKeys = [
+                  'serial', 'trackingId', 'type', 'status', 'studentFeedback',
+                  'duration', 'remarks', 'contactedPerson', 'entryBy', 'entryDateTime'
+              ];
+              var demoDetailsState = { student: null, pageSize: 10, page: 1, columnKeys: [] };
+
+              function demoGetSelectedDetailColumnKeys() {
+                  var selectedList = document.getElementById('detailInfoSelected');
+                  var selected = selectedList ? Array.from(selectedList.options).map(function (option) {
+                      return option.value;
+                  }) : [];
+                  return selected.length ? selected : demoDefaultDetailColumnKeys.slice();
+              }
+
+              function demoDetailColumnByKey(key) {
+                  return demoDetailColumns.filter(function (column) { return column.key === key; })[0];
+              }
+
+              function demoDetailsTableHtml(student, state) {
+                  var pageSize = Math.min(100, Math.max(1, Number.parseInt(state.pageSize, 10) || 10));
+                  var totalRows = student.rows.length;
+                  var totalPages = Math.max(1, Math.ceil(totalRows / pageSize));
+                  state.page = Math.min(Math.max(Number.parseInt(state.page, 10) || 1, 1), totalPages);
+                  var start = (state.page - 1) * pageSize;
+                  var end = Math.min(start + pageSize, totalRows);
+                  var columns = state.columnKeys.map(demoDetailColumnByKey).filter(Boolean);
+                  var headerHtml = columns.map(function (column) {
+                      return '<th' + (column.width ? ' style="min-width:' + column.width + ';"' : '') + '>' + column.label + '</th>';
                   }).join('');
+                  var rowsHtml = student.rows.slice(start, end).map(function (row) {
+                      return '<tr>' + columns.map(function (column) {
+                          var align = column.key === 'customEntryField' ? ' style="text-align:left;"' : '';
+                          return '<td' + align + '>' + row[column.key] + '</td>';
+                      }).join('') + '</tr>';
+                  }).join('');
+                  var pageButtons = '';
+                  for (var page = 1; page <= totalPages; page++) {
+                      pageButtons += '<button type="button" class="btn btn-default btn-sm detail-page-btn' + (page === state.page ? ' active' : '') + '" data-page="' + page + '"' + (page === state.page ? ' aria-current="page"' : '') + '>' + page + '</button>';
+                  }
+                  var paginationHtml = '<div class="detail-pagination">' +
+                      '<span class="detail-page-info">Showing ' + (totalRows ? start + 1 : 0) + ' to ' + end + ' of ' + totalRows + ' entries</span>' +
+                      '<div class="detail-page-buttons">' +
+                      '<button type="button" class="btn btn-default btn-sm detail-page-btn" data-page="' + (state.page - 1) + '"' + (state.page === 1 ? ' disabled' : '') + '>Previous</button>' +
+                      pageButtons +
+                      '<button type="button" class="btn btn-default btn-sm detail-page-btn" data-page="' + (state.page + 1) + '"' + (state.page === totalPages ? ' disabled' : '') + '>Next</button>' +
+                      '</div></div>';
                   return '<div class="panel panel-primary">' +
                       '<div class="panel-heading"><h4 class="panel-title">Details</h4></div>' +
                       '<div class="panel-body" id="individualSummaryPanel"><div>' +
                       '<div class="panel panel-default"><div class="panel-body">' + demoStudentInfoTableHtml(student) + '</div></div>' +
-                      '<div class="table-responsive" style="overflow: auto; max-width: 100%; margin-top:10px!important;">' +
+                      '<div class="table-responsive" style="overflow:auto;max-width:100%;margin-top:10px!important;">' +
                       '<table class="display table table-striped table-bordered table-condensed table-hover table-responsive text-wrap">' +
-                      '<thead class="table-light"><tr>' +
-                      '<th>Serial</th><th style="min-width:100px;">Tracking ID</th><th style="min-width:200px;">Conversation Title</th>' +
-                      '<th style="min-width:200px;">Conversation Type</th><th style="min-width:100px;">Status</th>' +
-                      '<th style="min-width:200px;">Student Feedback</th><th>Conversation Duration</th>' +
-                      '<th style="min-width:200px;">Remarks</th><th style="min-width:250px;">Custom Entry Field</th>' +
-                      '<th style="min-width:150px;">যে নম্বরে কথা হয়েছে</th><th style="min-width:150px;">যে মাধ্যমে কথা হয়েছে</th>' +
-                      '<th style="min-width:150px;">Executed By</th><th style="min-width:200px;">Entry Date &amp; Time</th>' +
-                      '<th style="min-width:150px;">Mobile Number</th>' +
-                      '</tr></thead>' +
+                      '<thead class="table-light"><tr>' + headerHtml + '</tr></thead>' +
                       '<tbody class="text-center">' + rowsHtml + '</tbody>' +
-                      '</table></div>' +
+                      '</table></div>' + paginationHtml +
                       '<div class="text-center" style="margin-top:15px;">' +
-                      '<input type="button" id="btnDetailsExport" value="Export" class="btn btn-primary" style="padding: 8px 38px;">' +
+                      '<input type="button" id="btnDetailsExport" value="Export" class="btn btn-primary" style="padding:8px 38px;">' +
                       '</div></div></div></div>';
+              }
+
+              function demoRenderDetailsPage(page) {
+                  if (!demoDetailsState.student) return;
+                  demoDetailsState.page = page;
+                  $('#resultDiv').html(demoDetailsTableHtml(demoDetailsState.student, demoDetailsState));
               }
 
               // Demo: matches the live "Details" drill-down exactly (see the user-supplied
@@ -25546,7 +25643,18 @@ function getDPI() {
                       setTimeout(function () {
                           $.unblockUI();
                           var student = demoGetStudent(regNo);
-                          var html = (reportType == 20) ? demoDetailsTableHtml(student) : demoSummaryTableHtml(student);
+                          var html;
+                          if (reportType == 20) {
+                              demoDetailsState = {
+                                  student: student,
+                                  pageSize: Math.min(100, Math.max(1, Number.parseInt($('#DisplayPerPage').val(), 10) || 10)),
+                                  page: 1,
+                                  columnKeys: demoGetSelectedDetailColumnKeys()
+                              };
+                              html = demoDetailsTableHtml(student, demoDetailsState);
+                          } else {
+                              html = demoSummaryTableHtml(student);
+                          }
                           $("#resultDiv").show();
                           $("#resultDiv").html(html);
                       }, 500);
@@ -25571,6 +25679,46 @@ function getDPI() {
 
               $(document).on('change', "#ReportType", function (e) {
                   $('#exportValidate').text("");
+                  demoToggleDetailFilters();
+              });
+
+              function demoToggleDetailFilters() {
+                  var show = $('#ReportType').val() == '20';
+                  $('.detail-only-filter').toggle(show);
+              }
+
+              function demoSortTransferList(select) {
+                  Array.from(select.options).sort(function (a, b) {
+                      return Number(a.getAttribute('data-order')) - Number(b.getAttribute('data-order'));
+                  }).forEach(function (option) {
+                      select.appendChild(option);
+                  });
+              }
+
+              function demoMoveDetailInformation(fromId, toId, moveAll) {
+                  var from = document.getElementById(fromId);
+                  var to = document.getElementById(toId);
+                  if (!from || !to) return;
+                  Array.from(from.options).filter(function (option) {
+                      return moveAll || option.selected;
+                  }).forEach(function (option) {
+                      option.selected = false;
+                      to.appendChild(option);
+                  });
+                  demoSortTransferList(from);
+                  demoSortTransferList(to);
+              }
+
+              $(document).on('click', '#detailInfoMoveAllRight', function () { demoMoveDetailInformation('detailInfoAvailable', 'detailInfoSelected', true); });
+              $(document).on('click', '#detailInfoMoveRight', function () { demoMoveDetailInformation('detailInfoAvailable', 'detailInfoSelected', false); });
+              $(document).on('click', '#detailInfoMoveLeft', function () { demoMoveDetailInformation('detailInfoSelected', 'detailInfoAvailable', false); });
+              $(document).on('click', '#detailInfoMoveAllLeft', function () { demoMoveDetailInformation('detailInfoSelected', 'detailInfoAvailable', true); });
+              $(document).on('dblclick', '#detailInfoAvailable', function () { demoMoveDetailInformation('detailInfoAvailable', 'detailInfoSelected', false); });
+              $(document).on('dblclick', '#detailInfoSelected', function () { demoMoveDetailInformation('detailInfoSelected', 'detailInfoAvailable', false); });
+
+              $(document).on('click', '.detail-page-btn', function () {
+                  if (this.disabled) return;
+                  demoRenderDetailsPage(Number.parseInt($(this).attr('data-page'), 10) || 1);
               });
 
               // Demo: real button opens a live export URL in a new tab — no-op here
@@ -25675,18 +25823,18 @@ function getDPI() {
       // front so every way of following the link lands correctly. The other 5
       // items have nowhere to go yet and stay inert (blocked below).
       var siblingLivePages = {
-        '/Student/CrmConversation/Dashboard': { folder: 'Dashboard', file: 'Dashboard_Offline.html' },
-        '/Student/CrmConversationTargetedStudent/ManageSingleEntry': { folder: 'ConversationEntry', file: 'CrmConversationEntry_Offline.html' },
-        '/Student/CrmReport/DetailsReport': { folder: 'DetailsReport', file: 'DetailsReport_Offline.html' },
-        '/Student/CrmReport/IndividualReport': { folder: 'IndividualReport', file: 'IndividualReport_Offline.html' },
-        '/Student/CrmConversationTargetedStudent/DefaultSettings': { folder: 'DefaultSettings', file: 'DefaultSettings_Offline.html' },
-        '/Student/CrmComments/Index': { folder: 'ManageStudentFeedback', file: 'ManageStudentFeedback_Offline.html' },
-        '/Student/CrmConversation/MentorDashboard': { folder: 'MentorDashboard', file: 'MentorDashboard_Offline.html' },
-        '/Student/CrmReport/EffectiveCallReport': { folder: 'EffectiveCallReport', file: 'EffectiveCallReport_Offline.html' },
-        '/Student/CrmConversationType/Index': { folder: 'ManageConversationType', file: 'ManageConversationType_Offline.html' },
-        '/Student/CrmReport/SummaryReport': { folder: 'SummaryReport', file: 'SummaryReport_Offline.html' },
-        '/Student/CrmConversation/SaveOrEdit': { folder: 'CreateConversation', file: 'CreateConversation_Offline.html' },
-        '/Student/CrmConversation/Index': { folder: 'ManageConversation', file: 'ManageConversation_Offline.html' }
+        '/Student/CrmConversation/Dashboard': { folder: 'Dashboard', file: 'index.html' },
+        '/Student/CrmConversationTargetedStudent/ManageSingleEntry': { folder: 'ConversationEntry', file: 'index.html' },
+        '/Student/CrmReport/DetailsReport': { folder: 'DetailsReport', file: 'index.html' },
+        '/Student/CrmReport/IndividualReport': { folder: 'IndividualReport', file: 'index.html' },
+        '/Student/CrmConversationTargetedStudent/DefaultSettings': { folder: 'DefaultSettings', file: 'index.html' },
+        '/Student/CrmComments/Index': { folder: 'ManageStudentFeedback', file: 'index.html' },
+        '/Student/CrmConversation/MentorDashboard': { folder: 'MentorDashboard', file: 'index.html' },
+        '/Student/CrmReport/EffectiveCallReport': { folder: 'EffectiveCallReport', file: 'index.html' },
+        '/Student/CrmConversationType/Index': { folder: 'ManageConversationType', file: 'index.html' },
+        '/Student/CrmReport/SummaryReport': { folder: 'SummaryReport', file: 'index.html' },
+        '/Student/CrmConversation/SaveOrEdit': { folder: 'CreateConversation', file: 'index.html' },
+        '/Student/CrmConversation/Index': { folder: 'ManageConversation', file: 'index.html' }
       };
       Object.keys(siblingLivePages).forEach(function (route) {
         var target = siblingLivePages[route];
@@ -25725,21 +25873,7 @@ function getDPI() {
                 <h4 class="modal-title" id="pageChangesModalLabel">এই পেইজে যা নতুন পরিবর্তন/আপডেট করা হয়েছে</h4>
               </div>
               <div class="modal-body" style="height:65vh; overflow-y:auto;">
-                <p style="font-weight:bold; margin-bottom:12px;">নতুন আপডেট:</p>
-                <ol style="padding-left:20px; margin:0;">
-                  <li style="margin-bottom:12px;">
-                    <strong>Report Type: Details দিয়ে সাবমিট করলে যে ডাটাটেবিল পাওয়া যায়, সেখানে "যে নম্বরে কথা হয়েছে" ও "যে মাধ্যমে কথা হয়েছে" — নতুন দুটো কলাম যোগ করা হয়েছে</strong> ("Custom Entry Field"-এর পরে, "Executed By"-এর ঠিক আগে) — Conversation Entry পেইজ থেকে সেভ হওয়া এই দুটো ফিল্ড এখন এখানেও দেখা যাবে।
-                  </li>
-                  <li style="margin-bottom:12px;">
-                    <strong>Report Type: Summary দিয়ে সাবমিট করলে যে ডাটাটেবিল পাওয়া যায়, তার "Details" বাটনে ক্লিক করলে যে টেবিল দেখা যায়, সেখানেও "যে নম্বরে কথা হয়েছে" ও "যে মাধ্যমে কথা হয়েছে" — নতুন দুটো কলাম যোগ করা হয়েছে</strong> ("Remarks"-এর পরে, "Executed By"-এর ঠিক আগে)।
-                  </li>
-                  <li style="margin-bottom:12px;">
-                    <strong>Report Type: Details দিয়ে সাবমিট করলে যে ডাটাটেবিল পাওয়া যায়, তার "Entry By" কলামের নাম পরিবর্তন করে "Executed By" করা হয়েছে।</strong>
-                  </li>
-                  <li>
-                    <strong>Report Type: Summary দিয়ে সাবমিট করলে যে ডাটাটেবিল পাওয়া যায়, তার "Details" বাটনে ক্লিক করলে যে তথ্য দেখা যায় সেখানে "Executed By" ফিল্ডের নাম পরিবর্তন করে "Assigned To" করা হয়েছে, এবং নিচের টেবিলের "Entry By" কলামের নাম পরিবর্তন করে "Executed By" করা হয়েছে।</strong>
-                  </li>
-                </ol>
+                <p style="margin:0; line-height:1.7;">CRM &gt; Individual Report মেনুতে Report Type: Details দিয়ে ডেটা View করলে, প্রাপ্ত Data Table-এর ডেটা Pagination আকারে দেখাতে হবে। Registration No. ফিল্ডের পরে Display Per Page অপশন যোগ করতে হবে। ডিফল্টভাবে 10 সিলেক্ট থাকবে। Submit বাটনের আগে “Select Information to View” নামে নতুন একটি Section যোগ করতে হবে। কিছু সিলেক্ট না করে Submit করলে Data Table-এ ডিফল্টভাবে নিচের কলামগুলো থাকবে — Serial, Tracking ID, Conversation Type, Status, Student Feedback, Conversation Duration, Remarks, যে নম্বরে কথা হয়েছে, Executed By, Entry Date &amp; Time</p>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">বন্ধ করুন</button>
@@ -25783,6 +25917,25 @@ function getDPI() {
                   pcmSelectionFallbackCopy(btn, modalBody);
               }
           });
+        </script>
+        <script>
+          (function () {
+              var params = new URLSearchParams(window.location.search);
+              var reportType = params.get('reportType');
+              var registrationNo = params.get('registrationNo') || '';
+              var reportTypeField = document.getElementById('ReportType');
+              var registrationField = document.getElementById('RegistrationNo');
+
+              if (reportTypeField && reportType === '20') {
+                  reportTypeField.value = '20';
+              }
+              if (registrationField && /^\d{7}$/.test(registrationNo)) {
+                  registrationField.value = registrationNo;
+              }
+              if (typeof demoToggleDetailFilters === 'function') {
+                  demoToggleDetailFilters();
+              }
+          })();
         </script>
           </body>
         </html>
