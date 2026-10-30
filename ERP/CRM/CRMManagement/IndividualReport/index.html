@@ -8695,14 +8695,20 @@ table.dataTable td {
 .detail-page-info { color: #666; font-size: 12px; }
 .detail-page-buttons { display: flex; gap: 4px; }
 .detail-page-buttons .btn.active { border-color: #357ebd; background: #428bca; color: #fff; }
+.individual-filter-panel > .panel-heading { padding: 0; }
+.individual-filter-toggle { display: flex; width: 100%; min-height: 40px; align-items: center; justify-content: space-between; padding: 8px 14px; border: 0; background: transparent; color: #fff; text-align: left; font-size: 16px; font-weight: 600; cursor: pointer; }
+.individual-filter-toggle:hover, .individual-filter-toggle:focus { background: rgba(255,255,255,.09); color: #fff; outline: 2px solid #fff; outline-offset: -3px; }
+.individual-filter-arrow { transition: transform .2s ease; }
+.individual-filter-toggle[aria-expanded="false"] .individual-filter-arrow { transform: rotate(180deg); }
 @media screen and (max-width: 767px) { .info-transfer { grid-template-columns: 1fr; } .info-transfer-buttons { grid-template-columns: repeat(4,1fr); } .info-transfer-buttons .btn, .info-transfer-buttons .btn:first-child, .info-transfer-buttons .btn:last-child { border-radius: 4px; } .detail-pagination { align-items: flex-start; flex-direction: column; } }
 
 </style>
-                  <div class="panel panel-primary">
+                  <div class="panel panel-primary individual-filter-panel" id="individualReportPanel">
                     <div class="panel-heading">
-                      <h4 class="panel-title">
-                        Individual Report
-                      </h4>
+                      <button class="individual-filter-toggle" id="individualFilterToggle" type="button" aria-expanded="true" aria-controls="individualCollectionPanel">
+                        <span>Individual Report</span>
+                        <span class="glyphicon glyphicon-chevron-up individual-filter-arrow" aria-hidden="true"></span>
+                      </button>
                     </div>
                     <div class="panel-body" id="individualCollectionPanel">
                       <div class="form-horizontal">
@@ -25603,6 +25609,18 @@ function getDPI() {
                       '<a href="#" class="text-primary" id="backBtn"><i class="fa fa-arrow-left"></i> Back</a>';
               }
 
+              function demoSetIndividualFilterExpanded(expanded) {
+                  var toggle = document.getElementById('individualFilterToggle');
+                  var body = document.getElementById('individualCollectionPanel');
+                  if (!toggle || !body) return;
+                  toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+                  body.hidden = !expanded;
+              }
+
+              $(document).on('click', '#individualFilterToggle', function () {
+                  demoSetIndividualFilterExpanded(this.getAttribute('aria-expanded') !== 'true');
+              });
+
               $(document).on('click', '#btnSubmit', function (e) {
                   let reportType = $('#ReportType').val() ?? 10;
                   let regNo = $('#RegistrationNo').val();
@@ -25657,6 +25675,9 @@ function getDPI() {
                           }
                           $("#resultDiv").show();
                           $("#resultDiv").html(html);
+                          if (reportType == 20) {
+                              demoSetIndividualFilterExpanded(false);
+                          }
                       }, 500);
                   } else {
                       return false;
@@ -25873,7 +25894,7 @@ function getDPI() {
                 <h4 class="modal-title" id="pageChangesModalLabel">এই পেইজে যা নতুন পরিবর্তন/আপডেট করা হয়েছে</h4>
               </div>
               <div class="modal-body" style="height:65vh; overflow-y:auto;">
-                <p style="margin:0; line-height:1.7;">CRM &gt; Individual Report মেনুতে Report Type: Details দিয়ে ডেটা View করলে, প্রাপ্ত Data Table-এর ডেটা Pagination আকারে দেখাতে হবে। Registration No. ফিল্ডের পরে Display Per Page অপশন যোগ করতে হবে। ডিফল্টভাবে 10 সিলেক্ট থাকবে। Submit বাটনের আগে “Select Information to View” নামে নতুন একটি Section যোগ করতে হবে। কিছু সিলেক্ট না করে Submit করলে Data Table-এ ডিফল্টভাবে নিচের কলামগুলো থাকবে — Serial, Tracking ID, Conversation Type, Status, Student Feedback, Conversation Duration, Remarks, যে নম্বরে কথা হয়েছে, Executed By, Entry Date &amp; Time</p>
+                <p style="margin:0; line-height:1.7;">CRM &gt; Individual Report মেনুতে Report Type: Details দিয়ে ডেটা View করলে, প্রাপ্ত Data Table-এর ডেটা Pagination আকারে দেখাতে হবে। Registration No. ফিল্ডের পরে Display Per Page অপশন যোগ করতে হবে। ডিফল্টভাবে 10 সিলেক্ট থাকবে। Submit বাটনের আগে “Select Information to View” নামে নতুন একটি Section যোগ করতে হবে। কিছু সিলেক্ট না করে Submit করলে Data Table-এ ডিফল্টভাবে নিচের কলামগুলো থাকবে — Serial, Tracking ID, Conversation Type, Status, Student Feedback, Conversation Duration, Remarks, যে নম্বরে কথা হয়েছে, Executed By, Entry Date &amp; Time। Details data View হওয়ার পর উপরের Individual Report filter section স্বয়ংক্রিয়ভাবে collapse হবে; header-এ ক্লিক করে আবার expand বা collapse করা যাবে।</p>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">বন্ধ করুন</button>
