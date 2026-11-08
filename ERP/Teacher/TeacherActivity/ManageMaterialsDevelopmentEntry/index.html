@@ -1284,6 +1284,12 @@ body.sidebar-hidden .sidebar{
 .manage-table thead th{position:sticky;top:0;z-index:4;background:#f5f5f5;color:#222;font-weight:700}
 .manage-table th:nth-child(1){width:90px}.manage-table th:nth-child(2){width:105px}.manage-table th:nth-child(3){width:170px}.manage-table th:nth-child(4){width:130px}.manage-table th:nth-child(5){width:125px}.manage-table th:nth-child(6){width:115px}.manage-table th:nth-child(7){width:170px}.manage-table th:nth-child(8){width:420px}.manage-table th:nth-child(9){width:95px}.manage-table th:nth-child(10){width:100px}.manage-table th:nth-child(11){width:105px}
 .manage-table tbody tr:nth-child(odd){background:#f3f3f3}
+#reportPanel .manage-table thead th:first-child{left:auto}
+#reportPanel .manage-table tbody td:first-child{position:static;left:auto}
+.manage-table th:last-child,.manage-table td:last-child{position:sticky;right:0;z-index:3;box-shadow:-3px 0 5px rgba(0,0,0,.08)}
+.manage-table thead th:last-child{z-index:7;background:#f5f5f5}
+.manage-table tbody tr:nth-child(odd) td:last-child{background:#f3f3f3}
+.manage-table tbody tr:nth-child(even) td:last-child{background:#fff}
 .manage-table .amount{text-align:right;white-space:nowrap}
 .action-cell{white-space:nowrap!important}
 .row-action{display:inline-flex;align-items:center;justify-content:center;width:25px;height:25px;margin:0 1px;border:0;background:transparent;color:#2f1031;cursor:pointer;text-decoration:none}
@@ -1408,7 +1414,7 @@ body.sidebar-hidden .sidebar{
  <footer>© 2026 - UMS</footer>
 </main>
 </div>
-<div class="modal" id="pageChangesModal" role="dialog" aria-modal="true" aria-labelledby="pageChangesTitle"><div class="modal-card"><div class="page-changes-head"><h3 id="pageChangesTitle">New Updates</h3><button class="btn" id="copyChangesBtn" type="button">Copy</button><button class="btn" type="button" data-close-changes>Close</button></div><div class="page-changes-body" id="pageChangesContent"><p><strong>Materials Development workflow — Offline Draft</strong></p><ol><li><strong>Materials Name filter and report column:</strong> Materials Type-এর ঠিক পরে Materials Name filter যোগ করা হয়েছে। <code>Maerials List.xlsx</code>-এর Organization → Program → Session → Materials Type → Materials Name hierarchy অনুযায়ী দুইটি materials filter cascade করে; upstream selection বদলালে অচল child selection clear হয়। Report table-এও Material Type-এর পরে Materials Name column দেখায়।</li><li><strong>Entry/Manage integration:</strong> দুইটি menu একই sidebar-এ linked। Report-এর pencil action selected record-সহ Materials Development Entry page-এর <code>?direct=1</code> edit mode খুলে দেয়; Update করলে পরিবর্তিত record এই report-এ ফিরে success message-সহ দেখা যায়।</li></ol></div><div class="page-changes-footer"><button class="btn" type="button" data-close-changes>Close</button></div></div></div>
+<div class="modal" id="pageChangesModal" role="dialog" aria-modal="true" aria-labelledby="pageChangesTitle"><div class="modal-card"><div class="page-changes-head"><h3 id="pageChangesTitle">New Updates</h3><button class="btn" id="copyChangesBtn" type="button">Copy</button><button class="btn" type="button" data-close-changes>Close</button></div><div class="page-changes-body" id="pageChangesContent"></div><div class="page-changes-footer"><button class="btn" type="button" data-close-changes>Close</button></div></div></div>
 <div class="modal" id="messageModal" role="dialog" aria-modal="true" aria-labelledby="messageTitle"><div class="modal-card"><h3 id="messageTitle">Offline Demo</h3><p id="messageText"></p><button class="btn btn-primary" type="button" data-close-modal>Close</button></div></div>
 <div class="modal" id="actionModal" role="dialog" aria-modal="true" aria-labelledby="actionModalTitle"><div class="modal-card"><h3 id="actionModalTitle">Academic Material</h3><div class="action-modal-body" id="actionModalBody"></div><div class="modal-actions" id="actionModalActions"><button class="btn" type="button" data-close-action>Close</button></div></div></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
