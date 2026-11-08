@@ -1312,6 +1312,9 @@ body.sidebar-hidden .sidebar{
 .success-alert[hidden]{display:none}
 .success-alert-close{position:absolute;top:50%;right:12px;width:28px;height:28px;margin-top:-14px;padding:0;border:0;background:transparent;color:#8bad83;font-size:22px;font-weight:700;line-height:26px;cursor:pointer;opacity:.75}
 .success-alert-close:hover,.success-alert-close:focus{color:#3c763d;opacity:1;outline:1px solid #a8c99c;outline-offset:1px}
+.edit-context{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 14px;padding:10px 12px;border:1px solid #bce8f1;border-radius:4px;background:#d9edf7;color:#31708f}
+.edit-context[hidden]{display:none}.edit-context a{color:#245269;font-weight:700;text-decoration:none}.edit-context a:hover,.edit-context a:focus{text-decoration:underline}
+@media(max-width:600px){.edit-context{align-items:flex-start;flex-direction:column}}
 .toast{position:fixed;right:18px;top:64px;z-index:1200;max-width:360px;padding:12px 16px;border-radius:4px;background:#333;color:#fff;box-shadow:0 5px 20px rgba(0,0,0,.25);display:none}
 .toast.show{display:block}
 @media(max-width:1000px){.entry-form-grid{grid-template-columns:130px minmax(180px,1fr) 130px minmax(180px,1fr)}}
@@ -1339,14 +1342,15 @@ body.sidebar-hidden .sidebar{
  <aside class="sidebar">
   <div class="sidebar-search"><input id="menuSearch" type="search" placeholder="Search By Menu.." aria-label="Search menu"><button class="clear-search" id="clearSearch" type="button" aria-label="Clear search">×</button></div>
   <div class="module-title">Teacher</div>
-  <div class="menu-section open"><button class="section-label" type="button">Teacher Activity</button><div class="submenu"><a class="active" href="./">Materials Development Entry</a></div></div>
+  <div class="menu-section open"><button class="section-label" type="button">Teacher Activity</button><div class="submenu"><a class="active" href="./">Materials Development Entry</a><a href="../ManageMaterialsDevelopmentEntry/">Manage Materials Development Entry</a></div></div>
  </aside>
  <main class="content">
   <p class="breadcrumb">Teacher / Teacher Activity / Materials Development Entry</p>
-  <div class="success-alert" id="entrySuccessAlert" role="status" aria-live="polite" hidden><span>Materials development entry is successfully created.</span><button class="success-alert-close" id="closeEntrySuccess" type="button" aria-label="Close success message">×</button></div>
+  <div class="success-alert" id="entrySuccessAlert" role="status" aria-live="polite" hidden><span id="entrySuccessText">Materials development entry is successfully created.</span><button class="success-alert-close" id="closeEntrySuccess" type="button" aria-label="Close success message">×</button></div>
   <section class="panel entry-panel">
-   <div class="panel-head"><div><h1>Create Teacher Academic Materials</h1></div></div>
+   <div class="panel-head"><div><h1 id="entryPanelTitle">Create Teacher Academic Materials</h1></div></div>
    <div class="panel-body">
+    <div class="edit-context" id="editContext" hidden><span>Editing Tracking ID: <strong id="editTrackingId"></strong></span><a href="../ManageMaterialsDevelopmentEntry/">Back to Manage</a></div>
     <form id="materialsForm" action="javascript:void(0)" novalidate>
      <div class="entry-form-grid filters">
       <label for="OrganizationId">Organization</label><div class="field-wrap"><select class="control" id="OrganizationId"><option value="">Select Organization</option><option value="UDVASH">UDVASH</option>
@@ -1378,7 +1382,7 @@ body.sidebar-hidden .sidebar{
 <div class="modal" id="pageChangesModal" role="dialog" aria-modal="true" aria-labelledby="pageChangesModalLabel">
  <div class="modal-card">
   <div class="page-changes-head"><h3 id="pageChangesModalLabel">এই পেইজে যা নতুন পরিবর্তন/আপডেট করা হয়েছে</h3><button class="btn" id="copyPageChanges" type="button">Copy</button></div>
-  <div class="page-changes-body" id="pageChangesContent"></div>
+  <div class="page-changes-body" id="pageChangesContent"><p><strong>Materials Development workflow integration</strong></p><ol><li>Materials Development Entry ও Manage Materials Development Entry এখন একই sidebar workflow-এর দুইটি linked menu। Manage report-এর pencil action থেকে <code>?direct=1</code> edit mode-এ এই page খুলে selected record prefill হয়; Update করলে পরিবর্তিত record Manage report-এ ফিরে দেখা যায়।</li></ol></div>
   <div class="page-changes-footer"><button class="btn" type="button" data-close-page-changes>বন্ধ করুন</button></div>
  </div>
 </div>
@@ -1395,6 +1399,7 @@ const MATERIALS = {"UNMESH\u001f2nd Time Medical Admission Program\u001f2025":{"
 "use strict";
 (function(){
  const $=id=>document.getElementById(id);
+ const query=new URLSearchParams(window.location.search),editMode=query.get('direct')==='1'&&query.get('mode')==='edit'&&!!query.get('id');
  const form=$("materialsForm"), org=$("OrganizationId"), program=$("ProgramId"), session=$("SessionId"), date=$("SubmissionDate"), tbody=$("AcademicMaterialTable"), successAlert=$("entrySuccessAlert");
  const fakeTeachers=["[1001] Md Sakib Hasan","[1002] Md. Morsalin","[1003] Md. Amjad Hossan","[1004] Syed Rohit Zaman","[1001] Tirtho Biswas"];
  let rowNumber=0;
@@ -1428,6 +1433,9 @@ const MATERIALS = {"UNMESH\u001f2nd Time Medical Admission Program\u001f2025":{"
  function showMessage(text){$("messageText").textContent=text;$("messageModal").classList.add('open');}
  function showEntrySuccess(){successAlert.hidden=false;}
  function toast(text){const box=$("toast");box.textContent=text;box.classList.add('show');setTimeout(()=>box.classList.remove('show'),2600);}
+ function ensureSelectValue(select,value){if(!value)return;if(!Array.from(select.options).some(option=>option.value===value)){const option=document.createElement('option');option.value=value;option.textContent=value;select.appendChild(option);select.disabled=false;}select.value=value;}
+ function fillEditRecord(){if(!editMode)return;$("entryPanelTitle").textContent='Edit Teacher Academic Materials';$("createBtn").textContent='Update';$("editContext").hidden=false;$("editTrackingId").textContent=query.get('tracking')||query.get('id');ensureSelectValue(org,query.get('organization'));options(program,"Select Program",programItems());ensureSelectValue(program,query.get('program'));options(session,"Select Session",sessionItems());ensureSelectValue(session,query.get('session'));fillAllRows();const row=tbody.querySelector('tr'),teacher=row.querySelector('.teacherTpin'),teacherId=row.querySelector('.teacherId'),branch=row.querySelector('.tBranch'),type=row.querySelector('.tMaterialType'),name=row.querySelector('.tMaterialName');teacher.value=query.get('teacher')||'';teacherId.value=query.get('teacherId')||((teacher.value.match(/\[(\d+)\]/)||[])[1]||'');ensureSelectValue(branch,query.get('branch'));ensureSelectValue(type,query.get('type'));fillMaterialName(row);ensureSelectValue(name,query.get('materialName'));row.querySelector('.tJDescription').value=query.get('description')||'';row.querySelector('.tAmount').value=query.get('amount')||'';const iso=query.get('date');if(iso&&isoDateValue(iso)){date.dataset.iso=iso;date.value=displayDate(isoDateValue(iso));}updateTotal();}
+ function updatedManageUrl(){const row=tbody.querySelector('tr'),params=new URLSearchParams({direct:'1',updated:'1',id:query.get('id')||'',tracking:query.get('tracking')||'',date:date.dataset.iso||'',organization:org.value,program:program.value,session:session.value,teacher:row.querySelector('.teacherTpin').value,teacherId:row.querySelector('.teacherId').value,branch:row.querySelector('.tBranch').value,type:row.querySelector('.tMaterialType').value,materialName:row.querySelector('.tMaterialName').value,description:row.querySelector('.tJDescription').value,amount:row.querySelector('.tAmount').value});return '../ManageMaterialsDevelopmentEntry/?'+params.toString();}
  org.addEventListener('change',()=>{options(program,"Select Program",programItems());options(session,"Select Session",[]);fillAllRows();if(form.classList.contains('was-validated')){required(org);required(program);required(session);tbody.querySelectorAll('tr').forEach(row=>rowValid(row,true));}});
  program.addEventListener('change',()=>{options(session,"Select Session",sessionItems());fillAllRows();if(form.classList.contains('was-validated')){required(program);required(session);tbody.querySelectorAll('tr').forEach(row=>rowValid(row,true));}});
  session.addEventListener('change',()=>{fillAllRows();if(form.classList.contains('was-validated')){required(session);tbody.querySelectorAll('tr').forEach(row=>rowValid(row,true));}});
@@ -1437,20 +1445,21 @@ const MATERIALS = {"UNMESH\u001f2nd Time Medical Admission Program\u001f2025":{"
  tbody.addEventListener('input',event=>{if(event.target.classList.contains('teacherTpin')){event.target.parentElement.querySelector('.teacherId').value='';showTeacherSuggestions(event.target);}if(form.classList.contains('was-validated'))rowValid(event.target.closest('tr'),true);updateTotal();});tbody.addEventListener('change',event=>{if(event.target.classList.contains('tMaterialType'))fillMaterialName(event.target.closest('tr'));if(form.classList.contains('was-validated'))rowValid(event.target.closest('tr'),true);updateTotal();});
  tbody.addEventListener('keydown',event=>{const input=event.target.closest('.teacherTpin'),option=event.target.closest('[data-teacher]');if(input&&event.key==='ArrowDown'){const first=input.parentElement.querySelector('[data-teacher]');if(first){event.preventDefault();first.focus();}}else if(input&&event.key==='Enter'){const first=input.parentElement.querySelector('[data-teacher]');if(first){event.preventDefault();chooseTeacher(first);}}else if(option&&event.key==='ArrowDown'){const next=option.nextElementSibling;if(next){event.preventDefault();next.focus();}}else if(option&&event.key==='ArrowUp'){event.preventDefault();const previous=option.previousElementSibling;if(previous)previous.focus();else option.closest('.teacher-cell').querySelector('.teacherTpin').focus();}else if(option&&event.key==='Enter'){event.preventDefault();chooseTeacher(option);}else if(event.key==='Escape'){const cell=event.target.closest('.teacher-cell');if(cell){cell.querySelector('.teacher-suggestions').classList.remove('open');cell.querySelector('.teacherTpin').setAttribute('aria-expanded','false');}}});
  tbody.addEventListener('focusout',event=>{const cell=event.target.closest('.teacher-cell');if(cell)setTimeout(()=>{if(!cell.contains(document.activeElement)){cell.querySelector('.teacher-suggestions').classList.remove('open');cell.querySelector('.teacherTpin').setAttribute('aria-expanded','false');}},0);});
- form.addEventListener('submit',event=>{event.preventDefault();form.classList.add('was-validated');let valid=required(org)&required(program)&required(session)&required(date);tbody.querySelectorAll('tr').forEach(row=>{valid=rowValid(row,true)&&valid;});updateTotal();if(!valid){const first=form.querySelector('[aria-invalid="true"]');if(first)first.focus();return;}form.reset();delete date.dataset.iso;form.classList.remove('was-validated');form.querySelectorAll('.field-wrap.invalid').forEach(wrap=>wrap.classList.remove('invalid'));options(program,"Select Program",[]);options(session,"Select Session",[]);tbody.innerHTML='';addRow();updateTotal();showEntrySuccess();});
+ form.addEventListener('submit',event=>{event.preventDefault();form.classList.add('was-validated');let valid=required(org)&required(program)&required(session)&required(date);tbody.querySelectorAll('tr').forEach(row=>{valid=rowValid(row,true)&&valid;});updateTotal();if(!valid){const first=form.querySelector('[aria-invalid="true"]');if(first)first.focus();return;}if(editMode){window.location.href=updatedManageUrl();return;}form.reset();delete date.dataset.iso;form.classList.remove('was-validated');form.querySelectorAll('.field-wrap.invalid').forEach(wrap=>wrap.classList.remove('invalid'));options(program,"Select Program",[]);options(session,"Select Session",[]);tbody.innerHTML='';addRow();updateTotal();$("entrySuccessText").textContent='Materials development entry is successfully created.';showEntrySuccess();});
  $("closeEntrySuccess").addEventListener('click',()=>{successAlert.hidden=true;});
  document.querySelectorAll('[data-close-modal]').forEach(b=>b.addEventListener('click',()=>b.closest('.modal').classList.remove('open')));
  $("pageChangesBtn").addEventListener('click',()=>$("pageChangesModal").classList.add('open'));
  document.querySelectorAll('[data-close-page-changes]').forEach(b=>b.addEventListener('click',()=>$("pageChangesModal").classList.remove('open')));
  $("copyPageChanges").addEventListener('click',async()=>{const text=$("pageChangesContent").innerText.trim();let copied=false;if(navigator.clipboard&&window.isSecureContext){try{await navigator.clipboard.writeText(text);copied=true;}catch(error){copied=false;}}if(!copied){const range=document.createRange(),selection=window.getSelection();range.selectNodeContents($("pageChangesContent"));selection.removeAllRanges();selection.addRange(range);try{copied=document.execCommand('copy');}catch(error){copied=false;}selection.removeAllRanges();}toast(copied?'Updates copied.':'Updates selected; press Ctrl+C to copy.');});
  document.querySelectorAll('[data-demo-message]').forEach(b=>b.addEventListener('click',()=>showMessage(b.dataset.demoMessage)));
- $("menuSearch").addEventListener('input',event=>{const show='Materials Development Entry'.toLowerCase().includes(event.target.value.trim().toLowerCase());document.querySelector('.menu-section').style.display=show?'':'none';});
- $("clearSearch").addEventListener('click',()=>{$("menuSearch").value='';document.querySelector('.menu-section').style.display='';$("menuSearch").focus();});
+ $("menuSearch").addEventListener('input',event=>{const value=event.target.value.trim().toLowerCase();let visible=0;document.querySelectorAll('.submenu a').forEach(link=>{const show=link.textContent.toLowerCase().includes(value);link.style.display=show?'':'none';if(show)visible++;});document.querySelector('.menu-section').style.display=visible?'':'none';});
+ $("clearSearch").addEventListener('click',()=>{$("menuSearch").value='';document.querySelector('.menu-section').style.display='';document.querySelectorAll('.submenu a').forEach(link=>link.style.display='');$("menuSearch").focus();});
  document.querySelector('.section-label').addEventListener('click',()=>document.querySelector('.menu-section').classList.toggle('open'));
  $("sidebarToggle").addEventListener('click',()=>document.body.classList.toggle('sidebar-hidden'));
  attachEntryDatePicker(date);
  if(window.innerWidth<=1000)document.body.classList.add('sidebar-hidden');
  addRow();
+ fillEditRecord();
  document.addEventListener('click',event=>{const link=event.target.closest('a');if(!link)return;const href=link.getAttribute('href')||'';if(link.classList.contains('demo-badge')||/^(#|javascript:)/i.test(href)||(!/^(?:https?:|\/)/i.test(href)))return;event.preventDefault();},true);
  document.addEventListener('submit',event=>{if(event.target!==form)event.preventDefault();},true);
 })();
