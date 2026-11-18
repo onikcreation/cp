@@ -10062,6 +10062,29 @@ input, select {
                               <tr class="empty-row"><td colspan="7"><div class="text-center text-danger"><h2><b>Data Not Found</b></h2></div></td></tr>
                             </tbody>
                           </table>
+
+                          <h5><b>HW Notekhata</b></h5>
+                          <table class="table table-bordered w-100 hwNote-table">
+                            <thead>
+                              <tr>
+                                <th style="width: 150px;">Type</th>
+                                <th>Text</th>
+                                <th style="width: 260px;">Image</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr class="hwNote-tr" data-kind="question">
+                                <td><b>Question</b></td>
+                                <td><textarea class="form-control hwNote-text" rows="3" placeholder="প্রশ্ন লিখুন (ঐচ্ছিক, ছবিও দেওয়া যায়)"></textarea></td>
+                                <td><input type="file" class="hwNote-image" accept="image/*" multiple><div class="hwNote-files"></div></td>
+                              </tr>
+                              <tr class="hwNote-tr" data-kind="answer">
+                                <td><b>Sample Answer</b></td>
+                                <td><textarea class="form-control hwNote-text" rows="3" placeholder="নমুনা উত্তর লিখুন (ঐচ্ছিক, ছবিও দেওয়া যায়)"></textarea></td>
+                                <td><input type="file" class="hwNote-image" accept="image/*" multiple><div class="hwNote-files"></div></td>
+                              </tr>
+                            </tbody>
+                          </table>
                         </div>
                       </div>
                       <div class="text-center">
@@ -10104,6 +10127,9 @@ input, select {
 <style>
   @media screen and (min-width: 768px) {
     #pageChangesModal .modal-dialog { width: 60%; }
+    .hwNote-table td { vertical-align: middle !important; }
+    .hwNote-files { margin-top: 6px; font-size: 12px; color: #31708f; }
+    .hwNote-files span { display: inline-block; margin: 2px 4px 0 0; padding: 1px 8px; border: 1px solid #bce8f1; border-radius: 10px; background: #d9edf7; }
   }
 </style>
 <div class="modal fade" id="pageChangesModal" tabindex="-1" role="dialog" aria-labelledby="pageChangesModalLabel">
@@ -10117,6 +10143,7 @@ input, select {
       <div class="modal-body" style="height:65vh; overflow-y:auto;">
         <p style="font-weight:bold; margin-bottom:12px;">নতুন সেকশন প্রস্তাব:</p>
         <ol style="padding-left:20px; margin:0;">
+          <li style="margin-top:12px;"><strong>নতুন সেকশন: HW Notekhata (Teacher Class Content-এর নিচে)</strong><p style="margin:4px 0 0; color:#555;">লেকচারের HW Note রাখার জন্য দুই সারির টেবিল — <b>Question</b> ও <b>Sample Answer</b>; প্রতিটিতে লেখার ঘর ও ছবি আপলোড (শুধু ছবি, একাধিক; PDF নয়)। দুটোই ঐচ্ছিক, তবে Sample Answer দিলে Question দিতে হবে; ছবি ছাড়া অন্য ফাইল দিলে Upload-এ এরর। এখানে দেওয়া Question ও Sample Answer — Administration &gt; HW Notekhata &gt; Create HW Notekhata-তে "Note Select From: Lecture" বাছলে ঐ Lecture থেকে নিজে থেকে চলে আসবে।</p></li>
           <li style="margin-top:12px;"><strong>নতুন সেকশন: Teacher Class Content</strong><p style="margin:4px 0 0; color:#555;">Video/Notes/Teachers Content সেকশনের পাশে ৪র্থ সেকশন হিসেবে "Teacher Class Content" যোগ করা হয়েছে — এখানে Video ও Notes আপলোড একই রো-তে মার্জ করা: "+" চাপলে যে নতুন রো আসে তাতে File Type/Extra Title/Version/Platform-এর পাশে Video (Youtube কোড বা ভিডিও ফাইল) ও Notes File (PDF) দুটো আপলোড স্লটই থাকে — একই রো-তে ইচ্ছেমতো একটা বা দুটোই দেওয়া যায়। File Type ড্রপডাউন ManageFileType-এর নতুন "Teacher Class Content" Category-র ফাইল-টাইপ থেকে আসে।</p></li>
         </ol>
       </div>
@@ -12372,6 +12399,12 @@ $(document).ready(function () {
     bootbox.alert('<h4>এই ফিচারটি (' + feature + ') এই ডেমো ভার্সনে অন্তর্ভুক্ত নয়।</h4>');
   });
 
+  $(document).on('change', '.hwNote-image', function () {
+    var box = $(this).siblings('.hwNote-files').empty();
+    Array.prototype.forEach.call(this.files || [], function (f) {
+      $('<span/>').text(f.name + (/^image\//.test(f.type) ? '' : ' (ছবি নয়)')).appendTo(box);
+    });
+  });
   $(document).on('click', '#final-submit', function () {
     try {
       $('.video-parent-tr').each(function () {
@@ -12403,6 +12436,13 @@ $(document).ready(function () {
         var bangla = $(this).find('.is-bangla').is(':checked'), english = $(this).find('.is-english').is(':checked');
         if (!bangla && !english) throw 'Version is required for Teacher Content!';
       });
+      // HW Notekhata: optional; photos only; a Sample Answer needs a Question
+      var hwQ = $('.hwNote-tr[data-kind="question"]'), hwA = $('.hwNote-tr[data-kind="answer"]');
+      function hwHas(tr) { var f = tr.find('.hwNote-image')[0]; return Boolean($.trim(tr.find('.hwNote-text').val())) || (f && f.files && f.files.length > 0); }
+      $('.hwNote-image').each(function () {
+        Array.prototype.forEach.call(this.files || [], function (f) { if (!/^image\//.test(f.type)) throw 'HW Notekhata-তে শুধু ছবি আপলোড করা যাবে!'; });
+      });
+      if (hwHas(hwA) && !hwHas(hwQ)) throw 'Question is required for HW Notekhata!';
       $('.tcMerged-parent-tr').each(function () {
         var youtube = $(this).find('.youtube-video-input').val();
         var videoFileInput = $(this).find('.video-input')[0];
