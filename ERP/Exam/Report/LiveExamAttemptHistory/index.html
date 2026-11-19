@@ -1332,6 +1332,14 @@ body.sidebar-hidden .sidebar{
 .retake-modal-actions{display:flex;justify-content:flex-end;gap:8px}
 .retake-confirm-btn{border:1px solid #337ab7;background:#337ab7;color:#fff}
 .retake-confirm-btn:hover,.retake-confirm-btn:focus{border-color:#245f92;background:#286090;color:#fff}
+#retakeConfirmModal .modal-card{width:min(560px,calc(100% - 24px))}
+.retake-reason-field{margin:16px 0;text-align:left}
+.retake-reason-field label{display:block;margin-bottom:6px;color:#333;font-weight:700}
+.retake-reason-input{display:block;width:100%;min-height:92px;padding:8px 10px;border:1px solid #ccc;border-radius:3px;background:#fff;color:#333;font:inherit;line-height:1.45;resize:vertical}
+.retake-reason-input:focus{border-color:#66afe9;outline:0;box-shadow:0 0 4px rgba(102,175,233,.6)}
+.retake-reason-input[aria-invalid="true"]{border-color:#d9534f;box-shadow:0 0 4px rgba(217,83,79,.25)}
+.retake-reason-error{display:block;margin-top:5px;color:#d9534f;font-size:12px}
+.retake-reason-error[hidden]{display:none}
 #detailsPanel>.panel-head:not(.unused){cursor:default}
 @media(max-width:760px){
  .details-wrap{padding:14px 10px 16px}
@@ -1461,6 +1469,7 @@ body.sidebar-hidden .sidebar{
         <div class="previous-row"><strong>Answered</strong><span>49 Selected, 01 Skipped</span></div>
         <div class="previous-row"><strong>Submission Type</strong><span>Manual Submit</span></div>
         <div class="previous-row"><strong>Device Type</strong><span>Desktop</span></div>
+        <div class="previous-row"><strong>Retake Reason</strong><span data-retake-reason="MCQ">—</span></div>
        </article>
        <article class="previous-card" data-previous-attempt="Online Written" hidden>
         <div class="previous-card-head"><span>Online Written — Attempt 1</span><span class="previous-badge">Preserved</span></div>
@@ -1469,6 +1478,7 @@ body.sidebar-hidden .sidebar{
         <div class="previous-row"><strong>Scripts Upload</strong><span>Yes</span></div>
         <div class="previous-row"><strong>Submission Type</strong><span>Auto Submit</span></div>
         <div class="previous-row"><strong>Device Type</strong><span>Mobile App</span></div>
+        <div class="previous-row"><strong>Retake Reason</strong><span data-retake-reason="Online Written">—</span></div>
        </article>
       </div>
      </div>
@@ -1510,6 +1520,7 @@ body.sidebar-hidden .sidebar{
     <li>শুধু MCQ অথবা শুধু Online Written—যেকোনো একটির Retake আলাদাভাবে অনুমোদন করা যাবে।</li>
     <li>Confirmation popup-এ পুরোনো Attempt সংরক্ষিত থাকবে এবং নতুন Attempt তৈরি হবে—বিষয়টি পরিষ্কারভাবে জানানো হবে।</li>
     <li>Allow Retake করার পর পরীক্ষার নির্ধারিত সময় সক্রিয় থাকলে শিক্ষার্থী Live Exam-এ পরীক্ষাটি পুনরায় দেখতে এবং অংশগ্রহণ করতে পারবে।</li>
+    <li><strong>Retake Reason:</strong> Allow Retake করার আগে বাধ্যতামূলকভাবে কারণ লিখতে হবে এবং কারণটি সংশ্লিষ্ট Previous Attempts-এ দেখা যাবে।</li>
    </ul>
   </div>
   <div class="page-changes-footer"><button class="btn" type="button" data-close-page-changes>বন্ধ করুন</button></div>
@@ -1520,6 +1531,11 @@ body.sidebar-hidden .sidebar{
  <div class="modal-card">
   <h3 id="retakeConfirmTitle">Allow Retake?</h3>
   <p id="retakeConfirmText"></p>
+  <div class="retake-reason-field">
+   <label for="retakeReason">Reason for Retake <span class="required">*</span></label>
+   <textarea class="retake-reason-input" id="retakeReason" maxlength="500" rows="4" placeholder="Enter the reason for allowing this retake" aria-describedby="retakeReasonError"></textarea>
+   <span class="retake-reason-error" id="retakeReasonError" role="alert" hidden>Reason for retake is required.</span>
+  </div>
   <div class="retake-modal-actions"><button class="btn" type="button" data-close-retake>Cancel</button><button class="btn retake-confirm-btn" id="confirmRetakeAllow" type="button">Allow Retake</button></div>
  </div>
 </div>
@@ -16953,7 +16969,12 @@ function validate(){
 function selectedText(id){var select=byId(id);return select.options[select.selectedIndex]?select.options[select.selectedIndex].textContent:'';}
 function setText(id,value){byId(id).textContent=value;}
 var pendingRetakeType='';
-function closeRetakeConfirm(){pendingRetakeType='';byId('retakeConfirmModal').classList.remove('open');}
+function setRetakeReasonError(show){
+ var input=byId('retakeReason');byId('retakeReasonError').hidden=!show;input.setAttribute('aria-invalid',String(show));
+}
+function closeRetakeConfirm(){
+ pendingRetakeType='';byId('retakeConfirmModal').classList.remove('open');byId('retakeReason').value='';setRetakeReasonError(false);
+}
 function resetRetakeActions(){
  document.querySelectorAll('[data-retake-card]').forEach(function(card){
   card.classList.remove('allowed');
@@ -16961,6 +16982,7 @@ function resetRetakeActions(){
   button.disabled=false;button.textContent='Allow Retake';status.hidden=true;
  });
  document.querySelectorAll('[data-previous-attempt]').forEach(function(card){card.hidden=true;});
+ document.querySelectorAll('[data-retake-reason]').forEach(function(node){node.textContent='—';});
  byId('previousAttempts').hidden=true;
  byId('mcqAttemptBadge').textContent='Attempt 1 • Current';byId('mcqAttemptBadge').classList.remove('ready');
  byId('writtenAttemptBadge').textContent='Attempt 1 • Current';byId('writtenAttemptBadge').classList.remove('ready');
@@ -16973,15 +16995,19 @@ function openRetakeConfirm(type){
  var registration=byId('detailRegistration').textContent.trim();var exam=byId('detailExam').textContent.trim();
  byId('retakeConfirmTitle').textContent='Allow '+type+' Retake?';
  byId('retakeConfirmText').textContent='The current '+type+' attempt for Registration No. '+registration+' in '+exam+' will remain under Previous Attempts as Attempt 1. A new Attempt 2 will be created as Ready for Retake. Continue?';
+ byId('retakeReason').value='';setRetakeReasonError(false);
  byId('retakeConfirmModal').classList.add('open');
+ byId('retakeReason').focus();
 }
 function confirmRetakeAllow(){
  if(!pendingRetakeType)return;
+ var reason=byId('retakeReason').value.trim();
+ if(!reason){setRetakeReasonError(true);byId('retakeReason').focus();return;}
  var type=pendingRetakeType;var card=document.querySelector('[data-retake-card="'+type+'"]');
  var button=card.querySelector('[data-retake-allow]');var status=card.querySelector('[data-retake-status]');
  var isMcq=type==='MCQ';var badge=byId(isMcq?'mcqAttemptBadge':'writtenAttemptBadge');var title=byId(isMcq?'mcqAttemptTitle':'writtenAttemptTitle');
  card.classList.add('allowed');button.disabled=true;button.textContent='Retake Allowed';status.hidden=false;
- document.querySelector('[data-previous-attempt="'+type+'"]').hidden=false;byId('previousAttempts').hidden=false;
+ document.querySelector('[data-previous-attempt="'+type+'"]').hidden=false;document.querySelector('[data-retake-reason="'+type+'"]').textContent=reason;byId('previousAttempts').hidden=false;
  badge.textContent='Attempt 2 • Ready for Retake';badge.classList.add('ready');title.closest('.attempt-column').classList.add('ready');
  if(isMcq){
   setText('detailMcqStartTime','Waiting for student');setText('detailMcqEndTime','—');setText('detailMcqAnswered','Not attempted');setText('detailMcqSubmission','Pending');setText('detailMcqDevice','—');
@@ -17054,6 +17080,7 @@ document.querySelectorAll('[data-close-page-changes]').forEach(function(button){
 document.querySelectorAll('[data-close-modal]').forEach(function(button){button.addEventListener('click',closeMessage);});
 document.querySelectorAll('[data-retake-allow]').forEach(function(button){button.addEventListener('click',function(){openRetakeConfirm(button.getAttribute('data-retake-allow'));});});
 byId('confirmRetakeAllow').addEventListener('click',confirmRetakeAllow);
+byId('retakeReason').addEventListener('input',function(){if(this.value.trim())setRetakeReasonError(false);});
 document.querySelectorAll('[data-close-retake]').forEach(function(button){button.addEventListener('click',closeRetakeConfirm);});
 byId('pageChangesModal').addEventListener('click',function(event){if(event.target===this)closeUpdates();});
 byId('messageModal').addEventListener('click',function(event){if(event.target===this)closeMessage();});
