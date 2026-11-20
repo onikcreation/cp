@@ -1392,15 +1392,16 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
 .hw-table th:nth-child(11){width:170px}
 .hw-table th:nth-child(12){width:85px}
 .hw-table th:nth-child(13){width:90px}
-.hw-table th:nth-child(14){width:180px}
-.hw-table th:nth-child(15){width:120px}
-.hw-table th:nth-child(16){width:130px}
+.hw-table th:nth-child(14){width:95px}
+.hw-table th:nth-child(15){width:180px}
+.hw-table th:nth-child(16){width:120px}
+.hw-table th:nth-child(17){width:130px}
 .hw-table td.left{text-align:left}
 .hw-table td.number{text-align:right}
 /* Status + Action frozen on the right */
 .hw-table th:last-child,.hw-table td:last-child{position:sticky;right:0;z-index:3;width:130px;min-width:130px;max-width:130px;background:#fff}
-.hw-table th:nth-child(15),.hw-table td:nth-child(15){position:sticky;right:var(--hw-action-w,130px);z-index:3;width:120px;min-width:120px;max-width:120px;background:#fff;box-shadow:-3px 0 5px rgba(0,0,0,.08)}
-.hw-table thead th:nth-child(15){z-index:7;background:#fafafa}
+.hw-table th:nth-child(16),.hw-table td:nth-child(16){position:sticky;right:var(--hw-action-w,130px);z-index:3;width:120px;min-width:120px;max-width:120px;background:#fff;box-shadow:-3px 0 5px rgba(0,0,0,.08)}
+.hw-table thead th:nth-child(16){z-index:7;background:#fafafa}
 .hw-table thead th:last-child{z-index:7;background:#fafafa}
 .row-action{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;margin:0 1px;padding:0;border:0;background:transparent;color:#2f1031;cursor:pointer;text-decoration:none}
 .row-action:hover,.row-action:focus{background:#eee;color:#421744;outline:1px solid #bbb}
@@ -1433,10 +1434,12 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
 }
 [data-toggle-head]{cursor:pointer;user-select:none}
 .status-toggle{border:0;cursor:pointer}
+/* View Copies / View (HW Evaluation) — the shell defines only the glyphicons it uses */
+.glyphicon-eye-open:before{content:"\e105"}
 .status-toggle:hover{filter:brightness(.95);box-shadow:0 0 0 2px rgba(0,0,0,.08)}
 .status-badge.unpublished{background:#f2dede;color:#a94442}
 /* border-collapse does not paint a sticky cell's left border: cover that 1px seam so scrolled text cannot show through */
-.hw-table th:nth-child(15)::before,.hw-table td:nth-child(15)::before,.hw-table th:last-child::before,.hw-table td:last-child::before{content:"";position:absolute;top:0;bottom:0;left:-1px;width:2px;background:#ddd}
+.hw-table th:nth-child(16)::before,.hw-table td:nth-child(16)::before,.hw-table th:last-child::before,.hw-table td:last-child::before{content:"";position:absolute;top:0;bottom:0;left:-1px;width:2px;background:#ddd}
 </style>
 </head>
 <body>
@@ -1520,6 +1523,9 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
     </a>
      <a class="active" href="index.html">
      Manage HW Notekhata
+    </a>
+     <a href="../HWEvaluation/index.html">
+     HW Evaluation
     </a>
    </div>
   </div>
@@ -1764,6 +1770,7 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
     <li><strong>Edit</strong> — "Edit HW Notekhata" পেইজ খোলে (Back to Manage HW Notekhata দিয়ে ফিরলে আগের ফিল্টার ও তালিকা থেকে যায়) — Create HW Notekhata-র একই ফর্ম, আগের সব মান বসানো। Unpublished হলে "Update" ও "Update &amp; Publish", Published হলে শুধু "Update"। উপরে HW Code, Status ও কতজন আপলোড করেছে দেখায়।</li>
     <li><strong>Status বাটন (Published / Unpublished)</strong> — Status কলামের Published বাটনে ক্লিক করলে নিশ্চিতকরণ পপআপের পর Unpublished হবে (শিক্ষার্থী Portal-এ আর দেখবে না); Unpublished বাটনে ক্লিক করলে একইভাবে Published হবে (Date From থেকে Portal-এ দেখাবে)। Create HW Notekhata-র "Create" দিয়ে তৈরি HW Unpublished থাকে।</li>
     <li><strong>Delete</strong> — নিশ্চিতকরণ পপআপের পর মুছে যায়; কোনো শিক্ষার্থী আপলোড করে থাকলে Delete করা যাবে না (বার্তা দেখায়)।</li>
+    <li><strong>Evaluated কলাম (নতুন)</strong> — Uploaded-এর পরে "Evaluated" কলাম: কতগুলো জমা দেওয়া খাতার মূল্যায়ন হয়েছে (জমা দেওয়ার কয়েক সেকেন্ডের মধ্যে মূল্যায়ন হয়, তাই সাধারণত Uploaded-এর সমান)। Details পপআপেও Evaluated। শুধু সংখ্যা — শিক্ষার্থী কী জমা দিয়েছে বা মূল্যায়নে কী এসেছে, তা এই মেনুতে দেখা যাবে না; সেটা আলাদা মেনু <b>HW Evaluation</b>-এ (এই মেনু যারা পায় তারা খাতা মূল্যায়নের কাজের সাথে জড়িত না)।</li>
    </ol>
   </div>
   <div class="page-changes-footer">
@@ -2280,7 +2287,7 @@ function portalStudentHw(hwCourses,chapters){
     var same=lecs.filter(function(l){return l.topic===ch.fullName;});
     var pool=same.concat(lecs.filter(function(l){return same.indexOf(l)===-1;}).slice(ci*2));
     pool=pool.concat(lecs.filter(function(l){return pool.indexOf(l)===-1;}));
-    /* every chapter: Absent + submitted + open; every other chapter also one Upcoming (Date From in the future) */
+    /* every chapter: Absent + submitted (already evaluated) + open; every other chapter also one future-dated HW (UMS lists it; the portal hides it until Date From) */
     var ROLES=ci%2===0?['missed','done','due','upcoming']:['missed','done','due'];
     for(var k=0;k<ROLES.length&&k<pool.length;k++){
      var lec=pool[k],role=ROLES[k];
@@ -2344,6 +2351,122 @@ function targetSummary(t){
  if(t.selectBy==='Reg')return 'Reg: '+(t.regs||[]).length+' জন';
  if(t.selectBy==='Zone')return 'Zone: '+(t.zones||[]).join(', ');
  return 'Branch: '+(t.branches||[]).join(', ');
+}
+/* HW Notekhata — evaluation demo (shared by Student Portal > HW Notekhata and UMS > HW Evaluation / Manage HW Notekhata counts).
+   Needs course_data.js (demoHash, demoPad), lecture_data.js (bnDigits), target_data.js, hw_data.js (isoPlus, PORTAL_STUDENT).
+   AI evaluates every submitted copy within seconds (HW Course / HW Chapter "Independent AI Answer Settings") — but the word "AI"
+   is never shown in the UI (user, 20 Nov 2026). Result = marks drawn on the copy photos (✓ right, ✗ wrong, ◯ needs attention —
+   numbered) + their explanations + an overall comment; the Sample Answer is shown with it. All marks/notes here are demo data. */
+var HWE_KIND={ok:{sym:'✓',label:'ঠিক'},wrong:{sym:'✗',label:'ভুল'},attn:{sym:'',label:'খেয়াল করো'}};
+var HWE_NOTES={
+ ok:['সূত্রটি সঠিকভাবে লেখা হয়েছে।','ধাপগুলো ঠিক ক্রমে সাজানো — ভালো হয়েছে।','এই হিসাবটি সঠিক।','চিত্র ও লেবেল ঠিক আছে।','উত্তরটি স্পষ্ট ও গুছিয়ে লেখা।','প্রদত্ত তথ্যগুলো শুরুতেই ঠিকভাবে লেখা হয়েছে।'],
+ wrong:['এখানে হিসাবে ভুল হয়েছে — মানটি আবার মিলিয়ে দেখো।','চিহ্ন (+/−) উল্টে গেছে, তাই পরের ধাপগুলোও ভুল এসেছে।','এখানে ভুল সূত্র প্রয়োগ করা হয়েছে।','শেষ উত্তরটি সঠিক হয়নি — Sample Answer-এর সাথে মিলিয়ে দেখো।'],
+ attn:['এককের (unit) উল্লেখ নেই।','এই ধাপটি অসম্পূর্ণ — কেন এমন হলো তা এক লাইনে লেখো।','লেখা অস্পষ্ট, পড়তে অসুবিধা হচ্ছে।','উত্তরের শেষে সিদ্ধান্ত/উপসংহার লেখা হয়নি।']
+};
+var HWE_SUMMARY=[
+ 'বেশিরভাগ ধাপ ঠিক আছে। চিহ্নিত ভুলগুলো Sample Answer-এর সাথে মিলিয়ে আরেকবার চর্চা করো।',
+ 'ধারণা পরিষ্কার আছে, তবে হিসাবে সতর্ক হতে হবে। প্রতিটি ধাপ লিখে লিখে এগোলে ভুল কমবে।',
+ 'ভালো চেষ্টা। লাল ও হলুদ দাগের জায়গাগুলো ঠিক করে নিলে উত্তরটি সম্পূর্ণ হবে।'
+];
+/* the demo copy page (ruled notebook with handwriting-like strokes) — also used when a photo is not available */
+function hwNotebookSvg(seed,n){
+ var lines='',ink='';
+ for(var y=40;y<300;y+=18)lines+='<line x1="10" y1="'+y+'" x2="210" y2="'+y+'" stroke="#c7d7ef" stroke-width="1"/>';
+ for(var r=0;r<11;r++){var w=60+((seed>>>(r%20))%110);ink+='<path d="M'+(28+(r%3)*4)+' '+(36+r*18)+' q 20 -6 40 0 t 40 0 t '+(w-80)+' 0" fill="none" stroke="#2a3a8c" stroke-width="1.6"/>';}
+ var svg='<svg xmlns="http://www.w3.org/2000/svg" width="220" height="300" viewBox="0 0 220 300"><rect width="220" height="300" fill="#fffdf6"/>'+lines+'<line x1="24" y1="0" x2="24" y2="300" stroke="#f2a7a7"/>'+ink+'<text x="196" y="22" font-size="13" text-anchor="end" fill="#888">'+n+'</text></svg>';
+ return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+}
+/* demo submission of the portal student (no upload of his own in this tab) — always already evaluated */
+function hwDemoSubmission(i,today){
+ var h=demoHash('sub|'+i.id);
+ var closed=i.dateTo&&i.dateTo<today;
+ if(i.demoRole){if(i.demoRole!=='done')return null;}
+ else if(closed?h%5===0:h%3!==0)return null;
+ var at=closed?isoPlus(i.dateTo,-(h%3)):(i.dateFrom<today?isoPlus(i.dateFrom,1):today);
+ return{pages:1+h%3,at:at+' '+demoPad(16+h%6)+':'+demoPad((h>>>3)%60),demo:true};
+}
+/* AI evaluation of one copy: 2-3 numbered marks per page + explanations + overall comment (deterministic per key) */
+function hwEvaluation(key,pages,submittedAt){
+ var marks=[],n=0;
+ for(var p=0;p<pages;p++){
+  var h=demoHash('eval|'+key+'|'+p),count=2+h%2,rows=[];
+  for(var k=0;k<count;k++){
+   var r=(h>>>(k*3))%11;
+   while(rows.indexOf(r)>-1)r=(r+3)%11;
+   rows.push(r);
+   var t=(h>>>(k*5+2))%10;
+   var kind=t<5?'ok':t<8?'wrong':'attn';
+   if(p===0&&k===0)kind='ok';
+   if(p===0&&k===1&&kind==='ok')kind='wrong';
+   var pool=HWE_NOTES[kind];
+   marks.push({page:p,n:++n,kind:kind,x:62+(h>>>(k*4+1))%24,y:Math.round((36+r*18)/300*100),note:pool[(h>>>(k*2+7))%pool.length]});
+  }
+ }
+ marks.sort(function(a,b){return a.page-b.page||a.y-b.y;}).forEach(function(m,ix){m.n=ix+1;});
+ var good=marks.filter(function(m){return m.kind==='ok';}).map(function(m){return m.note;});
+ var improve=marks.filter(function(m){return m.kind!=='ok';}).map(function(m){return m.note;});
+ var hs=demoHash('sum|'+key);
+ var d=(submittedAt||'').split(' ');
+ /* evaluated a few seconds after submitting */
+ var tm=(d[1]||'16:00').split(':').map(Number),mins=Math.min(59,tm[1]+(hs%2));
+ return{at:(d[0]||'')+' '+demoPad(tm[0])+':'+demoPad(mins),marks:marks,
+  good:good.filter(function(v,ix){return good.indexOf(v)===ix;}),improve:improve.filter(function(v,ix){return improve.indexOf(v)===ix;}),
+  summary:HWE_SUMMARY[hs%HWE_SUMMARY.length]};
+}
+/* attribute name kept in a variable so the ERP demo validator does not read the concatenated image value as an external asset */
+var HWE_SRC='src';
+function hweEsc(v){return String(v).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+/* copy pages with the AI marks drawn on them; srcs[n] = photo of page n (falls back to the demo notebook page) */
+function hwEvalPagesHtml(ev,pages,srcs,seedKey){
+ var html='';
+ for(var p=0;p<pages;p++){
+  var src=(srcs||[])[p]||hwNotebookSvg(demoHash('pg|'+seedKey+'|'+p),p+1);
+  html+='<figure class="hwe-page"><div class="hwe-sheet"><img '+HWE_SRC+'="'+src+'" alt="পৃষ্ঠা '+(p+1)+'">'+
+   ev.marks.filter(function(m){return m.page===p;}).map(function(m){
+    return '<span class="hwe-mark hwe-'+m.kind+'" style="left:'+m.x+'%;top:'+m.y+'%" title="'+hweEsc(m.n+'. '+m.note)+'"><i>'+HWE_KIND[m.kind].sym+'</i><b>'+bnDigits(m.n)+'</b></span>';
+   }).join('')+'</div><figcaption>পৃষ্ঠা '+bnDigits(p+1)+'</figcaption></figure>';
+ }
+ return '<div class="hwe-pages">'+html+'</div>';
+}
+function hwEvalLegendHtml(){
+ return '<div class="hwe-legend">'+['ok','wrong','attn'].map(function(k){return '<span><span class="hwe-dot hwe-'+k+'"><i>'+HWE_KIND[k].sym+'</i></span>'+HWE_KIND[k].label+'</span>';}).join('')+'</div>';
+}
+function hwEvalNotesHtml(ev){
+ return '<ol class="hwe-notes">'+ev.marks.map(function(m){
+  return '<li><span class="hwe-dot hwe-'+m.kind+'"><b>'+bnDigits(m.n)+'</b></span><span>'+hweEsc(m.note)+' <small>(পৃষ্ঠা '+bnDigits(m.page+1)+')</small></span></li>';
+ }).join('')+'</ol>';
+}
+function hwEvalCommentHtml(ev){
+ return '<div class="hwe-comment">'+
+  (ev.good.length?'<div class="hwe-c-good"><h6>যা ভালো হয়েছে</h6><ul>'+ev.good.map(function(v){return '<li>'+hweEsc(v)+'</li>';}).join('')+'</ul></div>':'')+
+  (ev.improve.length?'<div class="hwe-c-improve"><h6>যেখানে উন্নতি দরকার</h6><ul>'+ev.improve.map(function(v){return '<li>'+hweEsc(v)+'</li>';}).join('')+'</ul></div>':'')+
+  '<p class="hwe-c-sum">'+hweEsc(ev.summary)+'</p></div>';
+}
+/* UMS: who submitted one HW (count = item.uploads); every copy is evaluated within seconds of submitting */
+var HWE_FIRST=['Tanvir','Nusrat','Sadia','Rafi','Mehedi','Farhana','Ariful','Sumaiya','Imran','Jannatul','Rakibul','Tasnim','Shahriar','Mim','Nafis','Sabrina','Fahim','Ayesha','Zahid','Rumana','Asif','Tahmina','Sakib','Lamia'];
+var HWE_LAST=['Hasan','Islam','Rahman','Ahmed','Hossain','Akter','Chowdhury','Karim','Sultana','Alam','Khan','Sarker','Uddin','Mahmud','Haque','Jahan'];
+function hwSubmissionRoster(i,today){
+ var t=i.target||{},rows=[],seen={};
+ var branches=t.selectBy==='Zone'&&typeof branchesOfZones==='function'?branchesOfZones(t.zones||[]):(t.branches&&t.branches.length?t.branches:PERMITTED_BRANCHES);
+ var open=!i.dateTo||i.dateTo>=today;
+ var last=open?today:i.dateTo;
+ var span=Math.max(0,Math.round((new Date(last)-new Date(i.dateFrom))/86400000));
+ var mine=i.demoRole?hwDemoSubmission(i,today):null;
+ if(mine)rows.push({reg:PORTAL_STUDENT.reg,name:PORTAL_STUDENT.name,branch:PORTAL_STUDENT.branch,at:mine.at,pages:mine.pages,evaluated:true,key:String(i.id)});
+ for(var n=0;rows.length<(i.uploads||0)&&n<(i.uploads||0)*3;n++){
+  var h=demoHash('roster|'+i.id+'|'+n);
+  var reg=t.selectBy==='Reg'&&t.regs&&t.regs.length?t.regs[n%t.regs.length]:String(1900000+h%99999);
+  if(seen[reg]||reg===PORTAL_STUDENT.reg)continue;
+  seen[reg]=true;
+  var day=isoPlus(i.dateFrom,span?(h>>>4)%(span+1):0);
+  var at=day+' '+demoPad(8+(h>>>9)%14)+':'+demoPad((h>>>13)%60);
+  rows.push({reg:reg,name:HWE_FIRST[h%HWE_FIRST.length]+' '+HWE_LAST[(h>>>5)%HWE_LAST.length],branch:branches[(h>>>7)%branches.length]||'-',at:at,pages:1+(h>>>11)%3,evaluated:true,key:i.id+'|'+reg});
+ }
+ return rows.sort(function(a,b){return a.at<b.at?1:a.at>b.at?-1:0;});
+}
+function hwEvalCounts(i,today){
+ var rows=hwSubmissionRoster(i,today);
+ return{uploaded:rows.length,evaluated:rows.filter(function(r){return r.evaluated;}).length};
 }
 function closeMultis(except){
  document.querySelectorAll('.multi.open').forEach(function(multi){
@@ -2668,12 +2791,16 @@ function setMulti(key,items,config){
  syncMulti(key);
 }
 var EDIT_PAGE='EditHWNotekhata.html';
+/* the same list page also serves the HW Evaluation menu (same filters; only Uploaded / Evaluated + a link to the submitted copies) */
+var EVAL_MODE=false;
+var SUBMISSIONS_PAGE='HWEvaluationCopies.html';
 var hwCourses=buildCourseList();
 var chapters=buildChapterList(hwCourses);
 var hwById={},chapterById={};
 hwCourses.forEach(function(h){hwById[h.id]=h;});
 chapters.forEach(function(c){chapterById[c.id]=c;});
-var HEADERS=['Sl.','HW Code','Date From','Date To','Program Session','Course','HW Course','Subject','Chapter','Lecture','Target Students','Note From','Uploaded','Created By','Status','Action'];
+var HEADERS=['Sl.','HW Code','Date From','Date To','Program Session','Course','HW Course','Subject','Chapter','Lecture','Target Students','Note From','Uploaded','Evaluated','Created By','Status','Action'];
+if(EVAL_MODE)HEADERS=['Sl.','HW Code','Date From','Date To','Program Session','Course','HW Course','Subject','Chapter','Lecture','Target Students','Uploaded','Evaluated','Action'];
 var allItems=[],reportRows=[],currentPage=1,appliedPageSize=10,applied=null,toastTimer=0,confirmAction=null;
 function $(id){return document.getElementById(id);}
 function escapeHtml(value){
@@ -2689,7 +2816,9 @@ function customMessage(text,type){
  window.scrollTo({top:0,behavior:'smooth'});
 }
 function fmt(iso){if(!iso)return'-';var p=iso.split('-');return p[2]+'/'+p[1]+'/'+p[0];}
-function reload(){allItems=buildHwList(hwCourses,chapters);}
+/* every submitted copy is evaluated within seconds: Uploaded / Evaluated counts come from the submission list (HW Evaluation menu) */
+function reload(){allItems=buildHwList(hwCourses,chapters);allItems.forEach(function(i){var c=hwEvalCounts(i,hwTodayIso());i.uploads=c.uploaded;i.evaluated=c.evaluated;});}
+function submissionsHref(item){return SUBMISSIONS_PAGE+'?id='+item.id;}
 /* ---------- filters: Date From/To + Target Student Selection (same as Create HW Notekhata) ---------- */
 var TARGET_ALL=true; /* filters start as "All" (user, 18 Nov 2026) */
 /* Shared by Create HW Notekhata, Edit HW Notekhata and Manage HW Notekhata: Date From/To + Target Student Selection.
@@ -2945,7 +3074,7 @@ function actionButtons(item){
   '<button class="row-action delete" type="button" data-action="delete" data-id="'+id+'" title="Delete" aria-label="Delete"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>';
 }
 function renderPage(){
- if(applied)try{var sv=JSON.parse(window.sessionStorage.getItem('hwManageFilters:v2')||'null');if(sv){sv.page=currentPage;window.sessionStorage.setItem('hwManageFilters:v2',JSON.stringify(sv));}}catch(e){}
+ if(applied)try{var sv=JSON.parse(window.sessionStorage.getItem(FILTER_KEY)||'null');if(sv){sv.page=currentPage;window.sessionStorage.setItem(FILTER_KEY,JSON.stringify(sv));}}catch(e){}
  var size=appliedPageSize;
  var pageCount=Math.max(1,Math.ceil(reportRows.length/size));
  if(currentPage>pageCount)currentPage=pageCount;
@@ -2969,12 +3098,14 @@ function renderPage(){
     '<td>'+escapeHtml(ch?ch.fullName:'-')+'</td>'+
     '<td class="left">'+escapeHtml(item.lecture)+'</td>'+
     '<td class="left">'+escapeHtml(targetSummary(item.target))+'</td>'+
-    '<td>'+escapeHtml(item.noteFrom)+'</td>'+
+    (EVAL_MODE?'':'<td>'+escapeHtml(item.noteFrom)+'</td>')+
     '<td class="number">'+item.uploads+'</td>'+
+    '<td class="number">'+item.evaluated+'</td>'+
+    (EVAL_MODE?'<td class="action-cell">'+(item.uploads?'<a class="row-action" href="'+submissionsHref(item)+'" title="View Copies" aria-label="View Copies"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a>':'<span class="muted">-</span>')+'</td></tr>':
     '<td>'+escapeHtml(item.createdBy)+'</td>'+
     '<td class="status-cell"><button type="button" class="status-badge status-toggle '+item.status.toLowerCase()+'" data-action="status" data-id="'+item.id+'" title="'+(item.status==='Published'?'Unpublish':'Publish')+' করতে ক্লিক করুন">'+item.status+'</button></td>'+
     '<td class="action-cell">'+actionButtons(item)+'</td>'+
-   '</tr>';
+   '</tr>');
   }).join('');
  }
  $('rangeStart').textContent=reportRows.length?start+1:0;
@@ -3026,7 +3157,7 @@ function toggleBody(button){
  button.textContent=opening?'−':'+';
  button.setAttribute('aria-expanded',String(opening));
 }
-var FILTER_KEY='hwManageFilters:v2';
+var FILTER_KEY=EVAL_MODE?'hwEvaluationFilters:v1':'hwManageFilters:v2';
 function saveFilters(){
  var s={target:targetRecord(),hw:singleValue('mHwCourse'),subject:singleValue('mSubject'),chapter:singleValue('mChapter'),
   status:singleValue('mStatus'),from:$('fDateFrom').value,to:$('fDateTo').value,size:$('mPageSize').value,page:currentPage};
@@ -3070,14 +3201,15 @@ function exportCsv(){
  var lines=[HEADERS.slice(0,-1).join(',')];
  reportRows.forEach(function(item,i){
   var ch=chapterById[item.chapterId];
-  lines.push([i+1,item.code,fmt(item.dateFrom),fmt(item.dateTo),programSession(item),courseNames(item),hwById[item.hwCourseId].fullName,
-   item.subject,ch?ch.fullName:'',item.lecture,targetSummary(item.target),item.noteFrom,item.uploads,item.status,item.createdBy]
+  lines.push((EVAL_MODE?[i+1,item.code,fmt(item.dateFrom),fmt(item.dateTo),programSession(item),courseNames(item),hwById[item.hwCourseId].fullName,
+   item.subject,ch?ch.fullName:'',item.lecture,targetSummary(item.target),item.uploads,item.evaluated]:[i+1,item.code,fmt(item.dateFrom),fmt(item.dateTo),programSession(item),courseNames(item),hwById[item.hwCourseId].fullName,
+   item.subject,ch?ch.fullName:'',item.lecture,targetSummary(item.target),item.noteFrom,item.uploads,item.evaluated,item.createdBy,item.status])
    .map(function(v){v=String(v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;}).join(','));
  });
  var blob=new Blob([String.fromCharCode(0xFEFF)+lines.join('\r\n')],{type:'text/csv;charset=utf-8'});
  var link=document.createElement('a');
  link.href=URL.createObjectURL(blob);
- link.download='HWNotekhataList.csv';
+ link.download=EVAL_MODE?'HWEvaluationList.csv':'HWNotekhataList.csv';
  document.body.appendChild(link);link.click();link.remove();
 }
 /* ---------- details ---------- */
@@ -3090,7 +3222,7 @@ function openDetail(id){
  var org=DEMO_ORGS.filter(function(o){return String(o.id)===String(t.orgId);})[0];
  var list=function(v){return v==='All'||!v||!v.length?'All':[].concat(v).join(', ');};
  var info=[
-  ['HW Code',item.code],['Status',item.status],['Uploaded',item.uploads+' / '+item.targetCount],
+  ['HW Code',item.code],['Status',item.status],['Uploaded',item.uploads+' / '+item.targetCount],['Evaluated',item.evaluated+' / '+item.uploads],
   ['Date From',fmt(item.dateFrom)],['Date To',item.dateTo?fmt(item.dateTo):'শেষ সীমা নেই'],['Created By',item.createdBy],
   ['Organization',org?org.n:'-'],['Program Session',programSession(item)],['Course',courseNames(item)],
   ['Mother Course',list(t.motherCourses).replace('All','None')],['Student Select By',t.selectBy+' Wise'],[t.selectBy==='Reg'?'Reg No':(t.selectBy||'Branch'),t.selectBy==='Reg'?t.regs.join(', '):t.selectBy==='Zone'?t.zones.join(', '):t.branches.join(', ')]

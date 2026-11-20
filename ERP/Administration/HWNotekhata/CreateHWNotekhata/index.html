@@ -1452,6 +1452,9 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
      <a href="../ManageHWNotekhata/index.html">
      Manage HW Notekhata
     </a>
+     <a href="../HWEvaluation/index.html">
+     HW Evaluation
+    </a>
    </div>
   </div>
  </aside>
@@ -2191,7 +2194,7 @@ function portalStudentHw(hwCourses,chapters){
     var same=lecs.filter(function(l){return l.topic===ch.fullName;});
     var pool=same.concat(lecs.filter(function(l){return same.indexOf(l)===-1;}).slice(ci*2));
     pool=pool.concat(lecs.filter(function(l){return pool.indexOf(l)===-1;}));
-    /* every chapter: Absent + submitted + open; every other chapter also one Upcoming (Date From in the future) */
+    /* every chapter: Absent + submitted (already evaluated) + open; every other chapter also one future-dated HW (UMS lists it; the portal hides it until Date From) */
     var ROLES=ci%2===0?['missed','done','due','upcoming']:['missed','done','due'];
     for(var k=0;k<ROLES.length&&k<pool.length;k++){
      var lec=pool[k],role=ROLES[k];

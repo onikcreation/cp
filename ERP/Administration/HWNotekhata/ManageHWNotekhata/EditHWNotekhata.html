@@ -1453,6 +1453,9 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
      <a class="active" href="index.html">
      Manage HW Notekhata
     </a>
+     <a href="../HWEvaluation/index.html">
+     HW Evaluation
+    </a>
    </div>
   </div>
  </aside>
@@ -1676,6 +1679,7 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
     <li><strong>Edit</strong> — "Edit HW Notekhata" পেইজ খোলে (Back to Manage HW Notekhata দিয়ে ফিরলে আগের ফিল্টার ও তালিকা থেকে যায়) — Create HW Notekhata-র একই ফর্ম, আগের সব মান বসানো। Unpublished হলে "Update" ও "Update &amp; Publish", Published হলে শুধু "Update"। উপরে HW Code, Status ও কতজন আপলোড করেছে দেখায়।</li>
     <li><strong>Status বাটন (Published / Unpublished)</strong> — Status কলামের Published বাটনে ক্লিক করলে নিশ্চিতকরণ পপআপের পর Unpublished হবে (শিক্ষার্থী Portal-এ আর দেখবে না); Unpublished বাটনে ক্লিক করলে একইভাবে Published হবে (Date From থেকে Portal-এ দেখাবে)। Create HW Notekhata-র "Create" দিয়ে তৈরি HW Unpublished থাকে।</li>
     <li><strong>Delete</strong> — নিশ্চিতকরণ পপআপের পর মুছে যায়; কোনো শিক্ষার্থী আপলোড করে থাকলে Delete করা যাবে না (বার্তা দেখায়)।</li>
+    <li><strong>Evaluated কলাম (নতুন)</strong> — Uploaded-এর পরে "Evaluated" কলাম: কতগুলো জমা দেওয়া খাতার মূল্যায়ন হয়েছে (জমা দেওয়ার কয়েক সেকেন্ডের মধ্যে মূল্যায়ন হয়, তাই সাধারণত Uploaded-এর সমান)। Details পপআপেও Evaluated। শুধু সংখ্যা — শিক্ষার্থী কী জমা দিয়েছে বা মূল্যায়নে কী এসেছে, তা এই মেনুতে দেখা যাবে না; সেটা আলাদা মেনু <b>HW Evaluation</b>-এ (এই মেনু যারা পায় তারা খাতা মূল্যায়নের কাজের সাথে জড়িত না)।</li>
    </ol>
   </div>
   <div class="page-changes-footer">
@@ -2192,7 +2196,7 @@ function portalStudentHw(hwCourses,chapters){
     var same=lecs.filter(function(l){return l.topic===ch.fullName;});
     var pool=same.concat(lecs.filter(function(l){return same.indexOf(l)===-1;}).slice(ci*2));
     pool=pool.concat(lecs.filter(function(l){return pool.indexOf(l)===-1;}));
-    /* every chapter: Absent + submitted + open; every other chapter also one Upcoming (Date From in the future) */
+    /* every chapter: Absent + submitted (already evaluated) + open; every other chapter also one future-dated HW (UMS lists it; the portal hides it until Date From) */
     var ROLES=ci%2===0?['missed','done','due','upcoming']:['missed','done','due'];
     for(var k=0;k<ROLES.length&&k<pool.length;k++){
      var lec=pool[k],role=ROLES[k];
