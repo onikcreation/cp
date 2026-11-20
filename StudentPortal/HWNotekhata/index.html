@@ -5508,10 +5508,7 @@ html,body{overflow-x:hidden} /* the captured shell is 5px wider than the viewpor
 }
 .hwp-btn-static{cursor:default;pointer-events:none}
 .hwp-card-foot .btn.hwp-btn-outline{min-width:0}
-/* Upcoming card + drill-down detail view (lecture card on the right with Previous / Next, like Course & Content's lecture page) */
-.hwp-card.st-upcoming{border-top-color:#60A5FA}
-.st-upcoming .hwp-state{background:#DBEAFE;color:#1D4ED8}
-.hwp-btn-upcoming{background:#EFF6FF;border-color:#BFDBFE;color:#1D4ED8}
+/* drill-down detail view (lecture card on the right with Previous / Next, like Course & Content's lecture page) */
 #hwpDetail[hidden],#hwpListCard[hidden]{display:none!important}
 .hwp-detail{margin:0 -15px}
 .hwp-main{padding:20px 22px;border-radius:8px;background:#fff;box-shadow:0 1px 6px rgba(59,56,73,.08)}
@@ -5932,7 +5929,7 @@ html,body{overflow-x:hidden} /* the captured shell is 5px wider than the viewpor
                                 <label class="practice-v2-status-option"><input type="checkbox" name="hwpStatus" value="due" checked><span>Not Submitted Yet</span></label>
                                 <label class="practice-v2-status-option"><input type="checkbox" name="hwpStatus" value="done" checked><span>Already Submitted</span></label>
                                 <label class="practice-v2-status-option"><input type="checkbox" name="hwpStatus" value="missed" checked><span>Absent</span></label>
-                                <label class="practice-v2-status-option"><input type="checkbox" name="hwpStatus" value="upcoming" checked><span>Upcoming</span></label>
+                                
                               </fieldset>
                             </div>
                           </div>
@@ -8255,11 +8252,11 @@ document.addEventListener('submit', function (e) {
                           <div class="modal-body" id="pageChangesText">
                             <p><strong>Student Portal &gt; HW Notekhata — নতুন মেনু হিসেবে যা তৈরি করতে হবে:</strong></p>
                             <ol>
-<li><strong>নতুন মেনু "HW Notekhata"</strong> — বাম সাইডবারে Foundation Class-এর পরে। UMS-এর Create HW Notekhata থেকে Published হওয়া এবং শিক্ষার্থীর Course + Branch (Zone হলে তার Branch, Reg হলে তার Reg নম্বর) মিলে যাওয়া HW এখানে দেখাবে; Date From ভবিষ্যতের হলে কার্ডটি "Upcoming" হিসেবে দেখাবে।</li>
+<li><strong>নতুন মেনু "HW Notekhata"</strong> — বাম সাইডবারে Foundation Class-এর পরে। UMS-এর Create HW Notekhata থেকে Published হওয়া এবং শিক্ষার্থীর Course + Branch (Zone হলে তার Branch, Reg হলে তার Reg নম্বর) মিলে যাওয়া HW এখানে দেখাবে — শুধু Date From-এর দিন থেকে; তার আগে HW পোর্টালে আসবে না (কোনো Upcoming কার্ড নেই)।</li>
 <li><strong>ড্রিল-ডাউন (Course &amp; Content-এর মতো কার্ড)</strong> — HW Course → Subject → Chapter → Lecture-এর HW কার্ড। HW Course, Subject ও Chapter কার্ডে শুধু নাম (Course &amp; Content-এর মতো), কোনো সংখ্যা/ব্যাজ নেই; প্রথম পেইজের শিরোনাম শুধু "HW Notekhata"। প্রতিটি ধাপে Return বাটন; ব্রাউজারের Back-ও কাজ করে।</li>
-<li><strong>Filter by status (Chapter-এর ভেতরের পেইজে)</strong> — Practice Exam-এর নতুন ডিজাইনের মতো একই ফিল্টার কার্ড: Not Submitted Yet / Already Submitted / Absent / Upcoming চেকবক্স (ডিফল্ট সব টিক); টিক তুলে দিলে ঐ অবস্থার কার্ড লুকায়, কিছু না থাকলে "এই ফিল্টারে কোনো HW নেই"।</li>
-<li><strong>Lecture HW কার্ড</strong> — Lecture নাম, অবস্থা (Not Submitted Yet / Already Submitted / Absent / Upcoming), শুরু ও শেষ তারিখ (Upcoming হলে "শুরু হবে") (কত দিন বাকি — শেষ দিনে লাল), জমা দিলে কত পৃষ্ঠা কবে। প্রতিটি কার্ডে অবস্থা অনুযায়ী বাটন: <b>Upload</b> / <b>View</b> / <b>Absent</b> (Absent হলে পাশে <b>View Question</b>) / <b>Upcoming</b> (চাপা যায় না)। বাটনে চাপলে পপআপ না — ড্রিল-ডাউন হয়ে ঐ HW-এর ভেতরের পেইজে যায়।</li>
-<li><strong>HW-এর ভেতরের পেইজ</strong> — বামে মূল অংশ (প্রশ্ন + Upload / জমা দেওয়া খাতা / শুধু প্রশ্ন), ডানে Course &amp; Content-এর লেকচার পেইজের মতো কার্ড: Lecture নাম, অধ্যায়, অবস্থা, তারিখ, "n / মোট" এবং <b>Previous</b> ও <b>Next</b> বাটন — ঐ অধ্যায়ের আগের/পরের HW-তে যাওয়া যায় (Upcoming বাদে); নিচে Return to Chapter।</li>
+<li><strong>Filter by status (Chapter-এর ভেতরের পেইজে)</strong> — Practice Exam-এর নতুন ডিজাইনের মতো একই ফিল্টার কার্ড: Not Submitted Yet / Already Submitted / Absent চেকবক্স (ডিফল্ট সব টিক); টিক তুলে দিলে ঐ অবস্থার কার্ড লুকায়, কিছু না থাকলে "এই ফিল্টারে কোনো HW নেই"।</li>
+<li><strong>Lecture HW কার্ড</strong> — Lecture নাম, অবস্থা (Not Submitted Yet / Already Submitted / Absent), শুরু ও শেষ তারিখ (কত দিন বাকি — শেষ দিনে লাল), জমা দিলে কত পৃষ্ঠা কবে। প্রতিটি কার্ডে অবস্থা অনুযায়ী বাটন: <b>Upload</b> / <b>View</b> / <b>Absent</b> (Absent হলে পাশে <b>View Question</b>)। বাটনে চাপলে পপআপ না — ড্রিল-ডাউন হয়ে ঐ HW-এর ভেতরের পেইজে যায়।</li>
+<li><strong>HW-এর ভেতরের পেইজ</strong> — বামে মূল অংশ (প্রশ্ন + Upload / জমা দেওয়া খাতা / শুধু প্রশ্ন), ডানে Course &amp; Content-এর লেকচার পেইজের মতো কার্ড: Lecture নাম, অধ্যায়, অবস্থা, তারিখ, "n / মোট" এবং <b>Previous</b> ও <b>Next</b> বাটন — ঐ অধ্যায়ের আগের/পরের HW-তে যাওয়া যায়; নিচে Return to Chapter।</li>
 <li><strong>Upload</strong> — ভেতরের পেইজে উপরে প্রশ্ন (শুধু লেখা — নিচে কোনো ছবি/সংযুক্তি নেই), নিচে খাতার ছবি দেওয়ার জায়গা (শুধু ছবি — PDF বা অন্য ফাইল নেওয়া হয় না): মোবাইলে সরাসরি ছবি তোলা বা গ্যালারি থেকে একাধিক ছবি; "পৃষ্ঠা ১, ২…" প্রিভিউ, × দিয়ে বাদ; অন্তত ১টি ছবি না দিলে "জমা দিন" নিষ্ক্রিয়। জমা দিলে কার্ড Already Submitted ও বাটন View হয়।</li>
 <li><strong>View</strong> — ভেতরের পেইজে প্রশ্ন ও শিক্ষার্থীর জমা দেওয়া খাতার ছবি (কত পৃষ্ঠা, কবে জমা)।</li>
 <li><strong>প্রশ্নের ছবি</strong> — Upload, View ও View Question — কোথাও প্রশ্নের সাথে আলাদা করে ছবি/সংযুক্তি (.jpg) দেখানো হবে না; শুধু প্রশ্নের লেখা।</li>
@@ -8272,7 +8269,6 @@ document.addEventListener('submit', function (e) {
                         </div>
                       </div>
                     </div>
-<!-- HW Notekhata portal: Upload / View / View Question open inside the page (drill-down), no popups -->
 <script id="hw-notekhata-portal">
 (function(){
 'use strict';
@@ -8782,7 +8778,7 @@ function portalStudentHw(hwCourses,chapters){
     var same=lecs.filter(function(l){return l.topic===ch.fullName;});
     var pool=same.concat(lecs.filter(function(l){return same.indexOf(l)===-1;}).slice(ci*2));
     pool=pool.concat(lecs.filter(function(l){return pool.indexOf(l)===-1;}));
-    /* every chapter: Absent + submitted + open; every other chapter also one Upcoming (Date From in the future) */
+    /* every chapter: Absent + submitted + open; every other chapter also one future-dated HW (UMS lists it; the portal hides it until Date From) */
     var ROLES=ci%2===0?['missed','done','due','upcoming']:['missed','done','due'];
     for(var k=0;k<ROLES.length&&k<pool.length;k++){
      var lec=pool[k],role=ROLES[k];
@@ -8861,7 +8857,7 @@ var MONTHS=['জানুয়ারি','ফেব্রুয়ারি','�
 function esc(v){return String(v).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
 function bnDate(iso){var p=iso.split('-');return bnDigits(Number(p[2]))+' '+MONTHS[Number(p[1])-1]+' '+bnDigits(p[0]);}
 function dayDiff(a,b){var p=a.split('-').map(Number),q=b.split('-').map(Number);return Math.round((new Date(q[0],q[1]-1,q[2])-new Date(p[0],p[1]-1,p[2]))/86400000);}
-/* ---------- the student's HW: Published and reaching his course + branch (or his registration number); future Date From = Upcoming ---------- */
+/* ---------- the student's HW: Published and reaching his course + branch (or his registration number); shown only once Date From has come (no Upcoming cards) ---------- */
 function reachesStudent(i){
  var t=i.target;
  if(!t.courseIds.some(function(c){return PORTAL_STUDENT.courseIds.indexOf(Number(c))>-1;}))return false;
@@ -8869,7 +8865,7 @@ function reachesStudent(i){
  var br=t.selectBy==='Zone'?branchesOfZones(t.zones||[]):(t.branches||[]);
  return br.indexOf(PORTAL_STUDENT.branch)>-1;
 }
-var items=buildHwList(hwCourses,chapters).filter(function(i){return i.status==='Published'&&reachesStudent(i);});
+var items=buildHwList(hwCourses,chapters).filter(function(i){return i.status==='Published'&&i.dateFrom<=today&&reachesStudent(i);});
 /* ---------- the student's own submissions (demo: some already submitted; uploads in this tab are kept) ---------- */
 var SUB_KEY='hwPortalDemo:v2';
 function readSubs(){try{return JSON.parse(window.sessionStorage.getItem(SUB_KEY)||'{}')||{};}catch(e){return{};}}
@@ -8885,7 +8881,6 @@ function submissionOf(i){
  return{pages:1+h%3,at:at+' '+demoPad(16+h%6)+':'+demoPad((h>>>3)%60),demo:true};
 }
 function stateOf(i){
- if(i.dateFrom>today)return{key:'upcoming',label:'Upcoming',open:false};
  var sub=submissionOf(i);
  var open=!i.dateTo||i.dateTo>=today;
  if(sub)return{key:'done',label:'Already Submitted',sub:sub,open:open};
@@ -8954,7 +8949,7 @@ function renderChapters(){
 }
 /* level 4: Lecture HW cards — the buttons drill down into the HW (no popups) */
 function datesHtml(i,st){
- var html='<div class="hwp-dates"><span><i class="fas fa-calendar-alt"></i> '+(st.key==='upcoming'?'শুরু হবে':'শুরু')+': '+bnDate(i.dateFrom)+'</span>';
+ var html='<div class="hwp-dates"><span><i class="fas fa-calendar-alt"></i> '+'শুরু'+': '+bnDate(i.dateFrom)+'</span>';
  if(i.dateTo){
   var left=dayDiff(today,i.dateTo);
   var note=st.key!=='due'||left<0?'':left===0?' <b class="hwp-warn">আজ শেষ দিন</b>':' <b class="'+(left<=1?'hwp-warn':'hwp-left')+'">আর '+bnDigits(left)+' দিন</b>';
@@ -8965,9 +8960,8 @@ function datesHtml(i,st){
 function cardButtons(i,st){
  if(st.key==='due')return '<a class="btn hwp-btn" href="'+hwLink(i)+'"><i class="fas fa-cloud-upload-alt mr-1"></i>Upload</a>';
  if(st.key==='done')return '<a class="btn hwp-btn hwp-btn-view" href="'+hwLink(i)+'"><i class="fas fa-eye mr-1"></i>View</a>';
- if(st.key==='missed')return '<span class="btn hwp-btn hwp-btn-absent hwp-btn-static" aria-disabled="true"><i class="fas fa-user-times mr-1"></i>Absent</span>'+
+ return '<span class="btn hwp-btn hwp-btn-absent hwp-btn-static" aria-disabled="true"><i class="fas fa-user-times mr-1"></i>Absent</span>'+
   '<a class="btn hwp-btn-outline" href="'+hwLink(i)+'"><i class="fas fa-eye mr-1"></i>View Question</a>';
- return '<span class="btn hwp-btn hwp-btn-upcoming hwp-btn-static" aria-disabled="true"><i class="fas fa-clock mr-1"></i>Upcoming</span>';
 }
 function hwCard(i){
  var st=stateOf(i);
@@ -9024,7 +9018,7 @@ function mainHtml(i,st){
 }
 function renderDetail(){
  var hw=hwById[curCourse],ch=chapterById[curChapter];
- var list=chapterItems().filter(function(i){return stateOf(i).key!=='upcoming';});
+ var list=chapterItems();
  var i=list.filter(function(x){return String(x.id)===String(curHw);})[0];
  if(!hw||!ch||!i){location.replace(link({course:curCourse,subject:curSubject,chapter:curChapter}));return;}
  active=i;picked=[];
