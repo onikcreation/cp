@@ -1527,6 +1527,9 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
      <a class="active" href="index.html">
      HW Evaluation
     </a>
+     <a href="../HWIndividualReport/index.html">
+     HW Evaluation Individual Student Report
+    </a>
    </div>
   </div>
  </aside>
@@ -2414,27 +2417,97 @@ function hwEvalCommentHtml(ev){
   (ev.improve.length?'<div class="hwe-c-improve"><h6>যেখানে উন্নতি দরকার</h6><ul>'+ev.improve.map(function(v){return '<li>'+hweEsc(v)+'</li>';}).join('')+'</ul></div>':'')+
   '<p class="hwe-c-sum">'+hweEsc(ev.summary)+'</p></div>';
 }
-/* UMS: who submitted one HW (count = item.uploads); every copy is evaluated within seconds of submitting */
 var HWE_FIRST=['Tanvir','Nusrat','Sadia','Rafi','Mehedi','Farhana','Ariful','Sumaiya','Imran','Jannatul','Rakibul','Tasnim','Shahriar','Mim','Nafis','Sabrina','Fahim','Ayesha','Zahid','Rumana','Asif','Tahmina','Sakib','Lamia'];
 var HWE_LAST=['Hasan','Islam','Rahman','Ahmed','Hossain','Akter','Chowdhury','Karim','Sultana','Alam','Khan','Sarker','Uddin','Mahmud','Haque','Jahan'];
+/* UMS: who submitted one HW. Students are a fixed demo population — 45 per enrollment course × branch — so the same Reg No
+   shows the same submissions in HW Evaluation (copies of one HW) and HW Evaluation Individual Student Report (all HW of one student).
+   Reg No = (1000 + the course's position in the enrollment course list, 4 digits) + branch index (1 digit) + serial (2 digits) = 7 digits;
+   the portal demo student keeps his own Reg. */
+var HW_COURSE_IX=null;
+function hwCourseIx(cid){if(!HW_COURSE_IX){HW_COURSE_IX={};ENROLL.courses.forEach(function(c,ix){HW_COURSE_IX[c.cid]=ix;});}return HW_COURSE_IX[Number(cid)];}
+var HW_POP_SIZE=45;
+function hwStudentName(reg){var h=demoHash('name|'+reg);return HWE_FIRST[h%HWE_FIRST.length]+' '+HWE_LAST[(h>>>5)%HWE_LAST.length];}
+function hwPopulation(cid,branch){
+ var b=PERMITTED_BRANCHES.indexOf(branch),ix=hwCourseIx(cid),out=[];
+ if(b<0||ix===undefined)return out;
+ for(var k=0;k<HW_POP_SIZE;k++){
+  var reg=String(1000+ix)+b+demoPad(k);
+  out.push({reg:reg,name:hwStudentName(reg),branch:branch,cid:Number(cid)});
+ }
+ return out;
+}
+/* the student behind a Reg No: portal demo student, one of the demo population, or (with items, any other 7-digit Reg —
+   user, 20 Nov 2026) a demo student derived from the number, admitted to a course + branch that has HW; null = not found */
+function hwStudentByReg(reg,items){
+ reg=String(reg||'').trim();
+ if(reg===PORTAL_STUDENT.reg)return{reg:reg,name:PORTAL_STUDENT.name,branch:PORTAL_STUDENT.branch,courseIds:PORTAL_STUDENT.courseIds.slice(),portal:true};
+ var m=/^(\d{4})(\d)(\d{2})$/.exec(reg);
+ var c=m&&Number(m[3])<HW_POP_SIZE&&PERMITTED_BRANCHES[Number(m[2])]?ENROLL.courses[Number(m[1])-1000]:null;
+ if(c){
+  var s={reg:reg,name:hwStudentName(reg),branch:PERMITTED_BRANCHES[Number(m[2])],courseIds:[c.cid]};
+  if(!items||items.some(function(i){return hwReachesStudent(i,s);}))return s;
+ }
+ if(!items||!/^\d{7}$/.test(reg))return null;
+ /* any other 7-digit Reg: a course + branch that has HW, picked from the number */
+ var cands=[],seen={};
+ items.forEach(function(i){
+  var t=i.target||{};
+  if(t.selectBy==='Reg')return;
+  var br=t.selectBy==='Zone'?branchesOfZones(t.zones||[]):(t.branches||[]);
+  (t.courseIds||[]).forEach(function(cid){br.forEach(function(b){var k=cid+'|'+b;if(PERMITTED_BRANCHES.indexOf(b)===-1)return;if(!seen[k]){seen[k]=0;cands.push([Number(cid),b]);}seen[k]++;});});
+ });
+ /* prefer a course + branch with a fuller HW list, so the demo report has enough rows */
+ var rich=cands.filter(function(c){return seen[c[0]+'|'+c[1]]>=5;});
+ if(rich.length)cands=rich;
+ if(!cands.length)return null;
+ cands.sort(function(a,b){return a[0]-b[0]||(a[1]<b[1]?-1:1);});
+ var pick=cands[demoHash('any|'+reg)%cands.length];
+ return{reg:reg,name:hwStudentName(reg),branch:pick[1],courseIds:[pick[0]],virtual:true};
+}
+function hwReachesStudent(i,s){
+ var t=i.target||{};
+ if(!(t.courseIds||[]).some(function(c){return s.courseIds.indexOf(Number(c))>-1;}))return false;
+ if(t.selectBy==='Reg')return (t.regs||[]).indexOf(s.reg)>-1;
+ var br=t.selectBy==='Zone'?branchesOfZones(t.zones||[]):(t.branches||[]);
+ return br.indexOf(s.branch)>-1;
+}
+var rosterCache={};
 function hwSubmissionRoster(i,today){
- var t=i.target||{},rows=[],seen={};
- var branches=t.selectBy==='Zone'&&typeof branchesOfZones==='function'?branchesOfZones(t.zones||[]):(t.branches&&t.branches.length?t.branches:PERMITTED_BRANCHES);
+ var ck=i.id+'|'+i.uploads+'|'+today;
+ if(rosterCache[ck])return rosterCache[ck];
+ var t=i.target||{},pool=[],seen={},rows=[];
  var open=!i.dateTo||i.dateTo>=today;
  var last=open?today:i.dateTo;
  var span=Math.max(0,Math.round((new Date(last)-new Date(i.dateFrom))/86400000));
- var mine=i.demoRole?hwDemoSubmission(i,today):null;
- if(mine)rows.push({reg:PORTAL_STUDENT.reg,name:PORTAL_STUDENT.name,branch:PORTAL_STUDENT.branch,at:mine.at,pages:mine.pages,evaluated:true,key:String(i.id)});
- for(var n=0;rows.length<(i.uploads||0)&&n<(i.uploads||0)*3;n++){
-  var h=demoHash('roster|'+i.id+'|'+n);
-  var reg=t.selectBy==='Reg'&&t.regs&&t.regs.length?t.regs[n%t.regs.length]:String(1900000+h%99999);
-  if(seen[reg]||reg===PORTAL_STUDENT.reg)continue;
-  seen[reg]=true;
-  var day=isoPlus(i.dateFrom,span?(h>>>4)%(span+1):0);
-  var at=day+' '+demoPad(8+(h>>>9)%14)+':'+demoPad((h>>>13)%60);
-  rows.push({reg:reg,name:HWE_FIRST[h%HWE_FIRST.length]+' '+HWE_LAST[(h>>>5)%HWE_LAST.length],branch:branches[(h>>>7)%branches.length]||'-',at:at,pages:1+(h>>>11)%3,evaluated:true,key:i.id+'|'+reg});
+ if(t.selectBy==='Reg'){
+  (t.regs||[]).forEach(function(r){var s=hwStudentByReg(r);pool.push({reg:String(r),name:s?s.name:hwStudentName(r),branch:s?s.branch:'-'});});
+ }else{
+  var branches=t.selectBy==='Zone'?branchesOfZones(t.zones||[]):(t.branches||[]);
+  (t.courseIds||[]).forEach(function(cid){branches.forEach(function(b){pool=pool.concat(hwPopulation(cid,b));});});
  }
- return rows.sort(function(a,b){return a.at<b.at?1:a.at>b.at?-1:0;});
+ pool=pool.filter(function(p){if(seen[p.reg]||p.reg===PORTAL_STUDENT.reg)return false;seen[p.reg]=true;return true;});
+ pool.sort(function(a,b){return demoHash('sub|'+i.id+'|'+a.reg)-demoHash('sub|'+i.id+'|'+b.reg);});
+ var mine=hwReachesStudent(i,hwStudentByReg(PORTAL_STUDENT.reg))?hwDemoSubmission(i,today):null;
+ if(mine)rows.push({reg:PORTAL_STUDENT.reg,name:PORTAL_STUDENT.name,branch:PORTAL_STUDENT.branch,at:mine.at,pages:mine.pages,evaluated:true,key:String(i.id)});
+ pool.slice(0,Math.max(0,(i.uploads||0)-rows.length)).forEach(function(p){
+  var h=demoHash('roster|'+i.id+'|'+p.reg);
+  var day=isoPlus(i.dateFrom,span?(h>>>4)%(span+1):0);
+  rows.push({reg:p.reg,name:p.name,branch:p.branch,at:day+' '+demoPad(8+(h>>>9)%14)+':'+demoPad((h>>>13)%60),pages:1+(h>>>11)%3,evaluated:true,key:i.id+'|'+p.reg});
+ });
+ return(rosterCache[ck]=rows.sort(function(a,b){return a.at<b.at?1:a.at>b.at?-1:0;}));
+}
+/* one student's copy of one HW: submission row, or null (Absent if the HW is closed, Not Submitted Yet if still open) */
+function hwStudentSubmission(i,s,today){
+ /* derived (non-population) students: submissions decided from the Reg + HW, same copy every time */
+ if(s.virtual){
+  var h=demoHash('vsub|'+i.id+'|'+s.reg);
+  if(h%10>=6)return null;
+  var open=!i.dateTo||i.dateTo>=today,last=open?today:i.dateTo;
+  var span=Math.max(0,Math.round((new Date(last)-new Date(i.dateFrom))/86400000));
+  var day=isoPlus(i.dateFrom,span?(h>>>4)%(span+1):0);
+  return{reg:s.reg,name:s.name,branch:s.branch,at:day+' '+demoPad(8+(h>>>9)%14)+':'+demoPad((h>>>13)%60),pages:1+(h>>>11)%3,evaluated:true,key:i.id+'|'+s.reg};
+ }
+ return hwSubmissionRoster(i,today).filter(function(r){return r.reg===s.reg;})[0]||null;
 }
 function hwEvalCounts(i,today){
  var rows=hwSubmissionRoster(i,today);
