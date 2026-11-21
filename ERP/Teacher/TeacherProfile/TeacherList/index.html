@@ -11648,9 +11648,6 @@ table.dataTable td {
                                 <option value="Current District">
                                   Current District
                                 </option>
-                                <option value="Bank Account Information">
-                                  Bank Account Information
-                                </option>
                               </select>
                             </div>
                           </div>
@@ -28957,12 +28954,7 @@ var AJAX_LOADER_URI = "data:image/gif;base64,R0lGODlhIAAgAPMAAOzz8wAAALe9vXp+fqm
     'Mobile Number(Father)', 'Mobile Number(Mother)', 'Religion', 'Gender', 'Date Of Birth', 'Blood Group', 'Department',
     'Hsc Passing Year', 'Email', 'Activity Priority', 'Subject Priority', 'Version Priority', 'Teacher Type',
     'Teacher Activity Type', 'Profession', 'Professional Company', 'Professional Department', 'NID', 'TIN', 'School',
-    'College', 'Current District', 'Bank Account Information'];
-
-  // "Bank Account Information" is a grouped virtual column — selecting it expands into these 7 real columns
-  // (same fields as the Teacher Profile "Bank Account Information" section)
-  var BANK_COLUMNS = ['Account Title (As Per Bank)', 'Account Number', 'Bank Name', 'Branch', 'Routing Number',
-    'Mobile Number (As Per Bank)', 'Bank Payment (Per Month)'];
+    'College', 'Current District'];
 
   // fallback column set when the user clicks View without moving anything into "Selected" (minimal identity columns)
   var DEFAULT_COLUMNS = ['TPIN', 'Organization', 'Full Name', 'Nick Name', 'Institute', 'Mobile Number 1',
@@ -29001,8 +28993,6 @@ var AJAX_LOADER_URI = "data:image/gif;base64,R0lGODlhIAAgAPMAAOzz8wAAALe9vXp+fqm
   var DISTRICTS = ['Dhaka', 'Chattogram', 'Rajshahi', 'Khulna', 'Sylhet', 'Barishal', 'Rangpur', 'Mymensingh', 'Cumilla', 'Gazipur', 'Narayanganj', 'Bogura', 'Jashore', 'Dinajpur', 'Faridpur'];
   var BLOOD_GROUPS = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
   var BANKING_TYPES = ['bKash', 'Nagad', 'Rocket', 'Upay'];
-  var BANK_NAMES = ['Islami Bank Bangladesh', 'Dutch-Bangla Bank', 'BRAC Bank', 'City Bank', 'Sonali Bank', 'Agrani Bank', 'Janata Bank', 'Pubali Bank', 'Prime Bank', 'Eastern Bank', 'UCB', 'Mutual Trust Bank', 'IFIC Bank', 'NCC Bank', 'Trust Bank', 'Bank Asia', 'Southeast Bank', 'Standard Chartered'];
-  var BANK_BRANCHES = ['Dhanmondi Branch', 'Gulshan Branch', 'Motijheel Branch', 'Uttara Branch', 'Mirpur Branch', 'Banani Branch', 'Panthapath Branch', 'Farmgate Branch', 'Mohakhali Branch', 'New Market Branch', 'Agrabad Branch (Chattogram)', 'GEC Circle Branch (Chattogram)'];
 
   function pad2(n) { return (n < 10 ? '0' : '') + n; }
 
@@ -29060,13 +29050,6 @@ var AJAX_LOADER_URI = "data:image/gif;base64,R0lGODlhIAAgAPMAAOzz8wAAALe9vXp+fqm
       School: pick(rng, SCHOOLS),
       College: pick(rng, SCHOOLS),
       'Current District': pick(rng, DISTRICTS),
-      'Account Title (As Per Bank)': fullName,
-      'Account Number': String(1000000000 + (i * 9931) % 8999999999),
-      'Bank Name': pick(rng, BANK_NAMES),
-      Branch: pick(rng, BANK_BRANCHES),
-      'Routing Number': String(100000000 + (i * 7793) % 899999999),
-      'Mobile Number (As Per Bank)': DUMMY_MOBILES[(i + 2) % 4],
-      'Bank Payment (Per Month)': String(5000 + (i * 137) % 25000),
       _orgIds: orgs.map(function (o) { return o.id; }),
       _activityIds: acts.map(function (a) { return a.id; }),
       _subjectIds: subs.map(function (s) { return s.id; }),
@@ -29158,8 +29141,7 @@ var AJAX_LOADER_URI = "data:image/gif;base64,R0lGODlhIAAgAPMAAOzz8wAAALe9vXp+fqm
     var cols = [];
     COLUMN_ORDER.forEach(function (c) {
       if (sel.indexOf(c) === -1) return;
-      if (c === 'Bank Account Information') { cols = cols.concat(BANK_COLUMNS); }
-      else { cols.push(c); }
+      cols.push(c);
     });
     return cols;
   }
@@ -29394,9 +29376,7 @@ var AJAX_LOADER_URI = "data:image/gif;base64,R0lGODlhIAAgAPMAAOzz8wAAALe9vXp+fqm
       </div>
       <div class="modal-body" style="height:65vh; overflow-y:auto;">
         <ol style="padding-left:20px; margin:0;">
-          <li style="margin-bottom:12px;">
-            <strong>"Select Information to View"-এ "Bank Account Information" অপশন যোগ করা হয়েছে</strong> — এই অপশন সিলেক্ট করে ডানপাশে নিয়ে View করলে রেজাল্ট টেবিলে ৭টা নতুন কলাম দেখাবে: Account Title (As Per Bank), Account Number, Bank Name, Branch, Routing Number, Mobile Number (As Per Bank), Bank Payment (Per Month) — এই একই ৭টা ফিল্ড Teacher Profile ফর্মের "Bank Account Information" সেকশনে (Update Profile মেনুতে আগে প্রস্তাব করা হয়েছিল) যা এন্ট্রি করা হবে তা থেকেই আসবে। Export-এ এই কলামগুলোও অন্তর্ভুক্ত থাকতে হবে।
-          </li>
+          <li style="margin-bottom:12px;"><strong>Bank Account Information আলাদা মেনুতে স্থানান্তর</strong> — Teacher List-এর Select Information to View থেকে Bank Account Information option এবং সংশ্লিষ্ট সাতটি report/export column বাদ দিতে হবে।</li>
         </ol>
       </div>
       <div class="modal-footer">
