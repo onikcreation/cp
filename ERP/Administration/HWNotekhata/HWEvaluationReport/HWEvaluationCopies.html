@@ -1553,6 +1553,9 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
   <div class="menu-section open">
    <button class="section-label" type="button">HW Notekhata</button>
    <div class="submenu">
+     <a href="../DefaultHWSettings/index.html">
+     Default HW Settings
+    </a>
      <a href="../ManageHWCourse/CreateHWCourse.html">
      Create HW Course
     </a>
@@ -2520,7 +2523,7 @@ document.addEventListener('click',function(event){
  var href=link.getAttribute('href')||'';
  var local=href==='#'||href.indexOf('javascript:')===0;
  /* HW pages link to each other locally (…_Offline.html) and on the published site (folder/index.html, Create….html) */
- var allowed=/^(\.\.\/[A-Za-z]+\/)?(((ManageHW|CreateHW|EditHW|HW)[A-Za-z]+(_Offline(_Draft)?)?\.html)|index\.html)?(\?|#|$)/.test(href)||href==='./';
+ var allowed=/^(\.\.\/[A-Za-z]+\/)?(([A-Za-z]*HW[A-Za-z]+(_Offline(_Draft)?)?\.html)|index\.html)?(\?|#|$)/.test(href)||href==='./';
  if(!local&&!allowed)event.preventDefault();
 },true);
 document.addEventListener('submit',function(event){event.preventDefault();},true);
