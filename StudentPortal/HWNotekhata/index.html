@@ -8881,7 +8881,7 @@ function targetSummary(t){
  if(t.selectBy==='Zone')return 'Zone: '+(t.zones||[]).join(', ');
  return 'Branch: '+(t.branches||[]).join(', ');
 }
-/* HW Notekhata — evaluation demo (shared by Student Portal > HW Notekhata and UMS > HW Evaluation / Manage HW Notekhata counts).
+/* HW Notekhata — evaluation demo (shared by Student Portal > HW Notekhata and UMS > HW Evaluation Report / Manage HW Notekhata counts).
    Needs course_data.js (demoHash, demoPad), lecture_data.js (bnDigits), target_data.js, hw_data.js (isoPlus, PORTAL_STUDENT).
    AI evaluates every submitted copy within seconds (HW Course / HW Chapter "Independent AI Answer Settings") — but the word "AI"
    is never shown in the UI (user, 20 Nov 2026). Result = marks drawn on the copy photos (✓ right, ✗ wrong, ◯ needs attention —
@@ -8974,7 +8974,7 @@ function hwEvalCommentHtml(ev){
 var HWE_FIRST=['Tanvir','Nusrat','Sadia','Rafi','Mehedi','Farhana','Ariful','Sumaiya','Imran','Jannatul','Rakibul','Tasnim','Shahriar','Mim','Nafis','Sabrina','Fahim','Ayesha','Zahid','Rumana','Asif','Tahmina','Sakib','Lamia'];
 var HWE_LAST=['Hasan','Islam','Rahman','Ahmed','Hossain','Akter','Chowdhury','Karim','Sultana','Alam','Khan','Sarker','Uddin','Mahmud','Haque','Jahan'];
 /* UMS: who submitted one HW. Students are a fixed demo population — 45 per enrollment course × branch — so the same Reg No
-   shows the same submissions in HW Evaluation (copies of one HW) and HW Evaluation Individual Student Report (all HW of one student).
+   shows the same submissions in HW Evaluation Report (copies of one HW) and Individual Student HW Report (all HW of one student).
    Reg No = (1000 + the course's position in the enrollment course list, 4 digits) + branch index (1 digit) + serial (2 digits) = 7 digits;
    the portal demo student keeps his own Reg. */
 var HW_COURSE_IX=null;
@@ -9002,6 +9002,10 @@ function hwStudentByReg(reg,items){
   if(!items||items.some(function(i){return hwReachesStudent(i,s);}))return s;
  }
  if(!items||!/^\d{7}$/.test(reg))return null;
+ /* a Reg named in a Reg Wise HW: that HW's course (same copy as in the HW Evaluation Report copy list, branch '-' as there) */
+ var rw=[];
+ items.forEach(function(i){var t=i.target||{};if(t.selectBy==='Reg'&&(t.regs||[]).map(String).indexOf(reg)>-1&&(t.courseIds||[]).length&&rw.indexOf(Number(t.courseIds[0]))===-1)rw.push(Number(t.courseIds[0]));});
+ if(rw.length)return{reg:reg,name:hwStudentName(reg),branch:'-',courseIds:rw};
  /* any other 7-digit Reg: a course + branch that has HW, picked from the number */
  var cands=[],seen={};
  items.forEach(function(i){

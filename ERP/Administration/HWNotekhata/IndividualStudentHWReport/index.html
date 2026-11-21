@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>HW Evaluation Copies | UMS Demo</title>
+<title>Individual Student HW Report | UMS Demo</title>
 <style>
 :root{
  --brand:#4338ca;
@@ -1314,62 +1314,6 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
 .back-link a:hover{text-decoration:underline}
 </style>
 <style>
-/* Layout follows the user's sketch (17 Nov 2026): two label/control columns, underlined section titles,
-   full-width Question / Sample Answer boxes with "Choose File" at the bottom-right, centred buttons. */
-#addPanel .panel-body{padding:20px 20px 0}
-.hw-form{display:grid;grid-template-columns:1fr 1fr;column-gap:30px;row-gap:10px}
-.hw-form .field{grid-template-columns:150px minmax(0,1fr)}
-.hw-form .full{grid-column:1/-1}
-.form-section{margin:16px 0 4px;padding:0 0 6px;border-bottom:1px solid #333;color:#333;font-size:15px;font-weight:700}
-.hw-hint{margin:-4px 0 0;color:#777;font-size:12px;text-align:center}
-.req{color:#d9534f}
-.multi.field-invalid .multi-button{border-color:red!important}
-.single .multi-option input{accent-color:#337ab7}
-.multi-option[hidden]{display:none!important}
-.hw-form .field .multi-option{padding-top:4px;text-align:left;font-weight:400;font-size:14px}
-.hw-form .field .multi-option.select-all{font-weight:700}
-/* filter dropdowns without background colour, like Exam > Report > Merit List */
-.hw-form .multi-button,.hw-form .multi-button:hover,.hw-form .multi.open .multi-button{background:#fff;border-color:#ccc}
-.multi-button:disabled{opacity:.6;cursor:not-allowed}
-.multi[hidden],.hw-form .field[hidden]{display:none}
-.pick-wrap{min-width:0}
-.reg-input{width:100%;height:auto;min-height:68px;resize:vertical;font-family:inherit;font-size:14px;line-height:1.45}
-#pickField.reg-mode{grid-column:1/-1}
-#pickField.reg-mode{grid-template-columns:150px minmax(0,1fr)}
-.due-wrap{position:relative}
-.due-wrap .control{padding-right:34px}
-.due-clear{position:absolute;top:5px;right:6px;width:24px;height:24px;padding:0;border:0;border-radius:50%;background:#eee;color:#777;font-size:16px;line-height:22px;cursor:pointer}
-.due-clear:hover{background:#ddd;color:#333}
-.note-block{margin-top:8px}
-.note-title{display:block;margin:0 0 5px;color:#333;font-size:14px;font-weight:700}
-.note-source{margin-left:6px;color:#31708f;font-size:12px;font-weight:400}
-.note-source.warn{color:#a94442;font-weight:700}
-.note-box{border:1px solid #ccc;border-radius:3px;background:#fff}
-.note-box.field-invalid{border-color:red!important}
-.note-text{display:block;width:100%;min-height:86px;padding:8px 10px;border:0;outline:0;resize:vertical;font:inherit;font-size:14px;line-height:1.5;background:transparent}
-.note-box.readonly{background:#f5f5f5}
-.note-box.readonly .note-text{color:#555;cursor:default}
-.note-foot{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;min-height:34px;padding:0 0 0 8px}
-.file-chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 0 6px;min-width:0}
-.file-chip{display:inline-flex;align-items:center;gap:4px;max-width:100%;padding:2px 8px;border:1px solid #c9d7e8;border-radius:12px;background:#eef4fb;color:#245;font-size:12px;overflow-wrap:anywhere}
-.chip-x{border:0;background:transparent;color:#777;font-size:14px;line-height:1;cursor:pointer;padding:0 0 0 2px}
-.chip-x:hover{color:#c9302c}
-.choose-file{position:relative;flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;width:210px;height:34px;margin:0;border-top:1px solid #ccc;border-left:1px solid #ccc;background:#f4f4f4;color:#222;font-size:14px;font-weight:400;cursor:pointer;overflow:hidden}
-.choose-file:hover{background:#e8e8e8}
-.choose-file[hidden]{display:none}
-.choose-file input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%}
-.form-foot{display:flex;justify-content:center;gap:40px;margin:22px -20px 0;padding:14px 20px;border-top:1px solid #ddd}
-.form-foot .btn{min-width:150px}
-@media(max-width:900px){.hw-form{grid-template-columns:minmax(0,1fr)}}
-@media(max-width:760px){
- #addPanel .panel-body{padding:12px 10px 0}
- .hw-form .field,#pickField.reg-mode{grid-template-columns:minmax(0,1fr);gap:5px}
- .choose-file{width:130px}
- .form-foot{gap:12px;margin:18px -10px 0;padding:10px}
- .form-foot .btn{min-width:0;flex:1}
-}
-</style>
-<style>
 /* Manage HW Notekhata — list page (adapted from the first HW demo's Manage page). */
 .glyphicon-th-list:before{content:"\e012"}
 .glyphicon-ok:before{content:"\e013"}
@@ -1434,7 +1378,7 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
 }
 [data-toggle-head]{cursor:pointer;user-select:none}
 .status-toggle{border:0;cursor:pointer}
-/* View Copies / View (HW Evaluation) — the shell defines only the glyphicons it uses */
+/* View Copies / View (HW Evaluation Report) — the shell defines only the glyphicons it uses */
 .glyphicon-eye-open:before{content:"\e105"}
 .status-toggle:hover{filter:brightness(.95);box-shadow:0 0 0 2px rgba(0,0,0,.08)}
 .status-badge.unpublished{background:#f2dede;color:#a94442}
@@ -1490,6 +1434,82 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
 
 #copyModal .hwe-pages{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
 @media(max-width:760px){.sub-toolbar label{width:100%}.sub-toolbar input{flex:1}#copyModal .hwe-pages{grid-template-columns:1fr}}
+</style>
+<style>
+/* Individual Student HW Report — layout taken from Exam > Report > Individual Performance (offline demo) */
+#lookupForm{max-width:515px;margin:0 auto}
+#lookupForm input{width:100%;height:34px;padding:6px 12px;border:1px solid #ccc;border-radius:4px;color:#333}
+#lookupForm input.field-invalid{border-color:#f00}
+#lookupForm .form-actions{display:flex;justify-content:center;margin-top:6px}
+.btn.btn-ip{min-height:34px;padding:6px 12px;border:1px solid #357ebd;border-radius:4px;background:#428bca;color:#fff;cursor:pointer}
+.btn.btn-ip:hover,.btn.btn-ip:focus{background:#357ebd}
+.btn.btn-ip.btn-small{min-height:31px;padding:5px 11px}
+.lookup-error{display:none;margin-top:5px;color:#d9534f;font-size:12px}
+.lookup-error.show{display:block}
+.student-summary{display:grid;grid-template-columns:minmax(0,1fr) 90px;gap:18px;align-items:start;margin:0 5px 20px}
+.student-facts{margin:0;line-height:1.55}
+.student-facts div{display:grid;grid-template-columns:108px minmax(0,1fr);gap:4px}
+.student-facts dt,.student-facts dd{margin:0;font-weight:400}
+.student-photo{width:86px;height:100px;justify-self:end;border:1px solid #d9d9d9;background:#282828;object-fit:cover}
+.ip-scroll{width:100%;overflow:auto;border:1px solid #ddd}
+.ip-table{width:100%;border-collapse:collapse;font-size:13px}
+.ip-table th,.ip-table td{padding:8px;border:1px solid #ddd;text-align:center;vertical-align:middle}
+.ip-table th{background:#fafafa;font-weight:700}
+.ip-table td.left{text-align:left}
+#programTable{min-width:900px}
+#programTable th:nth-child(2),#programTable td:nth-child(2){width:24%}
+#programTable th{white-space:nowrap}
+.report-head-actions{margin-left:auto}
+.print-icon{width:30px;height:25px;border:0;background:transparent;color:#fff;cursor:pointer}
+.print-icon svg{width:16px;height:16px;fill:currentColor}
+.report-back{margin:0 0 6px;font-size:13px}
+.report-document{font-family:Calibri,"Open Sans",Arial,sans-serif;font-size:12px;color:#222}
+.report-title-grid{display:grid;grid-template-columns:1fr 1fr 1fr;align-items:start;gap:12px}
+.logo-mark{width:100px;height:80px;display:flex;align-items:center}
+.logo-emblem{width:54px;height:68px;border:2px solid #d3ae1e;border-radius:4px;display:grid;place-items:center;background:#fff;color:#2f1031;font-size:31px;font-weight:800;line-height:1}
+.report-title{text-align:center;padding-top:6px;line-height:1.5}
+.report-title strong{display:block}
+.report-photo{width:80px;height:80px;justify-self:end;background:#282828;border:1px solid #444}
+.student-report-meta{display:grid;grid-template-columns:1fr 1fr;gap:3px 20px;margin:6px 0 10px;font-weight:700}
+.student-report-meta{grid-template-areas:"name branch" "registration ." "admission ."}
+.meta-name{grid-area:name}.meta-registration{grid-area:registration}.meta-admission{grid-area:admission}.meta-branch{grid-area:branch;text-align:right}
+.report-filter-form{display:grid;grid-template-columns:2fr 1.4fr 2fr 1.2fr .7fr;gap:8px;margin-bottom:8px}
+.report-filter-form select{width:100%;height:34px;padding:6px 9px;border:1px solid #ccc;border-radius:3px;background:#fff;color:#333}
+.report-filter-form .btn{width:100%}
+.course-block{margin-top:10px}
+.course-name{margin:0 0 4px;font-size:12px;font-weight:700}
+.performance-scroll{max-height:620px;overflow:auto;border:1px solid #222}
+.performance-table{min-width:1400px;font-size:12px}
+.performance-table th,.performance-table td{height:38px;padding:5px;border:1px solid #222}
+.performance-table th{position:sticky;top:0;z-index:2;white-space:nowrap}
+.performance-table th:first-child,.performance-table td:first-child{position:sticky;left:0;width:58px;min-width:58px;background:#fff;z-index:1}
+.performance-table th:first-child{z-index:3;background:#fafafa}
+/* Details (Action) stays visible on the right while the wide table scrolls */
+.performance-table th:last-child,.performance-table td:last-child{position:sticky;right:0;width:70px;min-width:70px;background:#fff;z-index:1;box-shadow:-3px 0 5px rgba(0,0,0,.08)}
+.performance-table th:last-child{z-index:3;background:#fafafa}
+.performance-table td:nth-child(8){white-space:nowrap}
+.course-total{text-align:right;padding:5px 2px;font-weight:700}
+.ip-empty{padding:24px;text-align:center;color:#777;border:1px solid #ddd;margin-top:10px}
+.merit-title{margin:14px 0 4px;font-weight:700}
+.merit-scroll{overflow:auto;border:1px solid #222}
+.merit-table{min-width:900px;font-size:12px}
+.merit-table th,.merit-table td{border:1px solid #222;padding:6px}
+.signatures{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin:56px 10px 24px;font-weight:700;text-align:center}
+.signatures div{border-top:1px solid #222;padding-top:4px}
+.print-actions{text-align:center;margin:12px 0 5px}
+.ip-nocopy{margin:12px 0;padding:9px 12px;border:1px dashed #d9534f;background:#fdf3f3;color:#a94442;font-size:13.5px}
+@media(max-width:760px){
+ .student-summary{grid-template-columns:1fr auto;gap:10px}
+ .student-report-meta{grid-template-columns:1fr;grid-template-areas:"name" "registration" "admission" "branch"}.meta-branch{text-align:left}
+ .report-title-grid{grid-template-columns:auto 1fr auto}.logo-mark{width:58px}.logo-emblem{width:46px;height:58px;font-size:26px}.report-title{font-size:10px}.report-photo{width:58px;height:66px}
+ .report-filter-form{grid-template-columns:1fr}
+}
+@media(max-width:430px){.student-summary{grid-template-columns:1fr}.student-photo{justify-self:start;grid-row:1}}
+@media print{
+ body{background:#fff}.topbar,.sidebar,#lookupStage,.report-head-actions,.report-filter-form,.print-actions,.report-back,#pageChangesModal,#pageChangesBtn,footer{display:none!important}
+ [class~="layout"]{display:block!important;padding:0!important}main{padding:0!important}#reportPanel{border:0!important;margin:0!important}#reportPanel>div:first-child{display:none!important}.panel-body{padding:0!important}
+ .performance-scroll,.merit-scroll{max-height:none;overflow:visible;border:0}.performance-table,.merit-table{min-width:100%;font-size:8px}.performance-table th,.performance-table td{height:auto;padding:3px;position:static!important}.course-block{break-inside:avoid-page}
+}
 </style>
 </head>
 <body>
@@ -1574,40 +1594,62 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
      <a href="../ManageHWNotekhata/index.html">
      Manage HW Notekhata
     </a>
-     <a class="active" href="index.html">
-     HW Evaluation
+     <a href="../HWEvaluationReport/index.html">
+     HW Evaluation Report
     </a>
-     <a href="../HWIndividualReport/index.html">
-     HW Evaluation Individual Student Report
+     <a class="active" href="index.html">
+     Individual Student HW Report
     </a>
    </div>
   </div>
  </aside>
  <main class="content">
-  <p class="back-link sub-back"><a href="index.html">← Back to HW Evaluation</a></p>
-  <section class="panel" id="subInfoPanel">
-   <div class="panel-head">
-    <div><h1 id="subTitle">HW Evaluation</h1></div>
-   </div>
-   <div class="panel-body">
-    <dl class="detail-grid" id="subInfo"></dl>
-   </div>
-  </section>
-  <section class="panel" id="subListPanel">
-   <div class="panel-head">
-    <div><h2>Submitted Copies</h2></div>
-   </div>
-   <div class="panel-body">
-    <div class="sub-toolbar">
-     <label>Search <input id="subSearch" type="search" placeholder="Reg No / Name / Branch"></label>
+  <div id="lookupStage">
+   <section class="panel" id="searchPanel">
+    <div class="panel-head"><h1>Individual Student HW Report</h1></div>
+    <div class="panel-body">
+     <form id="lookupForm" action="javascript:void(0)" novalidate>
+      <input id="RegNo" name="RegNo" type="text" inputmode="numeric" maxlength="7" autocomplete="off" placeholder="Enter Registration No." aria-label="Registration No.">
+      <span class="lookup-error" id="RegInvalidText" role="alert"></span>
+      <div class="form-actions"><button class="btn btn-ip" id="btnSubmit" type="button">Submit</button></div>
+     </form>
     </div>
-    <div class="table-scroll sub-table-scroll">
-     <table class="sub-table">
-      <thead><tr><th>Sl.</th><th>Reg No</th><th>Student Name</th><th>Branch</th><th>Submitted At</th><th>Pages</th><th>Evaluated At</th><th>Action</th></tr></thead>
-      <tbody id="subBody"></tbody>
-     </table>
+   </section>
+   <section class="panel" id="detailsPanel" hidden>
+    <div class="panel-head"><h2>Details</h2></div>
+    <div class="panel-body">
+     <div class="student-summary">
+      <dl class="student-facts" id="studentFacts"></dl>
+      <img class="student-photo" alt="Demo student placeholder" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='86' height='100' viewBox='0 0 86 100'%3E%3Crect width='86' height='100' fill='%23282828'/%3E%3Ccircle cx='43' cy='30' r='18' fill='%23e7e7e7'/%3E%3Cpath d='M17 93c2-25 12-38 26-38s24 13 26 38' fill='%23e7e7e7'/%3E%3C/svg%3E">
+     </div>
+     <div class="ip-scroll">
+      <table class="ip-table" id="programTable"><thead><tr><th>Admission Date</th><th>Program</th><th>Session</th><th>Total HW</th><th>Submitted</th><th>Absent</th><th>Not Submitted Yet</th><th>Action</th></tr></thead><tbody id="programBody"></tbody></table>
+     </div>
     </div>
-    <div class="table-footer"><span>Showing <b id="subCount">0</b> of <b id="subTotal">0</b> entries</span></div>
+   </section>
+  </div>
+  <section class="panel" id="reportPanel" hidden>
+   <div class="panel-head"><h2>Student's HW Report</h2><div class="report-head-actions"><button class="print-icon" id="iconPrint" type="button" title="Print" aria-label="Print"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h12v5H6V2zm12 16v4H6v-4H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-2zm-2-2H8v4h8v-4zm3-6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg></button></div></div>
+   <div class="panel-body report-document">
+    <p class="report-back"><a href="#" id="backToDetails">← Back to Details</a></p>
+    <div class="report-title-grid">
+     <div class="logo-mark" aria-label="Logo"><div class="logo-emblem">U</div></div>
+     <div class="report-title"><strong id="orgHeading"></strong><strong id="programHeading"></strong><strong>Student's HW Report</strong></div>
+     <img class="report-photo" alt="Demo student placeholder" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Crect width='80' height='80' fill='%23282828'/%3E%3Ccircle cx='40' cy='23' r='15' fill='%23e7e7e7'/%3E%3Cpath d='M13 78c2-22 11-34 27-34s25 12 27 34' fill='%23e7e7e7'/%3E%3C/svg%3E">
+    </div>
+    <div class="student-report-meta" id="reportMeta"></div>
+    <form id="reportForm" class="report-filter-form" action="javascript:void(0)">
+     <select id="fHwCourse" aria-label="HW Course"></select>
+     <select id="fSubject" aria-label="Subject"></select>
+     <select id="fChapter" aria-label="Chapter"></select>
+     <select id="fStatus" aria-label="Status"><option value="all">All Status</option><option value="Submitted">Submitted</option><option value="Absent">Absent</option><option value="Not Submitted Yet">Not Submitted Yet</option></select>
+     <button class="btn btn-ip" type="submit">View</button>
+    </form>
+    <div id="bottomPart"></div>
+    <div class="merit-title">HW Course Summary</div>
+    <div class="merit-scroll"><table class="ip-table merit-table"><thead><tr><th>Serial</th><th>HW Course</th><th>Total HW</th><th>Submitted</th><th>Absent</th><th>Not Submitted Yet</th><th>Right (✓)</th><th>Wrong (✗)</th><th>Attention (◯)</th></tr></thead><tbody id="summaryBody"></tbody></table></div>
+    <div class="signatures"><div>Prepared By</div><div>Verified By</div><div>Director</div></div>
+    <div class="print-actions"><button class="btn btn-ip" id="btnPrint" type="button">Print</button></div>
    </div>
   </section>
   <footer>© 2026 - UMS</footer>
@@ -1615,7 +1657,7 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
 </div>
 <div class="modal wide" id="copyModal" role="dialog" aria-modal="true" aria-labelledby="copyTitle">
  <div class="modal-card">
-  <h3><span id="copyTitle">Evaluation</span><button class="modal-x" type="button" data-close-copy aria-label="Close">×</button></h3>
+  <h3><span id="copyTitle">HW Details</span><button class="modal-x" type="button" data-close-copy aria-label="Close">×</button></h3>
   <div class="modal-scroll" id="copyBody"></div>
   <div class="modal-foot">
    <button class="btn btn-default" type="button" id="copyPrev">Previous</button>
@@ -1632,14 +1674,14 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
    <button class="btn" id="copyPageChanges" type="button">Copy</button>
   </div>
   <div class="page-changes-body" id="pageChangesContent">
-   <p><strong>Administration &gt; HW Notekhata &gt; HW Evaluation — নতুন মেনু হিসেবে যা তৈরি করতে হবে:</strong></p>
+   <p><strong>Administration &gt; HW Notekhata &gt; Individual Student HW Report — নতুন মেনু হিসেবে যা তৈরি করতে হবে:</strong></p>
    <ol>
-    <li><strong>নতুন মেনু "HW Evaluation"</strong> — HW Notekhata মেনু গ্রুপে Manage HW Notekhata-র পরে। শিক্ষার্থীরা কী জমা দিয়েছে আর তার মূল্যায়ন কী হয়েছে, তা শুধু এই মেনুতে দেখা যাবে — এটা আলাদা মেনু, কারণ Manage HW Notekhata যারা পায় তারা খাতা মূল্যায়নের কাজের সাথে জড়িত না; তাই পারমিশনও আলাদা।</li>
-    <li><strong>মূল্যায়ন কীভাবে হয়</strong> — শিক্ষার্থী খাতার ছবি জমা দেওয়ার কয়েক সেকেন্ডের মধ্যেই স্বয়ংক্রিয়ভাবে (পেছনে AI — HW Chapter-এর, না থাকলে HW Course-এর "Enable Independent AI Answer Settings" দিয়ে) প্রশ্ন ও Sample Answer-এর সাথে মিলিয়ে মূল্যায়ন হয়। ইন্টারফেসে (Portal বা UMS) কোথাও "AI" লেখা থাকবে না। কোনো Marks দেওয়া হয় না — শুধু খাতার ছবিতে দাগ ও মন্তব্য।</li>
-    <li><strong>ফিল্টার</strong> — Manage HW Notekhata-র মতো একই ফিল্টার (Date From/To, Target Student Selection, HW Course / Subject / Chapter, Status, Display Per Page), একই আচরণ।</li>
-    <li><strong>HW List</strong> — Sl., HW Code, Date From, Date To, Program Session, Course, HW Course, Subject, Chapter, Lecture, Target Students, Uploaded, Evaluated, Action (View Copies — ডানে ফ্রিজ)। কোনো খাতা জমা না পড়লে Action-এ "-"। Export-এ একই কলাম।</li>
-    <li><strong>View Copies</strong> — ঐ HW-এর পেইজ: উপরে HW-এর তথ্য (HW Code, Lecture, HW Course/Subject/Chapter, তারিখ, Target / Uploaded / Evaluated); নিচে জমা দেওয়া খাতার তালিকা — Sl., Reg No, Student Name, Branch, Submitted At, Pages, Evaluated At, Action (View); Search (Reg No / নাম / Branch)। "← Back to HW Evaluation" দিয়ে আগের ফিল্টার-সহ তালিকায় ফেরা।</li>
-    <li><strong>View (একটি খাতা)</strong> — পপআপে শিক্ষার্থীর তথ্য, প্রশ্ন, জমা দেওয়া খাতার প্রতিটি পৃষ্ঠার ছবির ওপর দাগ (সবুজ ✓ ঠিক, লাল ✗ ভুল, হলুদ গোল খেয়াল করো — প্রতিটিতে নম্বর), দাগের ব্যাখ্যা, মন্তব্য (যা ভালো হয়েছে / যেখানে উন্নতি দরকার + সারসংক্ষেপ) ও Sample Answer — শিক্ষার্থী পোর্টালে যা দেখে হুবহু তাই। Previous / Next দিয়ে পরের খাতা। শুধু দেখা যাবে — মূল্যায়ন বদলানো বা আবার করানো যাবে না।</li>
+    <li><strong>নতুন মেনু</strong> — HW Notekhata মেনু গ্রুপে HW Evaluation Report-এর পরে "Individual Student HW Report"। Exam &gt; Report &gt; Individual Performance মেনুর মতো একই ধাপ ও নকশা। পারমিশন HW Evaluation Report-এর মতো (খাতা মূল্যায়নের কাজের সাথে জড়িতদের জন্য)।</li>
+    <li><strong>ধাপ ১ — Registration No. দিয়ে খোঁজা</strong> — মাঝখানে "Enter Registration No." ঘর ও Submit। খালি রাখলে লাল বর্ডার; ভুল নম্বর হলে নিচে লাল লেখা। পাওয়া গেলে "Details" প্যানেলে শিক্ষার্থীর তথ্য (Full Name, Nick Name, Reg No, Branch, Mobile Number, Gender, Religion + ছবি) এবং ভর্তি হওয়া প্রোগ্রামের টেবিল: Admission Date, Program, Session, Total HW, Submitted, Absent, Not Submitted Yet, Action (View Report)।</li>
+    <li><strong>ধাপ ২ — View Report ("Student's HW Report")</strong> — উপরে লোগো, প্রতিষ্ঠান, Program + Session, "Student's HW Report", ছবি; Student's Name, Reg. No., Admission Date, Branch। ফিল্টার: All HW Course / All Subject / All Chapter / All Status (Submitted, Absent, Not Submitted Yet) + View। নিচে HW Course অনুযায়ী আলাদা টেবিল — Serial, Date From, Date To, HW Code, Subject, Chapter, Lecture, Status, Submitted At, Pages, Right (✓), Wrong (✗), Attention (◯) — খাতার ওপর কোন ধরনের দাগ কতটি, Action (Details)। প্রতিটি টেবিলের নিচে মোট হিসাব; সবশেষে "HW Course Summary" টেবিল, Prepared By / Verified By / Director, Print (ও উপরের প্রিন্ট আইকন)। "← Back to Details" দিয়ে আগের ধাপে ফেরা।</li>
+    <li><strong>কোন HW দেখাবে</strong> — শিক্ষার্থীকে দেওয়া (তার Course + Branch / Zone / Reg মিলে) Published HW যেগুলোর Date From আজ বা আগে; Status: খাতা জমা দিলে Submitted, জমার সময় শেষ হলে Absent, সময় বাকি থাকলে Not Submitted Yet।</li>
+    <li><strong>Details</strong> — পপআপে HW-এর তথ্য, Question, (জমা দিলে) জমা দেওয়া খাতার ছবির ওপর দাগ, দাগের ব্যাখ্যা, মন্তব্য; জমা না দিলে কারণ (Absent / এখনো জমা দেয়নি); সবশেষে Sample Answer। Previous / Next দিয়ে তালিকার পরের HW। শুধু দেখা যাবে; কোথাও "AI" লেখা থাকবে না।</li>
+    <li><strong>ডেমোতে খোঁজার জন্য</strong> — Reg 1997219 (পোর্টালের ডেমো শিক্ষার্থী, দুটি প্রোগ্রাম), অথবা HW Evaluation Report &gt; View Copies তালিকার যেকোনো Reg No — সেখানে যে খাতা দেখায়, এখানেও ঐ শিক্ষার্থীর একই খাতা ও মূল্যায়ন দেখাবে।</li>
    </ol>
   </div>
   <div class="page-changes-footer">
@@ -2221,7 +2263,7 @@ function targetSummary(t){
  if(t.selectBy==='Zone')return 'Zone: '+(t.zones||[]).join(', ');
  return 'Branch: '+(t.branches||[]).join(', ');
 }
-/* HW Notekhata — evaluation demo (shared by Student Portal > HW Notekhata and UMS > HW Evaluation / Manage HW Notekhata counts).
+/* HW Notekhata — evaluation demo (shared by Student Portal > HW Notekhata and UMS > HW Evaluation Report / Manage HW Notekhata counts).
    Needs course_data.js (demoHash, demoPad), lecture_data.js (bnDigits), target_data.js, hw_data.js (isoPlus, PORTAL_STUDENT).
    AI evaluates every submitted copy within seconds (HW Course / HW Chapter "Independent AI Answer Settings") — but the word "AI"
    is never shown in the UI (user, 20 Nov 2026). Result = marks drawn on the copy photos (✓ right, ✗ wrong, ◯ needs attention —
@@ -2314,7 +2356,7 @@ function hwEvalCommentHtml(ev){
 var HWE_FIRST=['Tanvir','Nusrat','Sadia','Rafi','Mehedi','Farhana','Ariful','Sumaiya','Imran','Jannatul','Rakibul','Tasnim','Shahriar','Mim','Nafis','Sabrina','Fahim','Ayesha','Zahid','Rumana','Asif','Tahmina','Sakib','Lamia'];
 var HWE_LAST=['Hasan','Islam','Rahman','Ahmed','Hossain','Akter','Chowdhury','Karim','Sultana','Alam','Khan','Sarker','Uddin','Mahmud','Haque','Jahan'];
 /* UMS: who submitted one HW. Students are a fixed demo population — 45 per enrollment course × branch — so the same Reg No
-   shows the same submissions in HW Evaluation (copies of one HW) and HW Evaluation Individual Student Report (all HW of one student).
+   shows the same submissions in HW Evaluation Report (copies of one HW) and Individual Student HW Report (all HW of one student).
    Reg No = (1000 + the course's position in the enrollment course list, 4 digits) + branch index (1 digit) + serial (2 digits) = 7 digits;
    the portal demo student keeps his own Reg. */
 var HW_COURSE_IX=null;
@@ -2342,6 +2384,10 @@ function hwStudentByReg(reg,items){
   if(!items||items.some(function(i){return hwReachesStudent(i,s);}))return s;
  }
  if(!items||!/^\d{7}$/.test(reg))return null;
+ /* a Reg named in a Reg Wise HW: that HW's course (same copy as in the HW Evaluation Report copy list, branch '-' as there) */
+ var rw=[];
+ items.forEach(function(i){var t=i.target||{};if(t.selectBy==='Reg'&&(t.regs||[]).map(String).indexOf(reg)>-1&&(t.courseIds||[]).length&&rw.indexOf(Number(t.courseIds[0]))===-1)rw.push(Number(t.courseIds[0]));});
+ if(rw.length)return{reg:reg,name:hwStudentName(reg),branch:'-',courseIds:rw};
  /* any other 7-digit Reg: a course + branch that has HW, picked from the number */
  var cands=[],seen={};
  items.forEach(function(i){
@@ -2407,11 +2453,14 @@ function hwEvalCounts(i,today){
  var rows=hwSubmissionRoster(i,today);
  return{uploaded:rows.length,evaluated:rows.filter(function(r){return r.evaluated;}).length};
 }
-/* HW Evaluation > copies of one HW — opened from the HW Evaluation list (View Copies). Lists every copy submitted for the HW and
-   shows its evaluation (marks on the copy + explanations + comment), exactly what the student sees. Read-only; no "AI" text in the UI. */
-var MANAGE_PAGE='index.html';
+/* Individual Student HW Report — like Exam > Report > Individual Performance:
+   Reg No → student + admitted programs (Total HW / Submitted / Absent / Not Submitted Yet) → View Report → every HW given to the
+   student in that program, grouped by HW Course → Details (question, the copy with its evaluation marks + comment, Sample Answer).
+   Same demo students as HW Evaluation Report (a Reg No from its copy list shows the same submission here). Read-only; no "AI" text. */
 function $(id){return document.getElementById(id);}
-function escapeHtml(v){return String(v).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function esc(v){return String(v).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+var MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function longDate(iso){var p=iso.split('-');return MON[Number(p[1])-1]+' '+p[2]+', '+p[0];}
 function fmt(iso){if(!iso)return'-';var p=iso.split('-');return p[2]+'/'+p[1]+'/'+p[0];}
 function fmtAt(at){var p=at.split(' ');return fmt(p[0])+' '+(p[1]||'');}
 var today=hwTodayIso();
@@ -2419,62 +2468,172 @@ var hwCourses=buildCourseList(),chapters=buildChapterList(hwCourses);
 var hwById={},chapterById={};
 hwCourses.forEach(function(h){hwById[h.id]=h;});
 chapters.forEach(function(c){chapterById[c.id]=c;});
-var id=new URLSearchParams(location.search).get('id');
-var item=buildHwList(hwCourses,chapters).filter(function(i){return String(i.id)===String(id);})[0];
-if(!item){location.replace(MANAGE_PAGE);return;}
-var roster=hwSubmissionRoster(item,today),shown=[],openIx=-1;
-var ch=chapterById[item.chapterId];
-var p=ENROLL.progById[item.target.programId];
-var evaluated=roster.filter(function(r){return r.evaluated;}).length;
-$('subTitle').textContent='HW Evaluation — '+item.code;
-$('subInfo').innerHTML=[
- ['HW Code',item.code],['Lecture',item.lecture],['Program Session',(p?p.name:'')+' '+(ENROLL.sessById[item.target.sessionId]||'')],
- ['HW Course',hwById[item.hwCourseId].fullName],['Subject',item.subject],['Chapter',ch?ch.fullName:'-'],
- ['Date From',fmt(item.dateFrom)],['Date To',item.dateTo?fmt(item.dateTo):'শেষ সীমা নেই'],['Status',item.status],
- ['Target Students',item.targetCount],['Uploaded',roster.length],['Evaluated',evaluated]
-].map(function(x){return '<div><dt>'+escapeHtml(x[0])+'</dt><dd>'+escapeHtml(x[1])+'</dd></div>';}).join('');
-function evaluatedAt(r){return fmtAt(hwEvaluation(r.key,r.pages,r.at).at);}
-function render(){
- var q=$('subSearch').value.trim().toLowerCase();
- shown=roster.filter(function(r){
-  return !q||(r.reg+' '+r.name+' '+r.branch).toLowerCase().indexOf(q)>-1;
- });
- $('subBody').innerHTML=shown.length?shown.map(function(r,n){
-  return '<tr><td>'+(n+1)+'</td><td>'+escapeHtml(r.reg)+'</td><td class="left">'+escapeHtml(r.name)+'</td><td>'+escapeHtml(r.branch)+'</td><td>'+fmtAt(r.at)+'</td><td>'+r.pages+'</td><td>'+evaluatedAt(r)+'</td>'+
-   '<td><button class="row-action" type="button" data-view="'+n+'" title="View" aria-label="View"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></button></td></tr>';
- }).join(''):'<tr><td class="hw-empty" colspan="8">No data available in table</td></tr>';
- $('subCount').textContent=shown.length;
- $('subTotal').textContent=roster.length;
+var allItems=buildHwList(hwCourses,chapters).filter(function(i){return i.status==='Published'&&i.dateFrom<=today;});
+var FEMALE=['Nusrat','Sadia','Farhana','Sumaiya','Jannatul','Tasnim','Mim','Sabrina','Ayesha','Rumana','Tahmina','Lamia'];
+var qs=new URLSearchParams(location.search);
+var student=null,rows=[],shown=[],openIx=-1;
+function go(params){
+ var p=new URLSearchParams();Object.keys(params).forEach(function(k){if(params[k])p.set(k,params[k]);});
+ location.href=location.pathname.split('/').pop()+(p.toString()?'?'+p.toString():'');
 }
-function openCopy(n){
+/* every HW given to the student (optionally only one program + session), with his status */
+function studentHw(s,pid,sid){
+ return allItems.filter(function(i){
+  if(!hwReachesStudent(i,s))return false;
+  if(pid&&(String(i.target.programId)!==String(pid)||String(i.target.sessionId)!==String(sid)))return false;
+  return true;
+ }).map(function(i){
+  var sub=s.portal?hwDemoSubmission(i,today):hwStudentSubmission(i,s,today);
+  var row={item:i,sub:null,status:''};
+  if(sub){
+   row.sub={at:sub.at,pages:sub.pages,key:s.portal?String(i.id):i.id+'|'+s.reg};
+   row.ev=hwEvaluation(row.sub.key,row.sub.pages,row.sub.at);
+   row.status='Submitted';
+  }else row.status=i.dateTo&&i.dateTo<today?'Absent':'Not Submitted Yet';
+  return row;
+ }).sort(function(a,b){return a.item.dateFrom<b.item.dateFrom?1:a.item.dateFrom>b.item.dateFrom?-1:0;});
+}
+function counts(list){
+ var c={total:list.length,Submitted:0,Absent:0,'Not Submitted Yet':0,ok:0,wrong:0,attn:0};
+ list.forEach(function(r){c[r.status]++;if(r.ev)r.ev.marks.forEach(function(m){c[m.kind]++;});});
+ return c;
+}
+function markCount(r,k){return r.ev?r.ev.marks.filter(function(m){return m.kind===k;}).length:'-';}
+/* ---------- step 1: Reg No → student + programs ---------- */
+function showStudent(reg){
+ /* any 7-digit Registration No. can be searched (user, 20 Nov 2026) */
+ student=/^\d{7}$/.test(reg)?hwStudentByReg(reg,allItems):null;
+ $('RegNo').value=reg;
+ if(!student){
+  $('RegNo').classList.add('field-invalid');
+  $('RegInvalidText').textContent=/^\d{7}$/.test(reg)?'এই Registration No. দিয়ে কোনো শিক্ষার্থী পাওয়া যায়নি।':'৭ ডিজিটের Registration No. দিন।';$('RegInvalidText').classList.add('show');
+  return;
+ }
+ var h=demoHash('student|'+student.reg),first=student.name.split(' ')[0];
+ var facts=[['Full Name',student.name.toUpperCase()],['Nick Name',first],['Reg No',student.reg],['Branch',student.branch],
+  ['Mobile Number','88017'+String(10000000+h%89999999)],['Gender',FEMALE.indexOf(first)>-1?'Female':'Male'],['Religion','Islam']];
+ $('studentFacts').innerHTML=facts.map(function(f){return '<div><dt>'+f[0]+'</dt><dd>: '+esc(f[1])+'</dd></div>';}).join('');
+ var progs={};
+ student.courseIds.forEach(function(cid){var c=ENROLL.courseById[cid];if(c)progs[c.pid+'-'+c.sid]={pid:c.pid,sid:c.sid};});
+ $('programBody').innerHTML=Object.keys(progs).map(function(k){
+  var p=progs[k],c=counts(studentHw(student,p.pid,p.sid)),ad=isoPlus(today,-60-demoHash('adm|'+student.reg+'|'+k)%300);
+  return '<tr><td>'+longDate(ad)+'</td><td>'+esc(ENROLL.progById[p.pid].name)+'</td><td>'+esc(ENROLL.sessById[p.sid]||'')+'</td><td>'+c.total+'</td><td>'+c.Submitted+'</td><td>'+c.Absent+'</td><td>'+c['Not Submitted Yet']+'</td>'+
+   '<td><button class="btn btn-ip btn-small" type="button" data-prog="'+k+'" data-adm="'+ad+'">View Report</button></td></tr>';
+ }).join('')||'<tr><td colspan="8">No data available in table</td></tr>';
+ $('detailsPanel').hidden=false;
+}
+/* ---------- step 2: the report ---------- */
+function fillSelect(id,label,values,keep){
+ var cur=keep?$(id).value:'all';
+ $(id).innerHTML='<option value="all">All '+label+'</option>'+values.map(function(v){return '<option value="'+esc(v)+'">'+esc(v)+'</option>';}).join('');
+ if(values.indexOf(cur)>-1)$(id).value=cur;
+}
+function distinct(a){return a.filter(function(v,i){return a.indexOf(v)===i;});}
+function refreshFilters(level){
+ var hw=$('fHwCourse').value,sub=$('fSubject').value;
+ if(level<1)fillSelect('fHwCourse','HW Course',distinct(rows.map(function(r){return hwById[r.item.hwCourseId].fullName;})));
+ hw=$('fHwCourse').value;
+ var l2=rows.filter(function(r){return hw==='all'||hwById[r.item.hwCourseId].fullName===hw;});
+ if(level<2)fillSelect('fSubject','Subject',distinct(l2.map(function(r){return r.item.subject;})).sort(),true);
+ sub=$('fSubject').value;
+ var l3=l2.filter(function(r){return sub==='all'||r.item.subject===sub;});
+ fillSelect('fChapter','Chapter',distinct(l3.map(function(r){var c=chapterById[r.item.chapterId];return c?c.fullName:'-';})),true);
+}
+function filtered(){
+ var hw=$('fHwCourse').value,sub=$('fSubject').value,ch=$('fChapter').value,st=$('fStatus').value;
+ return rows.filter(function(r){
+  var c=chapterById[r.item.chapterId];
+  return (hw==='all'||hwById[r.item.hwCourseId].fullName===hw)&&(sub==='all'||r.item.subject===sub)&&(ch==='all'||(c&&c.fullName)===ch)&&(st==='all'||r.status===st);
+ });
+}
+function statusBadge(s){return '<span class="status-badge '+(s==='Submitted'?'published':s==='Absent'?'unpublished':'draft')+'">'+s+'</span>';}
+function renderReport(){
+ shown=filtered();
+ var groups={},order=[];
+ shown.forEach(function(r){var k=r.item.hwCourseId;if(!groups[k]){groups[k]=[];order.push(k);}groups[k].push(r);});
+ var n=0;
+ $('bottomPart').innerHTML=order.length?order.map(function(k){
+  var list=groups[k],c=counts(list);
+  return '<div class="course-block"><div class="course-name">'+esc(hwById[k].fullName)+'</div><div class="performance-scroll"><table class="ip-table performance-table"><thead><tr>'+
+   '<th>Serial</th><th>Date From</th><th>Date To</th><th>HW Code</th><th>Subject</th><th>Chapter</th><th>Lecture</th><th>Status</th><th>Submitted At</th><th>Pages</th><th>Right (✓)</th><th>Wrong (✗)</th><th>Attention (◯)</th><th>Action</th></tr></thead><tbody>'+
+   list.map(function(r,ix){
+    var i=r.item,ch=chapterById[i.chapterId],at=n++;
+    return '<tr><td>'+demoPad(ix+1)+'</td><td>'+fmt(i.dateFrom)+'</td><td>'+fmt(i.dateTo)+'</td><td>'+esc(i.code)+'</td><td>'+esc(i.subject)+'</td><td class="left">'+esc(ch?ch.fullName:'-')+'</td><td class="left">'+esc(i.lecture)+'</td>'+
+     '<td>'+statusBadge(r.status)+'</td><td>'+(r.sub?fmtAt(r.sub.at):'-')+'</td><td>'+(r.sub?r.sub.pages:'-')+'</td><td>'+markCount(r,'ok')+'</td><td>'+markCount(r,'wrong')+'</td><td>'+markCount(r,'attn')+'</td>'+
+     '<td><button class="row-action" type="button" data-detail="'+at+'" title="Details" aria-label="Details"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span></button></td></tr>';
+   }).join('')+'</tbody></table></div><div class="course-total">Total HW: '+c.total+' &nbsp;|&nbsp; Submitted: '+c.Submitted+' &nbsp;|&nbsp; Absent: '+c.Absent+' &nbsp;|&nbsp; Not Submitted Yet: '+c['Not Submitted Yet']+'</div></div>';
+ }).join(''):'<div class="ip-empty">No data available</div>';
+ shown=order.reduce(function(a,k){return a.concat(groups[k]);},[]);
+ var all={};rows.forEach(function(r){(all[r.item.hwCourseId]=all[r.item.hwCourseId]||[]).push(r);});
+ $('summaryBody').innerHTML=Object.keys(all).map(function(k,ix){
+  var c=counts(all[k]);
+  return '<tr><td>'+demoPad(ix+1)+'</td><td class="left">'+esc(hwById[k].fullName)+'</td><td>'+c.total+'</td><td>'+c.Submitted+'</td><td>'+c.Absent+'</td><td>'+c['Not Submitted Yet']+'</td><td>'+c.ok+'</td><td>'+c.wrong+'</td><td>'+c.attn+'</td></tr>';
+ }).join('')||'<tr><td colspan="9">No data available</td></tr>';
+}
+function showReport(progKey,adm){
+ var p=progKey.split('-');
+ rows=studentHw(student,p[0],p[1]);
+ var prog=ENROLL.progById[p[0]];
+ $('orgHeading').textContent=(ENROLL.orgById[prog.orgId]||'UDVASH')+' Academic & Admission Care';
+ $('programHeading').textContent=prog.name+' '+(ENROLL.sessById[p[1]]||'');
+ $('reportMeta').innerHTML='<div class="meta-name">Student\'s Name : '+esc(student.name.toUpperCase())+'</div><div class="meta-branch">Branch : '+esc(student.branch)+'</div>'+
+  '<div class="meta-registration">Reg. No. : '+esc(student.reg)+'</div><div class="meta-admission">Admission Date : '+(adm?longDate(adm):'-')+'</div>';
+ refreshFilters(0);
+ renderReport();
+ $('lookupStage').hidden=true;
+ $('reportPanel').hidden=false;
+}
+/* ---------- Details popup ---------- */
+function openDetail(n){
  var r=shown[n];if(!r)return;
  openIx=n;
- var head='<dl class="detail-grid"><div><dt>Reg No</dt><dd>'+escapeHtml(r.reg)+'</dd></div><div><dt>Student Name</dt><dd>'+escapeHtml(r.name)+'</dd></div><div><dt>Branch</dt><dd>'+escapeHtml(r.branch)+'</dd></div>'+
-  '<div><dt>Submitted At</dt><dd>'+fmtAt(r.at)+'</dd></div><div><dt>Pages</dt><dd>'+r.pages+'</dd></div>';
- /* no pending state: every copy is evaluated within seconds of submitting */
- var ev=hwEvaluation(r.key,r.pages,r.at);
- var html=head+'<div><dt>Evaluated At</dt><dd>'+fmtAt(ev.at)+'</dd></div></dl>'+
-  '<div class="detail-note"><h4>Question</h4><div>'+escapeHtml(item.question||'-')+'</div></div>'+
-  '<h4 class="sub-h">জমা দেওয়া খাতা</h4>'+hwEvalLegendHtml()+hwEvalPagesHtml(ev,r.pages,null,r.key)+
-  '<h4 class="sub-h">দাগের ব্যাখ্যা</h4>'+hwEvalNotesHtml(ev)+
-  '<h4 class="sub-h">মন্তব্য</h4>'+hwEvalCommentHtml(ev)+
-  '<div class="detail-note"><h4>Sample Answer</h4><div>'+escapeHtml(item.sampleAnswer||'-')+'</div></div>';
- $('copyTitle').textContent='Evaluation — '+r.name+' ('+r.reg+')';
+ var i=r.item,ch=chapterById[i.chapterId];
+ var info=[['HW Code',i.code],['HW Course',hwById[i.hwCourseId].fullName],['Subject',i.subject],['Chapter',ch?ch.fullName:'-'],['Lecture',i.lecture],
+  ['Date From',fmt(i.dateFrom)],['Date To',i.dateTo?fmt(i.dateTo):'শেষ সীমা নেই'],['Status',r.status]];
+ if(r.sub)info=info.concat([['Submitted At',fmtAt(r.sub.at)],['Pages',r.sub.pages],['Evaluated At',fmtAt(r.ev.at)]]);
+ var html='<dl class="detail-grid">'+info.map(function(x){return '<div><dt>'+esc(x[0])+'</dt><dd>'+esc(x[1])+'</dd></div>';}).join('')+'</dl>'+
+  '<div class="detail-note"><h4>Question</h4><div>'+esc(i.question||'-')+'</div></div>';
+ if(r.sub){
+  html+='<h4 class="sub-h">জমা দেওয়া খাতা</h4>'+hwEvalLegendHtml()+hwEvalPagesHtml(r.ev,r.sub.pages,null,r.sub.key)+
+   '<h4 class="sub-h">দাগের ব্যাখ্যা</h4>'+hwEvalNotesHtml(r.ev)+'<h4 class="sub-h">মন্তব্য</h4>'+hwEvalCommentHtml(r.ev);
+ }else{
+  html+='<div class="ip-nocopy">'+(r.status==='Absent'?'জমার শেষ সময় ('+fmt(i.dateTo)+') পার হয়ে গেছে — খাতা জমা দেওয়া হয়নি।':'এখনো খাতা জমা দেওয়া হয়নি।')+'</div>';
+ }
+ html+='<div class="detail-note"><h4>Sample Answer</h4><div>'+esc(i.sampleAnswer||'-')+'</div></div>';
+ $('copyTitle').textContent='HW Details — '+i.code+' ('+r.status+')';
  $('copyBody').innerHTML=html;
  $('copyBody').scrollTop=0;
  $('copyPrev').disabled=n<=0;
  $('copyNext').disabled=n>=shown.length-1;
  $('copyModal').classList.add('open');
 }
-$('subSearch').addEventListener('input',render);
-$('subBody').addEventListener('click',function(e){var b=e.target.closest('[data-view]');if(b)openCopy(Number(b.getAttribute('data-view')));});
-$('copyPrev').addEventListener('click',function(){openCopy(openIx-1);});
-$('copyNext').addEventListener('click',function(){openCopy(openIx+1);});
+/* ---------- wiring (URL keeps the step, so Back / refresh work) ---------- */
+$('btnSubmit').addEventListener('click',function(){
+ var v=$('RegNo').value.trim();
+ $('RegNo').classList.toggle('field-invalid',!v);
+ $('RegInvalidText').classList.remove('show');
+ if(!v){$('RegNo').focus();return;}
+ go({reg:v});
+});
+$('RegNo').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();$('btnSubmit').click();}});
+$('RegNo').addEventListener('input',function(){this.classList.remove('field-invalid');$('RegInvalidText').classList.remove('show');});
+$('programBody').addEventListener('click',function(e){var b=e.target.closest('[data-prog]');if(b)go({reg:student.reg,prog:b.getAttribute('data-prog'),adm:b.getAttribute('data-adm')});});
+$('backToDetails').addEventListener('click',function(e){e.preventDefault();go({reg:student.reg});});
+$('fHwCourse').addEventListener('change',function(){refreshFilters(1);});
+$('fSubject').addEventListener('change',function(){refreshFilters(2);});
+$('reportForm').addEventListener('submit',function(e){e.preventDefault();renderReport();});
+$('bottomPart').addEventListener('click',function(e){var b=e.target.closest('[data-detail]');if(b)openDetail(Number(b.getAttribute('data-detail')));});
+$('copyPrev').addEventListener('click',function(){openDetail(openIx-1);});
+$('copyNext').addEventListener('click',function(){openDetail(openIx+1);});
 document.querySelectorAll('[data-close-copy]').forEach(function(b){b.addEventListener('click',function(){$('copyModal').classList.remove('open');});});
 $('copyModal').addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');});
 document.addEventListener('keydown',function(e){if(e.key==='Escape')$('copyModal').classList.remove('open');});
+['iconPrint','btnPrint'].forEach(function(id){$(id).addEventListener('click',function(){window.print();});});
 if(window.matchMedia('(max-width:1000px)').matches)document.body.classList.add('sidebar-hidden');
-render();
+if(qs.get('reg')){
+ showStudent(qs.get('reg'));
+ if(student&&qs.get('prog'))showReport(qs.get('prog'),qs.get('adm'));
+}
 function showMessage(message){
  document.getElementById('messageText').textContent=message;
  document.getElementById('messageModal').classList.add('open');

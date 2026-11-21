@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>HW Evaluation Individual Student Report | UMS Demo</title>
+<title>HW Evaluation Report | UMS Demo</title>
 <style>
 :root{
  --brand:#4338ca;
@@ -1314,6 +1314,62 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
 .back-link a:hover{text-decoration:underline}
 </style>
 <style>
+/* Layout follows the user's sketch (17 Nov 2026): two label/control columns, underlined section titles,
+   full-width Question / Sample Answer boxes with "Choose File" at the bottom-right, centred buttons. */
+#addPanel .panel-body{padding:20px 20px 0}
+.hw-form{display:grid;grid-template-columns:1fr 1fr;column-gap:30px;row-gap:10px}
+.hw-form .field{grid-template-columns:150px minmax(0,1fr)}
+.hw-form .full{grid-column:1/-1}
+.form-section{margin:16px 0 4px;padding:0 0 6px;border-bottom:1px solid #333;color:#333;font-size:15px;font-weight:700}
+.hw-hint{margin:-4px 0 0;color:#777;font-size:12px;text-align:center}
+.req{color:#d9534f}
+.multi.field-invalid .multi-button{border-color:red!important}
+.single .multi-option input{accent-color:#337ab7}
+.multi-option[hidden]{display:none!important}
+.hw-form .field .multi-option{padding-top:4px;text-align:left;font-weight:400;font-size:14px}
+.hw-form .field .multi-option.select-all{font-weight:700}
+/* filter dropdowns without background colour, like Exam > Report > Merit List */
+.hw-form .multi-button,.hw-form .multi-button:hover,.hw-form .multi.open .multi-button{background:#fff;border-color:#ccc}
+.multi-button:disabled{opacity:.6;cursor:not-allowed}
+.multi[hidden],.hw-form .field[hidden]{display:none}
+.pick-wrap{min-width:0}
+.reg-input{width:100%;height:auto;min-height:68px;resize:vertical;font-family:inherit;font-size:14px;line-height:1.45}
+#pickField.reg-mode{grid-column:1/-1}
+#pickField.reg-mode{grid-template-columns:150px minmax(0,1fr)}
+.due-wrap{position:relative}
+.due-wrap .control{padding-right:34px}
+.due-clear{position:absolute;top:5px;right:6px;width:24px;height:24px;padding:0;border:0;border-radius:50%;background:#eee;color:#777;font-size:16px;line-height:22px;cursor:pointer}
+.due-clear:hover{background:#ddd;color:#333}
+.note-block{margin-top:8px}
+.note-title{display:block;margin:0 0 5px;color:#333;font-size:14px;font-weight:700}
+.note-source{margin-left:6px;color:#31708f;font-size:12px;font-weight:400}
+.note-source.warn{color:#a94442;font-weight:700}
+.note-box{border:1px solid #ccc;border-radius:3px;background:#fff}
+.note-box.field-invalid{border-color:red!important}
+.note-text{display:block;width:100%;min-height:86px;padding:8px 10px;border:0;outline:0;resize:vertical;font:inherit;font-size:14px;line-height:1.5;background:transparent}
+.note-box.readonly{background:#f5f5f5}
+.note-box.readonly .note-text{color:#555;cursor:default}
+.note-foot{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;min-height:34px;padding:0 0 0 8px}
+.file-chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 0 6px;min-width:0}
+.file-chip{display:inline-flex;align-items:center;gap:4px;max-width:100%;padding:2px 8px;border:1px solid #c9d7e8;border-radius:12px;background:#eef4fb;color:#245;font-size:12px;overflow-wrap:anywhere}
+.chip-x{border:0;background:transparent;color:#777;font-size:14px;line-height:1;cursor:pointer;padding:0 0 0 2px}
+.chip-x:hover{color:#c9302c}
+.choose-file{position:relative;flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;width:210px;height:34px;margin:0;border-top:1px solid #ccc;border-left:1px solid #ccc;background:#f4f4f4;color:#222;font-size:14px;font-weight:400;cursor:pointer;overflow:hidden}
+.choose-file:hover{background:#e8e8e8}
+.choose-file[hidden]{display:none}
+.choose-file input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%}
+.form-foot{display:flex;justify-content:center;gap:40px;margin:22px -20px 0;padding:14px 20px;border-top:1px solid #ddd}
+.form-foot .btn{min-width:150px}
+@media(max-width:900px){.hw-form{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:760px){
+ #addPanel .panel-body{padding:12px 10px 0}
+ .hw-form .field,#pickField.reg-mode{grid-template-columns:minmax(0,1fr);gap:5px}
+ .choose-file{width:130px}
+ .form-foot{gap:12px;margin:18px -10px 0;padding:10px}
+ .form-foot .btn{min-width:0;flex:1}
+}
+</style>
+<style>
 /* Manage HW Notekhata — list page (adapted from the first HW demo's Manage page). */
 .glyphicon-th-list:before{content:"\e012"}
 .glyphicon-ok:before{content:"\e013"}
@@ -1378,138 +1434,12 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
 }
 [data-toggle-head]{cursor:pointer;user-select:none}
 .status-toggle{border:0;cursor:pointer}
-/* View Copies / View (HW Evaluation) — the shell defines only the glyphicons it uses */
+/* View Copies / View (HW Evaluation Report) — the shell defines only the glyphicons it uses */
 .glyphicon-eye-open:before{content:"\e105"}
 .status-toggle:hover{filter:brightness(.95);box-shadow:0 0 0 2px rgba(0,0,0,.08)}
 .status-badge.unpublished{background:#f2dede;color:#a94442}
 /* border-collapse does not paint a sticky cell's left border: cover that 1px seam so scrolled text cannot show through */
 .hw-table th:nth-child(16)::before,.hw-table td:nth-child(16)::before,.hw-table th:last-child::before,.hw-table td:last-child::before{content:"";position:absolute;top:0;bottom:0;left:-1px;width:2px;background:#ddd}
-</style>
-<style>
-/* HW Notekhata — AI evaluation (shared: Student Portal HW page + UMS HW Submissions) */
-.hwe-legend{display:flex;flex-wrap:wrap;gap:14px;margin:10px 0 4px;font-size:13px;color:#4B5563}
-.hwe-legend>span{display:inline-flex;align-items:center;gap:6px}
-.hwe-pages{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin:10px 0 0}
-.hwe-page{margin:0}
-.hwe-sheet{position:relative;border:1px solid #E5E7EB;border-radius:6px;overflow:hidden;background:#F9FAFB}
-.hwe-sheet img{display:block;width:100%;height:auto}
-.hwe-page figcaption{text-align:center;font-size:12.5px;color:#6B7280;margin-top:4px}
-.hwe-mark{position:absolute;transform:translate(-50%,-50%);display:flex;align-items:center;gap:2px;pointer-events:auto;cursor:default}
-.hwe-mark i{font-style:normal;font-weight:700;font-size:22px;line-height:1;text-shadow:0 0 2px #fff,0 0 2px #fff}
-.hwe-mark b{min-width:18px;height:18px;padding:0 4px;border-radius:9px;color:#fff;font-size:11px;line-height:18px;text-align:center;font-weight:700}
-.hwe-mark.hwe-attn i{display:block;width:30px;height:30px;border:2.5px solid #D97706;border-radius:50%}
-.hwe-ok i{color:#16A34A}.hwe-ok b{background:#16A34A}
-.hwe-wrong i{color:#DC2626}.hwe-wrong b{background:#DC2626}
-.hwe-attn i{color:#D97706}.hwe-attn b{background:#D97706}
-.hwe-dot{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;width:22px;height:22px;border-radius:50%;color:#fff;font-size:12px;font-style:normal}
-.hwe-dot i{font-style:normal;font-weight:700;color:#fff}
-.hwe-dot.hwe-ok{background:#16A34A}.hwe-dot.hwe-wrong{background:#DC2626}.hwe-dot.hwe-attn{background:#fff;border:2.5px solid #D97706;color:#D97706}
-.hwe-dot.hwe-attn b{color:#D97706}
-.hwe-notes{list-style:none;margin:8px 0 0;padding:0}
-.hwe-notes li{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px dashed #E5E7EB;font-size:14px;color:#374151}
-.hwe-notes li:last-child{border-bottom:0}
-.hwe-notes small{color:#9CA3AF}
-.hwe-comment{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
-.hwe-comment h6{margin:0 0 6px;font-size:14px;font-weight:700}
-.hwe-comment ul{margin:0;padding-left:18px;list-style:disc;font-size:14px;color:#374151}
-.hwe-c-good{background:#F0FDF4;border:1px solid #BBF7D0;border-radius:6px;padding:10px 12px}.hwe-c-good h6{color:#15803D}
-.hwe-c-improve{background:#FFF7ED;border:1px solid #FED7AA;border-radius:6px;padding:10px 12px}.hwe-c-improve h6{color:#C2410C}
-.hwe-c-sum{grid-column:1/-1;margin:0;padding:10px 12px;border-left:3px solid #6366F1;background:#EEF2FF;border-radius:4px;font-size:14px;color:#312E81}
-@media (max-width:640px){.hwe-comment{grid-template-columns:1fr}.hwe-pages{grid-template-columns:1fr}}
-</style>
-<style>
-/* HW Submissions — submitted copies of one HW + their AI evaluation (opened from Manage HW Notekhata) */
-.sub-back{margin:0 0 10px}
-.sub-note{padding:8px 11px;border-left:3px solid #2f1031;background:#f7f4f7;color:#444;font-size:13px}
-.sub-toolbar{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin:0 0 10px}
-.sub-toolbar label{display:flex;align-items:center;gap:7px;margin:0;font-weight:700;font-size:13px}
-.sub-toolbar select,.sub-toolbar input{height:32px;padding:0 9px;border:1px solid #ccc;border-radius:3px;font-weight:400;font-size:13px}
-.sub-toolbar input{width:230px;max-width:100%}
-.sub-table-scroll{max-height:62vh}
-.sub-table{width:100%;min-width:760px}
-.sub-table th,.sub-table td{white-space:nowrap;vertical-align:middle;text-align:center}
-.sub-table td.left{text-align:left}
-
-.sub-h{margin:16px 0 4px;font-size:14px;color:#333}
-
-#copyModal .hwe-pages{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
-@media(max-width:760px){.sub-toolbar label{width:100%}.sub-toolbar input{flex:1}#copyModal .hwe-pages{grid-template-columns:1fr}}
-</style>
-<style>
-/* HW Evaluation Individual Student Report — layout taken from Exam > Report > Individual Performance (offline demo) */
-#lookupForm{max-width:515px;margin:0 auto}
-#lookupForm input{width:100%;height:34px;padding:6px 12px;border:1px solid #ccc;border-radius:4px;color:#333}
-#lookupForm input.field-invalid{border-color:#f00}
-#lookupForm .form-actions{display:flex;justify-content:center;margin-top:6px}
-.btn.btn-ip{min-height:34px;padding:6px 12px;border:1px solid #357ebd;border-radius:4px;background:#428bca;color:#fff;cursor:pointer}
-.btn.btn-ip:hover,.btn.btn-ip:focus{background:#357ebd}
-.btn.btn-ip.btn-small{min-height:31px;padding:5px 11px}
-.lookup-error{display:none;margin-top:5px;color:#d9534f;font-size:12px}
-.lookup-error.show{display:block}
-.student-summary{display:grid;grid-template-columns:minmax(0,1fr) 90px;gap:18px;align-items:start;margin:0 5px 20px}
-.student-facts{margin:0;line-height:1.55}
-.student-facts div{display:grid;grid-template-columns:108px minmax(0,1fr);gap:4px}
-.student-facts dt,.student-facts dd{margin:0;font-weight:400}
-.student-photo{width:86px;height:100px;justify-self:end;border:1px solid #d9d9d9;background:#282828;object-fit:cover}
-.ip-scroll{width:100%;overflow:auto;border:1px solid #ddd}
-.ip-table{width:100%;border-collapse:collapse;font-size:13px}
-.ip-table th,.ip-table td{padding:8px;border:1px solid #ddd;text-align:center;vertical-align:middle}
-.ip-table th{background:#fafafa;font-weight:700}
-.ip-table td.left{text-align:left}
-#programTable{min-width:900px}
-#programTable th:nth-child(2),#programTable td:nth-child(2){width:24%}
-#programTable th{white-space:nowrap}
-.report-head-actions{margin-left:auto}
-.print-icon{width:30px;height:25px;border:0;background:transparent;color:#fff;cursor:pointer}
-.print-icon svg{width:16px;height:16px;fill:currentColor}
-.report-back{margin:0 0 6px;font-size:13px}
-.report-document{font-family:Calibri,"Open Sans",Arial,sans-serif;font-size:12px;color:#222}
-.report-title-grid{display:grid;grid-template-columns:1fr 1fr 1fr;align-items:start;gap:12px}
-.logo-mark{width:100px;height:80px;display:flex;align-items:center}
-.logo-emblem{width:54px;height:68px;border:2px solid #d3ae1e;border-radius:4px;display:grid;place-items:center;background:#fff;color:#2f1031;font-size:31px;font-weight:800;line-height:1}
-.report-title{text-align:center;padding-top:6px;line-height:1.5}
-.report-title strong{display:block}
-.report-photo{width:80px;height:80px;justify-self:end;background:#282828;border:1px solid #444}
-.student-report-meta{display:grid;grid-template-columns:1fr 1fr;gap:3px 20px;margin:6px 0 10px;font-weight:700}
-.student-report-meta{grid-template-areas:"name branch" "registration ." "admission ."}
-.meta-name{grid-area:name}.meta-registration{grid-area:registration}.meta-admission{grid-area:admission}.meta-branch{grid-area:branch;text-align:right}
-.report-filter-form{display:grid;grid-template-columns:2fr 1.4fr 2fr 1.2fr .7fr;gap:8px;margin-bottom:8px}
-.report-filter-form select{width:100%;height:34px;padding:6px 9px;border:1px solid #ccc;border-radius:3px;background:#fff;color:#333}
-.report-filter-form .btn{width:100%}
-.course-block{margin-top:10px}
-.course-name{margin:0 0 4px;font-size:12px;font-weight:700}
-.performance-scroll{max-height:620px;overflow:auto;border:1px solid #222}
-.performance-table{min-width:1400px;font-size:12px}
-.performance-table th,.performance-table td{height:38px;padding:5px;border:1px solid #222}
-.performance-table th{position:sticky;top:0;z-index:2;white-space:nowrap}
-.performance-table th:first-child,.performance-table td:first-child{position:sticky;left:0;width:58px;min-width:58px;background:#fff;z-index:1}
-.performance-table th:first-child{z-index:3;background:#fafafa}
-/* Details (Action) stays visible on the right while the wide table scrolls */
-.performance-table th:last-child,.performance-table td:last-child{position:sticky;right:0;width:70px;min-width:70px;background:#fff;z-index:1;box-shadow:-3px 0 5px rgba(0,0,0,.08)}
-.performance-table th:last-child{z-index:3;background:#fafafa}
-.performance-table td:nth-child(8){white-space:nowrap}
-.course-total{text-align:right;padding:5px 2px;font-weight:700}
-.ip-empty{padding:24px;text-align:center;color:#777;border:1px solid #ddd;margin-top:10px}
-.merit-title{margin:14px 0 4px;font-weight:700}
-.merit-scroll{overflow:auto;border:1px solid #222}
-.merit-table{min-width:900px;font-size:12px}
-.merit-table th,.merit-table td{border:1px solid #222;padding:6px}
-.signatures{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin:56px 10px 24px;font-weight:700;text-align:center}
-.signatures div{border-top:1px solid #222;padding-top:4px}
-.print-actions{text-align:center;margin:12px 0 5px}
-.ip-nocopy{margin:12px 0;padding:9px 12px;border:1px dashed #d9534f;background:#fdf3f3;color:#a94442;font-size:13.5px}
-@media(max-width:760px){
- .student-summary{grid-template-columns:1fr auto;gap:10px}
- .student-report-meta{grid-template-columns:1fr;grid-template-areas:"name" "registration" "admission" "branch"}.meta-branch{text-align:left}
- .report-title-grid{grid-template-columns:auto 1fr auto}.logo-mark{width:58px}.logo-emblem{width:46px;height:58px;font-size:26px}.report-title{font-size:10px}.report-photo{width:58px;height:66px}
- .report-filter-form{grid-template-columns:1fr}
-}
-@media(max-width:430px){.student-summary{grid-template-columns:1fr}.student-photo{justify-self:start;grid-row:1}}
-@media print{
- body{background:#fff}.topbar,.sidebar,#lookupStage,.report-head-actions,.report-filter-form,.print-actions,.report-back,#pageChangesModal,#pageChangesBtn,footer{display:none!important}
- [class~="layout"]{display:block!important;padding:0!important}main{padding:0!important}#reportPanel{border:0!important;margin:0!important}#reportPanel>div:first-child{display:none!important}.panel-body{padding:0!important}
- .performance-scroll,.merit-scroll{max-height:none;overflow:visible;border:0}.performance-table,.merit-table{min-width:100%;font-size:8px}.performance-table th,.performance-table td{height:auto;padding:3px;position:static!important}.course-block{break-inside:avoid-page}
-}
 </style>
 </head>
 <body>
@@ -1594,78 +1524,212 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
      <a href="../ManageHWNotekhata/index.html">
      Manage HW Notekhata
     </a>
-     <a href="../HWEvaluation/index.html">
-     HW Evaluation
-    </a>
      <a class="active" href="index.html">
-     HW Evaluation Individual Student Report
+     HW Evaluation Report
+    </a>
+     <a href="../IndividualStudentHWReport/index.html">
+     Individual Student HW Report
     </a>
    </div>
   </div>
  </aside>
  <main class="content">
-  <div id="lookupStage">
-   <section class="panel" id="searchPanel">
-    <div class="panel-head"><h1>HW Evaluation Individual Student Report</h1></div>
-    <div class="panel-body">
-     <form id="lookupForm" action="javascript:void(0)" novalidate>
-      <input id="RegNo" name="RegNo" type="text" inputmode="numeric" maxlength="7" autocomplete="off" placeholder="Enter Registration No." aria-label="Registration No.">
-      <span class="lookup-error" id="RegInvalidText" role="alert"></span>
-      <div class="form-actions"><button class="btn btn-ip" id="btnSubmit" type="button">Submit</button></div>
-     </form>
-    </div>
-   </section>
-   <section class="panel" id="detailsPanel" hidden>
-    <div class="panel-head"><h2>Details</h2></div>
-    <div class="panel-body">
-     <div class="student-summary">
-      <dl class="student-facts" id="studentFacts"></dl>
-      <img class="student-photo" alt="Demo student placeholder" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='86' height='100' viewBox='0 0 86 100'%3E%3Crect width='86' height='100' fill='%23282828'/%3E%3Ccircle cx='43' cy='30' r='18' fill='%23e7e7e7'/%3E%3Cpath d='M17 93c2-25 12-38 26-38s24 13 26 38' fill='%23e7e7e7'/%3E%3C/svg%3E">
+  <div class="custom-message" id="customMessage"></div>
+  <section class="panel" id="filterPanel">
+   <div class="panel-head">
+    <div><h1>HW Evaluation Report</h1></div>
+    <button class="panel-toggle" type="button" aria-expanded="true" aria-label="Collapse filter panel">−</button>
+   </div>
+   <div class="panel-body">
+    <form class="hw-form" id="filterForm" novalidate>
+     <div class="field">
+      <label for="fDateFrom">Date From <span class="req">*</span></label>
+      <div class="date-control-wrap">
+       <input class="control date-input" id="fDateFrom" type="text" readonly aria-haspopup="dialog" aria-expanded="false">
+      </div>
      </div>
-     <div class="ip-scroll">
-      <table class="ip-table" id="programTable"><thead><tr><th>Admission Date</th><th>Program</th><th>Session</th><th>Total HW</th><th>Submitted</th><th>Absent</th><th>Not Submitted Yet</th><th>Action</th></tr></thead><tbody id="programBody"></tbody></table>
+     <div class="field">
+      <label for="fDateTo">Date To</label>
+      <div class="date-control-wrap due-wrap">
+       <input class="control date-input" id="fDateTo" type="text" readonly placeholder="No end date" aria-haspopup="dialog" aria-expanded="false">
+       <button class="due-clear" id="clearDateTo" type="button" title="Date To বাদ দিন" aria-label="Clear Date To">×</button>
+      </div>
      </div>
-    </div>
-   </section>
-  </div>
-  <section class="panel" id="reportPanel" hidden>
-   <div class="panel-head"><h2>Student's HW Report</h2><div class="report-head-actions"><button class="print-icon" id="iconPrint" type="button" title="Print" aria-label="Print"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h12v5H6V2zm12 16v4H6v-4H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-2zm-2-2H8v4h8v-4zm3-6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg></button></div></div>
-   <div class="panel-body report-document">
-    <p class="report-back"><a href="#" id="backToDetails">← Back to Details</a></p>
-    <div class="report-title-grid">
-     <div class="logo-mark" aria-label="Logo"><div class="logo-emblem">U</div></div>
-     <div class="report-title"><strong id="orgHeading"></strong><strong id="programHeading"></strong><strong>Student's HW Report</strong></div>
-     <img class="report-photo" alt="Demo student placeholder" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Crect width='80' height='80' fill='%23282828'/%3E%3Ccircle cx='40' cy='23' r='15' fill='%23e7e7e7'/%3E%3Cpath d='M13 78c2-22 11-34 27-34s25 12 27 34' fill='%23e7e7e7'/%3E%3C/svg%3E">
-    </div>
-    <div class="student-report-meta" id="reportMeta"></div>
-    <form id="reportForm" class="report-filter-form" action="javascript:void(0)">
-     <select id="fHwCourse" aria-label="HW Course"></select>
-     <select id="fSubject" aria-label="Subject"></select>
-     <select id="fChapter" aria-label="Chapter"></select>
-     <select id="fStatus" aria-label="Status"><option value="all">All Status</option><option value="Submitted">Submitted</option><option value="Absent">Absent</option><option value="Not Submitted Yet">Not Submitted Yet</option></select>
-     <button class="btn btn-ip" type="submit">View</button>
+     <p class="hw-hint full">Date From থেকে Date To পর্যন্ত শিক্ষার্থী HW আপলোড করতে পারবে। Date To না দিলে শেষ সীমা থাকবে না।</p>
+
+     <h4 class="form-section full">Target Student Selection</h4>
+     <div class="field">
+      <label>Organization <span class="req">*</span></label>
+      <div class="multi single" data-single="tOrg" data-placeholder="Select Organization">
+       <button class="multi-button" type="button"><span class="multi-label">Select Organization</span><span class="chevron glyphicon glyphicon-chevron-down" aria-hidden="true"></span></button>
+       <div class="multi-menu"></div>
+      </div>
+     </div>
+     <div class="field">
+      <label>Program <span class="req">*</span></label>
+      <div class="multi single" data-single="tProgram" data-placeholder="Select Program">
+       <button class="multi-button" type="button"><span class="multi-label">Select Program</span><span class="chevron glyphicon glyphicon-chevron-down" aria-hidden="true"></span></button>
+       <div class="multi-menu"></div>
+      </div>
+     </div>
+     <div class="field">
+      <label>Session <span class="req">*</span></label>
+      <div class="multi single" data-single="tSession" data-placeholder="Select Session">
+       <button class="multi-button" type="button"><span class="multi-label">Select Session</span><span class="chevron glyphicon glyphicon-chevron-down" aria-hidden="true"></span></button>
+       <div class="multi-menu"></div>
+      </div>
+     </div>
+     <div class="field">
+      <label>Course <span class="req">*</span></label>
+      <div class="multi" data-multi="tCourse" data-placeholder="Select Course">
+       <button class="multi-button" type="button"><span class="multi-label">Select Course</span><span class="chevron glyphicon glyphicon-chevron-down" aria-hidden="true"></span></button>
+       <div class="multi-menu"></div>
+      </div>
+     </div>
+     <div class="field">
+      <label>Mother Course</label>
+      <div class="multi" data-multi="tMother" data-placeholder="None">
+       <button class="multi-button" type="button"><span class="multi-label">None</span><span class="chevron glyphicon glyphicon-chevron-down" aria-hidden="true"></span></button>
+       <div class="multi-menu"></div>
+      </div>
+     </div>
+     <div class="field">
+      <label>Student Select By <span class="req">*</span></label>
+      <div class="multi single" data-single="tSelectBy" data-placeholder="Select">
+       <button class="multi-button" type="button"><span class="multi-label">Select</span><span class="chevron glyphicon glyphicon-chevron-down" aria-hidden="true"></span></button>
+       <div class="multi-menu"></div>
+      </div>
+     </div>
+     <div class="field" id="pickField">
+      <label id="pickLabel">Branch <span class="req">*</span></label>
+      <div class="pick-wrap">
+       <div class="multi" data-multi="tPick" data-placeholder="Select Branch">
+        <button class="multi-button" type="button"><span class="multi-label">Select Branch</span><span class="chevron glyphicon glyphicon-chevron-down" aria-hidden="true"></span></button>
+        <div class="multi-menu"></div>
+       </div>
+       <textarea class="control reg-input" id="tRegs" rows="3" placeholder="Reg নম্বর, কমা দিয়ে (e.g. 1997219, 1997220)" hidden></textarea>
+      </div>
+     </div>
+     <div class="field">
+      <label>Campus</label>
+      <div class="multi" data-multi="tCampus" data-placeholder="All">
+       <button class="multi-button" type="button"><span class="multi-label">All</span><span class="chevron glyphicon glyphicon-chevron-down" aria-hidden="true"></span></button>
+       <div class="multi-menu"></div>
+      </div>
+     </div>
+     <div class="field">
+      <label>Version of Study</label>
+      <div class="multi single" data-single="tVersion" data-placeholder="All">
+       <button class="multi-button" type="button"><span class="multi-label">All</span><span class="chevron glyphicon glyphicon-chevron-down" aria-hidden="true"></span></button>
+       <div class="multi-menu"></div>
+      </div>
+     </div>
+     <div class="field">
+      <label>Gender</label>
+      <div class="multi single" data-single="tGender" data-placeholder="All">
+       <button class="multi-button" type="button"><span class="multi-label">All</span><span class="chevron glyphicon glyphicon-chevron-down" aria-hidden="true"></span></button>
+       <div class="multi-menu"></div>
+      </div>
+     </div>
+     <div class="field">
+      <label>Batch Type</label>
+      <div class="multi" data-multi="tBatchType" data-placeholder="All">
+       <button class="multi-button" type="button"><span class="multi-label">All</span><span class="chevron glyphicon glyphicon-chevron-down" aria-hidden="true"></span></button>
+       <div class="multi-menu"></div>
+      </div>
+     </div>
+     <div class="field">
+      <label>Batch Time</label>
+      <div class="multi" data-multi="tBatchTime" data-placeholder="All">
+       <button class="multi-button" type="button"><span class="multi-label">All</span><span class="chevron glyphicon glyphicon-chevron-down" aria-hidden="true"></span></button>
+       <div class="multi-menu"></div>
+      </div>
+     </div>
+     <div class="field">
+      <label>Batch Name</label>
+      <div class="multi" data-multi="tBatchName" data-placeholder="All">
+       <button class="multi-button" type="button"><span class="multi-label">All</span><span class="chevron glyphicon glyphicon-chevron-down" aria-hidden="true"></span></button>
+       <div class="multi-menu"></div>
+      </div>
+     </div>
+     <div class="field">
+      <label>Religion</label>
+      <div class="multi single" data-single="tReligion" data-placeholder="All">
+       <button class="multi-button" type="button"><span class="multi-label">All</span><span class="chevron glyphicon glyphicon-chevron-down" aria-hidden="true"></span></button>
+       <div class="multi-menu"></div>
+      </div>
+     </div>
+
+
+     <h4 class="form-section full">HW Course Selection</h4>
+     <div class="field">
+      <label>HW Course</label>
+      <div class="multi single" data-single="mHwCourse" data-placeholder="All">
+       <button class="multi-button" type="button"><span class="multi-label">All</span><span class="chevron glyphicon glyphicon-chevron-down" aria-hidden="true"></span></button>
+       <div class="multi-menu"></div>
+      </div>
+     </div>
+     <div class="field">
+      <label>Subject</label>
+      <div class="multi single" data-single="mSubject" data-placeholder="All">
+       <button class="multi-button" type="button"><span class="multi-label">All</span><span class="chevron glyphicon glyphicon-chevron-down" aria-hidden="true"></span></button>
+       <div class="multi-menu"></div>
+      </div>
+     </div>
+     <div class="field">
+      <label>Chapter</label>
+      <div class="multi single" data-single="mChapter" data-placeholder="All">
+       <button class="multi-button" type="button"><span class="multi-label">All</span><span class="chevron glyphicon glyphicon-chevron-down" aria-hidden="true"></span></button>
+       <div class="multi-menu"></div>
+      </div>
+     </div>
+     <div class="field">
+      <label>Status</label>
+      <div class="multi single" data-single="mStatus" data-placeholder="All">
+       <button class="multi-button" type="button"><span class="multi-label">All</span><span class="chevron glyphicon glyphicon-chevron-down" aria-hidden="true"></span></button>
+       <div class="multi-menu"></div>
+      </div>
+     </div>
+     <div class="field">
+      <label for="mPageSize">Display Per Page <span class="req">*</span></label>
+      <input class="control" id="mPageSize" type="text" inputmode="numeric" maxlength="3" value="10">
+     </div>
     </form>
-    <div id="bottomPart"></div>
-    <div class="merit-title">HW Course Summary</div>
-    <div class="merit-scroll"><table class="ip-table merit-table"><thead><tr><th>Serial</th><th>HW Course</th><th>Total HW</th><th>Submitted</th><th>Absent</th><th>Not Submitted Yet</th><th>Right (✓)</th><th>Wrong (✗)</th><th>Attention (◯)</th></tr></thead><tbody id="summaryBody"></tbody></table></div>
-    <div class="signatures"><div>Prepared By</div><div>Verified By</div><div>Director</div></div>
-    <div class="print-actions"><button class="btn btn-ip" id="btnPrint" type="button">Print</button></div>
+    <div class="form-actions">
+     <button class="btn btn-primary" id="viewReport" type="button">View Report</button>
+     <button class="btn btn-secondary" id="exportBtn" type="button">Export</button>
+    </div>
+   </div>
+  </section>
+  <section class="panel" id="reportPanel" hidden>
+   <div class="panel-head">
+    <div><h2>HW List</h2></div>
+    <button class="panel-toggle" type="button" aria-expanded="true" aria-label="Collapse report panel">−</button>
+   </div>
+   <div class="panel-body">
+    <div class="table-scroll hw-table-scroll">
+     <table class="hw-table">
+      <thead><tr id="reportHead"></tr></thead>
+      <tbody id="reportBody"></tbody>
+     </table>
+    </div>
+    <div class="table-footer">
+     <span>Showing <b id="rangeStart">0</b> to <b id="rangeEnd">0</b> of <b id="totalRows">0</b> entries</span>
+     <div class="pagination" id="pagination"></div>
+    </div>
    </div>
   </section>
   <footer>© 2026 - UMS</footer>
  </main>
 </div>
-<div class="modal wide" id="copyModal" role="dialog" aria-modal="true" aria-labelledby="copyTitle">
+<div class="modal" id="messageModal" role="dialog" aria-modal="true">
  <div class="modal-card">
-  <h3><span id="copyTitle">HW Details</span><button class="modal-x" type="button" data-close-copy aria-label="Close">×</button></h3>
-  <div class="modal-scroll" id="copyBody"></div>
-  <div class="modal-foot">
-   <button class="btn btn-default" type="button" id="copyPrev">Previous</button>
-   <button class="btn btn-default" type="button" id="copyNext">Next</button>
-   <button class="btn btn-primary" type="button" data-close-copy>Close</button>
-  </div>
+  <h3>Offline Demo</h3>
+  <p id="messageText"></p>
+  <button class="btn btn-primary" type="button" data-close-modal>Close</button>
  </div>
 </div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 <div class="modal" id="pageChangesModal" role="dialog" aria-modal="true"
  aria-labelledby="pageChangesModalLabel">
  <div class="modal-card">
@@ -1674,14 +1738,14 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
    <button class="btn" id="copyPageChanges" type="button">Copy</button>
   </div>
   <div class="page-changes-body" id="pageChangesContent">
-   <p><strong>Administration &gt; HW Notekhata &gt; HW Evaluation Individual Student Report — নতুন মেনু হিসেবে যা তৈরি করতে হবে:</strong></p>
+   <p><strong>Administration &gt; HW Notekhata &gt; HW Evaluation Report — নতুন মেনু হিসেবে যা তৈরি করতে হবে:</strong></p>
    <ol>
-    <li><strong>নতুন মেনু</strong> — HW Notekhata মেনু গ্রুপে HW Evaluation-এর পরে "HW Evaluation Individual Student Report"। Exam &gt; Report &gt; Individual Performance মেনুর মতো একই ধাপ ও নকশা। পারমিশন HW Evaluation-এর মতো (খাতা মূল্যায়নের কাজের সাথে জড়িতদের জন্য)।</li>
-    <li><strong>ধাপ ১ — Registration No. দিয়ে খোঁজা</strong> — মাঝখানে "Enter Registration No." ঘর ও Submit। খালি রাখলে লাল বর্ডার; ভুল নম্বর হলে নিচে লাল লেখা। পাওয়া গেলে "Details" প্যানেলে শিক্ষার্থীর তথ্য (Full Name, Nick Name, Reg No, Branch, Mobile Number, Gender, Religion + ছবি) এবং ভর্তি হওয়া প্রোগ্রামের টেবিল: Admission Date, Program, Session, Total HW, Submitted, Absent, Not Submitted Yet, Action (View Report)।</li>
-    <li><strong>ধাপ ২ — View Report ("Student's HW Report")</strong> — উপরে লোগো, প্রতিষ্ঠান, Program + Session, "Student's HW Report", ছবি; Student's Name, Reg. No., Admission Date, Branch। ফিল্টার: All HW Course / All Subject / All Chapter / All Status (Submitted, Absent, Not Submitted Yet) + View। নিচে HW Course অনুযায়ী আলাদা টেবিল — Serial, Date From, Date To, HW Code, Subject, Chapter, Lecture, Status, Submitted At, Pages, Right (✓), Wrong (✗), Attention (◯) — খাতার ওপর কোন ধরনের দাগ কতটি, Action (Details)। প্রতিটি টেবিলের নিচে মোট হিসাব; সবশেষে "HW Course Summary" টেবিল, Prepared By / Verified By / Director, Print (ও উপরের প্রিন্ট আইকন)। "← Back to Details" দিয়ে আগের ধাপে ফেরা।</li>
-    <li><strong>কোন HW দেখাবে</strong> — শিক্ষার্থীকে দেওয়া (তার Course + Branch / Zone / Reg মিলে) Published HW যেগুলোর Date From আজ বা আগে; Status: খাতা জমা দিলে Submitted, জমার সময় শেষ হলে Absent, সময় বাকি থাকলে Not Submitted Yet।</li>
-    <li><strong>Details</strong> — পপআপে HW-এর তথ্য, Question, (জমা দিলে) জমা দেওয়া খাতার ছবির ওপর দাগ, দাগের ব্যাখ্যা, মন্তব্য; জমা না দিলে কারণ (Absent / এখনো জমা দেয়নি); সবশেষে Sample Answer। Previous / Next দিয়ে তালিকার পরের HW। শুধু দেখা যাবে; কোথাও "AI" লেখা থাকবে না।</li>
-    <li><strong>ডেমোতে খোঁজার জন্য</strong> — Reg 1997219 (পোর্টালের ডেমো শিক্ষার্থী, দুটি প্রোগ্রাম), অথবা HW Evaluation &gt; View Copies তালিকার যেকোনো Reg No — সেখানে যে খাতা দেখায়, এখানেও ঐ শিক্ষার্থীর একই খাতা ও মূল্যায়ন দেখাবে।</li>
+    <li><strong>নতুন মেনু "HW Evaluation Report"</strong> — HW Notekhata মেনু গ্রুপে Manage HW Notekhata-র পরে। শিক্ষার্থীরা কী জমা দিয়েছে আর তার মূল্যায়ন কী হয়েছে, তা শুধু এই মেনুতে দেখা যাবে — এটা আলাদা মেনু, কারণ Manage HW Notekhata যারা পায় তারা খাতা মূল্যায়নের কাজের সাথে জড়িত না; তাই পারমিশনও আলাদা।</li>
+    <li><strong>মূল্যায়ন কীভাবে হয়</strong> — শিক্ষার্থী খাতার ছবি জমা দেওয়ার কয়েক সেকেন্ডের মধ্যেই স্বয়ংক্রিয়ভাবে (পেছনে AI — HW Chapter-এর, না থাকলে HW Course-এর "Enable Independent AI Answer Settings" দিয়ে) প্রশ্ন ও Sample Answer-এর সাথে মিলিয়ে মূল্যায়ন হয়। ইন্টারফেসে (Portal বা UMS) কোথাও "AI" লেখা থাকবে না। কোনো Marks দেওয়া হয় না — শুধু খাতার ছবিতে দাগ ও মন্তব্য।</li>
+    <li><strong>ফিল্টার</strong> — Manage HW Notekhata-র মতো একই ফিল্টার (Date From/To, Target Student Selection, HW Course / Subject / Chapter, Status, Display Per Page), একই আচরণ।</li>
+    <li><strong>HW List</strong> — Sl., HW Code, Date From, Date To, Program Session, Course, HW Course, Subject, Chapter, Lecture, Target Students, Uploaded, Evaluated, Action (View Copies — ডানে ফ্রিজ)। কোনো খাতা জমা না পড়লে Action-এ "-"। Export-এ একই কলাম।</li>
+    <li><strong>View Copies</strong> — ঐ HW-এর পেইজ: উপরে HW-এর তথ্য (HW Code, Lecture, HW Course/Subject/Chapter, তারিখ, Target / Uploaded / Evaluated); নিচে জমা দেওয়া খাতার তালিকা — Sl., Reg No, Student Name, Branch, Submitted At, Pages, Evaluated At, Action (View); Search (Reg No / নাম / Branch)। "← Back to HW Evaluation Report" দিয়ে আগের ফিল্টার-সহ তালিকায় ফেরা।</li>
+    <li><strong>View (একটি খাতা)</strong> — পপআপে শিক্ষার্থীর তথ্য, প্রশ্ন, জমা দেওয়া খাতার প্রতিটি পৃষ্ঠার ছবির ওপর দাগ (সবুজ ✓ ঠিক, লাল ✗ ভুল, হলুদ গোল খেয়াল করো — প্রতিটিতে নম্বর), দাগের ব্যাখ্যা, মন্তব্য (যা ভালো হয়েছে / যেখানে উন্নতি দরকার + সারসংক্ষেপ) ও Sample Answer — শিক্ষার্থী পোর্টালে যা দেখে হুবহু তাই। Previous / Next দিয়ে পরের খাতা। শুধু দেখা যাবে — মূল্যায়ন বদলানো বা আবার করানো যাবে না।</li>
    </ol>
   </div>
   <div class="page-changes-footer">
@@ -2263,7 +2327,7 @@ function targetSummary(t){
  if(t.selectBy==='Zone')return 'Zone: '+(t.zones||[]).join(', ');
  return 'Branch: '+(t.branches||[]).join(', ');
 }
-/* HW Notekhata — evaluation demo (shared by Student Portal > HW Notekhata and UMS > HW Evaluation / Manage HW Notekhata counts).
+/* HW Notekhata — evaluation demo (shared by Student Portal > HW Notekhata and UMS > HW Evaluation Report / Manage HW Notekhata counts).
    Needs course_data.js (demoHash, demoPad), lecture_data.js (bnDigits), target_data.js, hw_data.js (isoPlus, PORTAL_STUDENT).
    AI evaluates every submitted copy within seconds (HW Course / HW Chapter "Independent AI Answer Settings") — but the word "AI"
    is never shown in the UI (user, 20 Nov 2026). Result = marks drawn on the copy photos (✓ right, ✗ wrong, ◯ needs attention —
@@ -2356,7 +2420,7 @@ function hwEvalCommentHtml(ev){
 var HWE_FIRST=['Tanvir','Nusrat','Sadia','Rafi','Mehedi','Farhana','Ariful','Sumaiya','Imran','Jannatul','Rakibul','Tasnim','Shahriar','Mim','Nafis','Sabrina','Fahim','Ayesha','Zahid','Rumana','Asif','Tahmina','Sakib','Lamia'];
 var HWE_LAST=['Hasan','Islam','Rahman','Ahmed','Hossain','Akter','Chowdhury','Karim','Sultana','Alam','Khan','Sarker','Uddin','Mahmud','Haque','Jahan'];
 /* UMS: who submitted one HW. Students are a fixed demo population — 45 per enrollment course × branch — so the same Reg No
-   shows the same submissions in HW Evaluation (copies of one HW) and HW Evaluation Individual Student Report (all HW of one student).
+   shows the same submissions in HW Evaluation Report (copies of one HW) and Individual Student HW Report (all HW of one student).
    Reg No = (1000 + the course's position in the enrollment course list, 4 digits) + branch index (1 digit) + serial (2 digits) = 7 digits;
    the portal demo student keeps his own Reg. */
 var HW_COURSE_IX=null;
@@ -2384,6 +2448,10 @@ function hwStudentByReg(reg,items){
   if(!items||items.some(function(i){return hwReachesStudent(i,s);}))return s;
  }
  if(!items||!/^\d{7}$/.test(reg))return null;
+ /* a Reg named in a Reg Wise HW: that HW's course (same copy as in the HW Evaluation Report copy list, branch '-' as there) */
+ var rw=[];
+ items.forEach(function(i){var t=i.target||{};if(t.selectBy==='Reg'&&(t.regs||[]).map(String).indexOf(reg)>-1&&(t.courseIds||[]).length&&rw.indexOf(Number(t.courseIds[0]))===-1)rw.push(Number(t.courseIds[0]));});
+ if(rw.length)return{reg:reg,name:hwStudentName(reg),branch:'-',courseIds:rw};
  /* any other 7-digit Reg: a course + branch that has HW, picked from the number */
  var cands=[],seen={};
  items.forEach(function(i){
@@ -2449,187 +2517,904 @@ function hwEvalCounts(i,today){
  var rows=hwSubmissionRoster(i,today);
  return{uploaded:rows.length,evaluated:rows.filter(function(r){return r.evaluated;}).length};
 }
-/* HW Evaluation Individual Student Report — like Exam > Report > Individual Performance:
-   Reg No → student + admitted programs (Total HW / Submitted / Absent / Not Submitted Yet) → View Report → every HW given to the
-   student in that program, grouped by HW Course → Details (question, the copy with its evaluation marks + comment, Sample Answer).
-   Same demo students as HW Evaluation (a Reg No from its copy list shows the same submission here). Read-only; no "AI" text. */
-function $(id){return document.getElementById(id);}
-function esc(v){return String(v).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
-var MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-function longDate(iso){var p=iso.split('-');return MON[Number(p[1])-1]+' '+p[2]+', '+p[0];}
-function fmt(iso){if(!iso)return'-';var p=iso.split('-');return p[2]+'/'+p[1]+'/'+p[0];}
-function fmtAt(at){var p=at.split(' ');return fmt(p[0])+' '+(p[1]||'');}
-var today=hwTodayIso();
-var hwCourses=buildCourseList(),chapters=buildChapterList(hwCourses);
+function closeMultis(except){
+ document.querySelectorAll('.multi.open').forEach(function(multi){
+  if(multi!==except){
+   multi.classList.remove('open','drop-up');
+   var options=multi.querySelector('.multi-options');
+   if(options)options.style.maxHeight='';
+  }
+ });
+}
+function placeMultiMenu(multi){
+ var button=multi.querySelector('.multi-button');
+ var menu=multi.querySelector('.multi-menu');
+ var options=multi.querySelector('.multi-options');
+ if(!button||!menu||!options)return;
+ multi.classList.remove('drop-up');
+ options.style.maxHeight='250px';
+ var rect=button.getBoundingClientRect();
+ var below=window.innerHeight-rect.bottom-10;
+ var above=rect.top-10;
+ var menuChrome=56;
+ var desired=Math.min(250,options.scrollHeight)+menuChrome;
+ var dropUp=below<desired&&above>below;
+ multi.classList.toggle('drop-up',dropUp);
+ var available=(dropUp?above:below)-menuChrome;
+ options.style.maxHeight=Math.max(88,Math.min(250,available))+'px';
+}
+function formatDate(value){
+ var parts=value.split('-');
+ if(parts.length!==3)return value;
+ return parts[2]+'/'+parts[1]+'/'+parts[0];
+}
+function parseIsoDate(value){
+ var parts=value.split('-');
+ return new Date(
+  Number(parts[0]),
+  Number(parts[1])-1,
+  Number(parts[2])
+ );
+}
+function isoDate(date){
+ return date.getFullYear()+'-'+
+  String(date.getMonth()+1).padStart(2,'0')+'-'+
+  String(date.getDate()).padStart(2,'0');
+}
+function sameDay(first,second){
+ return first.getFullYear()===second.getFullYear()&&
+  first.getMonth()===second.getMonth()&&
+  first.getDate()===second.getDate();
+}
+var datePickers=[];
+function closeDatePickers(exceptInput){
+ datePickers.forEach(function(item){
+  if(item.input!==exceptInput){
+   item.picker.hidden=true;
+   item.input.setAttribute('aria-expanded','false');
+  }
+ });
+}
+function attachDatePicker(input){
+ var wrapper=input.parentElement;
+ var picker=document.createElement('div');
+ var view=parseIsoDate(input.value);
+ var monthFormat=new Intl.DateTimeFormat(
+  'en-US',
+  {month:'long',year:'numeric'}
+ );
+ picker.className='date-picker';
+ picker.hidden=true;
+ picker.setAttribute('role','dialog');
+ picker.setAttribute('aria-label','Choose date');
+ picker.innerHTML=
+  '<div class="calendar-head">'+
+  '<button type="button" class="calendar-prev" '+
+  'aria-label="Previous month">'+
+  '<span class="glyphicon glyphicon-arrow-left" '+
+  'aria-hidden="true"></span></button>'+
+  '<div class="calendar-title"></div>'+
+  '<button type="button" class="calendar-next" '+
+  'aria-label="Next month">'+
+  '<span class="glyphicon glyphicon-arrow-right" '+
+  'aria-hidden="true"></span></button>'+
+  '</div>'+
+  '<div class="calendar-week">'+
+  '<span>Su</span><span>Mo</span><span>Tu</span>'+
+  '<span>We</span><span>Th</span><span>Fr</span>'+
+  '<span>Sa</span></div>'+
+  '<div class="calendar-grid"></div>';
+ wrapper.appendChild(picker);
+ function renderCalendar(){
+  var first=new Date(view.getFullYear(),view.getMonth(),1);
+  var start=first.getDay();
+  var selected=parseIsoDate(input.value);
+  var today=new Date();
+  var grid=picker.querySelector('.calendar-grid');
+  picker.querySelector('.calendar-title').textContent=
+   monthFormat.format(first);
+  grid.innerHTML='';
+  for(var index=0;index<42;index++){
+   var date=new Date(
+    view.getFullYear(),
+    view.getMonth(),
+    1-start+index
+   );
+   var day=document.createElement('button');
+   day.type='button';
+   day.className='calendar-day';
+   if(date.getMonth()!==view.getMonth()){
+    day.classList.add('outside');
+   }
+   if(sameDay(date,selected))day.classList.add('selected');
+   if(sameDay(date,today))day.classList.add('today');
+   day.textContent=date.getDate();
+   day.dataset.date=isoDate(date);
+   grid.appendChild(day);
+  }
+ }
+ function openPicker(){
+  var willOpen=picker.hidden;
+  closeDatePickers(input);
+  closeMultis();
+  picker.hidden=!willOpen;
+  input.setAttribute('aria-expanded',String(willOpen));
+  if(willOpen){
+   view=input.value?parseIsoDate(input.value):new Date();
+   renderCalendar();
+  }
+ }
+ input.addEventListener('click',function(event){
+  event.stopPropagation();
+  openPicker();
+ });
+ input.addEventListener('keydown',function(event){
+  var opens=event.key==='Enter'||
+   event.key===' '||
+   event.key==='ArrowDown';
+  if(opens){
+   event.preventDefault();
+   if(picker.hidden)openPicker();
+  }
+ });
+ picker.querySelector('.calendar-prev').addEventListener(
+  'click',
+  function(event){
+   event.stopPropagation();
+   view=new Date(view.getFullYear(),view.getMonth()-1,1);
+   renderCalendar();
+  }
+ );
+ picker.querySelector('.calendar-next').addEventListener(
+  'click',
+  function(event){
+   event.stopPropagation();
+   view=new Date(view.getFullYear(),view.getMonth()+1,1);
+   renderCalendar();
+  }
+ );
+ picker.querySelector('.calendar-grid').addEventListener(
+  'click',
+  function(event){
+   var day=event.target.closest('.calendar-day');
+   if(!day)return;
+   input.value=day.dataset.date;
+   input.dispatchEvent(new Event('change',{bubbles:true}));
+   picker.hidden=true;
+   input.setAttribute('aria-expanded','false');
+   input.focus();
+  }
+ );
+ datePickers.push({input:input,picker:picker});
+}
+/* Canonical-look single-select (radio) built on the multi-select component — reused from the first HW demo. */
+var singleHandlers={};
+function singleBox(key){return document.querySelector('[data-single="'+key+'"]');}
+function singleValue(key){
+ var checked=singleBox(key).querySelector('input:checked');
+ return checked?checked.value:'';
+}
+function updateSingleLabel(key){
+ var box=singleBox(key);
+ box.querySelector('.multi-label').textContent=
+  singleValue(key)||box.getAttribute('data-placeholder')||'Select';
+}
+function setSingle(key,items,value){
+ var box=singleBox(key);
+ var menu=box.querySelector('.multi-menu');
+ menu.innerHTML='';
+ var searchRow=document.createElement('div');
+ searchRow.className='multi-search-row';
+ searchRow.innerHTML='<span class="multi-search-icon" aria-hidden="true"><span class="glyphicon glyphicon-search"></span></span>';
+ var search=document.createElement('input');
+ search.className='multi-search';
+ search.type='search';
+ search.placeholder='Search';
+ search.setAttribute('aria-label','Search '+key);
+ searchRow.appendChild(search);
+ menu.appendChild(searchRow);
+ var options=document.createElement('div');
+ options.className='multi-options';
+ menu.appendChild(options);
+ items.forEach(function(item){
+  var label=document.createElement('label');
+  label.className='multi-option';
+  var input=document.createElement('input');
+  input.type='radio';
+  input.name='single-'+key;
+  input.value=item;
+  input.checked=item===value;
+  var text=document.createElement('span');
+  text.textContent=item;
+  label.appendChild(input);
+  label.appendChild(text);
+  options.appendChild(label);
+  input.addEventListener('change',function(){
+   updateSingleLabel(key);
+   box.classList.remove('invalid-field');
+   closeMultis();
+   if(singleHandlers[key])singleHandlers[key](item);
+  });
+ });
+ var empty=document.createElement('span');
+ empty.className='multi-empty';
+ empty.textContent=items.length?'No matching options':'No options available';
+ empty.style.display=items.length?'none':'block';
+ options.appendChild(empty);
+ search.addEventListener('input',function(){
+  var query=search.value.trim().toLowerCase();
+  var visible=0;
+  options.querySelectorAll('.multi-option').forEach(function(label){
+   var show=!query||label.textContent.toLowerCase().indexOf(query)!==-1;
+   label.hidden=!show;
+   if(show)visible++;
+  });
+  empty.style.display=visible?'none':'block';
+ });
+ updateSingleLabel(key);
+}
+/* Checkbox multi-select (Select all + search) in the canonical look — same behaviour as the
+   Send Notification page's Course/Branch/Campus/Batch filters. */
+var multiState={},multiHandlers={};
+function multiBox(key){return document.querySelector('[data-multi="'+key+'"]');}
+function multiAll(key){var s=multiState[key];return Boolean(s&&s.items.length&&s.selected.indexOf('__all__')>-1);}
+function multiValues(key){
+ var s=multiState[key];
+ if(!s)return[];
+ return multiAll(key)?s.items.slice():s.selected.filter(function(v){return v!=='__all__';});
+}
+function syncMulti(key){
+ var box=multiBox(key),s=multiState[key];
+ var label=box.getAttribute('data-placeholder')||'Select';
+ var picked=s.selected.filter(function(v){return v!=='__all__';});
+ if(multiAll(key))label='All';
+ else if(picked.length===1)label=picked[0];
+ else if(picked.length>1)label=picked.length+' selected';
+ box.querySelector('.multi-label').textContent=label;
+ box.querySelectorAll('.multi-options input').forEach(function(input){
+  input.checked=multiAll(key)||s.selected.indexOf(input.value)>-1;
+ });
+}
+function setMulti(key,items,config){
+ config=config||{};
+ var box=multiBox(key),menu=box.querySelector('.multi-menu');
+ var prev=multiState[key]?multiState[key].selected:[];
+ var selected=prev.filter(function(v){return v==='__all__'||items.indexOf(v)>-1;});
+ if(config.reset)selected=[];
+ if(config.defaultAll&&!selected.length&&items.length)selected=['__all__'];
+ if(!items.length)selected=[];
+ multiState[key]={items:items.slice(),selected:selected};
+ menu.innerHTML='';
+ var searchRow=document.createElement('div');
+ searchRow.className='multi-search-row';
+ searchRow.innerHTML='<span class="multi-search-icon" aria-hidden="true"><span class="glyphicon glyphicon-search"></span></span>';
+ var search=document.createElement('input');
+ search.className='multi-search';search.type='search';search.placeholder='Search';
+ search.setAttribute('aria-label','Search '+key);
+ searchRow.appendChild(search);
+ menu.appendChild(searchRow);
+ var options=document.createElement('div');
+ options.className='multi-options';
+ menu.appendChild(options);
+ function addRow(value,text,isAll){
+  var label=document.createElement('label');
+  label.className='multi-option'+(isAll?' select-all':'');
+  var input=document.createElement('input');
+  input.type='checkbox';input.value=value;
+  var span=document.createElement('span');
+  span.textContent=text;
+  label.appendChild(input);label.appendChild(span);
+  options.appendChild(label);
+  input.addEventListener('change',function(){
+   var s=multiState[key];
+   if(isAll)s.selected=input.checked?['__all__']:[];
+   else{
+    var current=multiValues(key).filter(function(v){return v!==value;});
+    if(input.checked)current.push(value);
+    s.selected=current.length===s.items.length?['__all__']:current;
+   }
+   syncMulti(key);
+   box.classList.remove('field-invalid');
+   if(multiHandlers[key])multiHandlers[key]();
+  });
+ }
+ if(items.length&&config.allowAll!==false)addRow('__all__','Select all',true);
+ items.forEach(function(item){addRow(item,item,false);});
+ var empty=document.createElement('span');
+ empty.className='multi-empty';
+ empty.textContent=items.length?'No matching options':(config.emptyText||'No options available');
+ empty.style.display=items.length?'none':'block';
+ options.appendChild(empty);
+ search.addEventListener('input',function(){
+  var q=search.value.trim().toLowerCase(),visible=0;
+  options.querySelectorAll('.multi-option:not(.select-all)').forEach(function(row){
+   var show=!q||row.textContent.toLowerCase().indexOf(q)!==-1;
+   row.hidden=!show;
+   if(show)visible++;
+  });
+  var all=options.querySelector('.select-all');
+  if(all)all.hidden=Boolean(q);
+  empty.style.display=visible?'none':'block';
+ });
+ box.querySelector('.multi-button').disabled=Boolean(config.disabled);
+ syncMulti(key);
+}
+var EDIT_PAGE='EditHWNotekhata.html';
+/* the same list page also serves the HW Evaluation Report menu (same filters; only Uploaded / Evaluated + a link to the submitted copies) */
+var EVAL_MODE=true;
+var SUBMISSIONS_PAGE='HWEvaluationCopies.html';
+var hwCourses=buildCourseList();
+var chapters=buildChapterList(hwCourses);
 var hwById={},chapterById={};
 hwCourses.forEach(function(h){hwById[h.id]=h;});
 chapters.forEach(function(c){chapterById[c.id]=c;});
-var allItems=buildHwList(hwCourses,chapters).filter(function(i){return i.status==='Published'&&i.dateFrom<=today;});
-var FEMALE=['Nusrat','Sadia','Farhana','Sumaiya','Jannatul','Tasnim','Mim','Sabrina','Ayesha','Rumana','Tahmina','Lamia'];
-var qs=new URLSearchParams(location.search);
-var student=null,rows=[],shown=[],openIx=-1;
-function go(params){
- var p=new URLSearchParams();Object.keys(params).forEach(function(k){if(params[k])p.set(k,params[k]);});
- location.href=location.pathname.split('/').pop()+(p.toString()?'?'+p.toString():'');
-}
-/* every HW given to the student (optionally only one program + session), with his status */
-function studentHw(s,pid,sid){
- return allItems.filter(function(i){
-  if(!hwReachesStudent(i,s))return false;
-  if(pid&&(String(i.target.programId)!==String(pid)||String(i.target.sessionId)!==String(sid)))return false;
-  return true;
- }).map(function(i){
-  var sub=s.portal?hwDemoSubmission(i,today):hwStudentSubmission(i,s,today);
-  var row={item:i,sub:null,status:''};
-  if(sub){
-   row.sub={at:sub.at,pages:sub.pages,key:s.portal?String(i.id):i.id+'|'+s.reg};
-   row.ev=hwEvaluation(row.sub.key,row.sub.pages,row.sub.at);
-   row.status='Submitted';
-  }else row.status=i.dateTo&&i.dateTo<today?'Absent':'Not Submitted Yet';
-  return row;
- }).sort(function(a,b){return a.item.dateFrom<b.item.dateFrom?1:a.item.dateFrom>b.item.dateFrom?-1:0;});
-}
-function counts(list){
- var c={total:list.length,Submitted:0,Absent:0,'Not Submitted Yet':0,ok:0,wrong:0,attn:0};
- list.forEach(function(r){c[r.status]++;if(r.ev)r.ev.marks.forEach(function(m){c[m.kind]++;});});
- return c;
-}
-function markCount(r,k){return r.ev?r.ev.marks.filter(function(m){return m.kind===k;}).length:'-';}
-/* ---------- step 1: Reg No → student + programs ---------- */
-function showStudent(reg){
- /* any 7-digit Registration No. can be searched (user, 20 Nov 2026) */
- student=/^\d{7}$/.test(reg)?hwStudentByReg(reg,allItems):null;
- $('RegNo').value=reg;
- if(!student){
-  $('RegNo').classList.add('field-invalid');
-  $('RegInvalidText').textContent=/^\d{7}$/.test(reg)?'এই Registration No. দিয়ে কোনো শিক্ষার্থী পাওয়া যায়নি।':'৭ ডিজিটের Registration No. দিন।';$('RegInvalidText').classList.add('show');
-  return;
- }
- var h=demoHash('student|'+student.reg),first=student.name.split(' ')[0];
- var facts=[['Full Name',student.name.toUpperCase()],['Nick Name',first],['Reg No',student.reg],['Branch',student.branch],
-  ['Mobile Number','88017'+String(10000000+h%89999999)],['Gender',FEMALE.indexOf(first)>-1?'Female':'Male'],['Religion','Islam']];
- $('studentFacts').innerHTML=facts.map(function(f){return '<div><dt>'+f[0]+'</dt><dd>: '+esc(f[1])+'</dd></div>';}).join('');
- var progs={};
- student.courseIds.forEach(function(cid){var c=ENROLL.courseById[cid];if(c)progs[c.pid+'-'+c.sid]={pid:c.pid,sid:c.sid};});
- $('programBody').innerHTML=Object.keys(progs).map(function(k){
-  var p=progs[k],c=counts(studentHw(student,p.pid,p.sid)),ad=isoPlus(today,-60-demoHash('adm|'+student.reg+'|'+k)%300);
-  return '<tr><td>'+longDate(ad)+'</td><td>'+esc(ENROLL.progById[p.pid].name)+'</td><td>'+esc(ENROLL.sessById[p.sid]||'')+'</td><td>'+c.total+'</td><td>'+c.Submitted+'</td><td>'+c.Absent+'</td><td>'+c['Not Submitted Yet']+'</td>'+
-   '<td><button class="btn btn-ip btn-small" type="button" data-prog="'+k+'" data-adm="'+ad+'">View Report</button></td></tr>';
- }).join('')||'<tr><td colspan="8">No data available in table</td></tr>';
- $('detailsPanel').hidden=false;
-}
-/* ---------- step 2: the report ---------- */
-function fillSelect(id,label,values,keep){
- var cur=keep?$(id).value:'all';
- $(id).innerHTML='<option value="all">All '+label+'</option>'+values.map(function(v){return '<option value="'+esc(v)+'">'+esc(v)+'</option>';}).join('');
- if(values.indexOf(cur)>-1)$(id).value=cur;
-}
-function distinct(a){return a.filter(function(v,i){return a.indexOf(v)===i;});}
-function refreshFilters(level){
- var hw=$('fHwCourse').value,sub=$('fSubject').value;
- if(level<1)fillSelect('fHwCourse','HW Course',distinct(rows.map(function(r){return hwById[r.item.hwCourseId].fullName;})));
- hw=$('fHwCourse').value;
- var l2=rows.filter(function(r){return hw==='all'||hwById[r.item.hwCourseId].fullName===hw;});
- if(level<2)fillSelect('fSubject','Subject',distinct(l2.map(function(r){return r.item.subject;})).sort(),true);
- sub=$('fSubject').value;
- var l3=l2.filter(function(r){return sub==='all'||r.item.subject===sub;});
- fillSelect('fChapter','Chapter',distinct(l3.map(function(r){var c=chapterById[r.item.chapterId];return c?c.fullName:'-';})),true);
-}
-function filtered(){
- var hw=$('fHwCourse').value,sub=$('fSubject').value,ch=$('fChapter').value,st=$('fStatus').value;
- return rows.filter(function(r){
-  var c=chapterById[r.item.chapterId];
-  return (hw==='all'||hwById[r.item.hwCourseId].fullName===hw)&&(sub==='all'||r.item.subject===sub)&&(ch==='all'||(c&&c.fullName)===ch)&&(st==='all'||r.status===st);
+var HEADERS=['Sl.','HW Code','Date From','Date To','Program Session','Course','HW Course','Subject','Chapter','Lecture','Target Students','Note From','Uploaded','Evaluated','Created By','Status','Action'];
+if(EVAL_MODE)HEADERS=['Sl.','HW Code','Date From','Date To','Program Session','Course','HW Course','Subject','Chapter','Lecture','Target Students','Uploaded','Evaluated','Action'];
+var allItems=[],reportRows=[],currentPage=1,appliedPageSize=10,applied=null,toastTimer=0,confirmAction=null;
+function $(id){return document.getElementById(id);}
+function escapeHtml(value){
+ return String(value).replace(/[&<>"']/g,function(ch){
+  return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];
  });
 }
-function statusBadge(s){return '<span class="status-badge '+(s==='Submitted'?'published':s==='Absent'?'unpublished':'draft')+'">'+s+'</span>';}
-function renderReport(){
- shown=filtered();
- var groups={},order=[];
- shown.forEach(function(r){var k=r.item.hwCourseId;if(!groups[k]){groups[k]=[];order.push(k);}groups[k].push(r);});
- var n=0;
- $('bottomPart').innerHTML=order.length?order.map(function(k){
-  var list=groups[k],c=counts(list);
-  return '<div class="course-block"><div class="course-name">'+esc(hwById[k].fullName)+'</div><div class="performance-scroll"><table class="ip-table performance-table"><thead><tr>'+
-   '<th>Serial</th><th>Date From</th><th>Date To</th><th>HW Code</th><th>Subject</th><th>Chapter</th><th>Lecture</th><th>Status</th><th>Submitted At</th><th>Pages</th><th>Right (✓)</th><th>Wrong (✗)</th><th>Attention (◯)</th><th>Action</th></tr></thead><tbody>'+
-   list.map(function(r,ix){
-    var i=r.item,ch=chapterById[i.chapterId],at=n++;
-    return '<tr><td>'+demoPad(ix+1)+'</td><td>'+fmt(i.dateFrom)+'</td><td>'+fmt(i.dateTo)+'</td><td>'+esc(i.code)+'</td><td>'+esc(i.subject)+'</td><td class="left">'+esc(ch?ch.fullName:'-')+'</td><td class="left">'+esc(i.lecture)+'</td>'+
-     '<td>'+statusBadge(r.status)+'</td><td>'+(r.sub?fmtAt(r.sub.at):'-')+'</td><td>'+(r.sub?r.sub.pages:'-')+'</td><td>'+markCount(r,'ok')+'</td><td>'+markCount(r,'wrong')+'</td><td>'+markCount(r,'attn')+'</td>'+
-     '<td><button class="row-action" type="button" data-detail="'+at+'" title="Details" aria-label="Details"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span></button></td></tr>';
-   }).join('')+'</tbody></table></div><div class="course-total">Total HW: '+c.total+' &nbsp;|&nbsp; Submitted: '+c.Submitted+' &nbsp;|&nbsp; Absent: '+c.Absent+' &nbsp;|&nbsp; Not Submitted Yet: '+c['Not Submitted Yet']+'</div></div>';
- }).join(''):'<div class="ip-empty">No data available</div>';
- shown=order.reduce(function(a,k){return a.concat(groups[k]);},[]);
- var all={};rows.forEach(function(r){(all[r.item.hwCourseId]=all[r.item.hwCourseId]||[]).push(r);});
- $('summaryBody').innerHTML=Object.keys(all).map(function(k,ix){
-  var c=counts(all[k]);
-  return '<tr><td>'+demoPad(ix+1)+'</td><td class="left">'+esc(hwById[k].fullName)+'</td><td>'+c.total+'</td><td>'+c.Submitted+'</td><td>'+c.Absent+'</td><td>'+c['Not Submitted Yet']+'</td><td>'+c.ok+'</td><td>'+c.wrong+'</td><td>'+c.attn+'</td></tr>';
- }).join('')||'<tr><td colspan="9">No data available</td></tr>';
+function markInvalid(el,invalid){el.classList.toggle('field-invalid',invalid);}
+function customMessage(text,type){
+ var host=$('customMessage');
+ host.innerHTML='<div class="alert '+(type==='e'?'alert-danger':'alert-success')+'"><button class="close" type="button" aria-label="Close">×</button>'+escapeHtml(text)+'</div>';
+ host.querySelector('.close').addEventListener('click',function(){host.innerHTML='';});
+ window.scrollTo({top:0,behavior:'smooth'});
 }
-function showReport(progKey,adm){
- var p=progKey.split('-');
- rows=studentHw(student,p[0],p[1]);
- var prog=ENROLL.progById[p[0]];
- $('orgHeading').textContent=(ENROLL.orgById[prog.orgId]||'UDVASH')+' Academic & Admission Care';
- $('programHeading').textContent=prog.name+' '+(ENROLL.sessById[p[1]]||'');
- $('reportMeta').innerHTML='<div class="meta-name">Student\'s Name : '+esc(student.name.toUpperCase())+'</div><div class="meta-branch">Branch : '+esc(student.branch)+'</div>'+
-  '<div class="meta-registration">Reg. No. : '+esc(student.reg)+'</div><div class="meta-admission">Admission Date : '+(adm?longDate(adm):'-')+'</div>';
- refreshFilters(0);
- renderReport();
- $('lookupStage').hidden=true;
- $('reportPanel').hidden=false;
+function fmt(iso){if(!iso)return'-';var p=iso.split('-');return p[2]+'/'+p[1]+'/'+p[0];}
+/* every submitted copy is evaluated within seconds: Uploaded / Evaluated counts come from the submission list (HW Evaluation Report menu) */
+function reload(){allItems=buildHwList(hwCourses,chapters);allItems.forEach(function(i){var c=hwEvalCounts(i,hwTodayIso());i.uploads=c.uploaded;i.evaluated=c.evaluated;});}
+function submissionsHref(item){return SUBMISSIONS_PAGE+'?id='+item.id;}
+/* ---------- filters: Date From/To + Target Student Selection (same as Create HW Notekhata) ---------- */
+var TARGET_ALL=true; /* filters start as "All" (user, 18 Nov 2026) */
+/* Shared by Create HW Notekhata, Edit HW Notekhata and Manage HW Notekhata: Date From/To + Target Student Selection.
+   The page defines onTargetCourseChange() (Create: reload mapped HW Courses; Manage: reload HW filters). */
+/* ---------- Target Student Selection ---------- */
+var lookup={org:{},program:{},session:{},course:{}};
+function pairsToNames(pairs,bucket){
+ var seen={};
+ return pairs.map(function(p){
+  var name=p[1];
+  if(seen[name])name=name+' (#'+p[0]+')';
+  seen[name]=true;
+  bucket[name]=p[0];
+  return name;
+ });
 }
-/* ---------- Details popup ---------- */
-function openDetail(n){
- var r=shown[n];if(!r)return;
- openIx=n;
- var i=r.item,ch=chapterById[i.chapterId];
- var info=[['HW Code',i.code],['HW Course',hwById[i.hwCourseId].fullName],['Subject',i.subject],['Chapter',ch?ch.fullName:'-'],['Lecture',i.lecture],
-  ['Date From',fmt(i.dateFrom)],['Date To',i.dateTo?fmt(i.dateTo):'শেষ সীমা নেই'],['Status',r.status]];
- if(r.sub)info=info.concat([['Submitted At',fmtAt(r.sub.at)],['Pages',r.sub.pages],['Evaluated At',fmtAt(r.ev.at)]]);
- var html='<dl class="detail-grid">'+info.map(function(x){return '<div><dt>'+esc(x[0])+'</dt><dd>'+esc(x[1])+'</dd></div>';}).join('')+'</dl>'+
-  '<div class="detail-note"><h4>Question</h4><div>'+esc(i.question||'-')+'</div></div>';
- if(r.sub){
-  html+='<h4 class="sub-h">জমা দেওয়া খাতা</h4>'+hwEvalLegendHtml()+hwEvalPagesHtml(r.ev,r.sub.pages,null,r.sub.key)+
-   '<h4 class="sub-h">দাগের ব্যাখ্যা</h4>'+hwEvalNotesHtml(r.ev)+'<h4 class="sub-h">মন্তব্য</h4>'+hwEvalCommentHtml(r.ev);
- }else{
-  html+='<div class="ip-nocopy">'+(r.status==='Absent'?'জমার শেষ সময় ('+fmt(i.dateTo)+') পার হয়ে গেছে — খাতা জমা দেওয়া হয়নি।':'এখনো খাতা জমা দেওয়া হয়নি।')+'</div>';
+function orgId(){return lookup.org[singleValue('tOrg')];}
+function programId(){return lookup.program[singleValue('tProgram')];}
+function sessionId(){return lookup.session[singleValue('tSession')];}
+function selectedCids(){return multiValues('tCourse').map(function(n){return Number(lookup.course[n]);});}
+function selectBy(){return singleValue('tSelectBy').replace(/ Wise$/,'');}
+function pickedBranches(){
+ if(selectBy()==='Branch')return multiValues('tPick');
+ if(selectBy()==='Zone')return branchesOfZones(multiValues('tPick'));
+ return[];
+}
+/* Manage HW Notekhata sets TARGET_ALL=true: Organization/Program/Session get an "All" option and the
+   multi-selects start as Select all (Create HW Notekhata keeps explicit choices) */
+function targetAll(){return typeof TARGET_ALL!=='undefined'&&TARGET_ALL;}
+function withAll(list){return targetAll()?['All'].concat(list):list;}
+singleHandlers.tOrg=function(){
+ lookup.program={};
+ setSingle('tProgram',withAll(orgId()?pairsToNames(ENROLL.programsOfOrg(orgId()),lookup.program):[]),targetAll()?'All':'');
+ singleHandlers.tProgram();
+};
+singleHandlers.tProgram=function(){
+ lookup.session={};
+ var pid=programId();
+ setSingle('tSession',withAll(pid?pairsToNames(ENROLL.sessionsOf(orgId(),pid),lookup.session):[]),targetAll()?'All':'');
+ singleHandlers.tSession();
+};
+singleHandlers.tSession=function(){
+ var sid=sessionId();
+ lookup.course={};
+ setMulti('tCourse',sid?pairsToNames(ENROLL.coursesOf(orgId(),programId(),sid),lookup.course):[],{reset:true,defaultAll:targetAll()});
+ setMulti('tMother',sid?motherCoursesFor(orgId(),programId(),sid).map(function(p){return p[1];}):[],{reset:true});
+ onTargetCourseChange();
+};
+multiHandlers.tCourse=function(){onTargetCourseChange();};
+var REG_HIDDEN=['tCampus','tVersion','tGender','tBatchType','tBatchTime','tBatchName','tReligion'];
+singleHandlers.tSelectBy=function(){
+ var mode=selectBy();
+ var label=$('pickLabel'),box=multiBox('tPick'),regs=$('tRegs');
+ label.firstChild.nodeValue=(mode==='Reg'?'Reg No':(mode||'Branch'))+' ';
+ box.hidden=mode==='Reg';
+ regs.hidden=mode!=='Reg';
+ $('pickField').classList.toggle('reg-mode',mode==='Reg');
+ /* Reg = individual students by registration number, so the group filters below are not shown */
+ REG_HIDDEN.forEach(function(key){(singleBox(key)||multiBox(key)).closest('.field').hidden=mode==='Reg';});
+ markInvalid(box,false);markInvalid(regs,false);
+ if(mode==='Reg'){regs.value='';}
+ else{
+  box.setAttribute('data-placeholder','Select '+(mode||'Branch'));
+  setMulti('tPick',mode==='Zone'?BRANCH_ZONES.map(function(z){return z[0];}):PERMITTED_BRANCHES,{reset:true,defaultAll:targetAll()});
  }
- html+='<div class="detail-note"><h4>Sample Answer</h4><div>'+esc(i.sampleAnswer||'-')+'</div></div>';
- $('copyTitle').textContent='HW Details — '+i.code+' ('+r.status+')';
- $('copyBody').innerHTML=html;
- $('copyBody').scrollTop=0;
- $('copyPrev').disabled=n<=0;
- $('copyNext').disabled=n>=shown.length-1;
- $('copyModal').classList.add('open');
+ refreshBranchDependents();
+};
+multiHandlers.tPick=function(){refreshBranchDependents();};
+multiHandlers.tBatchTime=function(){refreshBatchNames();};
+function refreshBranchDependents(){
+ var branches=pickedBranches();
+ setMulti('tCampus',campusesFor(branches),{defaultAll:true,disabled:!branches.length});
+ refreshBatchNames();
 }
-/* ---------- wiring (URL keeps the step, so Back / refresh work) ---------- */
-$('btnSubmit').addEventListener('click',function(){
- var v=$('RegNo').value.trim();
- $('RegNo').classList.toggle('field-invalid',!v);
- $('RegInvalidText').classList.remove('show');
- if(!v){$('RegNo').focus();return;}
- go({reg:v});
+function refreshBatchNames(){
+ var branches=pickedBranches();
+ setMulti('tBatchName',batchNamesFor(branches,multiValues('tBatchTime')),{defaultAll:true,disabled:!branches.length});
+}
+function targetValidate(check){
+ ['tOrg','tProgram','tSession'].forEach(function(key){check(singleBox(key),Boolean(singleValue(key)));});
+ if(!(targetAll()&&!sessionId()))check(multiBox('tCourse'),multiValues('tCourse').length>0);
+ check(singleBox('tSelectBy'),Boolean(selectBy()));
+ if(selectBy()==='Reg'){
+  var regs=$('tRegs').value.split(/[\s,]+/).filter(Boolean);
+  check($('tRegs'),regs.length>0&&regs.every(function(r){return /^\d{6,12}$/.test(r);}));
+ }else check(multiBox('tPick'),multiValues('tPick').length>0);
+ if(pickedBranches().length){
+  ['tCampus','tBatchName'].forEach(function(key){check(multiBox(key),multiValues(key).length>0);});
+ }
+ if(selectBy()!=='Reg')['tBatchType','tBatchTime'].forEach(function(key){check(multiBox(key),multiValues(key).length>0);});
+}
+function targetRecord(){
+ return {
+   orgId:orgId(),programId:programId(),sessionId:sessionId(),courseIds:selectedCids(),
+   motherCourses:multiValues('tMother'),selectBy:selectBy(),
+   branches:selectBy()==='Branch'?multiValues('tPick'):[],zones:selectBy()==='Zone'?multiValues('tPick'):[],
+   regs:selectBy()==='Reg'?$('tRegs').value.split(/[\s,]+/).filter(Boolean):[],
+   campus:multiAll('tCampus')?'All':multiValues('tCampus'),version:singleValue('tVersion'),gender:singleValue('tGender'),
+   batchType:multiAll('tBatchType')?'All':multiValues('tBatchType'),batchTime:multiAll('tBatchTime')?'All':multiValues('tBatchTime'),
+   batchName:multiAll('tBatchName')?'All':multiValues('tBatchName'),religion:singleValue('tReligion')
+  };
+}
+function targetInit(){
+ lookup.org={};
+ setSingle('tOrg',withAll(pairsToNames(DEMO_ORGS.map(function(o){return[o.id,o.n];}),lookup.org)),targetAll()?'All':'');
+ setSingle('tProgram',withAll([]),targetAll()?'All':'');setSingle('tSession',withAll([]),targetAll()?'All':'');
+ setMulti('tCourse',[],{});setMulti('tMother',[],{});
+ setSingle('tSelectBy',SELECT_BY_OPTIONS,'Branch Wise');
+ setSingle('tVersion',VERSION_OPTIONS,'All');
+ setSingle('tGender',GENDER_OPTIONS,'All');
+ setSingle('tReligion',RELIGION_OPTIONS,'All');
+ setMulti('tBatchType',BATCH_TYPES,{defaultAll:true});
+ setMulti('tBatchTime',BATCH_TIMES,{defaultAll:true});
+ singleHandlers.tSelectBy();
+}
+/* Prefill helpers (Edit page, and Manage page restoring its last filters) */
+function nameFor(bucket,id){
+ return Object.keys(bucket).filter(function(n){return String(bucket[n])===String(id);})[0]||'';
+}
+function chooseSingle(key,value){
+ var input=Array.prototype.filter.call(singleBox(key).querySelectorAll('input'),function(i){return i.value===value;})[0];
+ if(!input)return false;
+ input.checked=true;
+ updateSingleLabel(key);
+ if(singleHandlers[key])singleHandlers[key](value);
+ return true;
+}
+function chooseMulti(key,values){
+ var s=multiState[key];
+ if(!s)return;
+ if(values==='All')s.selected=s.items.length?['__all__']:[];
+ else{
+  var picked=[].concat(values||[]).filter(function(v){return s.items.indexOf(v)>-1;});
+  s.selected=picked.length&&picked.length===s.items.length?['__all__']:picked;
+ }
+ syncMulti(key);
+ if(multiHandlers[key])multiHandlers[key]();
+}
+function applyTarget(t){
+ chooseSingle('tOrg',nameFor(lookup.org,t.orgId));
+ chooseSingle('tProgram',nameFor(lookup.program,t.programId));
+ chooseSingle('tSession',nameFor(lookup.session,t.sessionId));
+ chooseMulti('tCourse',t.courseIds.map(function(c){return nameFor(lookup.course,c);}));
+ chooseMulti('tMother',t.motherCourses||[]);
+ chooseSingle('tSelectBy',t.selectBy+' Wise');
+ if(t.selectBy==='Reg')$('tRegs').value=(t.regs||[]).join(', ');
+ else{
+  chooseMulti('tPick',t.selectBy==='Zone'?t.zones:t.branches);
+  chooseMulti('tCampus',t.campus);
+  chooseMulti('tBatchType',t.batchType);
+  chooseMulti('tBatchTime',t.batchTime);
+  chooseMulti('tBatchName',t.batchName);
+ }
+ chooseSingle('tVersion',t.version);chooseSingle('tGender',t.gender);chooseSingle('tReligion',t.religion);
+}
+function onTargetCourseChange(){refreshHwFilters(1);}
+function val(key){var v=singleValue(key);return v==='All'?'':v;}
+function overlap(a,b){return a.some(function(v){return b.indexOf(v)>-1;});}
+function anyOf(itemValue,viewKey){
+ /* 'All' on either side matches; otherwise the HW's values must overlap the selected ones */
+ if(multiAll(viewKey)||itemValue==='All'||itemValue===undefined)return true;
+ return overlap([].concat(itemValue),multiValues(viewKey));
+}
+function oneOf(itemValue,viewKey){
+ var v=singleValue(viewKey);
+ return !v||v==='All'||!itemValue||itemValue==='All'||itemValue===v;
+}
+function regList(){return $('tRegs').value.split(/[\s,]+/).filter(Boolean);}
+function targetMatch(item){
+ var t=item.target;
+ if(orgId()&&String(t.orgId)!==String(orgId()))return false;
+ if(programId()&&String(t.programId)!==String(programId()))return false;
+ if(sessionId()){
+  if(String(t.sessionId)!==String(sessionId()))return false;
+  if(!overlap(t.courseIds.map(Number),selectedCids()))return false;
+ }
+ var mothers=multiValues('tMother');
+ if(mothers.length&&!overlap(t.motherCourses||[],mothers))return false;
+ if(selectBy()==='Reg')return t.selectBy==='Reg'&&overlap(t.regs||[],regList());
+ /* Branch / Zone view: HW given to those branches; Reg-targeted HW of the same Course are shown too */
+ if(t.selectBy!=='Reg'){
+  var theirs=t.selectBy==='Zone'?branchesOfZones(t.zones||[]):(t.branches||[]);
+  if(!overlap(theirs,pickedBranches()))return false;
+  if(!anyOf(t.campus,'tCampus')||!anyOf(t.batchType,'tBatchType')||!anyOf(t.batchTime,'tBatchTime')||!anyOf(t.batchName,'tBatchName'))return false;
+  if(!oneOf(t.version,'tVersion')||!oneOf(t.gender,'tGender')||!oneOf(t.religion,'tReligion'))return false;
+ }
+ return true;
+}
+function targetReady(){return Boolean((!sessionId()||selectedCids().length)&&(selectBy()==='Reg'?regList().length:pickedBranches().length));}
+function distinct(list){return list.filter(function(v,i){return list.indexOf(v)===i;});}
+function refreshHwFilters(level){
+ var base=targetReady()?allItems.filter(targetMatch):[];
+ if(level<=1){
+  var hws=distinct(base.map(function(i){return i.hwCourseId;})).map(function(id){return hwById[id];}).filter(Boolean)
+   .sort(function(a,b){return b.rank-a.rank;}).map(function(h){return h.fullName;});
+  setSingle('mHwCourse',['All'].concat(hws),'All');
+ }
+ var hwName=val('mHwCourse');
+ var lvl2=base.filter(function(i){return !hwName||hwById[i.hwCourseId].fullName===hwName;});
+ if(level<=2)setSingle('mSubject',['All'].concat(distinct(lvl2.map(function(i){return i.subject;})).sort()),'All');
+ var subject=val('mSubject');
+ var lvl3=lvl2.filter(function(i){return !subject||i.subject===subject;});
+ if(level<=3){
+  var chs=distinct(lvl3.map(function(i){return i.chapterId;})).map(function(id){return chapterById[id];}).filter(Boolean)
+   .sort(function(a,b){return a.rank-b.rank;}).map(function(c){return c.fullName;});
+  setSingle('mChapter',['All'].concat(distinct(chs)),'All');
+ }
+}
+singleHandlers.mHwCourse=function(){refreshHwFilters(2);};
+singleHandlers.mSubject=function(){refreshHwFilters(3);};
+function validate(){
+ var invalid=[];
+ function check(el,ok){markInvalid(el,!ok);if(!ok)invalid.push(el);}
+ var from=$('fDateFrom').value,to=$('fDateTo').value;
+ check($('fDateFrom'),Boolean(from));
+ check($('fDateTo'),!to||!from||to>=from);
+ targetValidate(check);
+ var size=$('mPageSize').value.trim();
+ check($('mPageSize'),/^\d+$/.test(size)&&Number(size)>=1&&Number(size)<=500);
+ if(invalid.length){var f=invalid[0];(f.classList.contains('multi')?f.querySelector('.multi-button'):f).focus();}
+ return!invalid.length;
+}
+function snapshot(){
+ return{hw:val('mHwCourse'),subject:val('mSubject'),chapter:val('mChapter'),status:val('mStatus'),
+  from:$('fDateFrom').value,to:$('fDateTo').value};
+}
+function filterRows(){
+ return allItems.filter(function(i){
+  if(!targetMatch(i))return false;
+  if(applied.hw&&hwById[i.hwCourseId].fullName!==applied.hw)return false;
+  if(applied.subject&&i.subject!==applied.subject)return false;
+  if(applied.chapter&&(chapterById[i.chapterId]||{}).fullName!==applied.chapter)return false;
+  if(applied.status&&i.status!==applied.status)return false;
+  /* HW window overlaps the selected date range */
+  if(applied.to&&i.dateFrom>applied.to)return false;
+  if(i.dateTo&&i.dateTo<applied.from)return false;
+  return true;
+ });
+}
+/* ---------- table ---------- */
+function courseNames(item){
+ return item.target.courseIds.map(function(cid){var c=ENROLL.courseById[cid];return c?c.name:'#'+cid;}).join(', ');
+}
+function programSession(item){
+ var p=ENROLL.progById[item.target.programId];
+ return (p?p.name:'')+' '+(ENROLL.sessById[item.target.sessionId]||'');
+}
+function editHref(item){return EDIT_PAGE+'?id='+item.id;}
+function actionButtons(item){
+ var id=item.id;
+ return '<button class="row-action" type="button" data-action="detail" data-id="'+id+'" title="Details" aria-label="Details"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span></button>'+
+  '<a class="row-action" href="'+editHref(item)+'" title="Edit" aria-label="Edit"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>'+
+  '<button class="row-action delete" type="button" data-action="delete" data-id="'+id+'" title="Delete" aria-label="Delete"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>';
+}
+function renderPage(){
+ if(applied)try{var sv=JSON.parse(window.sessionStorage.getItem(FILTER_KEY)||'null');if(sv){sv.page=currentPage;window.sessionStorage.setItem(FILTER_KEY,JSON.stringify(sv));}}catch(e){}
+ var size=appliedPageSize;
+ var pageCount=Math.max(1,Math.ceil(reportRows.length/size));
+ if(currentPage>pageCount)currentPage=pageCount;
+ var start=(currentPage-1)*size;
+ var rows=reportRows.slice(start,start+size);
+ var body=$('reportBody');
+ if(!rows.length){
+  body.innerHTML='<tr><td class="hw-empty" colspan="'+HEADERS.length+'">No data available in table</td></tr>';
+ }else{
+  body.innerHTML=rows.map(function(item,index){
+   var ch=chapterById[item.chapterId];
+   return '<tr>'+
+    '<td>'+(start+index+1)+'</td>'+
+    '<td>'+escapeHtml(item.code)+'</td>'+
+    '<td>'+fmt(item.dateFrom)+'</td>'+
+    '<td>'+fmt(item.dateTo)+'</td>'+
+    '<td>'+escapeHtml(programSession(item))+'</td>'+
+    '<td>'+escapeHtml(courseNames(item))+'</td>'+
+    '<td>'+escapeHtml(hwById[item.hwCourseId].fullName)+'</td>'+
+    '<td>'+escapeHtml(item.subject)+'</td>'+
+    '<td>'+escapeHtml(ch?ch.fullName:'-')+'</td>'+
+    '<td class="left">'+escapeHtml(item.lecture)+'</td>'+
+    '<td class="left">'+escapeHtml(targetSummary(item.target))+'</td>'+
+    (EVAL_MODE?'':'<td>'+escapeHtml(item.noteFrom)+'</td>')+
+    '<td class="number">'+item.uploads+'</td>'+
+    '<td class="number">'+item.evaluated+'</td>'+
+    (EVAL_MODE?'<td class="action-cell">'+(item.uploads?'<a class="row-action" href="'+submissionsHref(item)+'" title="View Copies" aria-label="View Copies"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a>':'<span class="muted">-</span>')+'</td></tr>':
+    '<td>'+escapeHtml(item.createdBy)+'</td>'+
+    '<td class="status-cell"><button type="button" class="status-badge status-toggle '+item.status.toLowerCase()+'" data-action="status" data-id="'+item.id+'" title="'+(item.status==='Published'?'Unpublish':'Publish')+' করতে ক্লিক করুন">'+item.status+'</button></td>'+
+    '<td class="action-cell">'+actionButtons(item)+'</td>'+
+   '</tr>');
+  }).join('');
+ }
+ $('rangeStart').textContent=reportRows.length?start+1:0;
+ $('rangeEnd').textContent=Math.min(start+size,reportRows.length);
+ $('totalRows').textContent=reportRows.length;
+ renderPagination(pageCount);
+ /* Status sticks right next to the frozen Action column: use Action's real rendered width */
+ var act=document.querySelector('#reportHead th:last-child');
+ if(act)document.querySelector('.hw-table').style.setProperty('--hw-action-w',act.getBoundingClientRect().width+'px');
+}
+function renderPagination(pageCount){
+ var host=document.getElementById('pagination');
+ host.innerHTML='';
+ function add(label,page,disabled,active){
+  var button=document.createElement('button');
+  button.type='button';
+  button.textContent=label;
+  button.disabled=disabled;
+  button.className=active?'active':'';
+  button.addEventListener('click',function(){
+   currentPage=page;
+   renderPage();
+  });
+  host.appendChild(button);
+ }
+ add(
+  'Previous',
+  Math.max(1,currentPage-1),
+  currentPage===1,
+  false
+ );
+ var start=Math.max(1,currentPage-2);
+ var end=Math.min(pageCount,start+4);
+ start=Math.max(1,end-4);
+ for(var page=start;page<=end;page++){
+  add(String(page),page,false,page===currentPage);
+ }
+ add(
+  'Next',
+  Math.min(pageCount,currentPage+1),
+  currentPage===pageCount,
+  false
+ );
+}
+function toggleBody(button){
+ var body=button.closest('.panel').querySelector('.panel-body');
+ var opening=body.hidden;
+ body.hidden=!opening;
+ button.textContent=opening?'−':'+';
+ button.setAttribute('aria-expanded',String(opening));
+}
+var FILTER_KEY=EVAL_MODE?'hwEvaluationFilters:v1':'hwManageFilters:v2';
+function saveFilters(){
+ var s={target:targetRecord(),hw:singleValue('mHwCourse'),subject:singleValue('mSubject'),chapter:singleValue('mChapter'),
+  status:singleValue('mStatus'),from:$('fDateFrom').value,to:$('fDateTo').value,size:$('mPageSize').value,page:currentPage};
+ try{window.sessionStorage.setItem(FILTER_KEY,JSON.stringify(s));}catch(e){}
+}
+function restoreFilters(){
+ var s=null;
+ try{s=JSON.parse(window.sessionStorage.getItem(FILTER_KEY)||'null');}catch(e){}
+ if(!s||!s.target)return;
+ applyTarget(s.target);
+ refreshHwFilters(1);
+ chooseSingle('mHwCourse',s.hw);chooseSingle('mSubject',s.subject);chooseSingle('mChapter',s.chapter);chooseSingle('mStatus',s.status);
+ $('fDateFrom').value=s.from;$('fDateTo').value=s.to;$('mPageSize').value=s.size;
+ viewReport(true);
+ currentPage=s.page||1;renderPage();
+}
+function viewReport(silent){
+ if(!validate())return;
+ saveFilters();
+ reload();
+ appliedPageSize=Number($('mPageSize').value);
+ applied=snapshot();
+ reportRows=filterRows();
+ currentPage=1;
+ $('reportPanel').hidden=false;
+ renderPage();
+ /* collapse the filter after a manual View Report; coming back from Edit (silent) keeps it expanded */
+ var toggle=$('filterPanel').querySelector('.panel-toggle');
+ if(!silent&&!$('filterPanel').querySelector('.panel-body').hidden)toggleBody(toggle);
+}
+function refreshReport(){
+ if(!applied)return;
+ reload();
+ reportRows=filterRows();
+ renderPage();
+}
+function findItem(id){return allItems.filter(function(i){return String(i.id)===String(id);})[0]||null;}
+function exportCsv(){
+ if(!validate())return;
+ if(!applied)viewReport();
+ var lines=[HEADERS.slice(0,-1).join(',')];
+ reportRows.forEach(function(item,i){
+  var ch=chapterById[item.chapterId];
+  lines.push((EVAL_MODE?[i+1,item.code,fmt(item.dateFrom),fmt(item.dateTo),programSession(item),courseNames(item),hwById[item.hwCourseId].fullName,
+   item.subject,ch?ch.fullName:'',item.lecture,targetSummary(item.target),item.uploads,item.evaluated]:[i+1,item.code,fmt(item.dateFrom),fmt(item.dateTo),programSession(item),courseNames(item),hwById[item.hwCourseId].fullName,
+   item.subject,ch?ch.fullName:'',item.lecture,targetSummary(item.target),item.noteFrom,item.uploads,item.evaluated,item.createdBy,item.status])
+   .map(function(v){v=String(v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;}).join(','));
+ });
+ var blob=new Blob([String.fromCharCode(0xFEFF)+lines.join('\r\n')],{type:'text/csv;charset=utf-8'});
+ var link=document.createElement('a');
+ link.href=URL.createObjectURL(blob);
+ link.download=EVAL_MODE?'HWEvaluationReportList.csv':'HWNotekhataList.csv';
+ document.body.appendChild(link);link.click();link.remove();
+}
+/* ---------- details ---------- */
+function chips(files){
+ return files&&files.length?'<div class="file-chips">'+files.map(function(f){return '<span class="file-chip">'+escapeHtml(f)+'</span>';}).join('')+'</div>':'';
+}
+function openDetail(id){
+ var item=findItem(id);if(!item)return;
+ var t=item.target,ch=chapterById[item.chapterId];
+ var org=DEMO_ORGS.filter(function(o){return String(o.id)===String(t.orgId);})[0];
+ var list=function(v){return v==='All'||!v||!v.length?'All':[].concat(v).join(', ');};
+ var info=[
+  ['HW Code',item.code],['Status',item.status],['Uploaded',item.uploads+' / '+item.targetCount],['Evaluated',item.evaluated+' / '+item.uploads],
+  ['Date From',fmt(item.dateFrom)],['Date To',item.dateTo?fmt(item.dateTo):'শেষ সীমা নেই'],['Created By',item.createdBy],
+  ['Organization',org?org.n:'-'],['Program Session',programSession(item)],['Course',courseNames(item)],
+  ['Mother Course',list(t.motherCourses).replace('All','None')],['Student Select By',t.selectBy+' Wise'],[t.selectBy==='Reg'?'Reg No':(t.selectBy||'Branch'),t.selectBy==='Reg'?t.regs.join(', '):t.selectBy==='Zone'?t.zones.join(', '):t.branches.join(', ')]
+ ];
+ if(t.selectBy!=='Reg')info=info.concat([['Campus',list(t.campus)],['Version of Study',t.version],['Gender',t.gender],['Batch Type',list(t.batchType)],['Batch Time',list(t.batchTime)],['Batch Name',list(t.batchName)],['Religion',t.religion]]);
+ info=info.concat([['HW Course',hwById[item.hwCourseId].fullName],['Subject',item.subject],['Chapter',ch?ch.fullName:'-'],['Lecture',item.lecture],['Note Select From',item.noteFrom]]);
+ $('detailInfo').innerHTML=info.map(function(p){return '<div><dt>'+escapeHtml(p[0])+'</dt><dd>'+escapeHtml(p[1])+'</dd></div>';}).join('');
+ $('detailQuestion').innerHTML=(escapeHtml(item.question)||'<span class="muted">-</span>'); /* no question image beside the question */
+ $('detailAnswer').innerHTML=(escapeHtml(item.sampleAnswer)||'<span class="muted">-</span>')+chips(item.sampleFiles);
+ $('detailTitle').textContent='HW Notekhata Details — '+item.code;
+ $('detailEdit').setAttribute('href',editHref(item));
+ $('detailModal').classList.add('open');
+}
+/* ---------- publish / delete ---------- */
+function confirmBox(title,text,okLabel,okClass,action){
+ $('confirmTitle').textContent=title;
+ $('confirmText').textContent=text;
+ $('confirmOk').textContent=okLabel;
+ $('confirmOk').className='btn '+okClass;
+ confirmAction=action;
+ $('confirmModal').classList.add('open');
+}
+function storeEdit(item,patch){
+ var store=readHwStore();
+ var created=store.created.filter(function(c){return c.id===item.id;})[0];
+ if(created)Object.assign(created,patch);
+ else store.edits[item.id]=Object.assign({},store.edits[item.id]||{},patch);
+ writeHwStore(store);
+}
+/* Status button: Published ⇄ Unpublished, after a confirmation */
+function requestStatus(id){
+ var item=findItem(id);if(!item)return;
+ if(item.status==='Published'){
+  confirmBox('Unpublish HW Notekhata',item.code+' ('+item.lecture+') Unpublish করবেন? Unpublished হলে শিক্ষার্থীরা Student Portal-এ এই HW আর দেখতে পাবে না।','Unpublish','btn-danger',function(){
+   storeEdit(item,{status:'Unpublished'});
+   refreshReport();
+   customMessage(item.code+' has been unpublished successfully.');
+  });
+ }else{
+  confirmBox('Publish HW Notekhata',item.code+' ('+item.lecture+') Publish করবেন? Publish হলে Date From থেকে শিক্ষার্থী Student Portal-এ দেখতে পাবে।','Publish','btn-success',function(){
+   storeEdit(item,{status:'Published'});
+   refreshReport();
+   customMessage(item.code+' has been published successfully.');
+  });
+ }
+}
+function requestDelete(id){
+ var item=findItem(id);if(!item)return;
+ if(item.uploads>0){
+  customMessage(item.code+' — ইতিমধ্যে '+item.uploads+' জন শিক্ষার্থী HW আপলোড করেছে, তাই Delete করা যাবে না।','e');
+  return;
+ }
+ confirmBox('Delete HW Notekhata',item.code+' ('+item.lecture+') Delete করবেন?','Delete','btn-danger',function(){
+  var store=readHwStore();
+  store.deleted.push(item.id);
+  writeHwStore(store);
+  refreshReport();
+  customMessage(item.code+' has been deleted successfully.');
+ });
+}
+/* ---------- init & wiring ---------- */
+['tPick','tCampus','tBatchType','tBatchTime','tBatchName','tMother'].forEach(function(key){
+ var base=multiHandlers[key];
+ multiHandlers[key]=function(){if(base)base();refreshHwFilters(1);};
 });
-$('RegNo').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();$('btnSubmit').click();}});
-$('RegNo').addEventListener('input',function(){this.classList.remove('field-invalid');$('RegInvalidText').classList.remove('show');});
-$('programBody').addEventListener('click',function(e){var b=e.target.closest('[data-prog]');if(b)go({reg:student.reg,prog:b.getAttribute('data-prog'),adm:b.getAttribute('data-adm')});});
-$('backToDetails').addEventListener('click',function(e){e.preventDefault();go({reg:student.reg});});
-$('fHwCourse').addEventListener('change',function(){refreshFilters(1);});
-$('fSubject').addEventListener('change',function(){refreshFilters(2);});
-$('reportForm').addEventListener('submit',function(e){e.preventDefault();renderReport();});
-$('bottomPart').addEventListener('click',function(e){var b=e.target.closest('[data-detail]');if(b)openDetail(Number(b.getAttribute('data-detail')));});
-$('copyPrev').addEventListener('click',function(){openDetail(openIx-1);});
-$('copyNext').addEventListener('click',function(){openDetail(openIx+1);});
-document.querySelectorAll('[data-close-copy]').forEach(function(b){b.addEventListener('click',function(){$('copyModal').classList.remove('open');});});
-$('copyModal').addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');});
-document.addEventListener('keydown',function(e){if(e.key==='Escape')$('copyModal').classList.remove('open');});
-['iconPrint','btnPrint'].forEach(function(id){$(id).addEventListener('click',function(){window.print();});});
+['tSelectBy','tVersion','tGender','tReligion'].forEach(function(key){
+ var base=singleHandlers[key];
+ singleHandlers[key]=function(v){if(base)base(v);refreshHwFilters(1);};
+});
+var today=hwTodayIso();
+/* today is selected by default (user, 18 Nov 2026) */
+$('fDateFrom').value=today;
+$('fDateTo').value=today;
+document.querySelector('.hw-hint').textContent='এই সময়ের মধ্যে যেসব HW-এর আপলোডের সময় পড়েছে, সেগুলো দেখাবে। Date To না দিলে শেষ সীমা ধরা হবে না।';
+document.querySelectorAll('.date-input').forEach(attachDatePicker);
+$('reportHead').innerHTML=HEADERS.map(function(h){return '<th>'+h+'</th>';}).join('');
+reload();
+targetInit();
+multiBox('tCourse').setAttribute('data-placeholder','All');syncMulti('tCourse');
+singleHandlers.tOrg();
+setSingle('mHwCourse',['All'],'All');setSingle('mSubject',['All'],'All');setSingle('mChapter',['All'],'All');
+setSingle('mStatus',['All','Published','Unpublished'],'All');
+$('viewReport').addEventListener('click',function(){viewReport();});
+$('clearDateTo').addEventListener('click',function(e){e.stopPropagation();$('fDateTo').value='';markInvalid($('fDateTo'),false);closeDatePickers();});
+$('exportBtn').addEventListener('click',exportCsv);
+/* the whole panel header (not only the +/− button) collapses / expands the panel */
+document.querySelectorAll('#filterPanel .panel-head, #reportPanel .panel-head').forEach(function(head){
+ head.setAttribute('data-toggle-head','');
+ head.addEventListener('click',function(){toggleBody(head.querySelector('.panel-toggle'));});
+});
+$('reportBody').addEventListener('click',function(e){
+ var btn=e.target.closest('button[data-action]');
+ if(!btn)return;
+ var id=btn.getAttribute('data-id'),action=btn.getAttribute('data-action');
+ if(action==='detail')openDetail(id);
+ else if(action==='status')requestStatus(id);
+ else if(action==='delete')requestDelete(id);
+});
+if($('confirmOk'))$('confirmOk').addEventListener('click',function(){
+ $('confirmModal').classList.remove('open');
+ if(confirmAction)confirmAction();
+ confirmAction=null;
+});
+document.querySelectorAll('[data-close-confirm]').forEach(function(b){b.addEventListener('click',function(){$('confirmModal').classList.remove('open');});});
+document.querySelectorAll('[data-close-detail]').forEach(function(b){b.addEventListener('click',function(){$('detailModal').classList.remove('open');});});
+['detailModal','confirmModal','messageModal'].filter(function(id){return $(id);}).forEach(function(id){$(id).addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');});});
+document.querySelectorAll('.multi-button').forEach(function(button){
+ button.addEventListener('click',function(event){
+  event.stopPropagation();
+  if(button.disabled)return;
+  var multi=button.closest('.multi');
+  var willOpen=!multi.classList.contains('open');
+  closeMultis(multi);
+  closeDatePickers();
+  multi.classList.toggle('open',willOpen);
+  if(willOpen){
+   placeMultiMenu(multi);
+   var search=multi.querySelector('.multi-search');
+   if(search){search.value='';search.dispatchEvent(new Event('input'));search.focus({preventScroll:true});}
+  }
+ });
+});
+$('filterForm').addEventListener('input',function(e){if(e.target.id==='tRegs'){markInvalid(e.target,false);refreshHwFilters(1);}});
+$('filterForm').addEventListener('change',function(e){
+ var box=e.target.closest('.multi');
+ if(box)box.classList.remove('field-invalid');
+ if(e.target.classList.contains('control'))markInvalid(e.target,false);
+});
+$('mPageSize').addEventListener('input',function(){this.value=this.value.replace(/[^0-9]/g,'');markInvalid(this,false);});
+window.addEventListener('resize',function(){closeMultis();});
+document.addEventListener('click',function(event){
+ if(!event.target.closest('.multi'))closeMultis();
+ if(!event.target.closest('.date-control-wrap'))closeDatePickers();
+});
+/* coming back from Edit HW Notekhata (same tab): restore the last filters and show the list again */
+restoreFilters();
 if(window.matchMedia('(max-width:1000px)').matches)document.body.classList.add('sidebar-hidden');
-if(qs.get('reg')){
- showStudent(qs.get('reg'));
- if(student&&qs.get('prog'))showReport(qs.get('prog'),qs.get('adm'));
-}
+document.addEventListener('keydown',function(e){
+ if(e.key==='Escape'){
+  document.querySelectorAll('.modal.open').forEach(function(m){m.classList.remove('open');});
+  closeMultis();closeDatePickers();
+ }
+});
 function showMessage(message){
  document.getElementById('messageText').textContent=message;
  document.getElementById('messageModal').classList.add('open');

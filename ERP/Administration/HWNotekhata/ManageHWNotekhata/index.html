@@ -1434,7 +1434,7 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
 }
 [data-toggle-head]{cursor:pointer;user-select:none}
 .status-toggle{border:0;cursor:pointer}
-/* View Copies / View (HW Evaluation) — the shell defines only the glyphicons it uses */
+/* View Copies / View (HW Evaluation Report) — the shell defines only the glyphicons it uses */
 .glyphicon-eye-open:before{content:"\e105"}
 .status-toggle:hover{filter:brightness(.95);box-shadow:0 0 0 2px rgba(0,0,0,.08)}
 .status-badge.unpublished{background:#f2dede;color:#a94442}
@@ -1524,11 +1524,11 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
      <a class="active" href="index.html">
      Manage HW Notekhata
     </a>
-     <a href="../HWEvaluation/index.html">
-     HW Evaluation
+     <a href="../HWEvaluationReport/index.html">
+     HW Evaluation Report
     </a>
-     <a href="../HWIndividualReport/index.html">
-     HW Evaluation Individual Student Report
+     <a href="../IndividualStudentHWReport/index.html">
+     Individual Student HW Report
     </a>
    </div>
   </div>
@@ -1773,7 +1773,7 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
     <li><strong>Edit</strong> — "Edit HW Notekhata" পেইজ খোলে (Back to Manage HW Notekhata দিয়ে ফিরলে আগের ফিল্টার ও তালিকা থেকে যায়) — Create HW Notekhata-র একই ফর্ম, আগের সব মান বসানো। Unpublished হলে "Update" ও "Update &amp; Publish", Published হলে শুধু "Update"। উপরে HW Code, Status ও কতজন আপলোড করেছে দেখায়।</li>
     <li><strong>Status বাটন (Published / Unpublished)</strong> — Status কলামের Published বাটনে ক্লিক করলে নিশ্চিতকরণ পপআপের পর Unpublished হবে (শিক্ষার্থী Portal-এ আর দেখবে না); Unpublished বাটনে ক্লিক করলে একইভাবে Published হবে (Date From থেকে Portal-এ দেখাবে)। Create HW Notekhata-র "Create" দিয়ে তৈরি HW Unpublished থাকে।</li>
     <li><strong>Delete</strong> — নিশ্চিতকরণ পপআপের পর মুছে যায়; কোনো শিক্ষার্থী আপলোড করে থাকলে Delete করা যাবে না (বার্তা দেখায়)।</li>
-    <li><strong>Evaluated কলাম (নতুন)</strong> — Uploaded-এর পরে "Evaluated" কলাম: কতগুলো জমা দেওয়া খাতার মূল্যায়ন হয়েছে (জমা দেওয়ার কয়েক সেকেন্ডের মধ্যে মূল্যায়ন হয়, তাই সাধারণত Uploaded-এর সমান)। Details পপআপেও Evaluated। শুধু সংখ্যা — শিক্ষার্থী কী জমা দিয়েছে বা মূল্যায়নে কী এসেছে, তা এই মেনুতে দেখা যাবে না; সেটা আলাদা মেনু <b>HW Evaluation</b>-এ (এই মেনু যারা পায় তারা খাতা মূল্যায়নের কাজের সাথে জড়িত না)।</li>
+    <li><strong>Evaluated কলাম (নতুন)</strong> — Uploaded-এর পরে "Evaluated" কলাম: কতগুলো জমা দেওয়া খাতার মূল্যায়ন হয়েছে (জমা দেওয়ার কয়েক সেকেন্ডের মধ্যে মূল্যায়ন হয়, তাই সাধারণত Uploaded-এর সমান)। Details পপআপেও Evaluated। শুধু সংখ্যা — শিক্ষার্থী কী জমা দিয়েছে বা মূল্যায়নে কী এসেছে, তা এই মেনুতে দেখা যাবে না; সেটা আলাদা মেনু <b>HW Evaluation Report</b>-এ (এই মেনু যারা পায় তারা খাতা মূল্যায়নের কাজের সাথে জড়িত না)।</li>
    </ol>
   </div>
   <div class="page-changes-footer">
@@ -2355,7 +2355,7 @@ function targetSummary(t){
  if(t.selectBy==='Zone')return 'Zone: '+(t.zones||[]).join(', ');
  return 'Branch: '+(t.branches||[]).join(', ');
 }
-/* HW Notekhata — evaluation demo (shared by Student Portal > HW Notekhata and UMS > HW Evaluation / Manage HW Notekhata counts).
+/* HW Notekhata — evaluation demo (shared by Student Portal > HW Notekhata and UMS > HW Evaluation Report / Manage HW Notekhata counts).
    Needs course_data.js (demoHash, demoPad), lecture_data.js (bnDigits), target_data.js, hw_data.js (isoPlus, PORTAL_STUDENT).
    AI evaluates every submitted copy within seconds (HW Course / HW Chapter "Independent AI Answer Settings") — but the word "AI"
    is never shown in the UI (user, 20 Nov 2026). Result = marks drawn on the copy photos (✓ right, ✗ wrong, ◯ needs attention —
@@ -2448,7 +2448,7 @@ function hwEvalCommentHtml(ev){
 var HWE_FIRST=['Tanvir','Nusrat','Sadia','Rafi','Mehedi','Farhana','Ariful','Sumaiya','Imran','Jannatul','Rakibul','Tasnim','Shahriar','Mim','Nafis','Sabrina','Fahim','Ayesha','Zahid','Rumana','Asif','Tahmina','Sakib','Lamia'];
 var HWE_LAST=['Hasan','Islam','Rahman','Ahmed','Hossain','Akter','Chowdhury','Karim','Sultana','Alam','Khan','Sarker','Uddin','Mahmud','Haque','Jahan'];
 /* UMS: who submitted one HW. Students are a fixed demo population — 45 per enrollment course × branch — so the same Reg No
-   shows the same submissions in HW Evaluation (copies of one HW) and HW Evaluation Individual Student Report (all HW of one student).
+   shows the same submissions in HW Evaluation Report (copies of one HW) and Individual Student HW Report (all HW of one student).
    Reg No = (1000 + the course's position in the enrollment course list, 4 digits) + branch index (1 digit) + serial (2 digits) = 7 digits;
    the portal demo student keeps his own Reg. */
 var HW_COURSE_IX=null;
@@ -2476,6 +2476,10 @@ function hwStudentByReg(reg,items){
   if(!items||items.some(function(i){return hwReachesStudent(i,s);}))return s;
  }
  if(!items||!/^\d{7}$/.test(reg))return null;
+ /* a Reg named in a Reg Wise HW: that HW's course (same copy as in the HW Evaluation Report copy list, branch '-' as there) */
+ var rw=[];
+ items.forEach(function(i){var t=i.target||{};if(t.selectBy==='Reg'&&(t.regs||[]).map(String).indexOf(reg)>-1&&(t.courseIds||[]).length&&rw.indexOf(Number(t.courseIds[0]))===-1)rw.push(Number(t.courseIds[0]));});
+ if(rw.length)return{reg:reg,name:hwStudentName(reg),branch:'-',courseIds:rw};
  /* any other 7-digit Reg: a course + branch that has HW, picked from the number */
  var cands=[],seen={};
  items.forEach(function(i){
@@ -2864,7 +2868,7 @@ function setMulti(key,items,config){
  syncMulti(key);
 }
 var EDIT_PAGE='EditHWNotekhata.html';
-/* the same list page also serves the HW Evaluation menu (same filters; only Uploaded / Evaluated + a link to the submitted copies) */
+/* the same list page also serves the HW Evaluation Report menu (same filters; only Uploaded / Evaluated + a link to the submitted copies) */
 var EVAL_MODE=false;
 var SUBMISSIONS_PAGE='HWEvaluationCopies.html';
 var hwCourses=buildCourseList();
@@ -2889,7 +2893,7 @@ function customMessage(text,type){
  window.scrollTo({top:0,behavior:'smooth'});
 }
 function fmt(iso){if(!iso)return'-';var p=iso.split('-');return p[2]+'/'+p[1]+'/'+p[0];}
-/* every submitted copy is evaluated within seconds: Uploaded / Evaluated counts come from the submission list (HW Evaluation menu) */
+/* every submitted copy is evaluated within seconds: Uploaded / Evaluated counts come from the submission list (HW Evaluation Report menu) */
 function reload(){allItems=buildHwList(hwCourses,chapters);allItems.forEach(function(i){var c=hwEvalCounts(i,hwTodayIso());i.uploads=c.uploaded;i.evaluated=c.evaluated;});}
 function submissionsHref(item){return SUBMISSIONS_PAGE+'?id='+item.id;}
 /* ---------- filters: Date From/To + Target Student Selection (same as Create HW Notekhata) ---------- */
@@ -3282,7 +3286,7 @@ function exportCsv(){
  var blob=new Blob([String.fromCharCode(0xFEFF)+lines.join('\r\n')],{type:'text/csv;charset=utf-8'});
  var link=document.createElement('a');
  link.href=URL.createObjectURL(blob);
- link.download=EVAL_MODE?'HWEvaluationList.csv':'HWNotekhataList.csv';
+ link.download=EVAL_MODE?'HWEvaluationReportList.csv':'HWNotekhataList.csv';
  document.body.appendChild(link);link.click();link.remove();
 }
 /* ---------- details ---------- */
