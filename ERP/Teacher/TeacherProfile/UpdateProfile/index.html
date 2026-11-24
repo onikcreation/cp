@@ -7423,9 +7423,9 @@ li.blink {
     display: none !important;
 }
 </style>
-    
-    
-    
+
+
+
     <script>
 /* inlined: /Scripts/jquery-1.10.2.min.js */
 /* NUGET: BEGIN LICENSE TEXT
@@ -16599,17 +16599,7 @@ span.hide-native-select{position:relative}span.hide-native-select select{border:
                                       <input data-val="true" data-val-required="The IsAiTeacher field is required." id="IsAiTeacher" name="teacherViewModel.IsAiTeacher" type="checkbox" value="true">
                                       &nbsp; Yes
                                     </div>
-                                    <div class="form-group">
-                                      <label class="control-label col-md-2">
-                                        Payment Block
-                                      </label>
-                                      <div class="col-md-4" style="margin-top: 6px; display: inline-flex; gap: 10px; align-items: center;padding-right:5px">
-                                        <input type="checkbox" id="isBlockedCashPayment">
-                                        Cash Payment
-                                        <input type="checkbox" id="isBlockedNagadPayment" checked="">
-                                        Nagad Payment
-                                      </div>
-                                    </div>
+
                                   </div>
                                 </div>
                               </fieldset>
@@ -19322,7 +19312,7 @@ window.AreaDropdown = AreaDropdown;
             treeElement: '#deviceAreaTree'
         });
     }
-    
+
     const multiselectfnc = () => {};
                       </script>
                     </div>
@@ -19617,7 +19607,7 @@ if(!jQuery)throw new Error("Bootstrap requires jQuery");+function(a){"use strict
    * range of inputs and return valid options suitable for passing to bootbox.dialog
    */
   function mergeDialogOptions(className, labels, properties, args) {
-     
+
     //  build up a base set of dialog properties
     var baseOptions = {
       className: "bootbox-" + className,
@@ -19650,7 +19640,7 @@ if(!jQuery)throw new Error("Bootstrap requires jQuery");+function(a){"use strict
       var argument = arguments[i];
       var key = argument.toLowerCase();
       var value = argument.toUpperCase();
-      
+
       buttons[key] = {
         label: _t(value)
       };
@@ -19728,7 +19718,7 @@ if(!jQuery)throw new Error("Bootstrap requires jQuery");+function(a){"use strict
       var options;
 
       options = mergeDialogOptions("customConfirm", ["cancel", "delete"], ["message", "callback"], arguments);
-      
+
       /**
        * overrides; undo anything the user tried to set they shouldn't have
        */
@@ -19966,7 +19956,7 @@ if(!jQuery)throw new Error("Bootstrap requires jQuery");+function(a){"use strict
     });
 
     if (shouldShow === true) {
-     
+
      dialog.modal("show");
     }
     return dialog;
@@ -20455,7 +20445,7 @@ $(document).ready(function () {
     if (isMultipleReferer < 2) {
         $("#sidebar .submenuitem").each(function () {
             var fullControllerActionName = controllerName + "-" + actionName + "|";
-           
+
             if ($(this).attr("data-businessId")) {
                 var businessIdArray = $(this).attr("data-businessId").toString().toLowerCase().split('|');
                 if (businessIdArray && businessIdArray.length) {
@@ -20697,7 +20687,7 @@ function getDPI() {
       }
 
       var worker = $.proxy(function() {
-        
+
         if($.isFunction(this.source)) this.source(this.query, $.proxy(this.process, this));
         else if (this.source) {
           this.process(this.source);
@@ -20720,13 +20710,13 @@ function getDPI() {
       if (!items.length && !this.options.addItem) {
         return this.shown ? this.hide() : this;
       }
-      
+
       if (items.length > 0) {
         this.$element.data('active', items[0]);
       } else {
         this.$element.data('active', null);
       }
-      
+
       // Add item
       if (this.options.addItem){
         items.push(this.options.addItem);
@@ -20849,7 +20839,7 @@ function getDPI() {
         .on('mouseenter', 'li', $.proxy(this.mouseenter, this))
         .on('mouseleave', 'li', $.proxy(this.mouseleave, this));
     },
-    
+
     destroy : function () {
       this.$element.data('typeahead',null);
       this.$element.data('active',null);
@@ -20865,7 +20855,7 @@ function getDPI() {
 
       this.$menu.remove();
     },
-    
+
     eventSupported: function(eventName) {
       var isSupported = eventName in this.$element;
       if (!isSupported) {
@@ -21050,7 +21040,7 @@ $.fn.myAutoComplete = function(options) {
         holder: "",//Id of text field
         hiddenField: ""       //Id of hidden field
     }, options);
-    
+
     if (settings.url != undefined && settings.url != "" && settings.holder != undefined && settings.holder != "" && settings.hiddenField != undefined && settings.hiddenField != "") {
         console.log(settings);
         $(settings.holder).typeahead({
@@ -21105,7 +21095,7 @@ $.fn.myAutoComplete = function(options) {
 
 
 $(document).ready(function () {
-   
+
 });
 </script>
               <script>
@@ -21967,7 +21957,7 @@ $(document).ready(function () {
         clearError(fieldId);
         $("#" + fieldId).after(`<span class="error-message text-danger">${message}</span>`);
     }
-    
+
     function validateMentorForm(pin, date, editIndex, editMode, name) {
         valid = true;
 
@@ -22036,7 +22026,7 @@ $(document).ready(function () {
         valid = false;
         return valid;
     }
-    
+
 
     // Add/Update is handled by the single #mentorSubmitBtn click handler below.
     // Keep this only to swallow any accidental form submit (e.g. Enter key).
@@ -22780,10 +22770,6 @@ $(document).ready(function () {
                 mentorHistoryId: mentorHistoryId
             });
         });
-
-
-        var isBlockedCashPayment = $("#isBlockedCashPayment").prop("checked"); 
-        var isBlockedNagadPayment = $("#isBlockedNagadPayment").prop("checked"); 
         var filesTableData = $("#fileTableBody");
         var token = $('input[name="__RequestVerificationToken"]').val();
         var formData = new FormData();
@@ -23078,7 +23064,7 @@ $(document).ready(function () {
             }
         });
 
-       
+
 
         $(".ActivityPriority").each(function () {
             var val = $(this).val();
@@ -23267,9 +23253,6 @@ $(document).ready(function () {
 
             //add mentor list
             //formData.append("MentorsList", JSON.stringify(mentors));
-
-            formData.append("IsBlockedCashPayment", isBlockedCashPayment);
-            formData.append("IsBlockedNagadPayment", isBlockedNagadPayment);
             deletedFilesToServer.forEach(function (key) {
                 formData.append("TeachersDeletedFiles", key);
             });
@@ -27909,7 +27892,7 @@ function checkPassingYear(value) {
             });        
         });
                 </script>
-                
+
                 <div role="log" aria-live="assertive" aria-relevant="additions" class="ui-helper-hidden-accessible">
                 </div>
                 <div class="datetimepicker datetimepicker-dropdown-bottom-right dropdown-menu" style="left: 0px; z-index: 1120;">
@@ -28426,7 +28409,7 @@ function checkPassingYear(value) {
                     </table>
                   </div>
                 </div>
-              
+
 <style>
   @media screen and (min-width: 768px) {
     #pageChangesModal .modal-dialog {
