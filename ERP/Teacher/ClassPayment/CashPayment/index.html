@@ -7604,10 +7604,10 @@ var BRANCH_MENTOR_DATA = [["Bandarban","6"],["Khagrachari","6"],["Rangamati","6"
         })();
 
         var FIELD_DEFS = {
-          '10': { label: 'TPIN', get: function (r) { return r.teacher.tpin; } },
-          '20': { label: 'Full Name', get: function (r) { return r.teacher.name; } },
-          '30': { label: 'Nick Name', get: function (r) { return r.teacher.nick; } },
-          '40': { label: 'Batch', get: function (r) { return r.teacher.batch; } },
+          '10': { label: 'TPIN', freezeKey: 'tpin', get: function (r) { return r.teacher.tpin; } },
+          '20': { label: 'Full Name', freezeKey: 'full-name', get: function (r) { return r.teacher.name; } },
+          '30': { label: 'Nick Name', freezeKey: 'nick-name', get: function (r) { return r.teacher.nick; } },
+          '40': { label: 'Batch', freezeKey: 'batch', get: function (r) { return r.teacher.batch; } },
           '50': { label: 'Mobile Number', get: function (r) { return r.teacher.mobile; } },
           '60': { label: 'Mobile Banking Number', get: function (r) { return r.teacher.mobBank; } },
           '70': { label: 'Mobile Banking Type', get: function (r) { return r.teacher.mobBankType; } },
@@ -7774,7 +7774,10 @@ var BRANCH_MENTOR_DATA = [["Bandarban","6"],["Khagrachari","6"],["Rangamati","6"
             cols = ['10', '20'].map(function (v) { return FIELD_DEFS[v]; });
           }
 
-          var theadHtml = '<th>Serial</th>' + cols.map(function (c) { return '<th>' + c.label + '</th>'; }).join('') +
+          var theadHtml = '<th class="fixed-column fixed-left" data-freeze-key="serial">Serial</th>' + cols.map(function (c) {
+            var freezeAttrs = c.freezeKey ? ' class="fixed-column fixed-left" data-freeze-key="' + c.freezeKey + '"' : '';
+            return '<th' + freezeAttrs + '>' + c.label + '</th>';
+          }).join('') +
             '<th>Organization</th>' + (showBranchColumn ? '<th>Branch</th>' : '') +
             '<th class="fixed-column right2">Total Amount</th><th class="fixed-column right1">Action</th>';
 
@@ -7783,7 +7786,10 @@ var BRANCH_MENTOR_DATA = [["Bandarban","6"],["Khagrachari","6"],["Rangamati","6"
             bodyHtml = '<tr><td colspan="' + (cols.length + 4 + (showBranchColumn ? 1 : 0)) + '" class="text-center">কোনো তথ্য পাওয়া যায়নি।</td></tr>';
           } else {
             bodyHtml = rows.map(function (r, i) {
-              var tds = '<td>' + (i + 1) + '</td>' + cols.map(function (c) { return '<td>' + escapeHtml(c.get(r)) + '</td>'; }).join('');
+              var tds = '<td class="fixed-column fixed-left" data-freeze-key="serial">' + (i + 1) + '</td>' + cols.map(function (c) {
+                var freezeAttrs = c.freezeKey ? ' class="fixed-column fixed-left" data-freeze-key="' + c.freezeKey + '"' : '';
+                return '<td' + freezeAttrs + '>' + escapeHtml(c.get(r)) + '</td>';
+              }).join('');
               tds += '<td>' + escapeHtml(r.orgName) + '</td>';
               if (showBranchColumn) tds += '<td>' + escapeHtml(r.branchName) + '</td>';
               tds += '<td class="text-right fixed-column right2">' + r.amount.toLocaleString('en-US', { maximumFractionDigits: 0 }) + '</td>';
@@ -8475,6 +8481,16 @@ var BRANCH_MENTOR_DATA = [["Bandarban","6"],["Khagrachari","6"],["Rangamati","6"
             #DataGrid .fixed-column.right2 {
                 box-shadow: -2px 0 3px rgba(0, 0, 0, 0.08);
             }
+            #DataGrid .fixed-column.fixed-left {
+                left: 0;
+                box-sizing: border-box;
+                overflow: hidden;
+            }
+            #DataGrid [data-freeze-key="serial"] { left: 0; min-width: 70px; width: 70px; max-width: 70px; }
+            #DataGrid [data-freeze-key="tpin"] { left: 70px; min-width: 70px; width: 70px; max-width: 70px; }
+            #DataGrid [data-freeze-key="full-name"] { left: 140px; min-width: 190px; width: 190px; max-width: 190px; }
+            #DataGrid [data-freeze-key="nick-name"] { left: 330px; min-width: 100px; width: 100px; max-width: 100px; }
+            #DataGrid [data-freeze-key="batch"] { left: 430px; min-width: 70px; width: 70px; max-width: 70px; box-shadow: 2px 0 3px rgba(0, 0, 0, 0.08); }
             #DataGrid tbody tr:nth-of-type(odd) .fixed-column {
                 background-color: #f9f9f9;
             }
@@ -29629,6 +29645,10 @@ function updateSelectedValues() {
         const payNowBtnIdName = '.pay-now-btn';
 
         function setCashPaymentFixedColumnOffsets() {
+            const leftOffsets = { 'serial': 0, 'tpin': 70, 'full-name': 140, 'nick-name': 330, 'batch': 430 };
+            Object.keys(leftOffsets).forEach(function (freezeKey) {
+                $('#DataGrid [data-freeze-key="' + freezeKey + '"]').css('left', leftOffsets[freezeKey] + 'px');
+            });
             const $actionColumn = $('#DataGrid .fixed-column.right1').first();
             if ($actionColumn.length === 0) return;
             const actionColumnWidth = $actionColumn.outerWidth() || 0;
@@ -31698,6 +31718,9 @@ function updateSelectedValues() {
                               </li>
                               <li style="margin-bottom:12px;">
                                 <strong>Payment Finalize পেইজে Program &amp; Session কলামের পরে Branch কলাম দেখাতে হবে</strong>। যে ব্রাঞ্চ দিয়ে ক্লাসটি এন্ট্রি করা হয়েছে সেই ব্রাঞ্চের নাম দেখাবে।
+                              </li>
+                              <li style="margin-bottom:12px;">
+                                <strong>পরিচয় কলাম freeze করা হয়েছে</strong> — সব তথ্য নিয়ে View করার পর horizontal scroll করলে Serial, TPIN, Full Name, Nick Name ও Batch বাম পাশে স্থির থাকবে; মাঝের কলামগুলো স্বাভাবিকভাবে scroll হবে।
                               </li>
                               <li style="margin-bottom:0;">
                                 <strong>Sidebar-এ শুধু তৈরি করা Demo menu</strong> — বাম পাশের menu list-এ শুধু Class Payment parent-এর Payment Approval ও Cash Payment থাকবে; demo তৈরি হয়নি এমন বাকি menu দেখাবে না।

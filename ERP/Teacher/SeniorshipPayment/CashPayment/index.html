@@ -8022,6 +8022,20 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
             #seniorshipListTable .fixed-column.right1 {
                 right: 0;
             }
+            #seniorshipListTable .fixed-left {
+                position: sticky;
+                left: 0;
+                background-color: #fff;
+                z-index: 3;
+                box-sizing: border-box;
+                overflow: hidden;
+            }
+            #seniorshipListTable thead .fixed-left { z-index: 12; }
+            #seniorshipListTable [data-freeze-key="serial"] { left: 0; min-width: 70px; width: 70px; max-width: 70px; }
+            #seniorshipListTable [data-freeze-key="tpin"] { left: 70px; min-width: 70px; width: 70px; max-width: 70px; }
+            #seniorshipListTable [data-freeze-key="full-name"] { left: 140px; min-width: 190px; width: 190px; max-width: 190px; }
+            #seniorshipListTable [data-freeze-key="nick-name"] { left: 330px; min-width: 100px; width: 100px; max-width: 100px; }
+            #seniorshipListTable [data-freeze-key="batch"] { left: 430px; min-width: 70px; width: 70px; max-width: 70px; box-shadow: 2px 0 3px rgba(0, 0, 0, 0.08); }
         </style>
         </head>
         <body data-project-root="/" style="" cz-shortcut-listen="true">
@@ -14134,10 +14148,10 @@ function updateSelectedValues() {
         });
 
         var FIELD_DEFS = {
-          'TPIN': { label: 'TPIN', get: function (r) { return r.teacher.tpin; } },
-          'Full Name': { label: 'Full Name', get: function (r) { return r.teacher.name; } },
-          'Nick Name': { label: 'Nick Name', get: function (r) { return r.teacher.nick; } },
-          'Batch': { label: 'Batch', get: function (r) { return r.teacher.batch; } },
+          'TPIN': { label: 'TPIN', freezeKey: 'tpin', get: function (r) { return r.teacher.tpin; } },
+          'Full Name': { label: 'Full Name', freezeKey: 'full-name', get: function (r) { return r.teacher.name; } },
+          'Nick Name': { label: 'Nick Name', freezeKey: 'nick-name', get: function (r) { return r.teacher.nick; } },
+          'Batch': { label: 'Batch', freezeKey: 'batch', get: function (r) { return r.teacher.batch; } },
           'Mobile Number': { label: 'Mobile Number', get: function (r) { return r.teacher.mobile; } },
           'Mobile Banking Number': { label: 'Mobile Banking Number', get: function (r) { return r.teacher.mobBank; } },
           'Mobile Banking Type': { label: 'Mobile Banking Type', get: function (r) { return r.teacher.mobBankType; } },
@@ -14153,6 +14167,12 @@ function updateSelectedValues() {
         function toArr(v) {
           if (v === null || v === undefined || v === '') return [];
           return Array.isArray(v) ? v : [v];
+        }
+        function syncSeniorshipCashPaymentFrozenColumns() {
+          var leftOffsets = { 'serial': 0, 'tpin': 70, 'full-name': 140, 'nick-name': 330, 'batch': 430 };
+          Object.keys(leftOffsets).forEach(function (freezeKey) {
+            $('#seniorshipListTable [data-freeze-key="' + freezeKey + '"]').css('left', leftOffsets[freezeKey] + 'px');
+          });
         }
 
         function buildCashPaymentDetailsHtml(d) {
@@ -14187,7 +14207,10 @@ function updateSelectedValues() {
             cols = ['TPIN', 'Full Name'].map(function (k) { return FIELD_DEFS[k]; });
           }
 
-          var headRow1 = '<th rowspan="2">Serial</th>' + cols.map(function (c) { return '<th rowspan="2">' + c.label + '</th>'; }).join('') +
+          var headRow1 = '<th rowspan="2" class="fixed-left" data-freeze-key="serial">Serial</th>' + cols.map(function (c) {
+            var freezeAttrs = c.freezeKey ? ' class="fixed-left" data-freeze-key="' + c.freezeKey + '"' : '';
+            return '<th rowspan="2"' + freezeAttrs + '>' + c.label + '</th>';
+          }).join('') +
             activeMonths.map(function (m) { return '<th colspan="3">' + m + '</th>'; }).join('') +
             '<th rowspan="2">Total Amount</th><th rowspan="2" class="fixed-column right1">Action</th>';
           var headRow2 = activeMonths.map(function () { return '<th>Settings</th><th>Slot</th><th>Amount</th>'; }).join('');
@@ -14197,7 +14220,10 @@ function updateSelectedValues() {
             bodyHtml = '<tr><td colspan="' + (cols.length + activeMonths.length * 3 + 3) + '" class="text-center">কোনো তথ্য পাওয়া যায়নি।</td></tr>';
           } else {
             bodyHtml = rows.map(function (r, i) {
-              var tds = '<td>' + (i + 1) + '</td>' + cols.map(function (c) { return '<td>' + escapeHtml(c.get(r)) + '</td>'; }).join('');
+              var tds = '<td class="fixed-left" data-freeze-key="serial">' + (i + 1) + '</td>' + cols.map(function (c) {
+                var freezeAttrs = c.freezeKey ? ' class="fixed-left" data-freeze-key="' + c.freezeKey + '"' : '';
+                return '<td' + freezeAttrs + '>' + escapeHtml(c.get(r)) + '</td>';
+              }).join('');
               tds += activeMonths.map(function (m) {
                 var v = r.months[m];
                 if (!v) return '<td>-</td><td>-</td><td>-</td>';
@@ -15977,6 +16003,12 @@ function updateSelectedValues() {
                       <li style="margin-bottom:12px;">
                         <strong>Export বাটন যোগ করা হয়েছে</strong> — View বাটনের ঠিক পাশে নতুন Export বাটন, ক্লিক করলে Details টেবিলে বর্তমানে যা দেখা যাচ্ছে তা Excel ফাইল আকারে ডাউনলোড হবে।
                       </li>
+                      <li style="margin-bottom:12px;">
+                        <strong>পরিচয় কলাম freeze করা হয়েছে</strong> — সব তথ্য নিয়ে View করার পর horizontal scroll করলে Serial, TPIN, Full Name, Nick Name ও Batch বাম পাশে স্থির থাকবে; মাঝের কলামগুলো স্বাভাবিকভাবে scroll হবে।
+                      </li>
+                      <li style="margin-bottom:12px;">
+                        <strong>Sidebar-এ শুধু তৈরি করা Demo menu</strong> — বাম পাশের তালিকায় Seniorship Payment-এর তৈরি করা Cash Payment demo-টিই থাকবে; demo তৈরি হয়নি এমন সব menu সরানো হয়েছে।
+                      </li>
                     </ol>
                   </div>
                   <div class="modal-footer">
@@ -16021,6 +16053,35 @@ function updateSelectedValues() {
                         pcmSelectionFallbackCopy(btn, modalBody);
                     }
                 });
+            </script>
+            <script>
+              (function keepOnlySeniorshipPaymentDemoMenus() {
+                var accordion = document.getElementById('accordion');
+                var seniorshipPayment = document.getElementById('menu_panel_parent_Id_915');
+                if (!accordion || !seniorshipPayment) return;
+                Array.prototype.slice.call(accordion.children).forEach(function (item) {
+                  if (item !== seniorshipPayment) item.remove();
+                });
+                var menuList = seniorshipPayment.querySelector('.panel-body > ul');
+                if (!menuList) return;
+                Array.prototype.slice.call(menuList.children).forEach(function (item) {
+                  var link = item.querySelector('a.submenuitem');
+                  var label = link ? (link.textContent || '').replace(/\s+/g, ' ').trim() : '';
+                  if (label !== 'Cash Payment') item.remove();
+                });
+                var cashPaymentLink = menuList.querySelector('a.submenuitem');
+                if (cashPaymentLink) {
+                  var currentFile = (window.location.pathname.split('/').pop() || '').trim();
+                  var isPublished = !currentFile || currentFile.toLowerCase() === 'index.html';
+                  cashPaymentLink.setAttribute('href', isPublished ? './' : currentFile);
+                  cashPaymentLink.style.fontWeight = 'bold';
+                }
+                var tableContainer = document.getElementById('tableContainer');
+                if (tableContainer && window.MutationObserver) {
+                  new MutationObserver(syncSeniorshipCashPaymentFrozenColumns).observe(tableContainer, { childList: true });
+                }
+                $(window).off('resize.seniorshipCashFrozen').on('resize.seniorshipCashFrozen', syncSeniorshipCashPaymentFrozenColumns);
+              })();
             </script>
             <script type="text/javascript">
                 document.addEventListener('click', function (e) {
