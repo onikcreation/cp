@@ -7594,10 +7594,10 @@ var BRANCH_MENTOR_DATA = [["Bandarban","6"],["Khagrachari","6"],["Rangamati","6"
         })();
 
         var FIELD_DEFS = {
-          '10': { label: 'TPIN', get: function (r) { return r.teacher.tpin; } },
-          '20': { label: 'Full Name', get: function (r) { return r.teacher.name; } },
-          '30': { label: 'Nick Name', get: function (r) { return r.teacher.nick; } },
-          '40': { label: 'Batch', get: function (r) { return r.teacher.batch; } },
+          '10': { label: 'TPIN', freezeKey: 'tpin', get: function (r) { return r.teacher.tpin; } },
+          '20': { label: 'Full Name', freezeKey: 'full-name', get: function (r) { return r.teacher.name; } },
+          '30': { label: 'Nick Name', freezeKey: 'nick-name', get: function (r) { return r.teacher.nick; } },
+          '40': { label: 'Batch', freezeKey: 'batch', get: function (r) { return r.teacher.batch; } },
           '50': { label: 'Mobile Number', get: function (r) { return r.teacher.mobile; } },
           '60': { label: 'Mobile Banking Number', get: function (r) { return r.teacher.mobBank; } },
           '70': { label: 'Mobile Banking Type', get: function (r) { return r.teacher.mobBankType; } },
@@ -7657,22 +7657,28 @@ var BRANCH_MENTOR_DATA = [["Bandarban","6"],["Khagrachari","6"],["Rangamati","6"
             '<th class="fixed-column right2"><input type="checkbox" id="cancelAll" class="check_cance_all"> Cancel All</th>' +
             '<th class="fixed-column right1">Remarks</th>';
 
-          var theadHtml = '<th>Serial</th>' + cols.map(function (c) { return '<th>' + c.label + '</th>'; }).join('') + fixedTrailHeaders;
+          var theadHtml = '<th class="fixed-left" data-freeze-key="serial">Serial</th>' + cols.map(function (c) {
+            var freezeAttr = c.freezeKey ? ' class="fixed-left" data-freeze-key="' + c.freezeKey + '"' : '';
+            return '<th' + freezeAttr + '>' + c.label + '</th>';
+          }).join('') + fixedTrailHeaders;
 
           var bodyHtml;
           if (rows.length === 0) {
             bodyHtml = '<tr><td colspan="' + (cols.length + 9) + '" class="text-center">কোনো তথ্য পাওয়া যায়নি।</td></tr>';
           } else {
             bodyHtml = rows.map(function (r, i) {
-              var tds = '<td>' + (i + 1) + '<input type="hidden" autocomplete="off" value="' + r.id + '" id="paymentEntryDetailsId" class="entry-details-id"></td>' +
-                cols.map(function (c) { return '<td>' + escapeHtml(c.get(r)) + '</td>'; }).join('');
+              var tds = '<td class="fixed-left" data-freeze-key="serial">' + (i + 1) + '<input type="hidden" autocomplete="off" value="' + r.id + '" id="paymentEntryDetailsId" class="entry-details-id"></td>' +
+                cols.map(function (c) {
+                  var freezeAttr = c.freezeKey ? ' class="fixed-left" data-freeze-key="' + c.freezeKey + '"' : '';
+                  return '<td' + freezeAttr + '>' + escapeHtml(c.get(r)) + '</td>';
+                }).join('');
               tds += '<td>' + r.duration + '</td><td>' + r.quantity + '</td>';
               tds += '<td class="text-right">' + r.amount.toLocaleString('en-US') + '.00</td>';
               tds += '<td class="text-right">' + r.additionalAmount.toLocaleString('en-US') + '.00</td>';
               tds += '<td class="text-right">' + r.totalAmount.toLocaleString('en-US') + '</td>';
               tds += '<td class="fixed-column right3"><input type="checkbox" id="approve" data-serial="' + (i + 1) + '" class="check_approve"> Approve</td>';
               tds += '<td class="fixed-column right2"><input type="checkbox" id="cancel" data-serial="' + (i + 1) + '" class="check_cancel"> Cancel</td>';
-              tds += '<td class="fixed-column right1"><textarea rows="2" name="remarks" data-serial="' + (i + 1) + '" id="remarks" class="form-control text-box single-line remarks" style="min-height:48px; min-width:300px;"></textarea></td>';
+              tds += '<td class="fixed-column right1"><textarea rows="2" name="remarks" data-serial="' + (i + 1) + '" id="remarks" class="form-control text-box single-line remarks" style="min-height:48px; min-width:0; width:100%; max-width:100%;"></textarea></td>';
               return '<tr>' + tds + '</tr>';
             }).join('');
           }
@@ -7693,12 +7699,25 @@ var BRANCH_MENTOR_DATA = [["Bandarban","6"],["Khagrachari","6"],["Rangamati","6"
                 '</div></div>' +
               '</div>' +
             '</div>' +
-            '<script>$(document).ready(function () {' +
-              'var r1 = $("#approvalListTable .fixed-column.right1").outerWidth();' +
-              'var r2 = $("#approvalListTable .fixed-column.right2").outerWidth();' +
-              '$("#approvalListTable .fixed-column.right2").css({ right: r1 });' +
-              '$("#approvalListTable .fixed-column.right3").css({ right: r1 + r2 });' +
-            '});<\/script>';
+            '<script>(function () {' +
+              'function syncApprovalFrozenColumns() {' +
+                'var $table = $("#approvalListTable");' +
+                'if (!$table.length) return;' +
+                'var left = 0;' +
+                '$table.find("thead .fixed-left").each(function () {' +
+                  'var key = $(this).attr("data-freeze-key");' +
+                  '$table.find("[data-freeze-key=\\\"" + key + "\\\"]").css("left", left + "px");' +
+                  'left += $(this).outerWidth();' +
+                '});' +
+                'var r1 = $table.find("thead .fixed-column.right1").outerWidth() || 0;' +
+                'var r2 = $table.find("thead .fixed-column.right2").outerWidth() || 0;' +
+                '$table.find(".fixed-column.right2").css("right", r1 + "px");' +
+                '$table.find(".fixed-column.right3").css("right", (r1 + r2) + "px");' +
+              '}' +
+              '$(syncApprovalFrozenColumns);' +
+              '$(window).off("resize.paymentApprovalFreeze").on("resize.paymentApprovalFreeze", syncApprovalFrozenColumns);' +
+              'if (window.requestAnimationFrame) requestAnimationFrame(syncApprovalFrozenColumns);' +
+            '})();<\/script>';
         }
 
         function demoFakeRespond(options, data) {
@@ -8371,8 +8390,33 @@ var BRANCH_MENTOR_DATA = [["Bandarban","6"],["Khagrachari","6"],["Rangamati","6"
             }
             #approvalListTable .fixed-column {
                 position: sticky;
-                background-color: #fff;
-                z-index: 1;
+                background-color: #fff !important;
+                z-index: 3;
+            }
+            #approvalListTable .fixed-left {
+                position: sticky;
+                background-color: #fff !important;
+                z-index: 3;
+                box-sizing: border-box;
+                overflow: hidden;
+            }
+            #approvalListTable [data-freeze-key="serial"] { width: 70px; min-width: 70px; max-width: 70px; }
+            #approvalListTable [data-freeze-key="tpin"] { width: 70px; min-width: 70px; max-width: 70px; }
+            #approvalListTable [data-freeze-key="full-name"] { width: 190px; min-width: 190px; max-width: 190px; }
+            #approvalListTable [data-freeze-key="nick-name"] { width: 100px; min-width: 100px; max-width: 100px; }
+            #approvalListTable [data-freeze-key="batch"] { width: 70px; min-width: 70px; max-width: 70px; }
+            #approvalListTable .fixed-column.right1 { width: 159px; min-width: 159px; max-width: 159px; }
+            #approvalListTable .fixed-column.right2,
+            #approvalListTable .fixed-column.right3 { width: 112px; min-width: 112px; }
+            #approvalListTable thead .fixed-left,
+            #approvalListTable thead .fixed-column {
+                z-index: 12;
+            }
+            #approvalListTable .fixed-left[data-freeze-key="batch"] {
+                box-shadow: 2px 0 3px rgba(0, 0, 0, .12);
+            }
+            #approvalListTable .fixed-column.right3 {
+                box-shadow: -2px 0 3px rgba(0, 0, 0, .12);
             }
                 #approvalListTable .fixed-column::after, #approvalListTable .fixed-column::before {
                     position: absolute;
@@ -31284,9 +31328,13 @@ function updateSelectedValues() {
                                 <h4 class="modal-title" id="pageChangesModalLabel">এই পেইজে যা নতুন পরিবর্তন/আপডেট করা হয়েছে</h4>
                               </div>
                               <div class="modal-body" style="height:65vh; overflow-y:auto;">
+                                <p><strong>Teacher &gt; Class Payment &gt; Payment Approval</strong> মেনুর প্রস্তাবিত আপডেট:</p>
                                 <ol style="padding-left:20px; margin:0;">
                                   <li style="margin-bottom:12px;">
                                     <strong>Export বাটন যোগ করা হয়েছে</strong> — View বাটনের ঠিক পাশে নতুন Export বাটন, ক্লিক করলে Details টেবিলে বর্তমানে যা দেখা যাচ্ছে তা Excel ফাইল আকারে ডাউনলোড হবে।
+                                  </li>
+                                  <li style="margin-bottom:0;">
+                                    <strong>Details টেবিলে দুই পাশের গুরুত্বপূর্ণ কলাম Freeze</strong> — Horizontal scroll করার সময় বাম পাশে Serial, TPIN, Full Name, Nick Name ও Batch এবং ডান পাশে Approve All, Cancel All ও Remarks স্থির থাকবে; মাঝের তথ্যের কলামগুলো স্বাভাবিকভাবে scroll করা যাবে। Remarks কলামটি আগের প্রস্থের অর্ধেক রাখা হয়েছে।
                                   </li>
                                 </ol>
                               </div>
