@@ -29727,7 +29727,7 @@ function updateSelectedValues() {
                     'amount=' + encodeURIComponent($(this).attr('data-amount') || ''),
                     'cid=' + encodeURIComponent($(this).attr('data-cid') || '')
                 ].join('&');
-                window.location.href = 'PaymentFinalize.html?' + query;
+                window.location.href = 'PaymentFinalize_Offline.html?' + query;
             });
 
             // dropdown
@@ -31679,6 +31679,7 @@ function updateSelectedValues() {
                             <h4 class="modal-title" id="pageChangesModalLabel">এই পেইজে যা নতুন পরিবর্তন/আপডেট করা হয়েছে</h4>
                           </div>
                           <div class="modal-body" style="height:65vh; overflow-y:auto;">
+                            <p><strong>Teacher &gt; Class Payment &gt; Cash Payment</strong> মেনুর প্রস্তাবিত আপডেট:</p>
                             <ol style="padding-left:20px; margin:0;">
                               <li style="margin-bottom:12px;">
                                 <strong>Export বাটন যোগ করা হয়েছে</strong> — View বাটনের ঠিক পাশে নতুন Export বাটন, ক্লিক করলে Details টেবিলে বর্তমানে যা দেখা যাচ্ছে তা Excel ফাইল আকারে ডাউনলোড হবে।
@@ -31697,6 +31698,9 @@ function updateSelectedValues() {
                               </li>
                               <li style="margin-bottom:12px;">
                                 <strong>Payment Finalize পেইজে Program &amp; Session কলামের পরে Branch কলাম দেখাতে হবে</strong>। যে ব্রাঞ্চ দিয়ে ক্লাসটি এন্ট্রি করা হয়েছে সেই ব্রাঞ্চের নাম দেখাবে।
+                              </li>
+                              <li style="margin-bottom:0;">
+                                <strong>Sidebar-এ শুধু তৈরি করা Demo menu</strong> — বাম পাশের menu list-এ শুধু Class Payment parent-এর Payment Approval ও Cash Payment থাকবে; demo তৈরি হয়নি এমন বাকি menu দেখাবে না।
                               </li>
                             </ol>
                           </div>
@@ -31742,6 +31746,38 @@ function updateSelectedValues() {
                               pcmSelectionFallbackCopy(btn, modalBody);
                           }
                       });
+                    </script>
+                    <script>
+                      (function keepOnlyClassPaymentDemoMenus() {
+                        var accordion = document.getElementById('accordion');
+                        var classPayment = document.getElementById('menu_panel_parent_Id_884');
+                        if (!accordion || !classPayment) return;
+
+                        Array.prototype.slice.call(accordion.children).forEach(function (item) {
+                          if (item !== classPayment) item.remove();
+                        });
+
+                        var menuList = classPayment.querySelector('.panel-body > ul');
+                        if (!menuList) return;
+                        Array.prototype.slice.call(menuList.children).forEach(function (item) {
+                          var link = item.querySelector('a.submenuitem');
+                          var label = link ? (link.textContent || '').replace(/\s+/g, ' ').trim() : '';
+                          if (label !== 'Payment Approval' && label !== 'Cash Payment') item.remove();
+                        });
+
+                        var currentFile = (window.location.pathname.split('/').pop() || '').trim();
+                        var isPublished = !currentFile || currentFile.toLowerCase() === 'index.html';
+                        Array.prototype.slice.call(menuList.querySelectorAll('a.submenuitem')).forEach(function (link) {
+                          var label = (link.textContent || '').replace(/\s+/g, ' ').trim();
+                          if (label === 'Cash Payment') {
+                            link.setAttribute('href', isPublished ? './' : currentFile);
+                            link.style.fontWeight = 'bold';
+                          } else if (label === 'Payment Approval') {
+                            link.setAttribute('href', isPublished ? '../PaymentApproval/' : '../PaymentApproval/' + currentFile.replace(/^CashPayment/, 'PaymentApproval'));
+                            link.style.fontWeight = 'normal';
+                          }
+                        });
+                      })();
                     </script>
                     <script type="text/javascript">
                       document.addEventListener('click', function (e) {

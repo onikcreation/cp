@@ -31333,8 +31333,11 @@ function updateSelectedValues() {
                                   <li style="margin-bottom:12px;">
                                     <strong>Export বাটন যোগ করা হয়েছে</strong> — View বাটনের ঠিক পাশে নতুন Export বাটন, ক্লিক করলে Details টেবিলে বর্তমানে যা দেখা যাচ্ছে তা Excel ফাইল আকারে ডাউনলোড হবে।
                                   </li>
-                                  <li style="margin-bottom:0;">
+                                  <li style="margin-bottom:12px;">
                                     <strong>Details টেবিলে দুই পাশের গুরুত্বপূর্ণ কলাম Freeze</strong> — Horizontal scroll করার সময় বাম পাশে Serial, TPIN, Full Name, Nick Name ও Batch এবং ডান পাশে Approve All, Cancel All ও Remarks স্থির থাকবে; মাঝের তথ্যের কলামগুলো স্বাভাবিকভাবে scroll করা যাবে। Remarks কলামটি আগের প্রস্থের অর্ধেক রাখা হয়েছে।
+                                  </li>
+                                  <li style="margin-bottom:0;">
+                                    <strong>Sidebar-এ শুধু তৈরি করা Demo menu</strong> — বাম পাশের menu list-এ শুধু Class Payment parent-এর Payment Approval ও Cash Payment থাকবে; demo তৈরি হয়নি এমন বাকি menu দেখাবে না।
                                   </li>
                                 </ol>
                               </div>
@@ -31380,6 +31383,37 @@ function updateSelectedValues() {
                                   pcmSelectionFallbackCopy(btn, modalBody);
                               }
                           });
+                        </script>
+                        <script>
+                          (function keepOnlyClassPaymentDemoMenus() {
+                            var accordion = document.getElementById('accordion');
+                            var classPayment = document.getElementById('menu_panel_parent_Id_884');
+                            if (!accordion || !classPayment) return;
+
+                            Array.prototype.slice.call(accordion.children).forEach(function (item) {
+                              if (item !== classPayment) item.remove();
+                            });
+
+                            var menuList = classPayment.querySelector('.panel-body > ul');
+                            if (!menuList) return;
+                            Array.prototype.slice.call(menuList.children).forEach(function (item) {
+                              var link = item.querySelector('a.submenuitem');
+                              var label = link ? (link.textContent || '').replace(/\s+/g, ' ').trim() : '';
+                              if (label !== 'Payment Approval' && label !== 'Cash Payment') item.remove();
+                            });
+
+                            var currentFile = (window.location.pathname.split('/').pop() || '').trim();
+                            var isPublished = !currentFile || currentFile.toLowerCase() === 'index.html';
+                            Array.prototype.slice.call(menuList.querySelectorAll('a.submenuitem')).forEach(function (link) {
+                              var label = (link.textContent || '').replace(/\s+/g, ' ').trim();
+                              if (label === 'Payment Approval') {
+                                link.setAttribute('href', isPublished ? './' : currentFile);
+                                link.style.fontWeight = 'bold';
+                              } else if (label === 'Cash Payment') {
+                                link.setAttribute('href', isPublished ? '../CashPayment/' : '../CashPayment/' + currentFile.replace(/^PaymentApproval/, 'CashPayment'));
+                              }
+                            });
+                          })();
                         </script>
                         <script type="text/javascript">
                           document.addEventListener('click', function (e) {
